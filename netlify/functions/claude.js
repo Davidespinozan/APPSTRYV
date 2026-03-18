@@ -49,6 +49,18 @@ exports.handler = async function(event, context) {
 
     const data = await response.json();
 
+    if (!response.ok) {
+      console.error('Anthropic API error:', response.status, JSON.stringify(data));
+      return {
+        statusCode: response.status,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify(data)
+      };
+    }
+
     return {
       statusCode: 200,
       headers: {
@@ -59,8 +71,13 @@ exports.handler = async function(event, context) {
     };
 
   } catch (error) {
+    console.error('Claude function error:', error);
     return {
       statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
       body: JSON.stringify({ error: error.message })
     };
   }

@@ -1051,9 +1051,17 @@ async function callClaude(prompt, maxTokens, mode){
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({prompt, maxTokens: maxTokens||1200, mode: mode||'quality', lang})
   });
-  if(!res.ok) throw new Error('API error');
+  if(!res.ok){
+    const errBody = await res.text().catch(()=>'');
+    console.error('Claude API HTTP error:', res.status, errBody);
+    throw new Error('API error: '+res.status+' '+errBody.slice(0,200));
+  }
   const json = await res.json();
-  if(json.error) throw new Error(typeof json.error === 'string' ? json.error : (json.error.message||'API error'));
+  if(json.error){
+    const errMsg = typeof json.error === 'string' ? json.error : (json.error.message||'API error');
+    console.error('Claude API response error:', json.error);
+    throw new Error(errMsg);
+  }
   return json.content[0].text;
 }
 
@@ -1239,6 +1247,7 @@ async function generateAnalysis(id, article){
     store.set('analysisCache', analysisCache);
     renderAnalysis(id, data, article);
   }catch(e){
+    console.error('generateAnalysis error:', e);
     const msg = /API key/i.test(String(e && e.message))
       ? t('analysisApiError')
       : t('analysisError');
