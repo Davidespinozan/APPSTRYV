@@ -652,6 +652,7 @@ let deferredInstallPrompt = null;
 let lastNewsError = '';
 let onboardingSeen = store.get('onboardingSeen', false);
 let onboardingStep = 0;
+let imageCache = store.get('imageCache', {});  // { keyword: { sm:'url', th:'url' } }
 
 /* ═══════════════════════════════════════ */
 /*  HELPERS                               */
@@ -945,8 +946,9 @@ function renderTopSignals(){
       ? '<div class="signal-card-context">'+esc(cached.context)+'</div>'
         + (cached.meaning ? '<div class="signal-card-meaning">'+esc(cached.meaning)+'</div>' : '')
       : '<div class="signal-card-context loading">'+t('signalLoading')+'</div>';
+    var imgUrl = getArticleImageUrl(a,400,180);
     return '<div class="signal-card" data-signal-id="'+id+'">'+
-      '<img class="signal-card-img" src="'+esc(getArticleImageUrl(a,400,180))+'" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">'+
+      (imgUrl ? '<img class="signal-card-img" src="'+esc(imgUrl)+'" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">' : '')+
       '<div class="signal-rank">'+rank+'</div>'+
       '<div class="signal-card-section '+tagClass+'">'+(SECTION_ICONS[a.section]||'')+' '+esc(getSectionLabel(a.section))+'</div>'+
       '<div class="signal-card-title">'+esc(displayTitle)+'</div>'+
@@ -984,11 +986,11 @@ async function autoAnalyzeTopSignals(){
     const id = hashId(article.title);
     try{
       const promptLang = lang==='en'
-        ? 'Date: '+todayFormatted()+'. You explain news for people who do NOT follow the news. Write like a smart friend explaining what happened. No jargon, no dramatic tone, no technical terms.\n\nTODAY\'S CONTEXT:\n'+buildRelevantContext(article)+'\n\nORIGINAL HEADLINE: "'+getDisplayTitle(article)+'"\n\nRespond ONLY with valid JSON: {"headline":"Rewrite the headline in 8-12 simple words that anyone would understand","context":"2-3 sentences explaining what happened and why it matters, in plain everyday language, max 60 words","meaning":"1 sentence starting with \'This means...\' explaining what this means for a regular person, max 20 words"}'
-        : 'Fecha: '+todayFormatted()+'. Explicas noticias para personas que NO siguen las noticias. Escribe como un amigo inteligente explicando qué pasó. Sin jerga, sin tono dramático, sin tecnicismos.\n\nCONTEXTO DEL DÍA:\n'+buildRelevantContext(article)+'\n\nTITULAR ORIGINAL: "'+getDisplayTitle(article)+'"\n\nResponde SOLO con JSON válido: {"headline":"Reescribe el titular en 8-12 palabras simples que cualquiera entienda","context":"2-3 frases explicando qué pasó y por qué importa, en lenguaje cotidiano, máximo 60 palabras","meaning":"1 frase que empiece con \'Esto significa que...\' explicando qué significa para una persona normal, máximo 20 palabras"}';
+        ? 'Date: '+todayFormatted()+'. You explain news for people who do NOT follow the news. Write like a smart friend explaining what happened. No jargon, no dramatic tone, no technical terms.\n\nTODAY\'S CONTEXT:\n'+buildRelevantContext(article)+'\n\nORIGINAL HEADLINE: "'+getDisplayTitle(article)+'"\n\nRespond ONLY with valid JSON: {"headline":"Rewrite the headline in 8-12 simple words that anyone would understand","context":"2-3 sentences explaining what happened and why it matters, in plain everyday language, max 60 words","meaning":"1 sentence starting with \'This means...\' explaining what this means for a regular person, max 20 words","imageSearch":"2-3 English words describing the main visual subject of this news, for searching a stock photo (e.g. \'bitcoin chart\', \'white house\', \'AI robot\', \'oil pipeline\')"}'
+        : 'Fecha: '+todayFormatted()+'. Explicas noticias para personas que NO siguen las noticias. Escribe como un amigo inteligente explicando qué pasó. Sin jerga, sin tono dramático, sin tecnicismos.\n\nCONTEXTO DEL DÍA:\n'+buildRelevantContext(article)+'\n\nTITULAR ORIGINAL: "'+getDisplayTitle(article)+'"\n\nResponde SOLO con JSON válido: {"headline":"Reescribe el titular en 8-12 palabras simples que cualquiera entienda","context":"2-3 frases explicando qué pasó y por qué importa, en lenguaje cotidiano, máximo 60 palabras","meaning":"1 frase que empiece con \'Esto significa que...\' explicando qué significa para una persona normal, máximo 20 palabras","imageSearch":"2-3 palabras EN INGLÉS describiendo el sujeto visual principal de esta noticia, para buscar una foto (ej: \'bitcoin chart\', \'white house\', \'AI robot\', \'oil pipeline\')"}';
       const text = await callClaude(promptLang, 400, 'fast');
       const data = JSON.parse(text.replace(/```json|```/g,'').trim());
-      topSignalCache[id] = { headline: data.headline||'', context: data.context||'', meaning: data.meaning||'' };
+      topSignalCache[id] = { headline: data.headline||'', context: data.context||'', meaning: data.meaning||'', imageSearch: data.imageSearch||'' };
       store.set('topSignalCache', topSignalCache);
       renderTopSignals();
     }catch(e){
@@ -996,6 +998,8 @@ async function autoAnalyzeTopSignals(){
       renderTopSignals();
     }
   }
+  // After all signals are analyzed, fetch their specific images
+  fetchUnsplashImages();
 }
 
 function getBriefing(){
@@ -1247,7 +1251,7 @@ function renderCards(arts){
           '<div class="news-card-title">'+esc(displayTitle)+'</div>'+
           '<span class="news-card-tag '+tagClass+'">'+esc(getSectionLabel(a.section))+'</span>'+
         '</div>'+
-        '<img class="news-card-img" src="'+esc(getArticleImageUrl(a,72,72))+'" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">'+
+        (function(){ var u=getArticleImageUrl(a,72,72); return u ? '<img class="news-card-img" src="'+esc(u)+'" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">' : ''; })()+
       '</div>'+
       '<span class="news-card-arrow">›</span>'+
     '</div>'+
@@ -1284,9 +1288,93 @@ function hashId(str){
 /* ── Free stock image fallback (Picsum CDN, no API key, no copyright) ── */
 function getArticleImageUrl(article, w, h){
   if(article.image) return article.image;
-  // Deterministic seed from title → same article always gets same image
-  var seed = Math.abs(hashId(article.title).replace('n','')|0);
-  return 'https://picsum.photos/seed/ctx'+seed+'/'+w+'/'+h+'.webp';
+  // Check Unsplash cache (keyed by article hash id)
+  var id = hashId(article.title);
+  if(imageCache[id]) return w > 100 ? imageCache[id].sm : imageCache[id].th;
+  // Check section-level Unsplash cache
+  var secKey = 'sec_' + (article.section || 'general');
+  if(imageCache[secKey]){
+    var pool = imageCache[secKey];
+    var idx = Math.abs(id.replace('n','')|0) % pool.length;
+    return w > 100 ? pool[idx].sm : pool[idx].th;
+  }
+  // Fallback placeholder — section-colored gradient
+  return '';
+}
+
+/* ── Section → Unsplash search keywords ── */
+const SECTION_IMAGE_KEYWORDS = {
+  'Dinero':      'economy finance money currency bank',
+  'Poder':       'geopolitics world leader diplomacy government',
+  'Tecnología':  'technology artificial intelligence computer',
+  'Mercados':    'stock market trading cryptocurrency chart',
+  'Movilidad':   'travel passport immigration airport globe',
+  'Latam':       'latin america city people culture'
+};
+
+/* ── Extract 2-3 meaningful keywords from a title ── */
+function extractTitleKeywords(title){
+  var stop = new Set(['de','la','el','los','las','en','del','un','una','por','con','que','se','al','y','o','a','the','a','an','in','on','of','to','for','and','is','are','at','by','it','its','be','as','or','with','that','this','from','has','was','not','but','will','have','had','new','after','over','into','how','why','what','who','more','could','says','said']);
+  return title.replace(/[^\w\sáéíóúñü]/gi,'').split(/\s+/)
+    .filter(function(w){ return w.length > 2 && !stop.has(w.toLowerCase()); })
+    .slice(0, 3).join(' ');
+}
+
+/* ── Fetch images from Unsplash via proxy ── */
+async function fetchUnsplashImages(){
+  if(!articles.length) return;
+  var queries = [];
+
+  // 1) Top signal cards — specific keywords per article
+  var topArts = getTopSignals();
+  topArts.forEach(function(a){
+    var id = hashId(a.title);
+    if(a.image || imageCache[id]) return; // already has image
+    var cached = topSignalCache[id];
+    var kw = (cached && cached.imageSearch) ? cached.imageSearch : extractTitleKeywords(a.title);
+    if(kw) queries.push({ key: id, query: kw, count: 2 });
+  });
+
+  // 2) Section pools — one search per section
+  var sections = {};
+  articles.forEach(function(a){ sections[a.section] = true; });
+  Object.keys(sections).forEach(function(sec){
+    var secKey = 'sec_' + sec;
+    if(imageCache[secKey]) return;
+    var kw = SECTION_IMAGE_KEYWORDS[sec] || sec;
+    queries.push({ key: secKey, query: kw, count: 15 });
+  });
+
+  if(!queries.length) return;
+
+  try {
+    var res = await fetch('/.netlify/functions/images', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ queries: queries })
+    });
+    if(!res.ok) return;
+    var data = await res.json();
+    var results = data.results || {};
+
+    // Store individual article images (pick first result)
+    Object.keys(results).forEach(function(key){
+      var imgs = results[key];
+      if(!imgs || !imgs.length) return;
+      if(key.startsWith('sec_')){
+        imageCache[key] = imgs;
+      } else {
+        imageCache[key] = imgs[0]; // { sm, th }
+      }
+    });
+
+    store.set('imageCache', imageCache);
+    // Re-render to show loaded images
+    renderTopSignals();
+    renderFeeds();
+  } catch(e) {
+    // Silently fail — images are not critical
+  }
 }
 
 /* ═══════════════════════════════════════ */
@@ -1571,6 +1659,8 @@ async function refreshAll(){
 
   // Only analyzes signals not already in cache
   if(articles.length) autoAnalyzeTopSignals();
+  // Fetch topic images for new articles
+  if(articles.length) fetchUnsplashImages();
 }
 
 function updateRefreshTime(){
@@ -1635,6 +1725,8 @@ async function init(){
   if(articles.length && !getBriefing()) setTimeout(()=>generateBriefing(false),800);
   // Auto-analyze insights (the core experience)
   if(articles.length) setTimeout(()=>autoAnalyzeTopSignals(),1000);
+  // Fetch topic-relevant images from Unsplash
+  if(articles.length) setTimeout(()=>fetchUnsplashImages(),500);
 
   // Auto-refresh every 15 min
   setInterval(async()=>{
@@ -1646,6 +1738,7 @@ async function init(){
     renderBriefing();
     updateRefreshTime();
     if(articles.length) autoAnalyzeTopSignals();
+    if(articles.length) fetchUnsplashImages();
   }, 900000);
 }
 
