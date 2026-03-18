@@ -84,6 +84,30 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 .date-main{font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
 .date-tagline{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.5px;line-height:1.2}
 
+/* ═══ HERO BRIEFING ═══ */
+.hero-shell{padding:16px;border-bottom:1px solid var(--border-light);background:radial-gradient(circle at top right,var(--accent-soft),transparent 28%),linear-gradient(180deg,var(--surface),transparent)}
+.hero-kicker{font-size:10px;font-weight:800;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.hero-title{font-size:20px;font-weight:800;line-height:1.2;letter-spacing:-.4px;color:var(--text);margin-bottom:14px;max-width:520px}
+.hero-metrics{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px}
+.hero-metrics::-webkit-scrollbar{display:none}
+.hero-chip{flex-shrink:0;padding:9px 12px;border:1px solid var(--border);border-radius:999px;background:var(--surface-2);font-size:12px;color:var(--text-2)}
+.hero-chip strong{color:var(--text);font-weight:800}
+.briefing-card{border:1px solid var(--border);border-radius:18px;padding:16px;background:var(--surface);box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.briefing-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.briefing-label{font-size:11px;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.8px}
+.briefing-status{font-size:11px;font-weight:700;color:var(--accent)}
+.briefing-title{font-size:17px;font-weight:800;line-height:1.3;color:var(--text);margin-bottom:8px}
+.briefing-copy{font-size:14px;line-height:1.65;color:var(--text-2);margin-bottom:14px}
+.briefing-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.briefing-item{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border-light)}
+.briefing-item-mark{font-size:12px;font-weight:800;color:var(--accent);line-height:1.4;min-width:18px}
+.briefing-item-text{font-size:13px;line-height:1.5;color:var(--text)}
+.briefing-actions{display:flex;gap:10px;flex-wrap:wrap}
+.briefing-btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:12px;padding:11px 14px;cursor:pointer;transition:all .15s}
+.briefing-btn-primary{background:var(--accent);color:#0D1117;border:none}
+.briefing-btn-secondary{background:none;color:var(--text-2);border:1px solid var(--border)}
+.briefing-btn:disabled{opacity:.5;cursor:default}
+
 /* ═══ SECTION NAV ═══ */
 .sec-nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border-light);scrollbar-width:none;padding:0 12px;gap:2px}
 .sec-nav::-webkit-scrollbar{display:none}
@@ -104,6 +128,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 /* ═══ NEWS CARD ═══ */
 .news-card{border-bottom:1px solid var(--border-light);padding:14px 16px;cursor:pointer;transition:background .12s;position:relative}
 .news-card:hover{background:var(--card-hover)}
+.news-card-topline{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .news-card-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .news-card-source{font-size:11px;font-weight:600;color:var(--text-3)}
 .news-card-dot{width:2px;height:2px;border-radius:50%;background:var(--text-3);flex-shrink:0}
@@ -116,6 +141,8 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 .tag-mercados{color:var(--warning);background:var(--warning-soft)}
 .tag-movilidad{color:var(--accent);background:var(--accent-soft)}
 .tag-latam{color:var(--blue);background:var(--blue-soft)}
+.news-card-save{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text-3);cursor:pointer;flex-shrink:0;transition:all .15s}
+.news-card-save.active{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
 .news-card-arrow{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:14px;opacity:0;transition:opacity .15s}
 .news-card:hover .news-card-arrow{opacity:1}
 
@@ -159,6 +186,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 .empty-icon{font-size:40px;margin-bottom:12px;opacity:.5}
 .empty-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
 .empty-desc{font-size:13px;color:var(--text-3);line-height:1.5}
+.empty-action{display:inline-block;margin-top:14px;padding:10px 16px;border-radius:12px;background:var(--accent);color:#0D1117;text-decoration:none;font-size:13px;font-weight:800}
 
 /* ═══ STRYV CTA ═══ */
 .stryv-cta{margin:16px;padding:20px;background:var(--cta-bg);border-radius:16px;color:var(--cta-text);position:relative;overflow:hidden}
@@ -237,6 +265,25 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
   <div class="date-tagline">Lo que está pasando hoy y por qué te afecta.</div>
 </div>
 
+<div class="hero-shell">
+  <div class="hero-kicker">Terminal editorial</div>
+  <div class="hero-title">No es un resumen. Es la lectura estratégica de lo que cambió hoy.</div>
+  <div class="hero-metrics" id="heroMetrics"></div>
+  <div class="briefing-card" id="briefingCard">
+    <div class="briefing-top">
+      <div class="briefing-label">Briefing diario</div>
+      <div class="briefing-status" id="briefingStatus">Preparando...</div>
+    </div>
+    <div class="briefing-title" id="briefingTitle">Tu lectura estratégica del día.</div>
+    <div class="briefing-copy" id="briefingCopy">Cargamos titulares reales y armamos una lectura clara de qué vigilar hoy para que no consumas noticias a ciegas.</div>
+    <div class="briefing-list" id="briefingList"></div>
+    <div class="briefing-actions">
+      <button class="briefing-btn briefing-btn-primary" id="briefingBtn">Generar briefing</button>
+      <button class="briefing-btn briefing-btn-secondary" id="briefingShareBtn">Compartir</button>
+    </div>
+  </div>
+</div>
+
 <!-- REFRESH BAR -->
 <div class="refresh-bar">
   <div class="refresh-time" id="refreshTime">Cargando noticias...</div>
@@ -254,11 +301,11 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
   <div class="nav-item active" data-nav="all">
     <span class="nav-icon">📡</span><span class="nav-label">Todo</span>
   </div>
+  <div class="nav-item" data-nav="saved">
+    <span class="nav-icon">★</span><span class="nav-label">Guardadas</span>
+  </div>
   <div class="nav-item" data-nav="Dinero">
     <span class="nav-icon">💰</span><span class="nav-label">Dinero</span>
-  </div>
-  <div class="nav-item" data-nav="Poder">
-    <span class="nav-icon">⚡</span><span class="nav-label">Poder</span>
   </div>
   <div class="nav-item" data-nav="Tecnología">
     <span class="nav-icon">🤖</span><span class="nav-label">Tech</span>
@@ -275,8 +322,8 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 /* ═══════════════════════════════════════ */
 /*  CONSTANTS                             */
 /* ═══════════════════════════════════════ */
-const SECTIONS = ['all','Dinero','Poder','Tecnología','Mercados','Movilidad','Latam'];
-const SECTION_ICONS = {all:'📡',Dinero:'💰',Poder:'⚡','Tecnología':'🤖',Mercados:'📊',Movilidad:'🌍',Latam:'🌎'};
+const SECTIONS = ['all','saved','Dinero','Poder','Tecnología','Mercados','Movilidad','Latam'];
+const SECTION_ICONS = {all:'📡',saved:'★',Dinero:'💰',Poder:'⚡','Tecnología':'🤖',Mercados:'📊',Movilidad:'🌍',Latam:'🌎'};
 const SECTION_TAGS = {Dinero:'tag-dinero',Poder:'tag-poder','Tecnología':'tag-tecnologia',Mercados:'tag-mercados',Movilidad:'tag-movilidad',Latam:'tag-latam'};
 
 const CTAS = {
@@ -301,6 +348,10 @@ let articles = [];
 let newsSummary = '';
 let activeSection = 'all';
 let analysisCache = store.get('analysisCache', {});
+let briefingCache = store.get('briefingCache', {});
+let savedIds = store.get('savedIds', []);
+let usage = store.get('usage', { lastVisit:'', streak:0, analysesToday:0, analysesDate:'' });
+let fetchedAt = '';
 let theme = store.get('theme', 'dark');
 
 /* ═══════════════════════════════════════ */
@@ -331,6 +382,47 @@ function todayFormatted(){
   return days[d.getDay()]+' '+d.getDate()+' de '+months[d.getMonth()]+', '+d.getFullYear();
 }
 
+function todayKey(){
+  return new Date().toISOString().slice(0,10);
+}
+
+function updateUsageVisit(){
+  const today = todayKey();
+  if(usage.lastVisit === today) return;
+  const last = usage.lastVisit ? new Date(usage.lastVisit + 'T00:00:00') : null;
+  const current = new Date(today + 'T00:00:00');
+  const diffDays = last ? Math.round((current - last) / 86400000) : 0;
+  usage.streak = diffDays === 1 ? usage.streak + 1 : 1;
+  usage.lastVisit = today;
+  if(usage.analysesDate !== today){
+    usage.analysesDate = today;
+    usage.analysesToday = 0;
+  }
+  store.set('usage', usage);
+}
+
+function incrementAnalyses(){
+  const today = todayKey();
+  if(usage.analysesDate !== today){
+    usage.analysesDate = today;
+    usage.analysesToday = 0;
+  }
+  usage.analysesToday += 1;
+  store.set('usage', usage);
+  renderHeroMetrics();
+}
+
+function formatLocalTime(dateStr){
+  if(!dateStr) return 'hoy';
+  const d = new Date(dateStr);
+  if(Number.isNaN(d.getTime())) return 'hoy';
+  return d.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+}
+
+function getSavedArticles(){
+  return articles.filter(a=>savedIds.includes(hashId(a.title)));
+}
+
 /* ═══════════════════════════════════════ */
 /*  THEME                                 */
 /* ═══════════════════════════════════════ */
@@ -356,10 +448,115 @@ async function fetchNews(){
     const data = await res.json();
     articles = data.articles || [];
     newsSummary = data.summary || '';
+    fetchedAt = data.fetchedAt || '';
     return data;
   }catch(e){
     return {articles:[],sections:{},summary:'',count:0};
   }
+}
+
+function renderHeroMetrics(){
+  const metrics = [
+    '<div class="hero-chip"><strong>'+articles.length+'</strong> titulares hoy</div>',
+    '<div class="hero-chip"><strong>'+savedIds.length+'</strong> guardadas</div>',
+    '<div class="hero-chip"><strong>'+usage.streak+'</strong> día'+(usage.streak===1?'':'s')+' de racha</div>',
+    '<div class="hero-chip"><strong>'+usage.analysesToday+'</strong> lecturas hoy</div>'
+  ];
+  $('#heroMetrics').innerHTML = metrics.join('');
+}
+
+function getBriefing(){
+  return briefingCache[todayKey()] || null;
+}
+
+function renderBriefing(){
+  const briefing = getBriefing();
+  const list = $('#briefingList');
+  const status = $('#briefingStatus');
+  const title = $('#briefingTitle');
+  const copy = $('#briefingCopy');
+  const btn = $('#briefingBtn');
+
+  if(!briefing){
+    status.textContent = articles.length ? 'Listo para generar' : 'Esperando titulares';
+    title.textContent = 'Tu lectura estratégica del día.';
+    copy.textContent = articles.length
+      ? 'Genera un briefing para condensar lo importante del día y detectar qué deberías vigilar antes que la mayoría.'
+      : 'Aún no hay suficientes titulares cargados para construir una lectura sólida del día.';
+    list.innerHTML = [
+      'Los temas que concentran más atención.',
+      'Qué cambio de narrativa se está acelerando.',
+      'Qué conviene vigilar si operas en Latam.'
+    ].map((item,index)=>'<div class="briefing-item"><div class="briefing-item-mark">0'+(index+1)+'</div><div class="briefing-item-text">'+esc(item)+'</div></div>').join('');
+    btn.textContent = 'Generar briefing';
+    return;
+  }
+
+  status.textContent = 'Actualizado ' + (briefing.generatedAt || formatLocalTime(fetchedAt));
+  title.textContent = briefing.headline || 'Tu lectura estratégica del día.';
+  copy.textContent = briefing.summary || '';
+  list.innerHTML = (briefing.watch || []).map((item,index)=>
+    '<div class="briefing-item"><div class="briefing-item-mark">0'+(index+1)+'</div><div class="briefing-item-text">'+esc(item)+'</div></div>'
+  ).join('');
+  btn.textContent = 'Refrescar briefing';
+}
+
+async function generateBriefing(force){
+  if(!articles.length) return;
+  const existing = getBriefing();
+  if(existing && !force){
+    renderBriefing();
+    return;
+  }
+
+  const btn = $('#briefingBtn');
+  const status = $('#briefingStatus');
+  btn.disabled = true;
+  btn.textContent = 'Generando...';
+  status.textContent = 'Analizando señales';
+
+  try{
+    const text = await callClaude(
+      'Fecha: '+todayFormatted()+'. Eres el editor jefe de CONTEXTO. A partir de este paquete de noticias reales del día, crea un briefing corto, contundente y útil para un lector latinoamericano.\n\n'+
+      'NOTICIAS REALES DE HOY:\n'+newsSummary+'\n\n'+
+      'Responde SOLO con JSON válido sin markdown con esta estructura exacta: '+
+      '{"headline":"1 frase fuerte que describa la jugada del día","summary":"1 párrafo corto y directo explicando la tensión principal del día","watch":["Señal concreta a vigilar 1","Señal concreta a vigilar 2","Señal concreta a vigilar 3"]}',
+      900
+    );
+
+    const data = JSON.parse(text.replace(/```json|```/g,'').trim());
+    briefingCache[todayKey()] = {
+      headline: data.headline || 'Tu lectura estratégica del día.',
+      summary: data.summary || '',
+      watch: Array.isArray(data.watch) ? data.watch.slice(0,3) : [],
+      generatedAt: formatLocalTime(fetchedAt || new Date().toISOString())
+    };
+    store.set('briefingCache', briefingCache);
+    renderBriefing();
+  }catch(e){
+    status.textContent = 'No se pudo generar';
+  }finally{
+    btn.disabled = false;
+    btn.textContent = getBriefing() ? 'Refrescar briefing' : 'Generar briefing';
+  }
+}
+
+function shareBriefing(){
+  const briefing = getBriefing();
+  const text = briefing
+    ? briefing.headline+'\n\n'+briefing.summary+'\n\n- '+(briefing.watch || []).join('\n- ')+'\n\nCONTEXTO por Stryv Studio'
+    : 'Estoy usando CONTEXTO para entender qué está pasando hoy y por qué afecta en Latam.\n\nhttps://stryvstudio.com';
+
+  if(navigator.share){
+    navigator.share({title:'CONTEXTO',text,url:window.location.href}).catch(()=>{});
+    return;
+  }
+
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = $('#briefingShareBtn');
+    btn.textContent = 'Copiado';
+    setTimeout(()=>{btn.textContent='Compartir'},1400);
+  }).catch(()=>{});
 }
 
 /* ═══════════════════════════════════════ */
@@ -385,9 +582,10 @@ function renderSecNav(){
   nav.innerHTML = SECTIONS.map(s=>{
     const active = s===activeSection?' active':'';
     const icon = SECTION_ICONS[s]||'';
-    const label = s==='all'?'Todo':s;
-    const count = s==='all'?articles.length:articles.filter(a=>a.section===s).length;
-    if(s!=='all' && count===0) return '';
+    const label = s==='all'?'Todo':(s==='saved'?'Guardadas':s);
+    const count = s==='all'?articles.length:(s==='saved'?getSavedArticles().length:articles.filter(a=>a.section===s).length);
+    if(s!=='all' && s!=='saved' && count===0) return '';
+    if(s==='saved' && count===0) return '';
     return '<div class="sec-tab'+active+'" data-section="'+s+'">'+
       icon+' '+label+
       '<span class="sec-tab-count">'+count+'</span></div>';
@@ -399,10 +597,16 @@ function renderSecNav(){
 /* ═══════════════════════════════════════ */
 function renderFeeds(){
   const container=$('#feedContainer');
-  const filtered = activeSection==='all'?articles:articles.filter(a=>a.section===activeSection);
+  const filtered = activeSection==='all'
+    ? articles
+    : activeSection==='saved'
+      ? getSavedArticles()
+      : articles.filter(a=>a.section===activeSection);
 
   if(filtered.length===0){
-    container.innerHTML='<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">Sin noticias aún</div><div class="empty-desc">Estamos buscando las noticias más relevantes. Intenta actualizar.</div></div>';
+    container.innerHTML = activeSection==='saved'
+      ? '<div class="empty-state"><div class="empty-icon">★</div><div class="empty-title">No has guardado nada todavía</div><div class="empty-desc">Guarda titulares que quieras revisar luego o compartir con tu audiencia.</div><a class="empty-action" href="#" data-nav="all">Explorar noticias</a></div>'
+      : '<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">Sin noticias aún</div><div class="empty-desc">Estamos buscando las noticias más relevantes. Intenta actualizar.</div></div>';
     return;
   }
 
@@ -430,10 +634,12 @@ function renderFeeds(){
       }
     }
   } else {
-    html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[activeSection]||'')+' '+esc(activeSection)+'</div><div class="feed-count">'+filtered.length+' noticias</div></div>';
+    html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[activeSection]||'')+' '+esc(activeSection==='saved'?'Guardadas':activeSection)+'</div><div class="feed-count">'+filtered.length+' noticias</div></div>';
     html+=renderCards(filtered);
-    const cta = CTAS[activeSection] || CTAS.Dinero;
-    html+=renderCTA(cta);
+    if(activeSection!=='saved'){
+      const cta = CTAS[activeSection] || CTAS.Dinero;
+      html+=renderCTA(cta);
+    }
   }
 
   container.innerHTML=html;
@@ -443,11 +649,15 @@ function renderCards(arts){
   return arts.map((a,i)=>{
     const id = hashId(a.title);
     const tagClass = SECTION_TAGS[a.section]||'tag-dinero';
+    const saved = savedIds.includes(id) ? ' active' : '';
     return '<div class="news-card" data-id="'+id+'">'+
-      '<div class="news-card-top">'+
-        '<span class="news-card-source">'+esc(a.source||a.section)+'</span>'+
-        '<span class="news-card-dot"></span>'+
-        '<span class="news-card-time">'+timeAgo(a.date)+'</span>'+
+      '<div class="news-card-topline">'+
+        '<div class="news-card-top">'+
+          '<span class="news-card-source">'+esc(a.source||a.section)+'</span>'+
+          '<span class="news-card-dot"></span>'+
+          '<span class="news-card-time">'+timeAgo(a.date)+'</span>'+
+        '</div>'+
+        '<button class="news-card-save'+saved+'" data-save-id="'+id+'" aria-label="Guardar noticia">★</button>'+
       '</div>'+
       '<div class="news-card-title">'+esc(a.title)+'</div>'+
       '<span class="news-card-tag '+tagClass+'">'+esc(a.section)+'</span>'+
@@ -502,6 +712,8 @@ function toggleAnalysis(id){
     // Find article
     const article = articles.find(a=>hashId(a.title)===id);
     if(!article) return;
+
+    incrementAnalyses();
 
     if(analysisCache[id]){
       renderAnalysis(id, analysisCache[id], article);
@@ -615,11 +827,24 @@ function switchSection(sec){
   activeSection=sec;
   renderSecNav();
   renderFeeds();
+  renderHeroMetrics();
   $$('.nav-item').forEach(n=>n.classList.remove('active'));
   const navMatch = document.querySelector('.nav-item[data-nav="'+sec+'"]');
   if(navMatch) navMatch.classList.add('active');
   else $$('.nav-item')[0]?.classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleSaved(id){
+  if(savedIds.includes(id)){
+    savedIds = savedIds.filter(item=>item!==id);
+  } else {
+    savedIds = [id].concat(savedIds);
+  }
+  store.set('savedIds', savedIds);
+  renderSecNav();
+  renderFeeds();
+  renderHeroMetrics();
 }
 
 /* ═══════════════════════════════════════ */
@@ -645,6 +870,9 @@ function shareAnalysis(id){
 /*  EVENTS                                */
 /* ═══════════════════════════════════════ */
 document.addEventListener('click',e=>{
+  const saveBtn=e.target.closest('[data-save-id]');
+  if(saveBtn){toggleSaved(saveBtn.dataset.saveId);return}
+
   const tab=e.target.closest('[data-section]');
   if(tab){switchSection(tab.dataset.section);return}
 
@@ -663,6 +891,8 @@ document.addEventListener('click',e=>{
   if(e.target.closest('#searchBtn')){openSearch();return}
   if(e.target.closest('#searchClose')){closeSearch();return}
   if(e.target.closest('#themeBtn')){toggleTheme();return}
+  if(e.target.closest('#briefingBtn')){generateBriefing(true);return}
+  if(e.target.closest('#briefingShareBtn')){shareBriefing();return}
 
   const searchR=e.target.closest('.search-result');
   if(searchR){
@@ -690,10 +920,14 @@ async function refreshAll(){
   // Clear analysis cache on refresh
   analysisCache={};
   store.set('analysisCache',{});
+  delete briefingCache[todayKey()];
+  store.set('briefingCache', briefingCache);
 
   await fetchNews();
   renderSecNav();
   renderFeeds();
+  renderHeroMetrics();
+  renderBriefing();
   updateRefreshTime();
 
   btn.disabled=false;
@@ -701,10 +935,7 @@ async function refreshAll(){
 }
 
 function updateRefreshTime(){
-  const now=new Date();
-  const h=now.getHours().toString().padStart(2,'0');
-  const m=now.getMinutes().toString().padStart(2,'0');
-  $('#refreshTime').textContent='Actualizado a las '+h+':'+m;
+  $('#refreshTime').textContent='Actualizado a las '+formatLocalTime(fetchedAt || new Date().toISOString());
 }
 
 /* ═══════════════════════════════════════ */
@@ -725,6 +956,7 @@ document.addEventListener('touchend',e=>{
 /*  LOADER & INIT                         */
 /* ═══════════════════════════════════════ */
 async function init(){
+  updateUsageVisit();
   applyTheme();
   $('#dateMain').textContent = todayFormatted();
 
@@ -744,16 +976,21 @@ async function init(){
 
   renderSecNav();
   renderFeeds();
+  renderHeroMetrics();
+  renderBriefing();
   updateRefreshTime();
   $('#refreshBtn').disabled=false;
 
   setTimeout(()=>$('#loader').classList.add('hidden'),600);
+  if(articles.length && !getBriefing()) setTimeout(()=>generateBriefing(false),900);
 
   // Auto-refresh every 15 min
   setInterval(async()=>{
     await fetchNews();
     renderSecNav();
     renderFeeds();
+    renderHeroMetrics();
+    renderBriefing();
     updateRefreshTime();
   }, 900000);
 }
