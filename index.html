@@ -32,40 +32,40 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
 /*  CSS VARIABLES — LIGHT                     */
 /* ═══════════════════════════════════════════ */
 :root,[data-theme="light"]{
-  --bg:#ffffff;--surface:#ffffff;--surface-alt:#f7f8fa;--surface-hover:#f0f2f5;
-  --border:#e4e7eb;--border-light:#f0f2f5;
-  --text:#0f1419;--text-2:#536471;--text-3:#8899a6;
-  --accent:#1d9bf0;--accent-soft:rgba(29,155,240,.08);
-  --success:#00ba7c;--success-soft:rgba(0,186,124,.1);
+  --bg:#EAF0EE;--surface:#ffffff;--surface-alt:#f2f5f4;--surface-hover:#e8edeb;
+  --border:#d4dbd8;--border-light:#e8edeb;
+  --text:#0D1117;--text-2:#3d4a53;--text-3:#6b7c87;
+  --accent:#4ECDC4;--accent-soft:rgba(78,205,196,.1);
+  --success:#4ECDC4;--success-soft:rgba(78,205,196,.1);
   --warning:#f4a100;--warning-soft:rgba(244,161,0,.1);
   --danger:#f4212e;--danger-soft:rgba(244,33,46,.08);
   --gold:#f4a100;--gold-soft:rgba(244,161,0,.1);
-  --cta-bg:#0f1419;--cta-text:#ffffff;--cta-btn-bg:#ffffff;--cta-btn-text:#0f1419;
-  --card-shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
-  --card-shadow-hover:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
-  --overlay:rgba(0,0,0,.5);--blur-bg:rgba(255,255,255,.88);
-  --progress-bg:#e4e7eb;--progress-fill:#0f1419;
-  --skeleton-from:#f0f2f5;--skeleton-mid:#e4e7eb;--skeleton-to:#f0f2f5;
+  --cta-bg:#0D1117;--cta-text:#EAF0EE;--cta-btn-bg:#4ECDC4;--cta-btn-text:#0D1117;
+  --card-shadow:0 1px 3px rgba(13,17,23,.06),0 1px 2px rgba(13,17,23,.04);
+  --card-shadow-hover:0 4px 12px rgba(13,17,23,.1),0 2px 4px rgba(13,17,23,.04);
+  --overlay:rgba(13,17,23,.5);--blur-bg:rgba(234,240,238,.88);
+  --progress-bg:#d4dbd8;--progress-fill:#0D1117;
+  --skeleton-from:#e8edeb;--skeleton-mid:#d4dbd8;--skeleton-to:#e8edeb;
 }
 
 /* ═══════════════════════════════════════════ */
 /*  CSS VARIABLES — DARK                      */
 /* ═══════════════════════════════════════════ */
 [data-theme="dark"]{
-  --bg:#000000;--surface:#16181c;--surface-alt:#1d1f23;--surface-hover:#2c2e33;
-  --border:#2f3336;--border-light:#2f3336;
-  --text:#e7e9ea;--text-2:#8b949e;--text-3:#6e7681;
-  --accent:#1d9bf0;--accent-soft:rgba(29,155,240,.15);
-  --success:#00ba7c;--success-soft:rgba(0,186,124,.15);
+  --bg:#0D1117;--surface:#161b22;--surface-alt:#1c2128;--surface-hover:#272d35;
+  --border:#30363d;--border-light:#30363d;
+  --text:#EAF0EE;--text-2:#8b949e;--text-3:#6e7681;
+  --accent:#4ECDC4;--accent-soft:rgba(78,205,196,.15);
+  --success:#4ECDC4;--success-soft:rgba(78,205,196,.15);
   --warning:#f4a100;--warning-soft:rgba(244,161,0,.15);
   --danger:#f4212e;--danger-soft:rgba(244,33,46,.15);
   --gold:#f4a100;--gold-soft:rgba(244,161,0,.15);
-  --cta-bg:#1d9bf0;--cta-text:#ffffff;--cta-btn-bg:#ffffff;--cta-btn-text:#0f1419;
+  --cta-bg:#4ECDC4;--cta-text:#0D1117;--cta-btn-bg:#0D1117;--cta-btn-text:#EAF0EE;
   --card-shadow:0 1px 3px rgba(0,0,0,.3);
   --card-shadow-hover:0 4px 16px rgba(0,0,0,.4);
-  --overlay:rgba(0,0,0,.7);--blur-bg:rgba(0,0,0,.85);
-  --progress-bg:#2f3336;--progress-fill:#e7e9ea;
-  --skeleton-from:#1d1f23;--skeleton-mid:#2c2e33;--skeleton-to:#1d1f23;
+  --overlay:rgba(0,0,0,.7);--blur-bg:rgba(13,17,23,.88);
+  --progress-bg:#30363d;--progress-fill:#EAF0EE;
+  --skeleton-from:#1c2128;--skeleton-mid:#272d35;--skeleton-to:#1c2128;
 }
 
 body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px solid var(--border);border-right:1px solid var(--border)}
@@ -309,7 +309,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 /*  RESPONSIVE                                */
 /* ═══════════════════════════════════════════ */
 @media(min-width:600px){body{box-shadow:0 0 0 1px var(--border)}}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--surface:#16181c;--surface-alt:#1d1f23;--surface-hover:#2c2e33;--border:#2f3336;--border-light:#2f3336;--text:#e7e9ea;--text-2:#8b949e;--text-3:#6e7681}}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D1117;--surface:#161b22;--surface-alt:#1c2128;--surface-hover:#272d35;--border:#30363d;--border-light:#30363d;--text:#EAF0EE;--text-2:#8b949e;--text-3:#6e7681}}
 </style>
 </head>
 <body>
