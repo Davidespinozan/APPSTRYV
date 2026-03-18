@@ -260,6 +260,12 @@ body.view-insights .refresh-bar{display:none}
 
 .signal-card-meaning{padding:10px 12px;background:var(--accent-soft);border-radius:10px;border-left:3px solid var(--accent);font-size:13px;line-height:1.55;color:var(--text);margin-bottom:10px}
 
+/* ═══ ARTICLE IMAGES ═══ */
+.signal-card-img{width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:12px;background:var(--surface-2)}
+.news-card-img{width:72px;height:72px;object-fit:cover;border-radius:10px;flex-shrink:0;background:var(--surface-2)}
+.news-card-body{display:flex;gap:12px}
+.news-card-text{flex:1;min-width:0}
+
 /* ═══ INSTALL BANNER ═══ */
 .install-banner{display:none;padding:12px 16px;border-bottom:1px solid var(--border-light);background:var(--surface)}
 .install-banner.show{display:block}
@@ -940,6 +946,7 @@ function renderTopSignals(){
         + (cached.meaning ? '<div class="signal-card-meaning">'+esc(cached.meaning)+'</div>' : '')
       : '<div class="signal-card-context loading">'+t('signalLoading')+'</div>';
     return '<div class="signal-card" data-signal-id="'+id+'">'+
+      (a.image ? '<img class="signal-card-img" src="'+esc(a.image)+'" alt="" loading="lazy" onerror="this.style.display=\'none\'">' : '')+
       '<div class="signal-rank">'+rank+'</div>'+
       '<div class="signal-card-section '+tagClass+'">'+(SECTION_ICONS[a.section]||'')+' '+esc(getSectionLabel(a.section))+'</div>'+
       '<div class="signal-card-title">'+esc(displayTitle)+'</div>'+
@@ -1235,8 +1242,13 @@ function renderCards(arts){
         '</div>'+
         '<button class="news-card-save'+saved+'" data-save-id="'+id+'" aria-label="'+t('saveArticle')+'">★</button>'+
       '</div>'+
-      '<div class="news-card-title">'+esc(displayTitle)+'</div>'+
-      '<span class="news-card-tag '+tagClass+'">'+esc(getSectionLabel(a.section))+'</span>'+
+      '<div class="news-card-body">'+
+        '<div class="news-card-text">'+
+          '<div class="news-card-title">'+esc(displayTitle)+'</div>'+
+          '<span class="news-card-tag '+tagClass+'">'+esc(getSectionLabel(a.section))+'</span>'+
+        '</div>'+
+        (a.image ? '<img class="news-card-img" src="'+esc(a.image)+'" alt="" loading="lazy" onerror="this.style.display=\'none\'">' : '')+
+      '</div>'+
       '<span class="news-card-arrow">›</span>'+
     '</div>'+
     '<div class="analysis" id="analysis-'+id+'">'+

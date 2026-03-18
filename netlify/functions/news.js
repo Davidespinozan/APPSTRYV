@@ -137,6 +137,29 @@ exports.handler = async function(event) {
     return score;
   };
 
+  // Extract image URL from RSS item XML
+  const extractImage = (itemXml) => {
+    // media:content url="..."
+    const mediaContent = itemXml.match(/<media:content[^>]+url=["']([^"']+)["']/i);
+    if (mediaContent) return mediaContent[1];
+    // media:thumbnail url="..."
+    const mediaThumbnail = itemXml.match(/<media:thumbnail[^>]+url=["']([^"']+)["']/i);
+    if (mediaThumbnail) return mediaThumbnail[1];
+    // enclosure url="..." (image types)
+    const enclosure = itemXml.match(/<enclosure[^>]+url=["']([^"']+)["'][^>]*type=["']image/i);
+    if (enclosure) return enclosure[1];
+    // enclosure url (no type check, common in RSS)
+    const enclosureAny = itemXml.match(/<enclosure[^>]+url=["']([^"']+\.(?:jpg|jpeg|png|webp))["']/i);
+    if (enclosureAny) return enclosureAny[1];
+    // <image><url> inside item
+    const imageUrl = itemXml.match(/<image>\s*<url>([^<]+)<\/url>/i);
+    if (imageUrl) return imageUrl[1];
+    // og:image or img src inside description/content:encoded
+    const imgSrc = itemXml.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if (imgSrc) return imgSrc[1];
+    return '';
+  };
+
   // Parse Google News RSS
   const parseGoogleFeed = (xml, section) => {
     const items = [];
@@ -158,6 +181,7 @@ exports.handler = async function(event) {
       const title = rawTitle.replace(/\s*-\s*[^-]+$/, '').trim();
       const source = sourceMatch ? sourceMatch[1].trim() : '';
       const date = dateMatch ? dateMatch[1] : '';
+      const image = extractImage(itemXml);
 
       if (!title || title.length <= 20) continue;
 
@@ -165,6 +189,7 @@ exports.handler = async function(event) {
         title,
         source,
         date,
+        image,
         section: section.label,
         icon: section.icon,
         score: scoreArticle(title, source, date, section.label)
@@ -192,6 +217,7 @@ exports.handler = async function(event) {
 
       const title = (titleMatch[1] || titleMatch[2] || '').trim();
       const date = dateMatch ? (dateMatch[1] || dateMatch[2] || dateMatch[3]) : '';
+      const image = extractImage(itemXml);
 
       if (!title || title.length <= 15) continue;
 
@@ -199,6 +225,7 @@ exports.handler = async function(event) {
         title,
         source: '',
         date,
+        image,
         section: sectionLabel,
         icon: sectionIcon,
         score: scoreArticle(title, '', date, sectionLabel)
