@@ -1,4 +1,4 @@
-const CACHE_NAME = 'contexto-shell-v1';
+const CACHE_NAME = 'contexto-shell-v2';
 const APP_SHELL = [
   '/',
   '/index.html',
@@ -28,6 +28,10 @@ self.addEventListener('fetch', event => {
 
   const url = new URL(event.request.url);
 
+  if (url.pathname.startsWith('/.netlify/functions/')) {
+    return;
+  }
+
   if (url.origin === self.location.origin) {
     event.respondWith(
       caches.match(event.request).then(cached => {
@@ -40,7 +44,13 @@ self.addEventListener('fetch', event => {
           const copy = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
           return response;
-        }).catch(() => caches.match('/index.html'));
+        }).catch(() => {
+          if (event.request.mode === 'navigate') {
+            return caches.match('/index.html');
+          }
+
+          return new Response('', { status: 504, statusText: 'Offline' });
+        });
       })
     );
   }

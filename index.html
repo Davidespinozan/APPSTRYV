@@ -375,6 +375,7 @@ let usage = store.get('usage', { lastVisit:'', streak:0, analysesToday:0, analys
 let fetchedAt = '';
 let theme = store.get('theme', 'dark');
 let deferredInstallPrompt = null;
+let lastNewsError = '';
 
 /* ═══════════════════════════════════════ */
 /*  HELPERS                               */
@@ -494,14 +495,21 @@ function toggleTheme(){
 /* ═══════════════════════════════════════ */
 async function fetchNews(){
   try{
-    const res = await fetch('/.netlify/functions/news');
-    if(!res.ok) throw new Error('fetch failed');
+    const res = await fetch('/.netlify/functions/news', { cache:'no-store' });
+    if(!res.ok) throw new Error('No respondió la función de noticias');
+    const contentType = res.headers.get('content-type') || '';
+    if(!contentType.includes('application/json')) throw new Error('La función de noticias no devolvió JSON');
     const data = await res.json();
+    if(!Array.isArray(data.articles)) throw new Error('La respuesta de noticias vino incompleta');
     articles = data.articles || [];
     newsSummary = data.summary || '';
     fetchedAt = data.fetchedAt || '';
+    lastNewsError = '';
     return data;
   }catch(e){
+    articles = [];
+    newsSummary = '';
+    lastNewsError = e.message || 'No se pudieron cargar las noticias';
     return {articles:[],sections:{},summary:'',count:0};
   }
 }
@@ -585,7 +593,11 @@ async function generateBriefing(force){
     store.set('briefingCache', briefingCache);
     renderBriefing();
   }catch(e){
+    const msg = /API key/i.test(String(e && e.message))
+      ? 'La API de Claude no está configurada en Netlify.'
+      : 'No se pudo generar el briefing ahora.';
     status.textContent = 'No se pudo generar';
+    $('#briefingCopy').textContent = msg;
   }finally{
     btn.disabled = false;
     btn.textContent = getBriefing() ? 'Refrescar briefing' : 'Generar briefing';
@@ -621,7 +633,7 @@ async function callClaude(prompt, maxTokens){
   });
   if(!res.ok) throw new Error('API error');
   const json = await res.json();
-  if(json.error) throw new Error(json.error.message||'API error');
+  if(json.error) throw new Error(typeof json.error === 'string' ? json.error : (json.error.message||'API error'));
   return json.content[0].text;
 }
 
@@ -657,7 +669,7 @@ function renderFeeds(){
   if(filtered.length===0){
     container.innerHTML = activeSection==='saved'
       ? '<div class="empty-state"><div class="empty-icon">★</div><div class="empty-title">No has guardado nada todavía</div><div class="empty-desc">Guarda titulares que quieras revisar luego o compartir con tu audiencia.</div><a class="empty-action" href="#" data-nav="all">Explorar noticias</a></div>'
-      : '<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">Sin noticias aún</div><div class="empty-desc">Estamos buscando las noticias más relevantes. Intenta actualizar.</div></div>';
+      : '<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">No cargaron las noticias</div><div class="empty-desc">'+esc(lastNewsError || 'La conexión con la función de noticias falló. Intenta actualizar.')+'</div><a class="empty-action" href="#" id="retryFromEmpty">Reintentar</a></div>';
     return;
   }
 
@@ -803,8 +815,11 @@ async function generateAnalysis(id, article){
     store.set('analysisCache', analysisCache);
     renderAnalysis(id, data, article);
   }catch(e){
+    const msg = /API key/i.test(String(e && e.message))
+      ? '⚠️ Falta configurar CLAUDE_API_KEY en Netlify.'
+      : '⚠️ No se pudo generar el análisis.';
     body.innerHTML='<div style="padding:16px;text-align:center;color:var(--text-3);font-size:13px">'+
-      '⚠️ No se pudo generar el análisis.<br>'+
+      msg+'<br>'+
       '<button onclick="retryAnalysis(\''+id+'\')" style="margin-top:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Reintentar</button></div>';
   }
 }
@@ -946,6 +961,7 @@ document.addEventListener('click',e=>{
   if(e.target.closest('#briefingShareBtn')){shareBriefing();return}
   if(e.target.closest('#installBtn')){installApp();return}
   if(e.target.closest('#installDismiss')){hideInstallBanner(true);return}
+  if(e.target.closest('#retryFromEmpty')){refreshAll();return}
 
   const searchR=e.target.closest('.search-result');
   if(searchR){
@@ -999,7 +1015,9 @@ async function refreshAll(){
 }
 
 function updateRefreshTime(){
-  $('#refreshTime').textContent='Actualizado a las '+formatLocalTime(fetchedAt || new Date().toISOString());
+  $('#refreshTime').textContent = lastNewsError
+    ? 'Error de conexión con noticias'
+    : 'Actualizado a las '+formatLocalTime(fetchedAt || new Date().toISOString());
 }
 
 /* ═══════════════════════════════════════ */
