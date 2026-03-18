@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>CONTEXTO — Stryv</title>
-<meta name="description" content="Inteligencia en tiempo real. Las noticias que importan, analizadas con IA. Por qué te afectan. Qué hacer. Gratis.">
+<meta name="description" content="No necesitas más noticias. Necesitas contexto. Entiende los cambios que están reconfigurando el mundo antes de que te pasen por encima.">
 <meta name="theme-color" content="#0D1117">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Contexto">
 <link rel="manifest" href="/manifest.json">
-<meta property="og:title" content="CONTEXTO — Inteligencia en tiempo real">
-<meta property="og:description" content="Las noticias que importan, analizadas con IA. Por qué te afectan. Qué hacer.">
+<meta property="og:title" content="CONTEXTO — Entiende el cambio antes que te golpee">
+<meta property="og:description" content="Guerras, poder, IA, dinero, Bitcoin, China. No es escuchar titulares. Es entender lo que te puede dejar atrás.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CONTEXTO — Stryv">
@@ -246,7 +246,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 <!-- LOADER -->
 <div class="loader" id="loader">
   <div class="loader-brand">CONTEXTO</div>
-  <div class="loader-sub">Inteligencia en tiempo real</div>
+  <div class="loader-sub">Radar para tiempos de cambio</div>
   <div class="loader-pulse"></div>
   <div class="loader-status" id="loaderStatus">Conectando fuentes...</div>
 </div>
@@ -262,7 +262,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 <!-- SEARCH -->
 <div class="search-overlay" id="searchOverlay">
   <div class="search-bar">
-    <input class="search-input" id="searchInput" type="text" placeholder="Buscar noticias..." autocomplete="off">
+    <input class="search-input" id="searchInput" type="text" placeholder="Buscar señales, conflictos o cambios..." autocomplete="off">
     <button class="search-cancel" id="searchClose">Cancelar</button>
   </div>
   <div class="search-results" id="searchResults">
@@ -273,20 +273,20 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 <!-- DATE HEADER -->
 <div class="date-header">
   <div class="date-main" id="dateMain"></div>
-  <div class="date-tagline">Lo que está pasando hoy y por qué te afecta.</div>
+  <div class="date-tagline">Lo que está cambiando el mundo y por qué te deja expuesto si no lo entiendes.</div>
 </div>
 
 <div class="hero-shell">
-  <div class="hero-kicker">Terminal editorial</div>
-  <div class="hero-title">No es un resumen. Es la lectura estratégica de lo que cambió hoy.</div>
+  <div class="hero-kicker">Terminal de claridad</div>
+  <div class="hero-title">La mayoría escucha titulares. CONTEXTO te explica el cambio de raíz.</div>
   <div class="hero-metrics" id="heroMetrics"></div>
   <div class="briefing-card" id="briefingCard">
     <div class="briefing-top">
-      <div class="briefing-label">Briefing diario</div>
+      <div class="briefing-label">Radar del día</div>
       <div class="briefing-status" id="briefingStatus">Preparando...</div>
     </div>
     <div class="briefing-title" id="briefingTitle">Tu lectura estratégica del día.</div>
-    <div class="briefing-copy" id="briefingCopy">Cargamos titulares reales y armamos una lectura clara de qué vigilar hoy para que no consumas noticias a ciegas.</div>
+    <div class="briefing-copy" id="briefingCopy">Aquí no vienes a consumir noticias. Vienes a entender los cambios que pueden dejarte atrás si llegas tarde.</div>
     <div class="briefing-list" id="briefingList"></div>
     <div class="briefing-actions">
       <button class="briefing-btn briefing-btn-primary" id="briefingBtn">Generar briefing</button>
@@ -297,7 +297,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 
 <!-- REFRESH BAR -->
 <div class="refresh-bar">
-  <div class="refresh-time" id="refreshTime">Cargando noticias...</div>
+  <div class="refresh-time" id="refreshTime">Cargando radar global...</div>
   <button class="refresh-btn" id="refreshBtn" disabled>Actualizar</button>
 </div>
 
@@ -540,12 +540,12 @@ function renderBriefing(){
     status.textContent = articles.length ? 'Listo para generar' : 'Esperando titulares';
     title.textContent = 'Tu lectura estratégica del día.';
     copy.textContent = articles.length
-      ? 'Genera un briefing para condensar lo importante del día y detectar qué deberías vigilar antes que la mayoría.'
-      : 'Aún no hay suficientes titulares cargados para construir una lectura sólida del día.';
+      ? 'Genera una lectura para detectar qué está reconfigurando el tablero antes de que la mayoría lo note.'
+      : 'Aún no hay suficientes señales cargadas para construir una lectura sólida del día.';
     list.innerHTML = [
-      'Los temas que concentran más atención.',
-      'Qué cambio de narrativa se está acelerando.',
-      'Qué conviene vigilar si operas en Latam.'
+      'Qué conflicto o cambio está moviendo poder real.',
+      'Qué narrativa del status quo ya no se sostiene.',
+      'Qué conviene vigilar si operas o vives en Latam.'
     ].map((item,index)=>'<div class="briefing-item"><div class="briefing-item-mark">0'+(index+1)+'</div><div class="briefing-item-text">'+esc(item)+'</div></div>').join('');
     btn.textContent = 'Generar briefing';
     return;
@@ -576,7 +576,7 @@ async function generateBriefing(force){
 
   try{
     const text = await callClaude(
-      'Fecha: '+todayFormatted()+'. Eres el editor jefe de CONTEXTO. A partir de este paquete de noticias reales del día, crea un briefing corto, contundente y útil para un lector latinoamericano.\n\n'+
+      'Fecha: '+todayFormatted()+'. Eres el editor jefe de CONTEXTO. No resumes noticias: explicas cambios de poder, tecnología, dinero y narrativa que pueden dejar atrás a quien no los entienda. A partir de este paquete de señales reales del día, crea un briefing corto, contundente y útil para un lector latinoamericano.\n\n'+
       'NOTICIAS REALES DE HOY:\n'+articles.slice(0, 10).map(item => '['+item.section+'] '+item.title).join('\n')+'\n\n'+
       'Responde SOLO con JSON válido sin markdown con esta estructura exacta: '+
       '{"headline":"1 frase fuerte que describa la jugada del día","summary":"1 párrafo corto y directo explicando la tensión principal del día","watch":["Señal concreta a vigilar 1","Señal concreta a vigilar 2","Señal concreta a vigilar 3"]}',
@@ -683,8 +683,8 @@ function renderFeeds(){
 
   if(filtered.length===0){
     container.innerHTML = activeSection==='saved'
-      ? '<div class="empty-state"><div class="empty-icon">★</div><div class="empty-title">No has guardado nada todavía</div><div class="empty-desc">Guarda titulares que quieras revisar luego o compartir con tu audiencia.</div><a class="empty-action" href="#" data-nav="all">Explorar noticias</a></div>'
-      : '<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">No cargaron las noticias</div><div class="empty-desc">'+esc(lastNewsError || 'La conexión con la función de noticias falló. Intenta actualizar.')+'</div><a class="empty-action" href="#" id="retryFromEmpty">Reintentar</a></div>';
+      ? '<div class="empty-state"><div class="empty-icon">★</div><div class="empty-title">No has guardado nada todavía</div><div class="empty-desc">Guarda señales que quieras revisar con calma o compartir con tu audiencia.</div><a class="empty-action" href="#" data-nav="all">Explorar radar</a></div>'
+      : '<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">No cargó el radar</div><div class="empty-desc">'+esc(lastNewsError || 'La conexión con la función de noticias falló. Intenta actualizar.')+'</div><a class="empty-action" href="#" id="retryFromEmpty">Reintentar</a></div>';
     return;
   }
 
@@ -700,7 +700,7 @@ function renderFeeds(){
 
     for(const sec of Object.keys(grouped)){
       const arts = grouped[sec];
-      html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[sec]||'')+' '+esc(sec)+'</div><div class="feed-count">'+arts.length+' noticias</div></div>';
+      html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[sec]||'')+' '+esc(sec)+'</div><div class="feed-count">'+arts.length+' señales</div></div>';
       html+=renderCards(arts);
       // CTA after every 2nd section
       const secKeys = Object.keys(grouped);
@@ -712,7 +712,7 @@ function renderFeeds(){
       }
     }
   } else {
-    html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[activeSection]||'')+' '+esc(activeSection==='saved'?'Guardadas':activeSection)+'</div><div class="feed-count">'+filtered.length+' noticias</div></div>';
+    html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[activeSection]||'')+' '+esc(activeSection==='saved'?'Guardadas':activeSection)+'</div><div class="feed-count">'+filtered.length+' señales</div></div>';
     html+=renderCards(filtered);
     if(activeSection!=='saved'){
       const cta = CTAS[activeSection] || CTAS.Dinero;
@@ -743,7 +743,7 @@ function renderCards(arts){
     '</div>'+
     '<div class="analysis" id="analysis-'+id+'">'+
       '<div class="analysis-bar">'+
-        '<span class="analysis-badge"><span class="analysis-badge-dot"></span>Análisis IA en tiempo real</span>'+
+        '<span class="analysis-badge"><span class="analysis-badge-dot"></span>Lectura estratégica</span>'+
         '<button class="analysis-close" data-close-analysis="'+id+'">✕</button>'+
       '</div>'+
       '<div class="analysis-body" id="abody-'+id+'">'+
@@ -813,7 +813,7 @@ async function generateAnalysis(id, article){
 
   try{
     const text = await callClaude(
-      'Fecha: '+dateStr+'. Eres un analista de inteligencia global para la plataforma CONTEXTO de Stryv Studio. Tu trabajo es analizar noticias y explicar por qué le importan a un latinoamericano. Sé breve, afilado y concreto.\n\n'+
+      'Fecha: '+dateStr+'. Eres un analista de inteligencia global para la plataforma CONTEXTO de Stryv Studio. Tu trabajo no es repetir noticias: es revelar el cambio estructural detrás del titular y explicar por qué importa antes de que sea demasiado tarde. Sé breve, afilado y concreto.\n\n'+
       'CONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\n'+
       'NOTICIA A ANALIZAR: "'+article.title+'" — Fuente: '+article.source+' — Sección: '+article.section+'\n\n'+
       'Responde SOLO con JSON válido sin markdown. Mantén cada campo corto y útil.\n'+
@@ -891,7 +891,7 @@ function closeSearch(){$('#searchOverlay').classList.remove('open');$('#searchIn
 
 function renderSearchResults(q){
   const c=$('#searchResults');
-  if(!q.trim()){c.innerHTML='<div class="search-empty">Escribe para buscar en todas las noticias</div>';return}
+  if(!q.trim()){c.innerHTML='<div class="search-empty">Escribe para buscar en todas las señales</div>';return}
   const lower=q.toLowerCase();
   const results=articles.filter(a=>a.title.toLowerCase().includes(lower));
   if(!results.length){c.innerHTML='<div class="search-empty">Sin resultados para "'+esc(q)+'"</div>';return}
@@ -1011,7 +1011,7 @@ async function refreshAll(){
   const btn=$('#refreshBtn');
   btn.disabled=true;
   btn.textContent='Actualizando...';
-  $('#refreshTime').textContent='Buscando noticias...';
+  $('#refreshTime').textContent='Buscando señales clave...';
 
   // Clear analysis cache on refresh
   analysisCache={};
@@ -1032,7 +1032,7 @@ async function refreshAll(){
 
 function updateRefreshTime(){
   $('#refreshTime').textContent = lastNewsError
-    ? 'Error de conexión con noticias'
+    ? 'Error de conexión con el radar'
     : 'Actualizado a las '+formatLocalTime(fetchedAt || new Date().toISOString());
 }
 
@@ -1061,7 +1061,7 @@ async function init(){
 
   // Show loader statuses
   const statusEl=$('#loaderStatus');
-  const statuses=['Conectando fuentes...','Escaneando Google News...','Analizando titulares...','Preparando tu briefing...'];
+  const statuses=['Conectando fuentes...','Escaneando señales globales...','Priorizando lo relevante...','Preparando tu radar...'];
   let sIdx=0;
 
   const statusInterval=setInterval(()=>{
@@ -1071,7 +1071,7 @@ async function init(){
 
   await fetchNews();
   clearInterval(statusInterval);
-  statusEl.textContent=articles.length+' noticias encontradas';
+  statusEl.textContent=articles.length+' señales encontradas';
 
   renderSecNav();
   renderFeeds();
