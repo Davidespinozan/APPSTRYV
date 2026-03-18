@@ -1248,11 +1248,12 @@ async function generateAnalysis(id, article){
     renderAnalysis(id, data, article);
   }catch(e){
     console.error('generateAnalysis error:', e);
-    const msg = /API key/i.test(String(e && e.message))
+    const errDetail = e && e.message ? e.message : String(e);
+    const msg = /API key/i.test(errDetail)
       ? t('analysisApiError')
       : t('analysisError');
     body.innerHTML='<div style="padding:16px;text-align:center;color:var(--text-3);font-size:13px">'+
-      msg+'<br>'+
+      msg+'<br><span style="font-size:10px;opacity:.6;word-break:break-all">'+esc(errDetail)+'</span><br>'+
       '<button onclick="retryAnalysis(\''+id+'\')" style="margin-top:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">'+t('analysisRetry')+'</button></div>';
   }
 }
