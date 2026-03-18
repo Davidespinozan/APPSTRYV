@@ -275,6 +275,23 @@ body.view-insights .refresh-bar{display:none}
 .hero-stat-num{font-size:22px;font-weight:900;color:var(--accent);letter-spacing:-.5px;line-height:1}
 .hero-stat-label{font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
 
+/* ═══ SOURCE TRUST BAR ═══ */
+.trust-bar{padding:16px 16px 8px;text-align:center}
+.trust-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-3);margin-bottom:10px}
+.trust-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 12px}
+.trust-logos span{font-size:11px;font-weight:700;color:var(--text-3);opacity:.55;letter-spacing:.3px;white-space:nowrap}
+
+/* ═══ SECTION GRADIENT FALLBACKS ═══ */
+.img-fallback{display:flex;align-items:center;justify-content:center;font-size:32px;border-radius:12px}
+.img-fallback-sm{width:100%;height:180px}
+.img-fallback-th{width:72px;height:72px;border-radius:10px;flex-shrink:0;font-size:22px}
+.img-fb-dinero{background:linear-gradient(135deg,#1a472a 0%,#2d6a4f 100%)}
+.img-fb-poder{background:linear-gradient(135deg,#4a1942 0%,#6b2d5b 100%)}
+.img-fb-tecnologia{background:linear-gradient(135deg,#1a1a3e 0%,#2d2d6b 100%)}
+.img-fb-mercados{background:linear-gradient(135deg,#1a3a4a 0%,#2d5a6b 100%)}
+.img-fb-movilidad{background:linear-gradient(135deg,#3a2a1a 0%,#5a4a2d 100%)}
+.img-fb-latam{background:linear-gradient(135deg,#2a1a3a 0%,#4a2d5a 100%)}
+
 /* ═══ INSTALL BANNER ═══ */
 .install-banner{display:none;padding:12px 16px;border-bottom:1px solid var(--border-light);background:var(--surface)}
 .install-banner.show{display:block}
@@ -374,7 +391,15 @@ body.view-insights .refresh-bar{display:none}
   <div class="hero-stats" id="heroStats">
     <div class="hero-stat"><div class="hero-stat-num" id="statSources">0</div><div class="hero-stat-label">Fuentes</div></div>
     <div class="hero-stat"><div class="hero-stat-num" id="statAnalyzed">0</div><div class="hero-stat-label">Analizadas</div></div>
-    <div class="hero-stat"><div class="hero-stat-num" id="statTopics">0</div><div class="hero-stat-label">Temas</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="statContexts">0</div><div class="hero-stat-label">Contextos IA</div></div>
+  </div>
+  <div class="trust-bar">
+    <div class="trust-label">Fuentes que analizamos</div>
+    <div class="trust-logos">
+      <span>BBC</span><span>NYT</span><span>Reuters</span><span>Al Jazeera</span><span>Bloomberg</span>
+      <span>TechCrunch</span><span>Wired</span><span>The Verge</span><span>CoinDesk</span><span>Ars Technica</span>
+      <span>Washington Post</span><span>El País</span><span>France 24</span><span>Yahoo Finance</span>
+    </div>
   </div>
   <div class="top-signals" id="topSignals"></div>
   <div class="briefing-card" id="briefingCard">
@@ -918,12 +943,15 @@ async function fetchNews(){
 function renderHeroMetrics(){
   if(!articles.length) return;
   var sources = new Set();
-  var sections = new Set();
-  articles.forEach(function(a){ if(a.source) sources.add(a.source); sections.add(a.section); });
+  articles.forEach(function(a){ if(a.source) sources.add(a.source); });
   var el = function(id,val){ var e=document.getElementById(id); if(e) e.textContent=val; };
   el('statSources', sources.size);
   el('statAnalyzed', articles.length);
-  el('statTopics', sections.size);
+  // Contexts generated = signal analyses + article analyses + briefings
+  var ctx = Object.keys(topSignalCache).length + Object.keys(analysisCache).length + Object.keys(briefingCache).length;
+  var totalContexts = store.get('totalContexts', 0);
+  if(ctx > totalContexts){ totalContexts = ctx; store.set('totalContexts', totalContexts); }
+  el('statContexts', totalContexts);
 }
 
 /* ═══════════════════════════════════════ */
@@ -967,9 +995,8 @@ function renderTopSignals(){
       ? '<div class="signal-card-context">'+esc(cached.context)+'</div>'
         + (cached.meaning ? '<div class="signal-card-meaning">'+esc(cached.meaning)+'</div>' : '')
       : '<div class="signal-card-context loading">'+t('signalLoading')+'</div>';
-    var imgUrl = getArticleImageUrl(a,400,180);
     return '<div class="signal-card" data-signal-id="'+id+'">'+
-      (imgUrl ? '<img class="signal-card-img" src="'+esc(imgUrl)+'" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">' : '')+
+      renderImageOrFallback(a, 400, 180, 'signal-card-img', 'sm')+
       '<div class="signal-rank">'+rank+'</div>'+
       '<div class="signal-card-section '+tagClass+'">'+(SECTION_ICONS[a.section]||'')+' '+esc(getSectionLabel(a.section))+'</div>'+
       '<div class="signal-card-title">'+esc(displayTitle)+'</div>'+
@@ -1272,7 +1299,7 @@ function renderCards(arts){
           '<div class="news-card-title">'+esc(displayTitle)+'</div>'+
           '<span class="news-card-tag '+tagClass+'">'+esc(getSectionLabel(a.section))+'</span>'+
         '</div>'+
-        (function(){ var u=getArticleImageUrl(a,72,72); return u ? '<img class="news-card-img" src="'+esc(u)+'" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">' : ''; })()+
+        renderImageOrFallback(a, 72, 72, 'news-card-img', 'th')+
       '</div>'+
       '<span class="news-card-arrow">›</span>'+
     '</div>'+
@@ -1306,7 +1333,10 @@ function hashId(str){
   return 'n'+Math.abs(h);
 }
 
-/* ── Free stock image fallback (Picsum CDN, no API key, no copyright) ── */
+/* ── Free stock image fallback ── */
+var SECTION_FALLBACK_CLASS = {'Dinero':'img-fb-dinero','Poder':'img-fb-poder','Tecnología':'img-fb-tecnologia','Mercados':'img-fb-mercados','Movilidad':'img-fb-movilidad','Latam':'img-fb-latam'};
+var SECTION_FALLBACK_ICON = {'Dinero':'💰','Poder':'⚡','Tecnología':'🤖','Mercados':'📊','Movilidad':'🌍','Latam':'🌎'};
+
 function getArticleImageUrl(article, w, h){
   if(article.image) return article.image;
   // Check Unsplash cache (keyed by article hash id)
@@ -1319,8 +1349,21 @@ function getArticleImageUrl(article, w, h){
     var idx = Math.abs(id.replace('n','')|0) % pool.length;
     return w > 100 ? pool[idx].sm : pool[idx].th;
   }
-  // Fallback placeholder — section-colored gradient
   return '';
+}
+
+function getImageFallbackHtml(article, size){
+  var cls = SECTION_FALLBACK_CLASS[article.section] || 'img-fb-dinero';
+  var icon = SECTION_FALLBACK_ICON[article.section] || '📰';
+  var sizeClass = size === 'sm' ? 'img-fallback-sm' : 'img-fallback-th';
+  return '<div class="img-fallback '+sizeClass+' '+cls+'">'+icon+'</div>';
+}
+
+function renderImageOrFallback(article, w, h, cssClass, size){
+  var url = getArticleImageUrl(article, w, h);
+  if(url) return '<img class="'+cssClass+'" src="'+esc(url)+'" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling&&(this.nextElementSibling.style.display=\'flex\')">'+
+    '<div class="img-fallback '+(size==='sm'?'img-fallback-sm':'img-fallback-th')+' '+(SECTION_FALLBACK_CLASS[article.section]||'img-fb-dinero')+'" style="display:none">'+(SECTION_FALLBACK_ICON[article.section]||'📰')+'</div>';
+  return getImageFallbackHtml(article, size);
 }
 
 /* ── Section → Unsplash search keywords ── */
