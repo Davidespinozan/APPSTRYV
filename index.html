@@ -335,25 +335,25 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 <!-- DATE HEADER -->
 <div class="date-header">
   <div class="date-main" id="dateMain"></div>
-  <div class="date-tagline">Lo que está cambiando el mundo y por qué te deja expuesto si no lo entiendes.</div>
+  <div class="date-tagline">Las noticias importantes del día, explicadas de forma simple.</div>
 </div>
 
 <div class="hero-shell">
-  <div class="hero-kicker">Terminal de claridad</div>
-  <div class="hero-title">La mayoría escucha titulares. CONTEXTO te explica el cambio de raíz.</div>
-  <div class="hero-summary"><strong>Si no entiendes el cambio, reaccionas tarde.</strong> Esta app existe para mostrarte qué está reconfigurando el mundo antes de que te deje sin margen.</div>
+  <div class="hero-kicker">Entiende el día</div>
+  <div class="hero-title">Menos ruido. Más claridad sobre lo que importa hoy.</div>
+  <div class="hero-summary"><strong>CONTEXTO te ayuda a entender las noticias sin volverte experto.</strong> Te muestra qué pasó, por qué importa y qué vale la pena seguir.</div>
   <div class="hero-actions">
     <button class="hero-btn hero-btn-secondary" id="heroManifestoBtn">Ver manifiesto</button>
-    <button class="hero-btn hero-btn-primary" id="heroPowerBtn">Ir a lo más tenso</button>
+    <button class="hero-btn hero-btn-primary" id="heroPowerBtn">Ver noticias clave</button>
   </div>
   <div class="hero-metrics" id="heroMetrics"></div>
   <div class="briefing-card" id="briefingCard">
     <div class="briefing-top">
-      <div class="briefing-label">Radar del día</div>
+      <div class="briefing-label">Resumen del día</div>
       <div class="briefing-status" id="briefingStatus">Preparando...</div>
     </div>
-    <div class="briefing-title" id="briefingTitle">Tu lectura estratégica del día.</div>
-    <div class="briefing-copy" id="briefingCopy">Aquí no vienes a consumir noticias. Vienes a entender los cambios que pueden dejarte atrás si llegas tarde.</div>
+    <div class="briefing-title" id="briefingTitle">Lo importante de hoy, en claro.</div>
+    <div class="briefing-copy" id="briefingCopy">Un resumen simple para entender rápido qué está pasando y por qué importa.</div>
     <div class="briefing-list" id="briefingList"></div>
     <div class="briefing-actions">
       <button class="briefing-btn briefing-btn-primary" id="briefingBtn">Generar briefing</button>
@@ -427,20 +427,20 @@ const I18N = {
     loaderSub: 'Radar para tiempos de cambio',
     loaderStatuses: ['Conectando fuentes...','Escaneando señales globales...','Priorizando lo relevante...','Preparando tu radar...'],
     loaderDone: (n) => n+' señales encontradas',
-    tagline: 'Lo que está cambiando el mundo y por qué te deja expuesto si no lo entiendes.',
-    heroKicker: 'Terminal de claridad',
-    heroTitle: 'La mayoría escucha titulares. CONTEXTO te explica el cambio de raíz.',
-    heroSummary: '<strong>Si no entiendes el cambio, reaccionas tarde.</strong> Esta app existe para mostrarte qué está reconfigurando el mundo antes de que te deje sin margen.',
+    tagline: 'Las noticias importantes del día, explicadas de forma simple.',
+    heroKicker: 'Entiende el día',
+    heroTitle: 'Menos ruido. Más claridad sobre lo que importa hoy.',
+    heroSummary: '<strong>CONTEXTO te ayuda a entender las noticias sin volverte experto.</strong> Te muestra qué pasó, por qué importa y qué vale la pena seguir.',
     heroManifesto: 'Ver manifiesto',
-    heroPower: 'Ir a lo más tenso',
-    briefingLabel: 'Radar del día',
+    heroPower: 'Ver noticias clave',
+    briefingLabel: 'Resumen del día',
     briefingPreparing: 'Preparando...',
     briefingReady: 'Listo para generar',
     briefingWaiting: 'Esperando titulares',
-    briefingTitle: 'Tu lectura estratégica del día.',
-    briefingCopyReady: 'Genera una lectura para detectar qué está reconfigurando el tablero antes de que la mayoría lo note.',
-    briefingCopyWaiting: 'Aún no hay suficientes señales cargadas para construir una lectura sólida del día.',
-    briefingItems: ['Qué conflicto o cambio está moviendo poder real.','Qué narrativa del status quo ya no se sostiene.','Qué conviene vigilar si operas o vives en Latam.'],
+    briefingTitle: 'Lo importante de hoy, en claro.',
+    briefingCopyReady: 'Genera un resumen simple para entender rápido las noticias más importantes del día.',
+    briefingCopyWaiting: 'Aún no hay suficientes noticias cargadas para armar un resumen útil del día.',
+    briefingItems: ['Qué pasó realmente.','Por qué está dando de qué hablar.','Qué conviene seguir hoy.'],
     briefingGenerate: 'Generar briefing',
     briefingRefresh: 'Refrescar briefing',
     briefingGenerating: 'Generando...',
@@ -461,11 +461,11 @@ const I18N = {
     installDesc: 'Ábrelo como app y mantén tu briefing a un toque.',
     installBtn: 'Instalar',
     installDismiss: 'Ahora no',
-    topSignalsTitle: 'Lo que no puedes ignorar hoy',
+    topSignalsTitle: 'Lo más importante de hoy',
     topSignalsSub: (n)=>n+' señales clave',
-    signalLoading: 'Generando lectura estratégica...',
-    signalFailed: 'No se pudo generar la lectura.',
-    signalCta: 'Abrir lectura completa →',
+    signalLoading: 'Preparando resumen claro...',
+    signalFailed: 'No se pudo generar el resumen.',
+    signalCta: 'Abrir resumen →',
     navAll: 'Todo',
     navSaved: 'Guardadas',
     navTech: 'Tech',
@@ -489,12 +489,12 @@ const I18N = {
     feedEmptyTitle: 'No cargó el radar',
     feedEmptyDesc: 'La conexión con la función de noticias falló. Intenta actualizar.',
     feedRetry: 'Reintentar',
-    analysisBadge: 'Lectura estratégica',
-    analysisWhat: 'Qué está pasando realmente',
-    analysisWhy: 'Por qué te afecta',
-    analysisShift: 'Cambio de paradigma',
-    analysisAction: 'Qué hacer',
-    analysisShare: 'Compartir análisis ↗',
+    analysisBadge: 'Resumen claro',
+    analysisWhat: 'Qué pasó',
+    analysisWhy: 'Por qué importa',
+    analysisShift: 'Qué puede cambiar',
+    analysisAction: 'Qué conviene seguir',
+    analysisShare: 'Compartir resumen ↗',
     analysisCopied: '✓ Copiado',
     analysisApiError: '⚠️ Falta configurar CLAUDE_API_KEY en Netlify.',
     analysisError: '⚠️ No se pudo generar el análisis.',
@@ -502,16 +502,16 @@ const I18N = {
     metricSignals: 'señales hoy',
     metricSaved: 'guardadas',
     metricStreak: (n)=>n+' día'+(n===1?'':'s')+' de racha',
-    metricAnalyses: 'lecturas hoy',
+    metricAnalyses: 'resúmenes hoy',
     ctaTalk: 'Hablar con Stryv',
     onboardingSkip: 'Saltar',
     onboardingNext: 'Siguiente',
     onboardingEnter: 'Entrar',
     onboardingStep: (c,t)=>'Paso '+c+' de '+t,
     onboardingSteps: [
-      { title:'El mundo ya cambió.', copy:'Guerras, IA, Bitcoin, China, monedas, poder. <strong>La mayoría se entera tarde</strong> y reacciona cuando el costo ya llegó.', points:['No estás viendo eventos aislados. Estás viendo una reconfiguración del tablero.','La velocidad del cambio ya es mayor que la capacidad de la mayoría para entenderlo.']},
-      { title:'Escuchar un titular no es entenderlo.', copy:'La mayoría consume noticias como ruido. <strong>Muy pocos entienden el cambio de raíz</strong>, la jugada detrás o el riesgo de quedarse quietos.', points:['Si no entiendes el contexto, reaccionas tarde, proteges mal y decides peor.','La ignorancia no duele hasta que el mundo cambia y te deja sin margen.']},
-      { title:'CONTEXTO existe para cerrar esa brecha.', copy:'Aquí no vienes a consumir noticias. Vienes a entender <strong>qué está pasando, qué significa y por qué te afecta</strong> antes que la mayoría.', points:['Lee las señales más relevantes del día sin perderte en ruido superficial.','Abre cualquier señal y recibe una lectura estratégica, no un resumen genérico.']}
+      { title:'Entender las noticias no debería ser complicado.', copy:'Cada día salen demasiados titulares. CONTEXTO te ayuda a ubicar rápido <strong>qué importa y qué puedes ignorar</strong> sin perder tiempo.', points:['Menos ruido, más claridad.','No necesitas seguir diez medios al mismo tiempo.']},
+      { title:'Aquí no vienes a volverte experto.', copy:'Vienes a entender <strong>qué pasó, por qué importa y qué conviene seguir</strong> en un lenguaje claro y directo.', points:['Explicaciones simples, útiles y sin enredos.','Contexto suficiente para no quedarte solo con el titular.']},
+      { title:'Tu día empieza más claro.', copy:'Abre la app y encuentra <strong>las noticias importantes explicadas en sencillo</strong>, con un resumen rápido y opciones para profundizar si quieres.', points:['Lee lo importante en minutos.','Entra más a fondo solo cuando te interese.']}
     ],
     ctas: {
       Dinero:{title:'¿Tu negocio no tiene sistema financiero digital?',desc:'Construimos la infraestructura que hace que tu negocio opere aunque tú no estés.'},
@@ -528,20 +528,20 @@ const I18N = {
     loaderSub: 'Radar for changing times',
     loaderStatuses: ['Connecting sources...','Scanning global signals...','Prioritizing what matters...','Preparing your radar...'],
     loaderDone: (n) => n+' signals found',
-    tagline: 'What\'s reshaping the world — and why you\'re exposed if you don\'t understand it.',
-    heroKicker: 'Clarity terminal',
-    heroTitle: 'Most people hear headlines. CONTEXTO shows you the root of the shift.',
-    heroSummary: '<strong>If you don\'t understand the shift, you react too late.</strong> This app exists to show you what\'s reshaping the world before it leaves you behind.',
+    tagline: 'The important news of the day, explained simply.',
+    heroKicker: 'Understand the day',
+    heroTitle: 'Less noise. More clarity on what matters today.',
+    heroSummary: '<strong>CONTEXTO helps you understand the news without becoming an expert.</strong> It shows you what happened, why it matters, and what is worth following.',
     heroManifesto: 'View manifesto',
-    heroPower: 'Go to high tension',
-    briefingLabel: 'Daily radar',
+    heroPower: 'See top stories',
+    briefingLabel: 'Daily summary',
     briefingPreparing: 'Preparing...',
     briefingReady: 'Ready to generate',
     briefingWaiting: 'Waiting for signals',
-    briefingTitle: 'Your strategic read for today.',
-    briefingCopyReady: 'Generate a read to detect what\'s reshaping the board before most people notice.',
-    briefingCopyWaiting: 'Not enough signals loaded yet to build a solid read of the day.',
-    briefingItems: ['Which conflict or shift is moving real power.','Which status quo narrative no longer holds.','What to watch if you operate or live in Latam.'],
+    briefingTitle: 'What matters today, made clear.',
+    briefingCopyReady: 'Generate a simple summary to quickly understand the most important news of the day.',
+    briefingCopyWaiting: 'Not enough stories loaded yet to build a useful summary of the day.',
+    briefingItems: ['What actually happened.','Why people are paying attention.','What is worth watching today.'],
     briefingGenerate: 'Generate briefing',
     briefingRefresh: 'Refresh briefing',
     briefingGenerating: 'Generating...',
@@ -562,11 +562,11 @@ const I18N = {
     installDesc: 'Open it as an app and keep your briefing one tap away.',
     installBtn: 'Install',
     installDismiss: 'Not now',
-    topSignalsTitle: 'What you can\'t ignore today',
+    topSignalsTitle: 'What matters most today',
     topSignalsSub: (n)=>n+' key signals',
-    signalLoading: 'Generating strategic read...',
-    signalFailed: 'Could not generate the read.',
-    signalCta: 'Open full read →',
+    signalLoading: 'Preparing clear summary...',
+    signalFailed: 'Could not generate the summary.',
+    signalCta: 'Open summary →',
     navAll: 'All',
     navSaved: 'Saved',
     navTech: 'Tech',
@@ -590,12 +590,12 @@ const I18N = {
     feedEmptyTitle: 'Radar didn\'t load',
     feedEmptyDesc: 'The news function connection failed. Try refreshing.',
     feedRetry: 'Retry',
-    analysisBadge: 'Strategic read',
-    analysisWhat: 'What\'s really happening',
-    analysisWhy: 'Why it affects you',
-    analysisShift: 'Paradigm shift',
-    analysisAction: 'What to do',
-    analysisShare: 'Share analysis ↗',
+    analysisBadge: 'Clear summary',
+    analysisWhat: 'What happened',
+    analysisWhy: 'Why it matters',
+    analysisShift: 'What could change',
+    analysisAction: 'What to watch',
+    analysisShare: 'Share summary ↗',
     analysisCopied: '✓ Copied',
     analysisApiError: '⚠️ CLAUDE_API_KEY not configured on Netlify.',
     analysisError: '⚠️ Could not generate the analysis.',
@@ -603,16 +603,16 @@ const I18N = {
     metricSignals: 'signals today',
     metricSaved: 'saved',
     metricStreak: (n)=>n+' day'+(n===1?'':'s')+' streak',
-    metricAnalyses: 'reads today',
+    metricAnalyses: 'summaries today',
     ctaTalk: 'Talk to Stryv',
     onboardingSkip: 'Skip',
     onboardingNext: 'Next',
     onboardingEnter: 'Enter',
     onboardingStep: (c,t)=>'Step '+c+' of '+t,
     onboardingSteps: [
-      { title:'The world already changed.', copy:'Wars, AI, Bitcoin, China, currencies, power. <strong>Most people find out too late</strong> and react when the cost already hit.', points:['You\'re not watching isolated events. You\'re watching a reconfiguration of the board.','The speed of change now exceeds most people\'s ability to understand it.']},
-      { title:'Hearing a headline isn\'t understanding it.', copy:'Most people consume news as noise. <strong>Very few understand the root shift</strong>, the play behind it, or the risk of staying still.', points:['If you don\'t understand the context, you react late, protect poorly, and decide worse.','Ignorance doesn\'t hurt until the world shifts and leaves you with no margin.']},
-      { title:'CONTEXTO exists to close that gap.', copy:'You\'re not here to consume news. You\'re here to understand <strong>what\'s happening, what it means, and why it affects you</strong> before most people.', points:['Read the most relevant signals of the day without drowning in superficial noise.','Open any signal and get a strategic read, not a generic summary.']}
+      { title:'Understanding the news should not be complicated.', copy:'Every day brings too many headlines. CONTEXTO helps you quickly see <strong>what matters and what you can ignore</strong> without wasting time.', points:['Less noise, more clarity.','You do not need to follow ten outlets at once.']},
+      { title:'You do not come here to become an expert.', copy:'You come here to understand <strong>what happened, why it matters, and what to watch next</strong> in plain language.', points:['Simple, useful explanations without jargon.','Enough context so you are not stuck with just the headline.']},
+      { title:'Your day starts clearer.', copy:'Open the app and find <strong>the important news explained simply</strong>, with a quick summary and deeper reads only if you want them.', points:['Read what matters in minutes.','Go deeper only when it matters to you.']}
     ],
     ctas: {
       Dinero:{title:'No digital financial system for your business?',desc:'We build the infrastructure that keeps your business running even when you\'re not.'},
@@ -974,8 +974,8 @@ async function autoAnalyzeTopSignals(){
     const id = hashId(article.title);
     try{
       const promptLang = lang==='en'
-        ? 'Date: '+todayFormatted()+'. You are a global intelligence analyst for CONTEXTO. Your job is to reveal in few words the structural shift behind this headline. Don\'t summarize the news — explain why it matters and the risk of ignoring it.\n\nTODAY\'S CONTEXT:\n'+buildRelevantContext(article)+'\n\nHEADLINE: "'+article.title+'"\n\nRespond ONLY with valid JSON: {"context":"1 paragraph max 40 words explaining the real shift behind this headline","impact":"1 sentence max 20 words about the risk"}'
-        : 'Fecha: '+todayFormatted()+'. Eres un analista de inteligencia global de CONTEXTO. Tu trabajo es revelar en pocas palabras el cambio estructural detrás de este titular. No resumas la noticia — explica por qué importa y qué riesgo tiene ignorarlo.\n\nCONTEXTO DEL DÍA:\n'+buildRelevantContext(article)+'\n\nTITULAR: "'+article.title+'"\n\nResponde SOLO con JSON válido: {"context":"1 párrafo de máximo 40 palabras explicando el cambio real detrás de este titular","impact":"1 frase de máximo 20 palabras sobre el riesgo para Latam"}';
+        ? 'Date: '+todayFormatted()+'. You write for a general reader. Explain this headline in plain language, with no jargon and no dramatic tone. Focus on what happened and why it matters.\n\nTODAY\'S CONTEXT:\n'+buildRelevantContext(article)+'\n\nHEADLINE: "'+getDisplayTitle(article)+'"\n\nRespond ONLY with valid JSON: {"context":"1 paragraph, max 40 words, in simple language explaining the headline","impact":"1 sentence, max 20 words, saying why an everyday reader should care"}'
+        : 'Fecha: '+todayFormatted()+'. Escribes para una persona común. Explica este titular con lenguaje simple, sin jerga y sin tono dramático. Enfócate en qué pasó y por qué importa.\n\nCONTEXTO DEL DÍA:\n'+buildRelevantContext(article)+'\n\nTITULAR: "'+getDisplayTitle(article)+'"\n\nResponde SOLO con JSON válido: {"context":"1 párrafo, máximo 40 palabras, con lenguaje simple explicando el titular","impact":"1 frase, máximo 20 palabras, diciendo por qué le debería importar a cualquier persona"}';
       const text = await callClaude(promptLang, 300, 'fast');
       const data = JSON.parse(text.replace(/```json|```/g,'').trim());
       topSignalCache[id] = { context: data.context||'', impact: data.impact||'' };
@@ -1034,8 +1034,8 @@ async function generateBriefing(force){
 
   try{
     const briefPrompt = lang==='en'
-      ? 'Date: '+todayFormatted()+'. You are the editor-in-chief of CONTEXTO. You don\'t summarize news: you explain shifts in power, technology, money, and narrative that can leave behind anyone who doesn\'t understand them. From this package of real signals of the day, create a short, hard-hitting, useful briefing.\n\nREAL NEWS TODAY:\n'+articles.slice(0,10).map(item=>'['+item.section+'] '+item.title).join('\n')+'\n\nRespond ONLY with valid JSON without markdown: {"headline":"1 strong sentence describing today\'s play","summary":"1 short direct paragraph explaining today\'s main tension","watch":["Concrete signal to watch 1","Concrete signal to watch 2","Concrete signal to watch 3"]}'
-      : 'Fecha: '+todayFormatted()+'. Eres el editor jefe de CONTEXTO. No resumes noticias: explicas cambios de poder, tecnología, dinero y narrativa que pueden dejar atrás a quien no los entienda. A partir de este paquete de señales reales del día, crea un briefing corto, contundente y útil para un lector latinoamericano.\n\nNOTICIAS REALES DE HOY:\n'+articles.slice(0,10).map(item=>'['+item.section+'] '+item.title).join('\n')+'\n\nResponde SOLO con JSON válido sin markdown con esta estructura exacta: {"headline":"1 frase fuerte que describa la jugada del día","summary":"1 párrafo corto y directo explicando la tensión principal del día","watch":["Señal concreta a vigilar 1","Señal concreta a vigilar 2","Señal concreta a vigilar 3"]}';
+      ? 'Date: '+todayFormatted()+'. You are writing a short daily summary for a general reader. Use plain language, avoid jargon, and make it easy to understand in under a minute.\n\nREAL NEWS TODAY:\n'+articles.slice(0,10).map(item=>'['+getSectionLabel(item.section)+'] '+getDisplayTitle(item)).join('\n')+'\n\nRespond ONLY with valid JSON without markdown: {"headline":"1 clear sentence saying what matters most today","summary":"1 short paragraph in simple language explaining the day","watch":["Simple thing to watch 1","Simple thing to watch 2","Simple thing to watch 3"]}'
+      : 'Fecha: '+todayFormatted()+'. Estás escribiendo un resumen diario para una persona común. Usa lenguaje simple, evita la jerga y haz que se entienda en menos de un minuto.\n\nNOTICIAS REALES DE HOY:\n'+articles.slice(0,10).map(item=>'['+getSectionLabel(item.section)+'] '+getDisplayTitle(item)).join('\n')+'\n\nResponde SOLO con JSON válido sin markdown con esta estructura exacta: {"headline":"1 frase clara diciendo qué fue lo más importante de hoy","summary":"1 párrafo corto en lenguaje simple explicando el día","watch":["Tema simple a seguir 1","Tema simple a seguir 2","Tema simple a seguir 3"]}';
     const text = await callClaude(briefPrompt, 550, 'fast');
 
     const data = JSON.parse(text.replace(/```json|```/g,'').trim());
@@ -1317,8 +1317,8 @@ async function generateAnalysis(id, article){
 
   try{
     const analysisPrompt = lang==='en'
-      ? 'Date: '+dateStr+'. You are a global intelligence analyst for CONTEXTO by Stryv Studio. Your job is not to repeat news: it\'s to reveal the structural shift behind the headline and explain why it matters before it\'s too late. Be brief, sharp, and concrete.\n\nRELEVANT CONTEXT TODAY:\n'+buildRelevantContext(article)+'\n\nARTICLE TO ANALYZE: "'+displayTitle+'" — Source: '+article.source+' — Section: '+getSectionLabel(article.section)+'\n\nRespond ONLY with valid JSON without markdown. Keep each field short and useful.\n{"titular_contexto":"1 line, max 18 words","que_esta_pasando":"1 paragraph, max 90 words","por_que_te_afecta":"1 paragraph, max 55 words","cambio_de_paradigma":"1 paragraph, max 45 words","que_hacer":[{"num":"1","texto":"Concrete action, max 12 words"},{"num":"2","texto":"Concrete action, max 12 words"}]}'
-      : 'Fecha: '+dateStr+'. Eres un analista de inteligencia global para la plataforma CONTEXTO de Stryv Studio. Tu trabajo no es repetir noticias: es revelar el cambio estructural detrás del titular y explicar por qué importa antes de que sea demasiado tarde. Sé breve, afilado y concreto.\n\nCONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\nNOTICIA A ANALIZAR: "'+displayTitle+'" — Fuente: '+article.source+' — Sección: '+getSectionLabel(article.section)+'\n\nResponde SOLO con JSON válido sin markdown. Mantén cada campo corto y útil.\n{"titular_contexto":"1 línea, máximo 18 palabras","que_esta_pasando":"1 párrafo, máximo 90 palabras","por_que_te_afecta":"1 párrafo, máximo 55 palabras","cambio_de_paradigma":"1 párrafo, máximo 45 palabras","que_hacer":[{"num":"1","texto":"Acción concreta, máximo 12 palabras"},{"num":"2","texto":"Acción concreta, máximo 12 palabras"}]}';
+      ? 'Date: '+dateStr+'. You explain news for a general reader. Use simple language, avoid jargon, and focus on clarity over sophistication. Explain what happened, why it matters, and what to keep an eye on next.\n\nRELEVANT CONTEXT TODAY:\n'+buildRelevantContext(article)+'\n\nARTICLE TO ANALYZE: "'+displayTitle+'" — Source: '+article.source+' — Section: '+getSectionLabel(article.section)+'\n\nRespond ONLY with valid JSON without markdown. Keep each field short, useful, and easy to understand.\n{"titular_contexto":"1 line, max 18 words","que_esta_pasando":"1 paragraph, max 90 words, plain language","por_que_te_afecta":"1 paragraph, max 55 words, why it matters","cambio_de_paradigma":"1 paragraph, max 45 words, what could change next","que_hacer":[{"num":"1","texto":"What to watch, max 12 words"},{"num":"2","texto":"What to watch, max 12 words"}]}'
+      : 'Fecha: '+dateStr+'. Explicas noticias para una persona común. Usa lenguaje simple, evita la jerga y prioriza la claridad sobre sonar sofisticado. Explica qué pasó, por qué importa y qué conviene seguir.\n\nCONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\nNOTICIA A ANALIZAR: "'+displayTitle+'" — Fuente: '+article.source+' — Sección: '+getSectionLabel(article.section)+'\n\nResponde SOLO con JSON válido sin markdown. Mantén cada campo corto, útil y fácil de entender.\n{"titular_contexto":"1 línea, máximo 18 palabras","que_esta_pasando":"1 párrafo, máximo 90 palabras, en lenguaje simple","por_que_te_afecta":"1 párrafo, máximo 55 palabras, explicando por qué importa","cambio_de_paradigma":"1 párrafo, máximo 45 palabras, sobre qué podría cambiar","que_hacer":[{"num":"1","texto":"Qué seguir, máximo 12 palabras"},{"num":"2","texto":"Qué seguir, máximo 12 palabras"}]}';
     const text = await callClaude(analysisPrompt, 700, 'fast');
 
     const data = JSON.parse(text.replace(/```json|```/g,'').trim());
