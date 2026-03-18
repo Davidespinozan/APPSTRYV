@@ -144,6 +144,22 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 .sec-tab:hover{color:var(--text)}
 .sec-tab-count{font-size:10px;background:var(--surface-2);color:var(--text-3);padding:1px 6px;border-radius:10px;font-weight:700}
 
+/* ═══ TOP SIGNALS ═══ */
+.top-signals{padding:0 16px 8px;border-bottom:1px solid var(--border-light)}
+.top-signals-header{display:flex;align-items:center;justify-content:space-between;padding:14px 0 10px}
+.top-signals-title{font-size:11px;font-weight:800;color:var(--danger);text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:6px}
+.top-signals-title::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--danger);animation:blink 1.5s infinite}
+.top-signals-sub{font-size:11px;color:var(--text-3)}
+.signal-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+.signal-card:hover{border-color:var(--accent);background:var(--card-hover)}
+.signal-card-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.signal-card-title{font-size:17px;font-weight:800;line-height:1.3;letter-spacing:-.3px;color:var(--text);margin-bottom:8px}
+.signal-card-context{font-size:13px;line-height:1.6;color:var(--text-2);margin-bottom:10px}
+.signal-card-context.loading{color:var(--text-3);font-style:italic}
+.signal-card-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-3)}
+.signal-card-cta{font-size:11px;font-weight:700;color:var(--accent);margin-left:auto}
+.signal-card-impact{margin-top:10px;padding:10px 12px;background:var(--danger-soft);border-radius:10px;border-left:3px solid var(--danger);font-size:13px;line-height:1.5;color:var(--text)}
+
 /* ═══ FEED ═══ */
 .feed{display:none}
 .feed.active{display:block;animation:fadeIn .2s ease}
@@ -359,6 +375,9 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
     </div>
   </div>
 </div>
+
+<!-- TOP SIGNALS -->
+<div class="top-signals" id="topSignals"></div>
 
 <!-- SECTION NAV -->
 <div class="sec-nav" id="secNav"></div>
@@ -630,12 +649,94 @@ async function fetchNews(){
 
 function renderHeroMetrics(){
   const metrics = [
-    '<div class="hero-chip"><strong>'+articles.length+'</strong> titulares hoy</div>',
+    '<div class="hero-chip"><strong>'+articles.length+'</strong> señales hoy</div>',
     '<div class="hero-chip"><strong>'+savedIds.length+'</strong> guardadas</div>',
     '<div class="hero-chip"><strong>'+usage.streak+'</strong> día'+(usage.streak===1?'':'s')+' de racha</div>',
     '<div class="hero-chip"><strong>'+usage.analysesToday+'</strong> lecturas hoy</div>'
   ];
   $('#heroMetrics').innerHTML = metrics.join('');
+}
+
+/* ═══════════════════════════════════════ */
+/*  TOP SIGNALS (analysis-first)          */
+/* ═══════════════════════════════════════ */
+let topSignalCache = store.get('topSignalCache', {});
+
+function getTopSignals(){
+  // Get the 3 highest-scored articles from different sections
+  const used = new Set();
+  const top = [];
+  const sorted = articles.slice().sort((a,b)=>(b.score||0)-(a.score||0));
+  for(const a of sorted){
+    if(used.has(a.section) && top.length < 2) continue; // diversity: try different sections first
+    top.push(a);
+    used.add(a.section);
+    if(top.length >= 3) break;
+  }
+  return top;
+}
+
+function renderTopSignals(){
+  const container = $('#topSignals');
+  if(!articles.length){
+    container.innerHTML = '';
+    return;
+  }
+  const topArts = getTopSignals();
+  if(!topArts.length){ container.innerHTML = ''; return; }
+
+  let html = '<div class="top-signals-header"><div class="top-signals-title">Lo que no puedes ignorar hoy</div><div class="top-signals-sub">'+topArts.length+' señales clave</div></div>';
+
+  html += topArts.map(a => {
+    const id = hashId(a.title);
+    const tagClass = SECTION_TAGS[a.section] || 'tag-dinero';
+    const cached = topSignalCache[id];
+    const contextHtml = cached
+      ? '<div class="signal-card-context">'+esc(cached.context)+'</div>'
+        + (cached.impact ? '<div class="signal-card-impact">'+esc(cached.impact)+'</div>' : '')
+      : '<div class="signal-card-context loading">Generando lectura estratégica...</div>';
+    return '<div class="signal-card" data-signal-id="'+id+'">'+
+      '<div class="signal-card-section '+tagClass+'">'+(SECTION_ICONS[a.section]||'')+' '+esc(a.section)+'</div>'+
+      '<div class="signal-card-title">'+esc(a.title)+'</div>'+
+      contextHtml+
+      '<div class="signal-card-meta">'+
+        '<span>'+esc(a.source||'')+'</span>'+
+        (a.source?'<span>·</span>':'')+
+        '<span>'+timeAgo(a.date)+'</span>'+
+        '<span class="signal-card-cta">Abrir lectura completa →</span>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+
+  container.innerHTML = html;
+}
+
+async function autoAnalyzeTopSignals(){
+  const topArts = getTopSignals();
+  const toAnalyze = topArts.filter(a => !topSignalCache[hashId(a.title)]);
+  if(!toAnalyze.length) return;
+
+  // Analyze them sequentially to avoid rate limits
+  for(const article of toAnalyze){
+    const id = hashId(article.title);
+    try{
+      const text = await callClaude(
+        'Fecha: '+todayFormatted()+'. Eres un analista de inteligencia global de CONTEXTO. Tu trabajo es revelar en pocas palabras el cambio estructural detrás de este titular. No resumas la noticia — explica por qué importa y qué riesgo tiene ignorarlo.\n\n'+
+        'CONTEXTO DEL DÍA:\n'+buildRelevantContext(article)+'\n\n'+
+        'TITULAR: "'+article.title+'"\n\n'+
+        'Responde SOLO con JSON válido: {"context":"1 párrafo de máximo 40 palabras explicando el cambio real detrás de este titular","impact":"1 frase de máximo 20 palabras sobre el riesgo para Latam"}',
+        300,
+        'fast'
+      );
+      const data = JSON.parse(text.replace(/```json|```/g,'').trim());
+      topSignalCache[id] = { context: data.context||'', impact: data.impact||'' };
+      store.set('topSignalCache', topSignalCache);
+      renderTopSignals(); // Re-render as each one completes
+    }catch(e){
+      topSignalCache[id] = { context: 'No se pudo generar la lectura.', impact: '' };
+      renderTopSignals();
+    }
+  }
 }
 
 function getBriefing(){
@@ -1097,6 +1198,17 @@ document.addEventListener('click',e=>{
   if(e.target.closest('#onboardingNext')){nextOnboarding();return}
   if(e.target.closest('#onboardingSkip')){closeOnboarding();return}
 
+  const signalCard=e.target.closest('.signal-card');
+  if(signalCard){
+    const sid = signalCard.dataset.signalId;
+    const article = articles.find(a=>hashId(a.title)===sid);
+    if(article){
+      switchSection(article.section);
+      setTimeout(()=>toggleAnalysis(sid),300);
+    }
+    return;
+  }
+
   const searchR=e.target.closest('.search-result');
   if(searchR){
     closeSearch();
@@ -1134,6 +1246,8 @@ async function refreshAll(){
   // Clear analysis cache on refresh
   analysisCache={};
   store.set('analysisCache',{});
+  topSignalCache={};
+  store.set('topSignalCache',{});
   delete briefingCache[todayKey()];
   store.set('briefingCache', briefingCache);
 
@@ -1141,11 +1255,15 @@ async function refreshAll(){
   renderSecNav();
   renderFeeds();
   renderHeroMetrics();
+  renderTopSignals();
   renderBriefing();
   updateRefreshTime();
 
   btn.disabled=false;
   btn.textContent='Actualizar';
+
+  // Auto-analyze top signals after refresh
+  if(articles.length) autoAnalyzeTopSignals();
 }
 
 function updateRefreshTime(){
@@ -1194,6 +1312,7 @@ async function init(){
   renderSecNav();
   renderFeeds();
   renderHeroMetrics();
+  renderTopSignals();
   renderBriefing();
   updateRefreshTime();
   showInstallBanner();
@@ -1202,6 +1321,7 @@ async function init(){
   setTimeout(()=>$('#loader').classList.add('hidden'),600);
   setTimeout(()=>openOnboarding(),750);
   if(articles.length && !getBriefing()) setTimeout(()=>generateBriefing(false),900);
+  if(articles.length) setTimeout(()=>autoAnalyzeTopSignals(),1200);
 
   // Auto-refresh every 15 min
   setInterval(async()=>{
@@ -1209,8 +1329,10 @@ async function init(){
     renderSecNav();
     renderFeeds();
     renderHeroMetrics();
+    renderTopSignals();
     renderBriefing();
     updateRefreshTime();
+    if(articles.length) autoAnalyzeTopSignals();
   }, 900000);
 }
 
