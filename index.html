@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CONTEXTO — IA que te explica el mundo</title>
-<meta name="description" content="IA lee las noticias por ti y te explica lo que está pasando. Sin jerga, sin drama. Solo contexto claro.">
+<title>CONTEXTO — Entiende lo que está pasando en el mundo</title>
+<meta name="description" content="El mundo se está reconfigurando. Guerras, IA, monedas, poder. CONTEXTO te explica lo que las noticias no te dicen. Sin jerga. Solo claridad.">
 <meta name="theme-color" content="#0D1117">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Contexto">
 <link rel="manifest" href="/manifest.json">
-<meta property="og:title" content="CONTEXTO — IA que te explica el mundo">
-<meta property="og:description" content="IA lee las noticias por ti y te explica lo que está pasando. Sin jerga, sin drama.">
+<meta property="og:title" content="CONTEXTO — Entiende lo que está pasando en el mundo">
+<meta property="og:description" content="Guerras, IA, Bitcoin, China, monedas. ¿Lo escuchaste? Pero ¿lo entiendes? CONTEXTO te da el contexto que nadie más te da.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CONTEXTO — Stryv">
+<meta name="twitter:title" content="CONTEXTO — El contexto que las noticias no te dan">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
 <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png">
@@ -261,10 +261,19 @@ body.view-insights .refresh-bar{display:none}
 .signal-card-meaning{padding:10px 12px;background:var(--accent-soft);border-radius:10px;border-left:3px solid var(--accent);font-size:13px;line-height:1.55;color:var(--text);margin-bottom:10px}
 
 /* ═══ ARTICLE IMAGES ═══ */
-.signal-card-img{width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:12px;background:var(--surface-2)}
-.news-card-img{width:72px;height:72px;object-fit:cover;border-radius:10px;flex-shrink:0;background:var(--surface-2)}
+.signal-card-img{width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:12px;background:var(--surface-2);animation:imgShimmer 1.5s infinite}
+.signal-card-img[src]{animation:none}
+.news-card-img{width:72px;height:72px;object-fit:cover;border-radius:10px;flex-shrink:0;background:var(--surface-2);animation:imgShimmer 1.5s infinite}
+.news-card-img[src]{animation:none}
+@keyframes imgShimmer{0%{background:var(--skeleton-a)}50%{background:var(--skeleton-b)}100%{background:var(--skeleton-a)}}
 .news-card-body{display:flex;gap:12px}
 .news-card-text{flex:1;min-width:0}
+
+/* ═══ HERO STATS ═══ */
+.hero-stats{display:flex;gap:1px;background:var(--border-light);border-radius:14px;overflow:hidden;margin-bottom:20px}
+.hero-stat{flex:1;padding:14px 10px;background:var(--surface);text-align:center}
+.hero-stat-num{font-size:22px;font-weight:900;color:var(--accent);letter-spacing:-.5px;line-height:1}
+.hero-stat-label{font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
 
 /* ═══ INSTALL BANNER ═══ */
 .install-banner{display:none;padding:12px 16px;border-bottom:1px solid var(--border-light);background:var(--surface)}
@@ -307,16 +316,16 @@ body.view-insights .refresh-bar{display:none}
 <!-- LOADER -->
 <div class="loader" id="loader">
   <div class="loader-brand">CONTEXTO</div>
-  <div class="loader-sub">IA que te explica el mundo</div>
+  <div class="loader-sub">El contexto que las noticias no te dan</div>
   <div class="loader-pulse"></div>
-  <div class="loader-status" id="loaderStatus">Conectando fuentes...</div>
+  <div class="loader-status" id="loaderStatus">Conectando con el mundo...</div>
 </div>
 
 <div class="onboarding" id="onboarding">
   <div class="onboarding-card">
     <div class="onboarding-step" id="onboardingStepLabel">Paso 1 de 3</div>
-    <div class="onboarding-title" id="onboardingTitle">El mundo ya cambió.</div>
-    <div class="onboarding-copy" id="onboardingCopy">Guerras, IA, Bitcoin, China, monedas, poder. <strong>La mayoría se entera tarde</strong> y reacciona cuando el costo ya llegó.</div>
+    <div class="onboarding-title" id="onboardingTitle">El mundo se está reconfigurando.</div>
+    <div class="onboarding-copy" id="onboardingCopy">Guerras, IA, Bitcoin, China, monedas, poder. <strong>Todo esto ya está pasando</strong> y la mayoría de la gente no tiene ni el vocabulario para entenderlo.</div>
     <div class="onboarding-points" id="onboardingPoints"></div>
     <div class="onboarding-footer">
       <div class="onboarding-dots" id="onboardingDots"></div>
@@ -351,28 +360,33 @@ body.view-insights .refresh-bar{display:none}
 <!-- DATE HEADER -->
 <div class="date-header">
   <div class="date-main" id="dateMain"></div>
-  <div class="date-tagline">IA procesó las noticias. Esto es lo que necesitas saber.</div>
+  <div class="date-tagline">El mundo cambió. Aquí entiendes cómo.</div>
 </div>
 
 <div class="hero-shell">
-  <div class="hero-kicker">IA leyó las noticias por ti</div>
-  <div class="hero-title">Lo que pasó hoy, explicado para que lo entiendas.</div>
-  <div class="hero-summary"><strong>Nosotros leemos cientos de noticias. Tú solo lees lo que importa.</strong> Sin jerga, sin drama. Solo contexto claro para tu día.</div>
+  <div class="hero-kicker">Guerras · IA · Bitcoin · China · Poder</div>
+  <div class="hero-title">Todo eso ya pasó. ¿Pero realmente lo entiendes?</div>
+  <div class="hero-summary"><strong>Hay una diferencia enorme entre escuchar una noticia y entender lo que está pasando.</strong> CONTEXTO cierra esa brecha. Sin jerga, sin drama. Solo claridad para que no te agarre el mundo en curva.</div>
   <div class="hero-actions">
-    <button class="hero-btn hero-btn-secondary" id="heroManifestoBtn">Cómo funciona</button>
-    <button class="hero-btn hero-btn-primary" id="heroPowerBtn">Leer lo importante</button>
+    <button class="hero-btn hero-btn-secondary" id="heroManifestoBtn">Por qué existe esto</button>
+    <button class="hero-btn hero-btn-primary" id="heroPowerBtn">Entender lo de hoy</button>
+  </div>
+  <div class="hero-stats" id="heroStats">
+    <div class="hero-stat"><div class="hero-stat-num" id="statSources">0</div><div class="hero-stat-label">Fuentes</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="statAnalyzed">0</div><div class="hero-stat-label">Analizadas</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="statTopics">0</div><div class="hero-stat-label">Temas</div></div>
   </div>
   <div class="top-signals" id="topSignals"></div>
   <div class="briefing-card" id="briefingCard">
     <div class="briefing-top">
-      <div class="briefing-label">Resumen del día</div>
+      <div class="briefing-label">Tu contexto del día</div>
       <div class="briefing-status" id="briefingStatus">Preparando...</div>
     </div>
-    <div class="briefing-title" id="briefingTitle">Lo importante de hoy, en claro.</div>
-    <div class="briefing-copy" id="briefingCopy">Un resumen simple para entender rápido qué está pasando y por qué importa.</div>
+    <div class="briefing-title" id="briefingTitle">Lo que está pasando hoy, sin filtro y sin jerga.</div>
+    <div class="briefing-copy" id="briefingCopy">IA analizó las noticias del día y te va a explicar qué está pasando realmente.</div>
     <div class="briefing-list" id="briefingList"></div>
     <div class="briefing-actions">
-      <button class="briefing-btn briefing-btn-primary" id="briefingBtn">Generar briefing</button>
+      <button class="briefing-btn briefing-btn-primary" id="briefingBtn">Generar mi contexto</button>
       <button class="briefing-btn briefing-btn-secondary" id="briefingShareBtn">Compartir</button>
     </div>
   </div>
@@ -380,13 +394,13 @@ body.view-insights .refresh-bar{display:none}
 
 <!-- REFRESH BAR -->
 <div class="refresh-bar">
-  <div class="refresh-time" id="refreshTime">Procesando noticias con IA...</div>
+  <div class="refresh-time" id="refreshTime">Analizando el mundo con IA...</div>
   <button class="refresh-btn" id="refreshBtn" disabled>Actualizar</button>
 </div>
 
 <div class="install-banner" id="installBanner">
   <div class="install-banner-inner">
-    <div class="install-copy"><strong>Instala CONTEXTO</strong>Ábrelo como app y mantén tu briefing a un toque.</div>
+    <div class="install-copy"><strong>Instala CONTEXTO</strong>Entiende el mundo en 5 minutos. Todos los días.</div>
     <div class="install-actions">
       <button class="install-btn" id="installBtn">Instalar</button>
       <button class="install-dismiss" id="installDismiss">Ahora no</button>
@@ -431,48 +445,48 @@ const I18N = {
   es: {
     live: 'EN VIVO',
     langToggle: 'EN',
-    loaderSub: 'IA que te explica el mundo',
-    loaderStatuses: ['Conectando fuentes...','Leyendo noticias con IA...','Filtrando lo importante...','Preparando tu resumen...'],
-    loaderDone: (n) => n+' noticias procesadas',
-    tagline: 'IA procesó las noticias. Esto es lo que necesitas saber.',
-    heroKicker: 'IA leyó las noticias por ti',
-    heroTitle: 'Lo que pasó hoy, explicado para que lo entiendas.',
-    heroSummary: '<strong>Nosotros leemos cientos de noticias. Tú solo lees lo que importa.</strong> Sin jerga, sin drama. Solo contexto claro para tu día.',
-    heroManifesto: 'Cómo funciona',
-    heroPower: 'Leer lo importante',
-    briefingLabel: 'Tu resumen del día',
+    loaderSub: 'El contexto que las noticias no te dan',
+    loaderStatuses: ['Conectando con el mundo...','Leyendo lo que está pasando...','Separando el ruido de lo importante...','Preparando tu contexto del día...'],
+    loaderDone: (n) => n+' noticias analizadas',
+    tagline: 'El mundo cambió. Aquí entiendes cómo.',
+    heroKicker: 'Guerras · IA · Bitcoin · China · Poder',
+    heroTitle: 'Todo eso ya pasó. ¿Pero realmente lo entiendes?',
+    heroSummary: '<strong>Hay una diferencia enorme entre escuchar una noticia y entender lo que está pasando.</strong> CONTEXTO cierra esa brecha. Sin jerga, sin drama. Solo claridad para que no te agarre el mundo en curva.',
+    heroManifesto: 'Por qué existe esto',
+    heroPower: 'Entender lo de hoy',
+    briefingLabel: 'Tu contexto del día',
     briefingPreparing: 'Preparando...',
-    briefingReady: 'Listo para generar',
+    briefingReady: 'Listo',
     briefingWaiting: 'Esperando noticias',
-    briefingTitle: 'Lo importante de hoy, explicado.',
-    briefingCopyReady: 'IA va a leer las noticias del día y te va a explicar qué está pasando en un resumen corto y claro.',
-    briefingCopyWaiting: 'Aún no hay suficientes noticias para armar tu resumen del día.',
-    briefingItems: ['Qué pasó realmente.','Por qué le debería importar a cualquiera.','Qué vale la pena seguir.'],
-    briefingGenerate: 'Generar mi resumen',
-    briefingRefresh: 'Actualizar resumen',
-    briefingGenerating: 'Generando...',
-    briefingAnalyzing: 'IA está leyendo noticias',
+    briefingTitle: 'Lo que está pasando hoy, sin filtro y sin jerga.',
+    briefingCopyReady: 'IA analizó las noticias del día y te va a explicar qué está pasando realmente — no lo que dicen los titulares, sino lo que significan.',
+    briefingCopyWaiting: 'Aún no hay suficientes noticias para armar tu contexto del día.',
+    briefingItems: ['Qué pasó en realidad.','Por qué importa aunque no lo creas.','Qué conviene no perder de vista.'],
+    briefingGenerate: 'Generar mi contexto',
+    briefingRefresh: 'Actualizar contexto',
+    briefingGenerating: 'Analizando...',
+    briefingAnalyzing: 'IA está procesando el mundo',
     briefingFailed: 'No se pudo generar',
     briefingApiError: 'La API no está configurada.',
-    briefingError: 'No se pudo generar el resumen ahora.',
+    briefingError: 'No se pudo generar el contexto ahora.',
     briefingShare: 'Compartir',
     briefingCopied: 'Copiado',
-    briefingShareText: 'Estoy usando CONTEXTO — IA que te explica las noticias sin complicaciones.',
-    refreshLoading: 'Procesando noticias con IA...',
+    briefingShareText: 'Estoy usando CONTEXTO — porque hay una diferencia entre escuchar las noticias y entender lo que está pasando.',
+    refreshLoading: 'Analizando el mundo con IA...',
     refreshUpdating: 'Actualizando...',
-    refreshSearching: 'IA está leyendo las noticias...',
+    refreshSearching: 'Conectando con las fuentes...',
     refreshUpdate: 'Actualizar',
     refreshError: 'Error de conexión',
     refreshAt: (t)=>'Actualizado a las '+t,
     installTitle: 'Instala CONTEXTO',
-    installDesc: 'Tu resumen diario explicado por IA, a un toque.',
+    installDesc: 'Entiende el mundo en 5 minutos. Todos los días.',
     installBtn: 'Instalar',
     installDismiss: 'Ahora no',
-    topSignalsTitle: 'Lo importante de hoy',
-    topSignalsSub: (n)=>n+' temas explicados por IA',
-    signalLoading: 'IA está preparando la explicación...',
+    topSignalsTitle: 'Lo que está moviendo el mundo hoy',
+    topSignalsSub: (n)=>n+' temas que necesitas entender',
+    signalLoading: 'IA está armando tu explicación...',
     signalFailed: 'No se pudo generar la explicación.',
-    signalCta: 'Leer explicación completa →',
+    signalCta: 'Entender a fondo →',
     navInsights: 'Hoy',
     navSaved: 'Guardados',
     navSources: 'Fuentes',
@@ -491,12 +505,12 @@ const I18N = {
     searchEmpty: 'Escribe para buscar en todos los temas',
     searchNoResults: (q)=>'Sin resultados para "'+q+'"',
     savedEmptyTitle: 'No has guardado nada',
-    savedEmptyDesc: 'Guarda explicaciones que quieras volver a leer después.',
+    savedEmptyDesc: 'Guarda lo que quieras volver a leer o entender mejor.',
     savedExplore: 'Volver a Hoy',
     feedEmptyTitle: 'No se pudieron cargar noticias',
     feedEmptyDesc: 'Hubo un error conectando con las fuentes. Intenta actualizar.',
     feedRetry: 'Reintentar',
-    analysisBadge: 'Explicación IA',
+    analysisBadge: 'Contexto IA',
     analysisWhat: 'Qué pasó',
     analysisWhy: 'Por qué importa',
     analysisShift: 'Qué puede cambiar',
@@ -512,9 +526,9 @@ const I18N = {
     onboardingEnter: 'Entrar',
     onboardingStep: (c,t)=>'Paso '+c+' de '+t,
     onboardingSteps: [
-      { title:'Las noticias no deberían sentirse como otro idioma.', copy:'Cada día pasan cosas importantes en el mundo. Pero si no eres experto, los titulares <strong>no te dicen nada útil</strong>. CONTEXTO cambia eso.', points:['IA lee cientos de noticias por ti.','Tú solo ves lo que importa, explicado en simple.']},
-      { title:'No necesitas saber de finanzas ni de política.', copy:'Aquí no hay jerga, no hay palabras rebuscadas. <strong>IA traduce las noticias a un lenguaje que cualquiera entiende</strong>, como si un amigo te lo explicara.', points:['Sin tecnicismos, sin tono de noticiero.','Explicaciones que van directo al punto.']},
-      { title:'Abre, lee y entiende tu mundo en minutos.', copy:'Cada mañana tienes <strong>un resumen claro y explicaciones que te ponen al día</strong> sin complicarte la vida.', points:['5 minutos para entender qué está pasando.','Profundiza solo si te interesa.']}
+      { title:'El mundo se está reconfigurando. La mayoría no se va a dar cuenta.', copy:'Guerras, inteligencia artificial, Bitcoin, China, monedas, poder. <strong>Todo esto ya está pasando</strong> y la mayoría de la gente no tiene ni el vocabulario para entenderlo.', points:['No es falta de inteligencia. Es falta de contexto.','La ignorancia no duele hasta que el mundo cambia y ya no puedes actuar.']},
+      { title:'Escuchar una noticia no es lo mismo que entenderla.', copy:'Los titulares no te dicen nada útil si no tienes el contexto detrás. <strong>CONTEXTO toma las noticias del día y te explica lo que realmente significan</strong> — como si alguien que sí entiende te lo explicara en persona.', points:['Sin jerga. Sin tecnicismos. Sin tono de noticiero.','Explicaciones que van directo al punto.']},
+      { title:'5 minutos al día para no quedarte atrás.', copy:'Cada mañana tienes <strong>un panorama claro del mundo</strong> — los temas que importan, explicados para que los entiendas y puedas tomar mejores decisiones.', points:['Entiende guerras, economía e IA sin ser experto.','Profundiza solo si te interesa.']}
     ],
     ctas: {
       Dinero:{title:'¿Tu negocio no tiene sistema financiero digital?',desc:'Construimos la infraestructura que hace que tu negocio opere aunque tú no estés.'},
@@ -528,48 +542,48 @@ const I18N = {
   en: {
     live: 'LIVE',
     langToggle: 'ES',
-    loaderSub: 'AI that explains the world to you',
-    loaderStatuses: ['Connecting sources...','AI is reading the news...','Filtering what matters...','Preparing your summary...'],
-    loaderDone: (n) => n+' stories processed',
-    tagline: 'AI processed the news. Here is what you need to know.',
-    heroKicker: 'AI read the news for you',
-    heroTitle: 'What happened today, explained so you understand it.',
-    heroSummary: '<strong>We read hundreds of news stories. You only read what matters.</strong> No jargon, no drama. Just clear context for your day.',
-    heroManifesto: 'How it works',
-    heroPower: 'Read what matters',
-    briefingLabel: 'Your daily summary',
+    loaderSub: 'The context the news won\'t give you',
+    loaderStatuses: ['Connecting to the world...','Reading what\'s happening...','Separating noise from signal...','Building your context...'],
+    loaderDone: (n) => n+' stories analyzed',
+    tagline: 'The world changed. Here you understand how.',
+    heroKicker: 'Wars · AI · Bitcoin · China · Power',
+    heroTitle: 'All of that already happened. But do you really understand it?',
+    heroSummary: '<strong>There is a massive difference between hearing the news and understanding what is happening.</strong> CONTEXTO closes that gap. No jargon, no drama. Just clarity so the world doesn\'t catch you off guard.',
+    heroManifesto: 'Why this exists',
+    heroPower: 'Understand today',
+    briefingLabel: 'Your daily context',
     briefingPreparing: 'Preparing...',
-    briefingReady: 'Ready to generate',
+    briefingReady: 'Ready',
     briefingWaiting: 'Waiting for news',
-    briefingTitle: 'What matters today, explained.',
-    briefingCopyReady: 'AI will read today\'s news and explain what is happening in a short, clear summary.',
-    briefingCopyWaiting: 'Not enough stories yet to build your daily summary.',
-    briefingItems: ['What actually happened.','Why anyone should care.','What is worth watching.'],
-    briefingGenerate: 'Generate my summary',
-    briefingRefresh: 'Refresh summary',
-    briefingGenerating: 'Generating...',
-    briefingAnalyzing: 'AI is reading the news',
+    briefingTitle: 'What is happening today, no filter, no jargon.',
+    briefingCopyReady: 'AI analyzed today\'s news and will explain what is actually happening — not what headlines say, but what they mean.',
+    briefingCopyWaiting: 'Not enough stories yet to build your daily context.',
+    briefingItems: ['What actually happened.','Why it matters even if you don\'t think so.','What\'s worth keeping an eye on.'],
+    briefingGenerate: 'Generate my context',
+    briefingRefresh: 'Refresh context',
+    briefingGenerating: 'Analyzing...',
+    briefingAnalyzing: 'AI is processing the world',
     briefingFailed: 'Could not generate',
     briefingApiError: 'API is not configured.',
-    briefingError: 'Could not generate the summary right now.',
+    briefingError: 'Could not generate context right now.',
     briefingShare: 'Share',
     briefingCopied: 'Copied',
-    briefingShareText: 'I\'m using CONTEXTO — AI that explains the news without the complications.',
-    refreshLoading: 'Processing news with AI...',
+    briefingShareText: 'I\'m using CONTEXTO — because there\'s a difference between hearing the news and understanding what\'s happening.',
+    refreshLoading: 'Analyzing the world with AI...',
     refreshUpdating: 'Updating...',
-    refreshSearching: 'AI is reading the news...',
+    refreshSearching: 'Connecting to sources...',
     refreshUpdate: 'Refresh',
     refreshError: 'Connection error',
     refreshAt: (t)=>'Updated at '+t,
     installTitle: 'Install CONTEXTO',
-    installDesc: 'Your daily AI-explained summary, one tap away.',
+    installDesc: 'Understand the world in 5 minutes. Every day.',
     installBtn: 'Install',
     installDismiss: 'Not now',
-    topSignalsTitle: 'What matters today',
-    topSignalsSub: (n)=>n+' topics explained by AI',
-    signalLoading: 'AI is preparing the explanation...',
+    topSignalsTitle: 'What is moving the world today',
+    topSignalsSub: (n)=>n+' topics you need to understand',
+    signalLoading: 'AI is building your explanation...',
     signalFailed: 'Could not generate the explanation.',
-    signalCta: 'Read full explanation →',
+    signalCta: 'Understand in depth →',
     navInsights: 'Today',
     navSaved: 'Saved',
     navSources: 'Sources',
@@ -588,12 +602,12 @@ const I18N = {
     searchEmpty: 'Type to search across all topics',
     searchNoResults: (q)=>'No results for "'+q+'"',
     savedEmptyTitle: 'Nothing saved yet',
-    savedEmptyDesc: 'Save explanations you want to read again later.',
+    savedEmptyDesc: 'Save what you want to read again or understand better.',
     savedExplore: 'Back to Today',
     feedEmptyTitle: 'Could not load news',
     feedEmptyDesc: 'There was an error connecting to sources. Try refreshing.',
     feedRetry: 'Retry',
-    analysisBadge: 'AI Explanation',
+    analysisBadge: 'AI Context',
     analysisWhat: 'What happened',
     analysisWhy: 'Why it matters',
     analysisShift: 'What could change',
@@ -609,9 +623,9 @@ const I18N = {
     onboardingEnter: 'Enter',
     onboardingStep: (c,t)=>'Step '+c+' of '+t,
     onboardingSteps: [
-      { title:'The news should not feel like a foreign language.', copy:'Important things happen every day. But if you are not an expert, the headlines <strong>do not tell you anything useful</strong>. CONTEXTO changes that.', points:['AI reads hundreds of news stories for you.','You only see what matters, explained simply.']},
-      { title:'You do not need to know about finance or politics.', copy:'No jargon here, no fancy words. <strong>AI translates the news into language anyone can understand</strong>, like a friend explaining it to you.', points:['No technical terms, no newscast tone.','Explanations that get straight to the point.']},
-      { title:'Open, read, and understand your world in minutes.', copy:'Every morning you get <strong>a clear summary and explanations that bring you up to speed</strong> without complicating your life.', points:['5 minutes to understand what is happening.','Go deeper only if you want to.']}
+      { title:'The world is reconfiguring. Most people won\'t realize it.', copy:'Wars, artificial intelligence, Bitcoin, China, currencies, power. <strong>All of this is already happening</strong> and most people don\'t even have the vocabulary to understand it.', points:['It\'s not a lack of intelligence. It\'s a lack of context.','Ignorance doesn\'t hurt until the world shifts and you can\'t act.']},
+      { title:'Hearing the news is not the same as understanding it.', copy:'Headlines don\'t tell you anything useful without the context behind them. <strong>CONTEXTO takes today\'s news and explains what they actually mean</strong> — like someone who gets it explaining it to you in person.', points:['No jargon. No technical terms. No newscast tone.','Explanations that get straight to the point.']},
+      { title:'5 minutes a day to not fall behind.', copy:'Every morning you get <strong>a clear picture of the world</strong> — the topics that matter, explained so you understand them and can make better decisions.', points:['Understand wars, economy and AI without being an expert.','Go deeper only if you want to.']}
     ],
     ctas: {
       Dinero:{title:'No digital financial system for your business?',desc:'We build the infrastructure that keeps your business running even when you\'re not.'},
@@ -902,7 +916,14 @@ async function fetchNews(){
 }
 
 function renderHeroMetrics(){
-  /* Removed — AI-first design has no metrics grid */
+  if(!articles.length) return;
+  var sources = new Set();
+  var sections = new Set();
+  articles.forEach(function(a){ if(a.source) sources.add(a.source); sections.add(a.section); });
+  var el = function(id,val){ var e=document.getElementById(id); if(e) e.textContent=val; };
+  el('statSources', sources.size);
+  el('statAnalyzed', articles.length);
+  el('statTopics', sections.size);
 }
 
 /* ═══════════════════════════════════════ */
