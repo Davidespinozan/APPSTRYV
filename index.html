@@ -70,6 +70,28 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 @keyframes loaderPulse{0%,100%{transform:scale(.8);opacity:.5}50%{transform:scale(1.1);opacity:1}}
 .loader-status{margin-top:20px;font-size:12px;color:var(--text-3);letter-spacing:.3px}
 
+/* ═══ ONBOARDING ═══ */
+.onboarding{position:fixed;inset:0;z-index:9500;background:rgba(13,17,23,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:none;align-items:flex-end;justify-content:center;padding:24px 16px max(24px,env(safe-area-inset-bottom))}
+.onboarding.open{display:flex}
+.onboarding-card{width:100%;max-width:560px;background:var(--surface);border:1px solid var(--border);border-radius:28px;padding:24px 20px 20px;box-shadow:0 24px 80px rgba(0,0,0,.35);position:relative;overflow:hidden}
+.onboarding-card::before{content:'';position:absolute;top:-35%;right:-10%;width:180px;height:180px;border-radius:50%;background:var(--accent-soft)}
+.onboarding-step{font-size:10px;font-weight:800;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;position:relative}
+.onboarding-title{font-size:28px;line-height:1.02;letter-spacing:-1px;font-weight:900;color:var(--text);margin-bottom:14px;position:relative;max-width:460px}
+.onboarding-copy{font-size:15px;line-height:1.65;color:var(--text-2);margin-bottom:18px;position:relative}
+.onboarding-copy strong{color:var(--text);font-weight:800}
+.onboarding-points{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;position:relative}
+.onboarding-point{display:flex;gap:10px;align-items:flex-start;padding:12px 13px;border-radius:14px;background:var(--surface-2);border:1px solid var(--border-light)}
+.onboarding-point-mark{font-size:12px;font-weight:900;color:var(--accent);min-width:18px;line-height:1.5}
+.onboarding-point-text{font-size:13px;line-height:1.55;color:var(--text)}
+.onboarding-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative}
+.onboarding-dots{display:flex;gap:8px}
+.onboarding-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.onboarding-dot.active{background:var(--accent)}
+.onboarding-actions{display:flex;gap:10px}
+.onboarding-btn{font-family:inherit;border-radius:999px;padding:11px 15px;font-size:13px;font-weight:800;cursor:pointer}
+.onboarding-btn-secondary{background:none;border:1px solid var(--border);color:var(--text-2)}
+.onboarding-btn-primary{background:var(--accent);border:none;color:#0D1117}
+
 /* ═══ TOP BAR ═══ */
 .top-bar{position:sticky;top:0;z-index:100;background:var(--blur-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border-light);padding:0 16px;display:flex;align-items:center;height:52px;gap:10px}
 .top-bar-brand{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:900;color:var(--text);letter-spacing:2px;text-transform:uppercase;flex:1}
@@ -251,6 +273,22 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
   <div class="loader-status" id="loaderStatus">Conectando fuentes...</div>
 </div>
 
+<div class="onboarding" id="onboarding">
+  <div class="onboarding-card">
+    <div class="onboarding-step" id="onboardingStepLabel">Paso 1 de 3</div>
+    <div class="onboarding-title" id="onboardingTitle">El mundo ya cambió.</div>
+    <div class="onboarding-copy" id="onboardingCopy">Guerras, IA, Bitcoin, China, monedas, poder. <strong>La mayoría se entera tarde</strong> y reacciona cuando el costo ya llegó.</div>
+    <div class="onboarding-points" id="onboardingPoints"></div>
+    <div class="onboarding-footer">
+      <div class="onboarding-dots" id="onboardingDots"></div>
+      <div class="onboarding-actions">
+        <button class="onboarding-btn onboarding-btn-secondary" id="onboardingSkip">Saltar</button>
+        <button class="onboarding-btn onboarding-btn-primary" id="onboardingNext">Siguiente</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- TOP BAR -->
 <div class="top-bar">
   <div class="top-bar-brand">CONTEXTO</div>
@@ -376,6 +414,35 @@ let fetchedAt = '';
 let theme = store.get('theme', 'dark');
 let deferredInstallPrompt = null;
 let lastNewsError = '';
+let onboardingSeen = store.get('onboardingSeen', false);
+let onboardingStep = 0;
+
+const ONBOARDING_STEPS = [
+  {
+    title: 'El mundo ya cambió.',
+    copy: 'Guerras, IA, Bitcoin, China, monedas, poder. <strong>La mayoría se entera tarde</strong> y reacciona cuando el costo ya llegó.',
+    points: [
+      'No estás viendo eventos aislados. Estás viendo una reconfiguración del tablero.',
+      'La velocidad del cambio ya es mayor que la capacidad de la mayoría para entenderlo.'
+    ]
+  },
+  {
+    title: 'Escuchar un titular no es entenderlo.',
+    copy: 'La mayoría consume noticias como ruido. <strong>Muy pocos entienden el cambio de raíz</strong>, la jugada detrás o el riesgo de quedarse quietos.',
+    points: [
+      'Si no entiendes el contexto, reaccionas tarde, proteges mal y decides peor.',
+      'La ignorancia no duele hasta que el mundo cambia y te deja sin margen.'
+    ]
+  },
+  {
+    title: 'CONTEXTO existe para cerrar esa brecha.',
+    copy: 'Aquí no vienes a consumir noticias. Vienes a entender <strong>qué está pasando, qué significa y por qué te afecta</strong> antes que la mayoría.',
+    points: [
+      'Lee las señales más relevantes del día sin perderte en ruido superficial.',
+      'Abre cualquier señal y recibe una lectura estratégica, no un resumen genérico.'
+    ]
+  }
+];
 
 /* ═══════════════════════════════════════ */
 /*  HELPERS                               */
@@ -473,6 +540,42 @@ async function installApp(){
 function registerServiceWorker(){
   if(!('serviceWorker' in navigator)) return;
   navigator.serviceWorker.register('/service-worker.js').catch(()=>{});
+}
+
+function renderOnboarding(){
+  const step = ONBOARDING_STEPS[onboardingStep];
+  $('#onboardingStepLabel').textContent = 'Paso '+(onboardingStep + 1)+' de '+ONBOARDING_STEPS.length;
+  $('#onboardingTitle').textContent = step.title;
+  $('#onboardingCopy').innerHTML = step.copy;
+  $('#onboardingPoints').innerHTML = step.points.map((point, index) =>
+    '<div class="onboarding-point"><div class="onboarding-point-mark">0'+(index + 1)+'</div><div class="onboarding-point-text">'+esc(point)+'</div></div>'
+  ).join('');
+  $('#onboardingDots').innerHTML = ONBOARDING_STEPS.map((_, index) =>
+    '<span class="onboarding-dot'+(index === onboardingStep ? ' active' : '')+'"></span>'
+  ).join('');
+  $('#onboardingNext').textContent = onboardingStep === ONBOARDING_STEPS.length - 1 ? 'Entrar' : 'Siguiente';
+}
+
+function closeOnboarding(){
+  onboardingSeen = true;
+  store.set('onboardingSeen', true);
+  $('#onboarding').classList.remove('open');
+}
+
+function nextOnboarding(){
+  if(onboardingStep >= ONBOARDING_STEPS.length - 1){
+    closeOnboarding();
+    return;
+  }
+  onboardingStep += 1;
+  renderOnboarding();
+}
+
+function openOnboarding(){
+  if(onboardingSeen) return;
+  onboardingStep = 0;
+  renderOnboarding();
+  $('#onboarding').classList.add('open');
 }
 
 /* ═══════════════════════════════════════ */
@@ -978,6 +1081,8 @@ document.addEventListener('click',e=>{
   if(e.target.closest('#installBtn')){installApp();return}
   if(e.target.closest('#installDismiss')){hideInstallBanner(true);return}
   if(e.target.closest('#retryFromEmpty')){refreshAll();return}
+  if(e.target.closest('#onboardingNext')){nextOnboarding();return}
+  if(e.target.closest('#onboardingSkip')){closeOnboarding();return}
 
   const searchR=e.target.closest('.search-result');
   if(searchR){
@@ -1082,6 +1187,7 @@ async function init(){
   $('#refreshBtn').disabled=false;
 
   setTimeout(()=>$('#loader').classList.add('hidden'),600);
+  setTimeout(()=>openOnboarding(),750);
   if(articles.length && !getBriefing()) setTimeout(()=>generateBriefing(false),900);
 
   // Auto-refresh every 15 min
