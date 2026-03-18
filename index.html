@@ -946,7 +946,7 @@ function renderTopSignals(){
         + (cached.meaning ? '<div class="signal-card-meaning">'+esc(cached.meaning)+'</div>' : '')
       : '<div class="signal-card-context loading">'+t('signalLoading')+'</div>';
     return '<div class="signal-card" data-signal-id="'+id+'">'+
-      (a.image ? '<img class="signal-card-img" src="'+esc(a.image)+'" alt="" loading="lazy" onerror="this.style.display=\'none\'">' : '')+
+      '<img class="signal-card-img" src="'+esc(getArticleImageUrl(a,400,180))+'" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">'+
       '<div class="signal-rank">'+rank+'</div>'+
       '<div class="signal-card-section '+tagClass+'">'+(SECTION_ICONS[a.section]||'')+' '+esc(getSectionLabel(a.section))+'</div>'+
       '<div class="signal-card-title">'+esc(displayTitle)+'</div>'+
@@ -1247,7 +1247,7 @@ function renderCards(arts){
           '<div class="news-card-title">'+esc(displayTitle)+'</div>'+
           '<span class="news-card-tag '+tagClass+'">'+esc(getSectionLabel(a.section))+'</span>'+
         '</div>'+
-        (a.image ? '<img class="news-card-img" src="'+esc(a.image)+'" alt="" loading="lazy" onerror="this.style.display=\'none\'">' : '')+
+        '<img class="news-card-img" src="'+esc(getArticleImageUrl(a,72,72))+'" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">'+
       '</div>'+
       '<span class="news-card-arrow">›</span>'+
     '</div>'+
@@ -1279,6 +1279,14 @@ function hashId(str){
   let h=0;
   for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0}
   return 'n'+Math.abs(h);
+}
+
+/* ── Free stock image fallback (Picsum CDN, no API key, no copyright) ── */
+function getArticleImageUrl(article, w, h){
+  if(article.image) return article.image;
+  // Deterministic seed from title → same article always gets same image
+  var seed = Math.abs(hashId(article.title).replace('n','')|0);
+  return 'https://picsum.photos/seed/ctx'+seed+'/'+w+'/'+h+'.webp';
 }
 
 /* ═══════════════════════════════════════ */
