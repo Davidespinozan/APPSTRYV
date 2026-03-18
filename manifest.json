@@ -1,0 +1,20 @@
+{
+  "name": "Manual del Mundo — Stryv",
+  "short_name": "Manual del Mundo",
+  "description": "Conocimiento que el sistema no te da. Dinero, poder, movilidad, tecnología e IA.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f1419",
+  "orientation": "portrait",
+  "categories": ["education", "finance", "news"],
+  "lang": "es",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='96' fill='%230f1419'/><text x='256' y='340' font-size='280' font-weight='800' font-family='system-ui' text-anchor='middle' fill='white'>M</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

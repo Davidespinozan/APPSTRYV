@@ -1,1211 +1,1347 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Manual del Mundo — Stryv</title>
+<meta name="description" content="Conocimiento que el sistema no te da. Dinero, poder, movilidad global, tecnología e IA. Gratis. Sin vender nada. Solo información real con pasos concretos.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Manual del Mundo">
+<link rel="manifest" href="/manifest.json">
+<meta property="og:title" content="Manual del Mundo — Lo que nadie te enseñó">
+<meta property="og:description" content="Conocimiento accionable sobre dinero, geopolítica, movilidad global, tecnología e IA. Gratis.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Manual del Mundo — Stryv">
+<meta name="twitter:description" content="Lo que nadie te enseñó porque no les convenía.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f1419'/><text x='50' y='72' font-size='60' font-weight='800' font-family='system-ui' text-anchor='middle' fill='white'>M</text></svg>">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+/* ═══════════════════════════════════════════ */
+/*  RESET & BASE                              */
+/* ═══════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;max-width:600px;margin:0 auto;min-height:100dvh;min-height:100vh;transition:background .3s,color .3s}
 
-  :root {
-    --bg: #ffffff;
-    --surface: #ffffff;
-    --surface2: #f7f9f9;
-    --border: #eff3f4;
-    --text: #0f1419;
-    --text2: #536471;
-    --accent: #1d9bf0;
-    --separator: #eff3f4;
-  }
+/* ═══════════════════════════════════════════ */
+/*  CSS VARIABLES — LIGHT                     */
+/* ═══════════════════════════════════════════ */
+:root,[data-theme="light"]{
+  --bg:#ffffff;--surface:#ffffff;--surface-alt:#f7f8fa;--surface-hover:#f0f2f5;
+  --border:#e4e7eb;--border-light:#f0f2f5;
+  --text:#0f1419;--text-2:#536471;--text-3:#8899a6;
+  --accent:#1d9bf0;--accent-soft:rgba(29,155,240,.08);
+  --success:#00ba7c;--success-soft:rgba(0,186,124,.1);
+  --warning:#f4a100;--warning-soft:rgba(244,161,0,.1);
+  --danger:#f4212e;--danger-soft:rgba(244,33,46,.08);
+  --gold:#f4a100;--gold-soft:rgba(244,161,0,.1);
+  --cta-bg:#0f1419;--cta-text:#ffffff;--cta-btn-bg:#ffffff;--cta-btn-text:#0f1419;
+  --card-shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --card-shadow-hover:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
+  --overlay:rgba(0,0,0,.5);--blur-bg:rgba(255,255,255,.88);
+  --progress-bg:#e4e7eb;--progress-fill:#0f1419;
+  --skeleton-from:#f0f2f5;--skeleton-mid:#e4e7eb;--skeleton-to:#f0f2f5;
+}
 
-  html { scroll-behavior: smooth; }
+/* ═══════════════════════════════════════════ */
+/*  CSS VARIABLES — DARK                      */
+/* ═══════════════════════════════════════════ */
+[data-theme="dark"]{
+  --bg:#000000;--surface:#16181c;--surface-alt:#1d1f23;--surface-hover:#2c2e33;
+  --border:#2f3336;--border-light:#2f3336;
+  --text:#e7e9ea;--text-2:#8b949e;--text-3:#6e7681;
+  --accent:#1d9bf0;--accent-soft:rgba(29,155,240,.15);
+  --success:#00ba7c;--success-soft:rgba(0,186,124,.15);
+  --warning:#f4a100;--warning-soft:rgba(244,161,0,.15);
+  --danger:#f4212e;--danger-soft:rgba(244,33,46,.15);
+  --gold:#f4a100;--gold-soft:rgba(244,161,0,.15);
+  --cta-bg:#1d9bf0;--cta-text:#ffffff;--cta-btn-bg:#ffffff;--cta-btn-text:#0f1419;
+  --card-shadow:0 1px 3px rgba(0,0,0,.3);
+  --card-shadow-hover:0 4px 16px rgba(0,0,0,.4);
+  --overlay:rgba(0,0,0,.7);--blur-bg:rgba(0,0,0,.85);
+  --progress-bg:#2f3336;--progress-fill:#e7e9ea;
+  --skeleton-from:#1d1f23;--skeleton-mid:#2c2e33;--skeleton-to:#1d1f23;
+}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-    max-width: 600px;
-    margin: 0 auto;
-    min-height: 100vh;
-    padding-bottom: 70px;
-    border-left: 1px solid var(--border);
-    border-right: 1px solid var(--border);
-  }
+body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px solid var(--border);border-right:1px solid var(--border)}
 
-  /* LOADER */
-  .loader {
-    position: fixed;
-    inset: 0;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    transition: opacity 0.6s ease, visibility 0.6s;
-  }
+/* ═══════════════════════════════════════════ */
+/*  LOADER                                    */
+/* ═══════════════════════════════════════════ */
+.loader{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s,visibility .5s}
+.loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-brand{font-size:28px;font-weight:800;color:var(--text);letter-spacing:-1px;margin-bottom:4px}
+.loader-sub{font-size:13px;color:var(--text-2);margin-bottom:32px;letter-spacing:.3px}
+.loader-bar{width:160px;height:3px;background:var(--progress-bg);border-radius:3px;overflow:hidden}
+.loader-bar-fill{height:100%;width:0%;background:var(--accent);border-radius:3px;transition:width .15s ease}
+.loader-tip{margin-top:20px;font-size:12px;color:var(--text-3);max-width:260px;text-align:center;line-height:1.5;min-height:36px;transition:opacity .3s}
 
-  .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+/* ═══════════════════════════════════════════ */
+/*  ONBOARDING                                */
+/* ═══════════════════════════════════════════ */
+.onboarding{position:fixed;inset:0;background:var(--bg);z-index:9998;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;transition:opacity .4s,visibility .4s}
+.onboarding.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.onb-step{display:none;flex-direction:column;align-items:center;max-width:340px}
+.onb-step.active{display:flex}
+.onb-icon{font-size:56px;margin-bottom:20px}
+.onb-title{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.5px;margin-bottom:10px;line-height:1.2}
+.onb-desc{font-size:15px;color:var(--text-2);line-height:1.6;margin-bottom:32px}
+.onb-btn{background:var(--text);color:var(--bg);font-size:15px;font-weight:700;padding:14px 48px;border-radius:50px;border:none;cursor:pointer;font-family:inherit;transition:opacity .15s}
+.onb-btn:active{opacity:.8}
+.onb-dots{display:flex;gap:6px;margin-top:24px}
+.onb-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:background .2s}
+.onb-dot.active{background:var(--text);width:20px;border-radius:3px}
+.onb-skip{position:absolute;top:16px;right:20px;font-size:14px;color:var(--text-3);background:none;border:none;cursor:pointer;font-family:inherit}
 
-  .loader-logo {
-    font-size: 24px;
-    font-weight: 800;
-    color: #0f1419;
-    letter-spacing: -0.5px;
-    margin-bottom: 8px;
-  }
+/* ═══════════════════════════════════════════ */
+/*  TOP BAR                                   */
+/* ═══════════════════════════════════════════ */
+.top-bar{position:sticky;top:0;z-index:100;background:var(--blur-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;height:52px;gap:12px}
+.top-bar-title{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.4px;flex:1}
+.top-bar-streak{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--warning);background:var(--warning-soft);padding:4px 10px;border-radius:20px}
+.top-bar-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:none;background:var(--surface-alt);cursor:pointer;font-size:16px;color:var(--text-2);transition:background .15s,color .15s}
+.top-bar-btn:hover{background:var(--surface-hover);color:var(--text)}
 
-  .loader-sub {
-    font-size: 13px;
-    color: #536471;
-    margin-bottom: 40px;
-  }
+/* ═══════════════════════════════════════════ */
+/*  SEARCH OVERLAY                            */
+/* ═══════════════════════════════════════════ */
+.search-overlay{position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column}
+.search-overlay.open{display:flex}
+.search-bar{display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:1px solid var(--border)}
+.search-input{flex:1;font-size:16px;font-family:inherit;border:none;background:none;color:var(--text);outline:none;padding:10px 0}
+.search-input::placeholder{color:var(--text-3)}
+.search-cancel{font-size:14px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600}
+.search-results{flex:1;overflow-y:auto;padding:8px 0}
+.search-empty{padding:40px 24px;text-align:center;color:var(--text-3);font-size:14px}
+.search-result{padding:14px 16px;border-bottom:1px solid var(--border-light);cursor:pointer;transition:background .1s}
+.search-result:hover{background:var(--surface-alt)}
+.search-result-module{font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.search-result-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px}
+.search-result-desc{font-size:13px;color:var(--text-2);line-height:1.4}
 
-  .loader-bar-wrap {
-    width: 140px;
-    height: 2px;
-    background: #eff3f4;
-    border-radius: 2px;
-    overflow: hidden;
-  }
+/* ═══════════════════════════════════════════ */
+/*  CONTEXT BANNER                            */
+/* ═══════════════════════════════════════════ */
+.context-banner{padding:12px 16px;background:var(--accent-soft);border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text);line-height:1.5;cursor:pointer;transition:background .15s}
+.context-banner:hover{background:var(--surface-alt)}
+.context-banner-icon{flex-shrink:0;margin-top:1px}
+.context-banner-text{flex:1}
+.context-banner-text strong{font-weight:700}
+.context-banner-close{flex-shrink:0;color:var(--text-3);background:none;border:none;cursor:pointer;font-size:18px;padding:0 4px}
 
-  .loader-bar-fill {
-    height: 100%;
-    background: #0f1419;
-    width: 0%;
-    transition: width 0.2s ease;
-  }
+/* ═══════════════════════════════════════════ */
+/*  HERO                                      */
+/* ═══════════════════════════════════════════ */
+.hero{padding:24px 16px 20px;border-bottom:1px solid var(--border)}
+.hero-eyebrow{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
+.hero-title{font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.5px;line-height:1.2;margin-bottom:8px}
+.hero-desc{font-size:14px;color:var(--text-2);line-height:1.55}
 
-  .loader-status {
-    margin-top: 12px;
-    font-size: 12px;
-    color: #536471;
-    min-height: 16px;
-    letter-spacing: 0.2px;
-  }
+/* ═══════════════════════════════════════════ */
+/*  STATS ROW                                 */
+/* ═══════════════════════════════════════════ */
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border)}
+.stat-item{padding:14px 16px;text-align:center;border-right:1px solid var(--border)}
+.stat-item:last-child{border-right:none}
+.stat-value{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.stat-label{font-size:11px;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
 
-  /* TOP BAR */
-  .top-bar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    height: 53px;
-    justify-content: space-between;
-  }
+/* ═══════════════════════════════════════════ */
+/*  PROGRESS BAR (global)                     */
+/* ═══════════════════════════════════════════ */
+.global-progress{height:2px;background:var(--progress-bg)}
+.global-progress-fill{height:100%;background:var(--accent);transition:width .5s cubic-bezier(.4,0,.2,1);border-radius:0 2px 2px 0}
 
-  .top-bar-title {
-    font-size: 17px;
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -0.3px;
-  }
+/* ═══════════════════════════════════════════ */
+/*  MODULE NAV                                */
+/* ═══════════════════════════════════════════ */
+.module-nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);scrollbar-width:none;-ms-overflow-style:none;padding:0 12px;gap:2px}
+.module-nav::-webkit-scrollbar{display:none}
+.module-tab{flex-shrink:0;padding:13px 14px;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:6px;user-select:none;-webkit-user-select:none}
+.module-tab.active{color:var(--text);border-bottom-color:var(--accent)}
+.module-tab:hover{color:var(--text)}
+.module-tab-progress{width:16px;height:16px;border-radius:50%;border:2px solid var(--progress-bg);position:relative;flex-shrink:0}
+.module-tab-progress-fill{position:absolute;inset:0;border-radius:50%}
+.module-tab-progress.done{border-color:var(--success);background:var(--success)}
+.module-tab-progress.done::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:700}
 
-  .top-bar-right {
-    font-size: 12px;
-    color: var(--text2);
-  }
+/* ═══════════════════════════════════════════ */
+/*  MODULE CONTENT                            */
+/* ═══════════════════════════════════════════ */
+.module-content{display:none}
+.module-content.active{display:block;animation:fadeUp .25s ease}
 
-  /* HERO */
-  .hero {
-    padding: 24px 16px 20px;
-    border-bottom: 1px solid var(--border);
-  }
+/* ═══════════════════════════════════════════ */
+/*  SECTION HEADER                            */
+/* ═══════════════════════════════════════════ */
+.sec-head{padding:14px 16px 10px;font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.6px;display:flex;justify-content:space-between;align-items:center}
+.sec-head-count{font-size:11px;font-weight:600;color:var(--text-3);background:var(--surface-alt);padding:2px 8px;border-radius:10px;text-transform:none;letter-spacing:0}
 
-  .hero-eyebrow {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--accent);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
+/* ═══════════════════════════════════════════ */
+/*  LESSON CARD                               */
+/* ═══════════════════════════════════════════ */
+.lesson{border-bottom:1px solid var(--border-light);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:background .12s;position:relative}
+.lesson:hover{background:var(--surface-alt)}
+.lesson.completed .lesson-body{opacity:.55}
 
-  .hero-title {
-    font-size: 26px;
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -0.5px;
-    line-height: 1.15;
-    margin-bottom: 8px;
-  }
+.lesson-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .2s;font-size:11px;color:transparent}
+.lesson-check.done{border-color:var(--success);background:var(--success);color:#fff}
 
-  .hero-desc {
-    font-size: 15px;
-    color: var(--text2);
-    line-height: 1.55;
-  }
+.lesson-body{flex:1;min-width:0}
+.lesson-title{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.15px;margin-bottom:3px;line-height:1.35}
+.lesson-desc{font-size:13px;color:var(--text-2);line-height:1.45;margin-bottom:7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lesson-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 
-  /* MODULE NAV */
-  .module-nav {
-    display: flex;
-    overflow-x: auto;
-    border-bottom: 1px solid var(--border);
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 0 16px;
-    gap: 4px;
-  }
+.lesson-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.2px;text-transform:uppercase}
+.tag-fundamental{color:var(--danger);background:var(--danger-soft)}
+.tag-urgente{color:var(--danger);background:var(--danger-soft)}
+.tag-accionable{color:var(--success);background:var(--success-soft)}
+.tag-estrategico{color:var(--gold);background:var(--gold-soft)}
+.tag-historia{color:var(--gold);background:var(--gold-soft)}
+.tag-incomodo{color:var(--danger);background:var(--danger-soft)}
+.tag-filosofia{color:var(--accent);background:var(--accent-soft)}
 
-  .module-nav::-webkit-scrollbar { display: none; }
+.lesson-time{font-size:11px;color:var(--text-3);font-weight:500}
 
-  .module-tab {
-    flex-shrink: 0;
-    padding: 14px 12px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text2);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all 0.15s;
-    white-space: nowrap;
-    letter-spacing: -0.1px;
-  }
+.lesson-arrow{flex-shrink:0;font-size:16px;color:var(--text-3);margin-top:2px;transition:transform .2s,color .2s}
+.lesson.open .lesson-arrow{transform:rotate(90deg);color:var(--accent)}
 
-  .module-tab.active {
-    color: var(--text);
-    border-bottom-color: var(--text);
-  }
+/* ═══════════════════════════════════════════ */
+/*  EXPANDED LESSON                           */
+/* ═══════════════════════════════════════════ */
+.lesson-expanded{display:none;border-bottom:1px solid var(--border);background:var(--surface-alt);overflow:hidden}
+.lesson-expanded.open{display:block;animation:slideDown .25s ease}
 
-  .module-tab:hover { color: var(--text); }
+.exp-header{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.exp-title{font-size:14px;font-weight:700;color:var(--text)}
+.exp-actions-bar{display:flex;gap:4px}
+.exp-action-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s}
+.exp-action-btn:hover{background:var(--surface-hover);border-color:var(--text-3)}
+.exp-action-btn.completed-btn.done{background:var(--success);border-color:var(--success);color:#fff}
 
-  /* MODULE CONTENT */
-  .module-content { display: none; }
-  .module-content.active { display: block; }
+.exp-body{padding:16px}
 
-  /* SECTION HEAD */
-  .sec-head {
-    padding: 14px 16px 10px;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text2);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
+/* AI Content */
+.ai-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:20px;margin-bottom:14px}
+.ai-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 1.5s infinite}
 
-  /* LESSON ROW */
-  .lesson {
-    border-bottom: 1px solid var(--border);
-    padding: 14px 16px;
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    cursor: pointer;
-    transition: background 0.1s;
-  }
+.exp-block{margin-bottom:20px}
+.exp-block:last-child{margin-bottom:0}
 
-  .lesson:hover { background: var(--surface2); }
-  .lesson.done { opacity: 0.5; }
+.exp-label{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
 
-  .lesson-num {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text2);
-    min-width: 20px;
-    margin-top: 2px;
-    letter-spacing: 0.3px;
-  }
+.exp-key-fact{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.3px;line-height:1.3;margin-bottom:16px;padding:16px;background:var(--surface);border-radius:12px;border-left:3px solid var(--accent)}
 
-  .lesson-body { flex: 1; }
+.exp-text{font-size:15px;line-height:1.7;color:var(--text)}
+.exp-text strong{font-weight:700}
 
-  .lesson-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.2px;
-    margin-bottom: 3px;
-    line-height: 1.3;
-  }
+.exp-why{font-size:14px;line-height:1.6;color:var(--text);padding:14px;background:var(--warning-soft);border-radius:10px;border-left:3px solid var(--warning)}
 
-  .lesson-desc {
-    font-size: 13px;
-    color: var(--text2);
-    line-height: 1.45;
-    margin-bottom: 6px;
-  }
+.exp-steps{display:flex;flex-direction:column;gap:8px}
+.exp-step{display:flex;gap:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;transition:border-color .15s}
+.exp-step:hover{border-color:var(--text-3)}
+.exp-step-num{font-size:12px;font-weight:800;color:var(--accent);min-width:20px;margin-top:1px}
+.exp-step-content{flex:1}
+.exp-step-text{font-size:14px;color:var(--text);line-height:1.5}
+.exp-step-text strong{font-weight:700}
+.exp-step-tool{display:inline-block;font-size:11px;font-weight:600;color:var(--success);background:var(--success-soft);padding:2px 7px;border-radius:4px;margin-top:4px}
 
-  .lesson-tag {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--accent);
-    background: rgba(29,155,240,0.08);
-    padding: 2px 8px;
-    border-radius: 20px;
-  }
+/* ═══════════════════════════════════════════ */
+/*  STRYV CTA                                 */
+/* ═══════════════════════════════════════════ */
+.stryv-cta{margin:16px;padding:20px;background:var(--cta-bg);border-radius:16px;color:var(--cta-text);position:relative;overflow:hidden}
+.stryv-cta::before{content:'';position:absolute;top:-50%;right:-20%;width:140px;height:140px;border-radius:50%;background:rgba(29,155,240,.15)}
+.stryv-cta-eyebrow{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px}
+.stryv-cta-title{font-size:17px;font-weight:800;margin-bottom:8px;letter-spacing:-.3px;line-height:1.25;position:relative}
+.stryv-cta-desc{font-size:13px;color:rgba(255,255,255,.6);line-height:1.55;margin-bottom:16px;position:relative}
+.stryv-cta-btn{display:block;background:var(--cta-btn-bg);color:var(--cta-btn-text);font-size:14px;font-weight:700;padding:12px;border-radius:10px;text-align:center;text-decoration:none;transition:opacity .15s;position:relative}
+.stryv-cta-btn:active{opacity:.85}
+.stryv-cta-link{display:block;text-align:center;font-size:11px;color:rgba(255,255,255,.35);text-decoration:none;margin-top:8px;position:relative}
 
-  .lesson-tag.warn { color: #f4212e; background: rgba(244,33,46,0.08); }
-  .lesson-tag.gold { color: #f4a100; background: rgba(244,161,0,0.08); }
-  .lesson-tag.green { color: #00ba7c; background: rgba(0,186,124,0.08); }
+/* ═══════════════════════════════════════════ */
+/*  MODULE COMPLETE CARD                      */
+/* ═══════════════════════════════════════════ */
+.module-complete{margin:16px;padding:24px;text-align:center;border:2px solid var(--success);border-radius:16px;background:var(--success-soft);display:none}
+.module-complete.show{display:block;animation:scaleIn .3s ease}
+.module-complete-icon{font-size:40px;margin-bottom:8px}
+.module-complete-title{font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px}
+.module-complete-desc{font-size:13px;color:var(--text-2);line-height:1.5}
 
-  .lesson-right {
-    flex-shrink: 0;
-    font-size: 18px;
-    color: var(--border);
-    margin-top: 2px;
-  }
+/* ═══════════════════════════════════════════ */
+/*  BOTTOM NAV                                */
+/* ═══════════════════════════════════════════ */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;background:var(--blur-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:6px 0 max(env(safe-area-inset-bottom),12px);display:flex;justify-content:space-around;z-index:200}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text-3);cursor:pointer;min-width:48px;padding:4px 8px;text-decoration:none;transition:color .15s;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+.nav-item.active{color:var(--text)}
+.nav-item:hover{color:var(--text)}
+.nav-icon{font-size:20px;line-height:1}
+.nav-label{font-size:10px;font-weight:600;letter-spacing:.1px}
 
-  /* EXPANDED LESSON */
-  .lesson-expanded {
-    display: none;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface2);
-  }
+/* ═══════════════════════════════════════════ */
+/*  INSTALL BANNER                            */
+/* ═══════════════════════════════════════════ */
+.install-banner{padding:12px 16px;background:var(--accent-soft);border-bottom:1px solid var(--border);display:none;align-items:center;gap:10px}
+.install-banner.show{display:flex}
+.install-banner-text{flex:1;font-size:13px;color:var(--text);font-weight:500}
+.install-banner-btn{font-size:13px;font-weight:700;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;white-space:nowrap}
+.install-banner-close{color:var(--text-3);background:none;border:none;cursor:pointer;font-size:16px;padding:4px}
 
-  .lesson-expanded.open { display: block; }
+/* ═══════════════════════════════════════════ */
+/*  SKELETON                                  */
+/* ═══════════════════════════════════════════ */
+.sk{background:linear-gradient(90deg,var(--skeleton-from) 25%,var(--skeleton-mid) 50%,var(--skeleton-to) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px;margin-bottom:8px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-  .lesson-exp-header {
-    padding: 12px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border);
-  }
+/* ═══════════════════════════════════════════ */
+/*  ANIMATIONS                                */
+/* ═══════════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideDown{from{opacity:0;max-height:0}to{opacity:1;max-height:2000px}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-  .lesson-exp-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  .lesson-exp-close {
-    font-size: 13px;
-    color: var(--text2);
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-  }
-
-  .lesson-exp-body {
-    padding: 16px;
-  }
-
-  .lesson-exp-block { margin-bottom: 20px; }
-  .lesson-exp-block:last-child { margin-bottom: 0; }
-
-  .exp-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text2);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-  }
-
-  .exp-text {
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--text);
-  }
-
-  .exp-text strong { font-weight: 700; }
-
-  .exp-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 8px;
-  }
-
-  .exp-action {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 12px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-  }
-
-  .exp-action-num {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--accent);
-    min-width: 16px;
-    margin-top: 1px;
-  }
-
-  .exp-action-text {
-    font-size: 14px;
-    color: var(--text);
-    line-height: 1.45;
-  }
-
-  .exp-action-text strong { font-weight: 700; }
-
-  /* SKELETON */
-  .sk {
-    background: linear-gradient(90deg, #f7f9f9 25%, #eff3f4 50%, #f7f9f9 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.4s infinite;
-    border-radius: 4px;
-    margin-bottom: 8px;
-  }
-
-  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-
-  /* AI BLOCK */
-  .ai-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--accent);
-    background: rgba(29,155,240,0.08);
-    padding: 3px 8px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-  }
-
-  .ai-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: pulse 1.5s infinite;
-  }
-
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-  /* STRYV CTA */
-  .stryv-cta {
-    margin: 16px;
-    padding: 16px;
-    background: #0f1419;
-    border-radius: 12px;
-    color: #fff;
-  }
-
-  .stryv-cta-title {
-    font-size: 16px;
-    font-weight: 800;
-    margin-bottom: 6px;
-    letter-spacing: -0.3px;
-  }
-
-  .stryv-cta-desc {
-    font-size: 13px;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.5;
-    margin-bottom: 14px;
-  }
-
-  .stryv-cta-btn {
-    display: block;
-    background: #fff;
-    color: #0f1419;
-    font-size: 14px;
-    font-weight: 700;
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
-    text-decoration: none;
-    transition: opacity 0.15s;
-    margin-bottom: 8px;
-  }
-
-  .stryv-cta-btn:active { opacity: 0.8; }
-
-  .stryv-cta-link {
-    display: block;
-    text-align: center;
-    font-size: 12px;
-    color: rgba(255,255,255,0.4);
-    text-decoration: none;
-  }
-
-  /* BOTTOM NAV */
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 600px;
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid var(--border);
-    padding: 8px 0 16px;
-    display: flex;
-    justify-content: space-around;
-    z-index: 200;
-  }
-
-  .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    color: var(--text2);
-    cursor: pointer;
-    min-width: 50px;
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-
-  .nav-item.active { color: var(--text); }
-  .nav-item:hover { color: var(--text); }
-  .nav-icon { font-size: 22px; line-height: 1; }
-  .nav-label { font-size: 10px; font-weight: 600; }
-
-  @media (min-width: 600px) {
-    body { box-shadow: 0 0 0 1px var(--border); }
-  }
+/* ═══════════════════════════════════════════ */
+/*  RESPONSIVE                                */
+/* ═══════════════════════════════════════════ */
+@media(min-width:600px){body{box-shadow:0 0 0 1px var(--border)}}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--surface:#16181c;--surface-alt:#1d1f23;--surface-hover:#2c2e33;--border:#2f3336;--border-light:#2f3336;--text:#e7e9ea;--text-2:#8b949e;--text-3:#6e7681}}
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
+<!-- ═══════ LOADER ═══════ -->
 <div class="loader" id="loader">
-  <div class="loader-logo">Manual del Mundo</div>
+  <div class="loader-brand">Manual del Mundo</div>
   <div class="loader-sub">por Stryv Studio</div>
-  <div class="loader-bar-wrap">
-    <div class="loader-bar-fill" id="loaderFill"></div>
-  </div>
-  <div class="loader-status" id="loaderStatus">Cargando conocimiento...</div>
+  <div class="loader-bar"><div class="loader-bar-fill" id="loaderFill"></div></div>
+  <div class="loader-tip" id="loaderTip"></div>
 </div>
 
-<!-- TOP BAR -->
+<!-- ═══════ ONBOARDING ═══════ -->
+<div class="onboarding hidden" id="onboarding">
+  <button class="onb-skip" id="onbSkip">Saltar</button>
+  <div class="onb-step active" data-step="0">
+    <div class="onb-icon">🌍</div>
+    <div class="onb-title">Lo que nadie te enseñó porque no les convenía.</div>
+    <div class="onb-desc">Conocimiento real sobre dinero, poder, movilidad global, tecnología e IA. Sin vender nada. Sin motivación barata.</div>
+    <button class="onb-btn" data-next="1">Continuar</button>
+  </div>
+  <div class="onb-step" data-step="1">
+    <div class="onb-icon">⚡</div>
+    <div class="onb-title">Contenido generado por IA en tiempo real</div>
+    <div class="onb-desc">Cada lección se actualiza con lo que está pasando HOY en el mundo. Conectamos conocimiento histórico con contexto actual.</div>
+    <button class="onb-btn" data-next="2">Continuar</button>
+  </div>
+  <div class="onb-step" data-step="2">
+    <div class="onb-icon">🚀</div>
+    <div class="onb-title">Tu progreso se guarda</div>
+    <div class="onb-desc">Marca lecciones como completadas, lleva tu racha diaria y explora a tu ritmo. Todo gratis.</div>
+    <button class="onb-btn" id="onbStart">Empezar</button>
+  </div>
+  <div class="onb-dots" id="onbDots"><div class="onb-dot active"></div><div class="onb-dot"></div><div class="onb-dot"></div></div>
+</div>
+
+<!-- ═══════ INSTALL BANNER ═══════ -->
+<div class="install-banner" id="installBanner">
+  <span class="install-banner-text">📱 Instala el Manual en tu teléfono</span>
+  <button class="install-banner-btn" id="installBtn">Instalar</button>
+  <button class="install-banner-close" id="installClose">✕</button>
+</div>
+
+<!-- ═══════ TOP BAR ═══════ -->
 <div class="top-bar">
   <div class="top-bar-title">Manual del Mundo</div>
-  <div class="top-bar-right" id="dateDisplay"></div>
+  <div class="top-bar-streak" id="streakBadge" style="display:none">🔥 <span id="streakCount">0</span></div>
+  <button class="top-bar-btn" id="searchBtn" aria-label="Buscar">🔍</button>
+  <button class="top-bar-btn" id="themeBtn" aria-label="Cambiar tema">🌙</button>
 </div>
 
-<!-- HERO -->
+<!-- ═══════ SEARCH ═══════ -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-bar">
+    <input class="search-input" id="searchInput" type="text" placeholder="Buscar lecciones..." autocomplete="off">
+    <button class="search-cancel" id="searchClose">Cancelar</button>
+  </div>
+  <div class="search-results" id="searchResults">
+    <div class="search-empty">Escribe para buscar en todos los módulos</div>
+  </div>
+</div>
+
+<!-- ═══════ CONTEXT BANNER ═══════ -->
+<div class="context-banner" id="contextBanner" style="display:none">
+  <span class="context-banner-icon">🔴</span>
+  <div class="context-banner-text" id="contextText"></div>
+  <button class="context-banner-close" id="contextClose">✕</button>
+</div>
+
+<!-- ═══════ HERO ═══════ -->
 <div class="hero">
-  <div class="hero-eyebrow">Stryv Studio · Acceso libre</div>
+  <div class="hero-eyebrow">Stryv Studio · Acceso libre · <span id="dateDisplay"></span></div>
   <div class="hero-title">Lo que nadie te enseñó porque no les convenía.</div>
   <div class="hero-desc">Dinero, poder, movilidad, tecnología. Conocimiento accionable. Sin vender nada.</div>
 </div>
 
-<!-- MODULE TABS -->
-<div class="module-nav" id="moduleNav">
-  <div class="module-tab active" onclick="switchModule('dinero', this)">💰 Dinero</div>
-  <div class="module-tab" onclick="switchModule('movilidad', this)">🌍 Movilidad</div>
-  <div class="module-tab" onclick="switchModule('poder', this)">⚡ Poder</div>
-  <div class="module-tab" onclick="switchModule('tecnologia', this)">🤖 Tecnología</div>
-  <div class="module-tab" onclick="switchModule('mentalidad', this)">🧠 Mentalidad</div>
-  <div class="module-tab" onclick="switchModule('negocio', this)">🚀 Negocio</div>
+<!-- ═══════ STATS ═══════ -->
+<div class="stats-row">
+  <div class="stat-item">
+    <div class="stat-value" id="statLessons">0</div>
+    <div class="stat-label">Completadas</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value" id="statStreak">0</div>
+    <div class="stat-label">Días racha</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value" id="statModules">0/6</div>
+    <div class="stat-label">Módulos</div>
+  </div>
 </div>
 
-<!-- ═══════════════════════════════════ -->
-<!-- MÓDULO: DINERO -->
-<!-- ═══════════════════════════════════ -->
-<div class="module-content active" id="mod-dinero">
-
-  <div class="sec-head">Lo que el sistema no quiere que sepas</div>
-
-  <div class="lesson" onclick="toggleLesson('d1')">
-    <div class="lesson-num">01</div>
-    <div class="lesson-body">
-      <div class="lesson-title">El dinero no es neutral. Nunca lo fue.</div>
-      <div class="lesson-desc">Desde Bretton Woods hasta el petrodólar, el dinero siempre fue una herramienta de control geopolítico.</div>
-      <span class="lesson-tag warn">Fundamental</span>
-    </div>
-    <div class="lesson-right" id="arr-d1">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-d1">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">El dinero no es neutral</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('d1')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-d1"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('d2')">
-    <div class="lesson-num">02</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Por qué el dólar está cayendo y qué significa para ti</div>
-      <div class="lesson-desc">El índice del dólar bajó 10% en un año. No es un accidente. Es un síntoma.</div>
-      <span class="lesson-tag warn">Urgente</span>
-    </div>
-    <div class="lesson-right" id="arr-d2">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-d2">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">La caída del dólar</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('d2')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-d2"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('d3')">
-    <div class="lesson-num">03</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Bitcoin: lo que es, lo que no es, y por qué importa</div>
-      <div class="lesson-desc">No es una inversión especulativa. Es el primer activo en la historia que ningún gobierno puede confiscar.</div>
-      <span class="lesson-tag green">Accionable</span>
-    </div>
-    <div class="lesson-right" id="arr-d3">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-d3">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Bitcoin de verdad</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('d3')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-d3"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('d4')">
-    <div class="lesson-num">04</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Cómo diversificar sin ser millonario</div>
-      <div class="lesson-desc">Oro, Bitcoin, cuentas en otras monedas, activos fuera de tu país. Lo que hacen los ricos desde siempre.</div>
-      <span class="lesson-tag green">Accionable</span>
-    </div>
-    <div class="lesson-right" id="arr-d4">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-d4">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Diversificación real</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('d4')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-d4"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('d5')">
-    <div class="lesson-num">05</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Por qué ahorrar en pesos es un error silencioso</div>
-      <div class="lesson-desc">Inflación, devaluación, control de cambios. El sistema está diseñado para que pierdas poder adquisitivo.</div>
-      <span class="lesson-tag warn">Urgente</span>
-    </div>
-    <div class="lesson-right" id="arr-d5">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-d5">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">El error del ahorro en pesos</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('d5')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-d5"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="stryv-cta">
-    <div class="stryv-cta-title">¿Tu negocio opera sin sistema?</div>
-    <div class="stryv-cta-desc">Construimos la infraestructura digital que hace que tu negocio funcione aunque tú no estés. Diagnóstico gratis.</div>
-    <a href="https://wa.me/17373683464" target="_blank" class="stryv-cta-btn">Hablar con Stryv</a>
-    <a href="https://stryvstudio.com" target="_blank" class="stryv-cta-link">stryvstudio.com</a>
-  </div>
-
+<!-- ═══════ PROGRESS BAR ═══════ -->
+<div class="global-progress">
+  <div class="global-progress-fill" id="globalProgress" style="width:0%"></div>
 </div>
 
-<!-- ═══════════════════════════════════ -->
-<!-- MÓDULO: MOVILIDAD -->
-<!-- ═══════════════════════════════════ -->
-<div class="module-content" id="mod-movilidad">
+<!-- ═══════ MODULE NAV ═══════ -->
+<div class="module-nav" id="moduleNav"></div>
 
-  <div class="sec-head">Cómo moverte en el mundo real</div>
+<!-- ═══════ MODULE CONTAINER ═══════ -->
+<div id="moduleContainer"></div>
 
-  <div class="lesson" onclick="toggleLesson('m1')">
-    <div class="lesson-num">01</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Visas de inversión: cómo comprar tu movilidad</div>
-      <div class="lesson-desc">España, Portugal, México, Paraguay. Con menos de $100K puedes obtener residencia en otro país.</div>
-      <span class="lesson-tag green">Accionable</span>
-    </div>
-    <div class="lesson-right" id="arr-m1">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-m1">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Visas de inversión</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('m1')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-m1"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('m2')">
-    <div class="lesson-num">02</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Cómo abrir cuentas bancarias en otros países</div>
-      <div class="lesson-desc">Wise, Revolut, bancos en México, USA, España. Cómo tener acceso a múltiples monedas desde tu teléfono.</div>
-      <span class="lesson-tag green">Accionable</span>
-    </div>
-    <div class="lesson-right" id="arr-m2">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-m2">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Cuentas bancarias globales</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('m2')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-m2"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('m3')">
-    <div class="lesson-num">03</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Cómo cobrar en dólares desde cualquier país</div>
-      <div class="lesson-desc">Stripe, Wise, transferencias internacionales. La infraestructura financiera que usan los nómadas digitales.</div>
-      <span class="lesson-tag green">Accionable</span>
-    </div>
-    <div class="lesson-right" id="arr-m3">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-m3">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Cobrar en dólares</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('m3')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-m3"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('m4')">
-    <div class="lesson-num">04</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Por qué tener un segundo pasaporte cambia todo</div>
-      <div class="lesson-desc">No es para ricos. Es para los que entienden que la nacionalidad es un accidente geográfico, no un destino.</div>
-      <span class="lesson-tag gold">Estratégico</span>
-    </div>
-    <div class="lesson-right" id="arr-m4">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-m4">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Segundo pasaporte</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('m4')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-m4"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="stryv-cta">
-    <div class="stryv-cta-title">¿Tu negocio puede operar desde cualquier país?</div>
-    <div class="stryv-cta-desc">Si no, hay algo que no está digitalizado correctamente. Hablemos.</div>
-    <a href="https://wa.me/17373683464" target="_blank" class="stryv-cta-btn">Hablar con Stryv</a>
-    <a href="https://stryvstudio.com" target="_blank" class="stryv-cta-link">stryvstudio.com</a>
-  </div>
-
-</div>
-
-<!-- ═══════════════════════════════════ -->
-<!-- MÓDULO: PODER -->
-<!-- ═══════════════════════════════════ -->
-<div class="module-content" id="mod-poder">
-
-  <div class="sec-head">Cómo funciona el mundo real</div>
-
-  <div class="lesson" onclick="toggleLesson('p1')">
-    <div class="lesson-num">01</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Por qué hay guerras: el manual real</div>
-      <div class="lesson-desc">Las guerras no son por ideología. Son por recursos, rutas comerciales y control monetario.</div>
-      <span class="lesson-tag warn">Incómodo</span>
-    </div>
-    <div class="lesson-right" id="arr-p1">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-p1">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Por qué hay guerras</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('p1')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-p1"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('p2')">
-    <div class="lesson-num">02</div>
-    <div class="lesson-body">
-      <div class="lesson-title">El ciclo de los imperios: Roma, España, Gran Bretaña, EE.UU.</div>
-      <div class="lesson-desc">Todos creyeron que eran eternos. Todos siguieron el mismo patrón. EE.UU. lleva 80 años. El promedio es 94.</div>
-      <span class="lesson-tag gold">Historia</span>
-    </div>
-    <div class="lesson-right" id="arr-p2">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-p2">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">El ciclo de los imperios</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('p2')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-p2"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('p3')">
-    <div class="lesson-num">03</div>
-    <div class="lesson-body">
-      <div class="lesson-title">China: por qué ya es la nueva potencia dominante</div>
-      <div class="lesson-desc">No es una amenaza futura. Ya pasó. Primera economía por poder de compra, su propia IA, su propio sistema de pagos.</div>
-      <span class="lesson-tag warn">Urgente</span>
-    </div>
-    <div class="lesson-right" id="arr-p3">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-p3">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">China ya ganó</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('p3')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-p3"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('p4')">
-    <div class="lesson-num">04</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Cómo el status quo se mantiene: los mecanismos invisibles</div>
-      <div class="lesson-desc">Media, deuda, educación, entretenimiento. El sistema no necesita conspiraciones. Solo necesita que no preguntes.</div>
-      <span class="lesson-tag warn">Incómodo</span>
-    </div>
-    <div class="lesson-right" id="arr-p4">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-p4">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Los mecanismos del status quo</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('p4')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-p4"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="stryv-cta">
-    <div class="stryv-cta-title">El mundo cambia. ¿Tu negocio también?</div>
-    <div class="stryv-cta-desc">Construimos sistemas digitales para negocios que entienden que el mundo ya no es el mismo.</div>
-    <a href="https://wa.me/17373683464" target="_blank" class="stryv-cta-btn">Hablar con Stryv</a>
-    <a href="https://stryvstudio.com" target="_blank" class="stryv-cta-link">stryvstudio.com</a>
-  </div>
-
-</div>
-
-<!-- ═══════════════════════════════════ -->
-<!-- MÓDULO: TECNOLOGÍA -->
-<!-- ═══════════════════════════════════ -->
-<div class="module-content" id="mod-tecnologia">
-
-  <div class="sec-head">La revolución que ya comenzó</div>
-
-  <div class="lesson" onclick="toggleLesson('t1')">
-    <div class="lesson-num">01</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Qué es realmente la IA y por qué cambia todo</div>
-      <div class="lesson-desc">No es un chatbot sofisticado. Es la automatización del trabajo intelectual. Por primera vez en la historia.</div>
-      <span class="lesson-tag warn">Fundamental</span>
-    </div>
-    <div class="lesson-right" id="arr-t1">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-t1">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Qué es realmente la IA</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('t1')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-t1"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('t2')">
-    <div class="lesson-num">02</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Cómo usar IA para ganar ventaja real hoy</div>
-      <div class="lesson-desc">Claude, ChatGPT, Gemini, Midjourney. Las herramientas concretas y cómo usarlas para trabajar diferente.</div>
-      <span class="lesson-tag green">Accionable</span>
-    </div>
-    <div class="lesson-right" id="arr-t2">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-t2">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">IA para ventaja real</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('t2')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-t2"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('t3')">
-    <div class="lesson-num">03</div>
-    <div class="lesson-body">
-      <div class="lesson-title">La guerra de chips EE.UU.-China: por qué te afecta</div>
-      <div class="lesson-desc">El control de los semiconductores avanzados es el control del futuro. Y está en juego ahora mismo.</div>
-      <span class="lesson-tag warn">Urgente</span>
-    </div>
-    <div class="lesson-right" id="arr-t3">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-t3">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">La guerra de chips</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('t3')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-t3"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('t4')">
-    <div class="lesson-num">04</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Qué trabajos va a reemplazar la IA primero</div>
-      <div class="lesson-desc">No son los trabajos manuales. Son los trabajos de oficina, los administrativos, los de "profesional".</div>
-      <span class="lesson-tag warn">Urgente</span>
-    </div>
-    <div class="lesson-right" id="arr-t4">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-t4">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Los trabajos que desaparecen</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('t4')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-t4"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="stryv-cta">
-    <div class="stryv-cta-title">¿Tu negocio ya usa IA?</div>
-    <div class="stryv-cta-desc">Implementamos sistemas de atención automatizada con IA para negocios que no quieren quedarse atrás.</div>
-    <a href="https://wa.me/17373683464" target="_blank" class="stryv-cta-btn">Hablar con Stryv</a>
-    <a href="https://stryvstudio.com" target="_blank" class="stryv-cta-link">stryvstudio.com</a>
-  </div>
-
-</div>
-
-<!-- ═══════════════════════════════════ -->
-<!-- MÓDULO: MENTALIDAD -->
-<!-- ═══════════════════════════════════ -->
-<div class="module-content" id="mod-mentalidad">
-
-  <div class="sec-head">Rompe las cadenas invisibles</div>
-
-  <div class="lesson" onclick="toggleLesson('men1')">
-    <div class="lesson-num">01</div>
-    <div class="lesson-body">
-      <div class="lesson-title">La Alegoría de la Caverna: por qué tu realidad no es real</div>
-      <div class="lesson-desc">Platón lo describió hace 2,400 años. Sigue siendo la descripción más precisa de cómo vivimos hoy.</div>
-      <span class="lesson-tag">Filosofía</span>
-    </div>
-    <div class="lesson-right" id="arr-men1">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-men1">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">La Alegoría de la Caverna</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('men1')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-men1"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('men2')">
-    <div class="lesson-num">02</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Cómo identificar tus prisiones de contexto</div>
-      <div class="lesson-desc">Las limitaciones más peligrosas son las que no sabes que tienes. Cómo verlas y cómo salir de ellas.</div>
-      <span class="lesson-tag green">Accionable</span>
-    </div>
-    <div class="lesson-right" id="arr-men2">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-men2">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Prisiones de contexto</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('men2')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-men2"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('men3')">
-    <div class="lesson-num">03</div>
-    <div class="lesson-body">
-      <div class="lesson-title">La mentalidad mutante: adaptarse o quedarse atrás</div>
-      <div class="lesson-desc">No es motivación. Es supervivencia. El mundo cambia tan rápido que la rigidez es el riesgo más grande.</div>
-      <span class="lesson-tag gold">Estratégico</span>
-    </div>
-    <div class="lesson-right" id="arr-men3">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-men3">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">La mentalidad mutante</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('men3')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-men3"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('men4')">
-    <div class="lesson-num">04</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Por qué la ignorancia no duele hasta que es tarde</div>
-      <div class="lesson-desc">El costo de no saber no se paga inmediatamente. Se paga cuando el mundo cambia y ya no puedes moverte.</div>
-      <span class="lesson-tag warn">Incómodo</span>
-    </div>
-    <div class="lesson-right" id="arr-men4">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-men4">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">El costo de la ignorancia</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('men4')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-men4"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="stryv-cta">
-    <div class="stryv-cta-title">La mentalidad mutante aplicada al negocio</div>
-    <div class="stryv-cta-desc">Un negocio que no tiene sistemas digitales depende completamente de su dueño. Eso no es libertad.</div>
-    <a href="https://wa.me/17373683464" target="_blank" class="stryv-cta-btn">Hablar con Stryv</a>
-    <a href="https://stryvstudio.com" target="_blank" class="stryv-cta-link">stryvstudio.com</a>
-  </div>
-
-</div>
-
-<!-- ═══════════════════════════════════ -->
-<!-- MÓDULO: NEGOCIO -->
-<!-- ═══════════════════════════════════ -->
-<div class="module-content" id="mod-negocio">
-
-  <div class="sec-head">Construye algo que no dependa de ti</div>
-
-  <div class="lesson" onclick="toggleLesson('n1')">
-    <div class="lesson-num">01</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Por qué tu negocio local tiene un techo y cómo romperlo</div>
-      <div class="lesson-desc">Un negocio que solo opera localmente está atado a la economía de una sola ciudad, de un solo país.</div>
-      <span class="lesson-tag warn">Fundamental</span>
-    </div>
-    <div class="lesson-right" id="arr-n1">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-n1">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">El techo del negocio local</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('n1')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-n1"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('n2')">
-    <div class="lesson-num">02</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Qué es un sistema operativo digital y por qué lo necesitas</div>
-      <div class="lesson-desc">Ventas, atención, operación interna. El conjunto de herramientas que hace que tu negocio funcione solo.</div>
-      <span class="lesson-tag green">Accionable</span>
-    </div>
-    <div class="lesson-right" id="arr-n2">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-n2">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Sistema operativo digital</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('n2')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-n2"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('n3')">
-    <div class="lesson-num">03</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Cómo construir ingresos que no dependan de tu tiempo</div>
-      <div class="lesson-desc">La trampa del autoempleo. La diferencia entre tener un negocio y ser el negocio.</div>
-      <span class="lesson-tag gold">Estratégico</span>
-    </div>
-    <div class="lesson-right" id="arr-n3">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-n3">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Ingresos sin tu tiempo</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('n3')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-n3"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="lesson" onclick="toggleLesson('n4')">
-    <div class="lesson-num">04</div>
-    <div class="lesson-body">
-      <div class="lesson-title">Cómo escalar a mercados fuera de tu país</div>
-      <div class="lesson-desc">LinkedIn, Meta Ads, contenido en español para CDMX y Monterrey. La estrategia que usa Stryv.</div>
-      <span class="lesson-tag green">Accionable</span>
-    </div>
-    <div class="lesson-right" id="arr-n4">›</div>
-  </div>
-  <div class="lesson-expanded" id="exp-n4">
-    <div class="lesson-exp-header">
-      <span class="lesson-exp-title">Escalar internacionalmente</span>
-      <button class="lesson-exp-close" onclick="toggleLesson('n4')">Cerrar</button>
-    </div>
-    <div class="lesson-exp-body" id="body-n4"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
-  </div>
-
-  <div class="stryv-cta">
-    <div class="stryv-cta-title">¿Listo para construir el sistema?</div>
-    <div class="stryv-cta-desc">Diagnóstico gratis. Sin compromiso. Respondemos en menos de 24h.</div>
-    <a href="https://wa.me/17373683464" target="_blank" class="stryv-cta-btn">Agenda tu diagnóstico</a>
-    <a href="https://stryvstudio.com" target="_blank" class="stryv-cta-link">stryvstudio.com</a>
-  </div>
-
-</div>
-
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <a class="nav-item active" onclick="switchModuleNav('dinero')">
-    <span class="nav-icon">💰</span>
-    <span class="nav-label">Dinero</span>
-  </a>
-  <a class="nav-item" onclick="switchModuleNav('poder')">
-    <span class="nav-icon">⚡</span>
-    <span class="nav-label">Poder</span>
-  </a>
-  <a class="nav-item" onclick="switchModuleNav('tecnologia')">
-    <span class="nav-icon">🤖</span>
-    <span class="nav-label">Tecnología</span>
-  </a>
-  <a class="nav-item" onclick="switchModuleNav('mentalidad')">
-    <span class="nav-icon">🧠</span>
-    <span class="nav-label">Mentalidad</span>
-  </a>
-  <a class="nav-item" href="https://stryvstudio.com" target="_blank">
-    <span class="nav-icon">🚀</span>
-    <span class="nav-label">Stryv</span>
-  </a>
-</div>
+<!-- ═══════ BOTTOM NAV ═══════ -->
+<div class="bottom-nav" id="bottomNav"></div>
 
 <script>
-  const API_KEY = 'NETLIFY'; // La key está en Netlify, no aquí
+(function() {
+  'use strict';
 
-  // DATE
-  const d = new Date();
-  const days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-  const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  document.getElementById('dateDisplay').textContent = `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
-
-  // LOADER
-  const fill = document.getElementById('loaderFill');
-  const statusEl = document.getElementById('loaderStatus');
-  const statuses = ['Cargando módulos...','Conectando con el mundo...','Leyendo el contexto actual...','Listo'];
-  let prog = 0, si = 0;
-  const li = setInterval(() => {
-    prog += Math.random() * 20 + 5;
-    if (prog >= 100) { prog = 100; clearInterval(li); }
-    fill.style.width = prog + '%';
-    const nsi = Math.min(Math.floor((prog/100)*(statuses.length-1)), statuses.length-1);
-    if (nsi !== si) { si = nsi; statusEl.textContent = statuses[si]; }
-    if (prog >= 100) {
-      fetchLiveContext().then(() => {
-        setTimeout(() => document.getElementById('loader').classList.add('hidden'), 400);
-      });
+  /* ═══════════════════════════════════════ */
+  /*  DATA                                  */
+  /* ═══════════════════════════════════════ */
+  const MODULES = {
+    dinero: {
+      icon: '💰', title: 'Dinero',
+      subtitle: 'Lo que el sistema no quiere que sepas',
+      cta: {
+        eyebrow: 'Stryv para tu negocio',
+        title: '¿Tu negocio opera sin sistema financiero digital?',
+        desc: 'Construimos la infraestructura que hace que tu negocio funcione aunque tú no estés. Diagnóstico gratis.',
+        btn: 'Hablar con Stryv', link: 'https://wa.me/17373683464'
+      },
+      lessons: [
+        { id:'d1', title:'El dinero no es neutral. Nunca lo fue.', desc:'Desde Bretton Woods hasta el petrodólar, el dinero siempre fue una herramienta de control geopolítico.', tag:'fundamental', time:'5 min',
+          prompt:'Explica de forma clara y accionable cómo el dinero ha sido siempre una herramienta de control geopolítico, desde el patrón oro hasta el petrodólar y los acuerdos de Bretton Woods. Incluye qué puede hacer una persona común con esta información.' },
+        { id:'d2', title:'Por qué el dólar está cayendo y qué significa para ti', desc:'El índice del dólar bajó 10% en un año. No es un accidente. Es un síntoma.', tag:'urgente', time:'5 min',
+          prompt:'Explica por qué el dólar está cayendo en 2026, qué lo está causando (guerra en Irán, China, deuda de EE.UU., desdolarización), y qué debe hacer concretamente alguien en Latinoamérica para protegerse.' },
+        { id:'d3', title:'Bitcoin: lo que es, lo que no es, y por qué importa', desc:'No es una inversión especulativa. Es el primer activo en la historia que ningún gobierno puede confiscar.', tag:'accionable', time:'6 min',
+          prompt:'Explica qué es Bitcoin realmente — no como inversión sino como tecnología monetaria. Por qué es diferente a cualquier activo anterior. Cómo empezar a tenerlo de forma segura con poco dinero.' },
+        { id:'d4', title:'Cómo diversificar sin ser millonario', desc:'Oro, Bitcoin, cuentas en otras monedas, activos fuera de tu país. Lo que hacen los ricos desde siempre.', tag:'accionable', time:'6 min',
+          prompt:'Explica cómo diversificar el patrimonio sin ser millonario: oro físico, Bitcoin, cuentas en dólares, activos fuera del país. Pasos concretos y accesibles para alguien en Latinoamérica.' },
+        { id:'d5', title:'Por qué ahorrar en pesos es un error silencioso', desc:'Inflación, devaluación, control de cambios. El sistema está diseñado para que pierdas poder adquisitivo.', tag:'urgente', time:'5 min',
+          prompt:'Explica por qué ahorrar en pesos mexicanos (o cualquier moneda latinoamericana) es un error silencioso a largo plazo. Inflación, devaluación histórica, pérdida de poder adquisitivo. Qué hacer en cambio.' }
+      ]
+    },
+    movilidad: {
+      icon: '🌍', title: 'Movilidad',
+      subtitle: 'Cómo moverte en el mundo real',
+      cta: {
+        eyebrow: 'Stryv para tu negocio',
+        title: '¿Tu negocio puede operar desde cualquier país?',
+        desc: 'Si no, hay algo que no está digitalizado correctamente. Hablemos.',
+        btn: 'Hablar con Stryv', link: 'https://wa.me/17373683464'
+      },
+      lessons: [
+        { id:'m1', title:'Visas de inversión: cómo comprar tu movilidad', desc:'España, Portugal, México, Paraguay. Con menos de $100K puedes obtener residencia en otro país.', tag:'accionable', time:'6 min',
+          prompt:'Explica las principales visas de inversión y residencia accesibles para latinoamericanos: España (visa nómada digital), Portugal, Paraguay, México, Uruguay. Costos reales, requisitos, pasos concretos.' },
+        { id:'m2', title:'Cómo abrir cuentas bancarias en otros países', desc:'Wise, Revolut, bancos en México, USA, España. Cómo tener acceso a múltiples monedas desde tu teléfono.', tag:'accionable', time:'5 min',
+          prompt:'Explica cómo abrir cuentas bancarias en otros países siendo latinoamericano: Wise, Revolut, Mercury (EE.UU.), bancos en España. Pasos concretos, documentos necesarios, limitaciones.' },
+        { id:'m3', title:'Cómo cobrar en dólares desde cualquier país', desc:'Stripe, Wise, transferencias internacionales. La infraestructura financiera que usan los nómadas digitales.', tag:'accionable', time:'5 min',
+          prompt:'Explica cómo cobrar en dólares desde cualquier país latinoamericano: Stripe, Wise, transferencias internacionales, criptomonedas como intermediario. Plataformas, costos, procesos.' },
+        { id:'m4', title:'Por qué tener un segundo pasaporte cambia todo', desc:'No es para ricos. Es para los que entienden que la nacionalidad es un accidente geográfico, no un destino.', tag:'estrategico', time:'6 min',
+          prompt:'Explica por qué tener un segundo pasaporte o residencia cambia fundamentalmente las opciones de vida. Cómo conseguirlo siendo latinoamericano: por ascendencia, inversión, residencia prolongada.' }
+      ]
+    },
+    poder: {
+      icon: '⚡', title: 'Poder',
+      subtitle: 'Cómo funciona el mundo real',
+      cta: {
+        eyebrow: 'Stryv para tu negocio',
+        title: 'El mundo cambia. ¿Tu negocio también?',
+        desc: 'Construimos sistemas digitales para negocios que entienden que el mundo ya no es el mismo.',
+        btn: 'Hablar con Stryv', link: 'https://wa.me/17373683464'
+      },
+      lessons: [
+        { id:'p1', title:'Por qué hay guerras: el manual real', desc:'Las guerras no son por ideología. Son por recursos, rutas comerciales y control monetario.', tag:'incomodo', time:'6 min',
+          prompt:'Explica el manual real de por qué hay guerras: recursos naturales, rutas comerciales, control monetario, intereses del capital. Usa la guerra de Irán 2026 y Ucrania como ejemplos concretos.' },
+        { id:'p2', title:'El ciclo de los imperios: Roma, España, Gran Bretaña, EE.UU.', desc:'Todos creyeron que eran eternos. Todos siguieron el mismo patrón. EE.UU. lleva 80 años. El promedio es 94.', tag:'historia', time:'7 min',
+          prompt:'Explica el ciclo histórico de los imperios usando el modelo de Ray Dalio: Roma, España, Gran Bretaña, EE.UU. El patrón que se repite y en qué punto está EE.UU. hoy.' },
+        { id:'p3', title:'China: por qué ya es la nueva potencia dominante', desc:'No es una amenaza futura. Ya pasó. Primera economía por poder de compra, su propia IA, su propio sistema de pagos.', tag:'urgente', time:'6 min',
+          prompt:'Explica por qué China ya es la potencia dominante del siglo XXI: economía por PPP, tecnología propia, sistema de pagos CIPS, yuan en comercio global, DeepSeek. Por qué la mayoría aún no lo ve.' },
+        { id:'p4', title:'Cómo el status quo se mantiene: los mecanismos invisibles', desc:'Media, deuda, educación, entretenimiento. El sistema no necesita conspiraciones. Solo necesita que no preguntes.', tag:'incomodo', time:'6 min',
+          prompt:'Explica los mecanismos concretos mediante los cuales el status quo se mantiene: medios de comunicación, sistema educativo, deuda, entretenimiento, narrativa del éxito. Sin teoría de conspiración — solo mecánica.' }
+      ]
+    },
+    tecnologia: {
+      icon: '🤖', title: 'Tecnología',
+      subtitle: 'La revolución que ya comenzó',
+      cta: {
+        eyebrow: 'Stryv para tu negocio',
+        title: '¿Tu negocio ya usa IA?',
+        desc: 'Implementamos sistemas de atención automatizada con IA para negocios que no quieren quedarse atrás.',
+        btn: 'Hablar con Stryv', link: 'https://wa.me/17373683464'
+      },
+      lessons: [
+        { id:'t1', title:'Qué es realmente la IA y por qué cambia todo', desc:'No es un chatbot sofisticado. Es la automatización del trabajo intelectual. Por primera vez en la historia.', tag:'fundamental', time:'5 min',
+          prompt:'Explica qué es realmente la inteligencia artificial: no un chatbot sino la automatización del trabajo intelectual. Por qué es el cambio más disruptivo en 5,000 años y qué significa para el trabajo humano.' },
+        { id:'t2', title:'Cómo usar IA para ganar ventaja real hoy', desc:'Claude, ChatGPT, Gemini, Midjourney. Las herramientas concretas y cómo usarlas para trabajar diferente.', tag:'accionable', time:'6 min',
+          prompt:'Explica cómo usar IA para ganar ventaja real hoy: Claude, ChatGPT, Midjourney, Kling, HeyGen. Casos de uso concretos para trabajo, negocio y productividad personal. Herramientas gratuitas y de pago.' },
+        { id:'t3', title:'La guerra de chips EE.UU.-China: por qué te afecta', desc:'El control de los semiconductores avanzados es el control del futuro. Y está en juego ahora mismo.', tag:'urgente', time:'6 min',
+          prompt:'Explica la guerra de chips EE.UU.-China: por qué el control de los semiconductores avanzados es el control del futuro. TSMC, Nvidia, DeepSeek, ASML. Por qué afecta a todo el mundo.' },
+        { id:'t4', title:'Qué trabajos va a reemplazar la IA primero', desc:'No son los trabajos manuales. Son los trabajos de oficina, los administrativos, los de "profesional".', tag:'urgente', time:'5 min',
+          prompt:'Explica qué trabajos va a reemplazar la IA primero y cuáles son más seguros. No son los trabajos manuales. Contadores, abogados, diseñadores, periodistas, programadores — qué está pasando con cada uno.' }
+      ]
+    },
+    mentalidad: {
+      icon: '🧠', title: 'Mentalidad',
+      subtitle: 'Rompe las cadenas invisibles',
+      cta: {
+        eyebrow: 'Stryv para tu negocio',
+        title: 'La mentalidad mutante aplicada al negocio',
+        desc: 'Un negocio que no tiene sistemas digitales depende completamente de su dueño. Eso no es libertad.',
+        btn: 'Hablar con Stryv', link: 'https://wa.me/17373683464'
+      },
+      lessons: [
+        { id:'men1', title:'La Alegoría de la Caverna: por qué tu realidad no es real', desc:'Platón lo describió hace 2,400 años. Sigue siendo la descripción más precisa de cómo vivimos hoy.', tag:'filosofia', time:'6 min',
+          prompt:'Explica la Alegoría de la Caverna de Platón completa y cómo describe exactamente la situación del mundo en 2026: personas que solo conocen las sombras de su contexto y creen que eso es toda la realidad.' },
+        { id:'men2', title:'Cómo identificar tus prisiones de contexto', desc:'Las limitaciones más peligrosas son las que no sabes que tienes. Cómo verlas y cómo salir de ellas.', tag:'accionable', time:'5 min',
+          prompt:'Explica cómo identificar las prisiones de contexto personales: creencias heredadas del entorno, límites invisibles, narrativas que limitan lo que se puede imaginar como posible. Con ejercicios concretos.' },
+        { id:'men3', title:'La mentalidad mutante: adaptarse o quedarse atrás', desc:'No es motivación. Es supervivencia. El mundo cambia tan rápido que la rigidez es el riesgo más grande.', tag:'estrategico', time:'5 min',
+          prompt:'Explica la mentalidad mutante: no como motivación sino como necesidad de supervivencia ante un mundo que cambia más rápido que nunca. Cómo desarrollarla concretamente.' },
+        { id:'men4', title:'Por qué la ignorancia no duele hasta que es tarde', desc:'El costo de no saber no se paga inmediatamente. Se paga cuando el mundo cambia y ya no puedes moverte.', tag:'incomodo', time:'5 min',
+          prompt:'Explica el costo real de la ignorancia: no se paga inmediatamente sino cuando el mundo cambia y ya no puedes moverte. Ejemplos concretos: los que no entendieron el dólar, Bitcoin, la IA.' }
+      ]
+    },
+    negocio: {
+      icon: '🚀', title: 'Negocio',
+      subtitle: 'Construye algo que no dependa de ti',
+      cta: {
+        eyebrow: 'El siguiente paso',
+        title: '¿Listo para construir el sistema?',
+        desc: 'Todo lo que aprendiste aquí, Stryv lo implementa para tu negocio. Diagnóstico gratis. Sin compromiso.',
+        btn: 'Agenda tu diagnóstico', link: 'https://wa.me/17373683464'
+      },
+      lessons: [
+        { id:'n1', title:'Por qué tu negocio local tiene un techo y cómo romperlo', desc:'Un negocio que solo opera localmente está atado a la economía de una sola ciudad, de un solo país.', tag:'fundamental', time:'5 min',
+          prompt:'Explica por qué un negocio puramente local tiene un techo y cómo romperlo: digitalización, mercados latinoamericanos remotos, servicios que no dependen de ubicación física.' },
+        { id:'n2', title:'Qué es un sistema operativo digital y por qué lo necesitas', desc:'Ventas, atención, operación interna. El conjunto de herramientas que hace que tu negocio funcione solo.', tag:'accionable', time:'6 min',
+          prompt:'Explica qué es un sistema operativo digital para negocios: sistema de ventas, atención automatizada con IA, operación interna, conversión local. Por qué es la diferencia entre escalar y estancarse.' },
+        { id:'n3', title:'Cómo construir ingresos que no dependan de tu tiempo', desc:'La trampa del autoempleo. La diferencia entre tener un negocio y ser el negocio.', tag:'estrategico', time:'6 min',
+          prompt:'Explica la diferencia entre ser el negocio y tener un negocio. Cómo construir sistemas que generen ingresos sin requerir tu presencia o tiempo constante. La trampa del autoempleo.' },
+        { id:'n4', title:'Cómo escalar a mercados fuera de tu país', desc:'LinkedIn, Meta Ads, contenido en español para CDMX y Monterrey. La estrategia que usa Stryv.', tag:'accionable', time:'5 min',
+          prompt:'Explica cómo un negocio latinoamericano puede escalar a mercados en CDMX, Monterrey, Bogotá, Miami. Estrategia de contenido, LinkedIn, Meta Ads, posicionamiento. Pasos concretos.' }
+      ]
     }
-  }, 150);
+  };
 
-  // MODULE SWITCHING
-  function switchModule(id, tab) {
-    document.querySelectorAll('.module-content').forEach(m => m.classList.remove('active'));
-    document.querySelectorAll('.module-tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('mod-' + id).classList.add('active');
-    if (tab) tab.classList.add('active');
+  const MODULE_ORDER = ['dinero','movilidad','poder','tecnologia','mentalidad','negocio'];
+  const TAG_CLASSES = { fundamental:'tag-fundamental', urgente:'tag-urgente', accionable:'tag-accionable', estrategico:'tag-estrategico', historia:'tag-historia', incomodo:'tag-incomodo', filosofia:'tag-filosofia' };
+  const TAG_LABELS = { fundamental:'Fundamental', urgente:'Urgente', accionable:'Accionable', estrategico:'Estratégico', historia:'Historia', incomodo:'Incómodo', filosofia:'Filosofía' };
+
+  const TIPS = [
+    'Cada lección se actualiza con eventos del mundo real',
+    'Puedes marcar lecciones como completadas',
+    'Tu progreso se guarda automáticamente',
+    'Prueba el modo oscuro — botón 🌙 arriba',
+    'Busca cualquier tema con 🔍'
+  ];
+
+  /* ═══════════════════════════════════════ */
+  /*  STATE                                 */
+  /* ═══════════════════════════════════════ */
+  const LS_PREFIX = 'mdm_';
+  const store = {
+    get(key, fallback) { try { const v = localStorage.getItem(LS_PREFIX + key); return v !== null ? JSON.parse(v) : fallback; } catch { return fallback; } },
+    set(key, val) { try { localStorage.setItem(LS_PREFIX + key, JSON.stringify(val)); } catch {} }
+  };
+
+  const state = {
+    completed: store.get('completed', []),
+    theme: store.get('theme', 'auto'),
+    streak: store.get('streak', 0),
+    lastVisit: store.get('lastVisit', null),
+    onboarded: store.get('onboarded', false),
+    activeModule: 'dinero',
+    liveContext: '',
+    lessonCache: store.get('lessonCache', {}),
+    contextCache: store.get('contextCache', { text: '', date: '' }),
+    loadingLessons: new Set()
+  };
+
+  function saveState() {
+    store.set('completed', state.completed);
+    store.set('streak', state.streak);
+    store.set('lastVisit', state.lastVisit);
+    store.set('lessonCache', state.lessonCache);
+    store.set('contextCache', state.contextCache);
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  HELPERS                               */
+  /* ═══════════════════════════════════════ */
+  function $(sel) { return document.querySelector(sel); }
+  function $$(sel) { return document.querySelectorAll(sel); }
+  function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+
+  const todayStr = (() => {
+    const d = new Date();
+    const days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+  })();
+
+  const todayDate = new Date().toISOString().slice(0,10);
+
+  function getTotalLessons() {
+    let count = 0;
+    MODULE_ORDER.forEach(k => count += MODULES[k].lessons.length);
+    return count;
+  }
+
+  function getModuleLessons(modKey) { return MODULES[modKey].lessons; }
+
+  function getModuleCompletedCount(modKey) {
+    const ids = MODULES[modKey].lessons.map(l => l.id);
+    return state.completed.filter(id => ids.includes(id)).length;
+  }
+
+  function isModuleComplete(modKey) {
+    return getModuleCompletedCount(modKey) === MODULES[modKey].lessons.length;
+  }
+
+  function getCompletedModulesCount() {
+    return MODULE_ORDER.filter(k => isModuleComplete(k)).length;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  STREAK                                */
+  /* ═══════════════════════════════════════ */
+  function updateStreak() {
+    if (!state.lastVisit) {
+      state.streak = 1;
+    } else {
+      const last = new Date(state.lastVisit);
+      const now = new Date(todayDate);
+      const diffDays = Math.floor((now - last) / 86400000);
+      if (diffDays === 0) { /* same day, no change */ }
+      else if (diffDays === 1) { state.streak += 1; }
+      else { state.streak = 1; }
+    }
+    state.lastVisit = todayDate;
+    saveState();
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  THEME                                 */
+  /* ═══════════════════════════════════════ */
+  function applyTheme() {
+    let theme = state.theme;
+    if (theme === 'auto') {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+    const btn = $('#themeBtn');
+    if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    state.theme = current === 'dark' ? 'light' : 'dark';
+    store.set('theme', state.theme);
+    applyTheme();
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  RENDER: MODULE NAV                    */
+  /* ═══════════════════════════════════════ */
+  function renderModuleNav() {
+    const nav = $('#moduleNav');
+    nav.innerHTML = MODULE_ORDER.map(key => {
+      const m = MODULES[key];
+      const done = isModuleComplete(key);
+      const active = key === state.activeModule ? ' active' : '';
+      const progressClass = done ? ' done' : '';
+      return '<div class="module-tab' + active + '" data-module="' + key + '">' +
+        '<span class="module-tab-progress' + progressClass + '"><span class="module-tab-progress-fill"></span></span>' +
+        m.icon + ' ' + m.title +
+        '</div>';
+    }).join('');
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  RENDER: MODULES + LESSONS             */
+  /* ═══════════════════════════════════════ */
+  function renderModules() {
+    const container = $('#moduleContainer');
+    container.innerHTML = MODULE_ORDER.map(key => {
+      const m = MODULES[key];
+      const active = key === state.activeModule ? ' active' : '';
+      const completedCount = getModuleCompletedCount(key);
+      const total = m.lessons.length;
+
+      let html = '<div class="module-content' + active + '" id="mod-' + key + '">';
+
+      /* Section head */
+      html += '<div class="sec-head">' + esc(m.subtitle) +
+        '<span class="sec-head-count">' + completedCount + '/' + total + '</span></div>';
+
+      /* Lessons */
+      m.lessons.forEach((lesson, i) => {
+        const isDone = state.completed.includes(lesson.id);
+        const doneClass = isDone ? ' completed' : '';
+        const checkClass = isDone ? ' done' : '';
+
+        html += '<div class="lesson' + doneClass + '" data-lesson="' + lesson.id + '">' +
+          '<div class="lesson-check' + checkClass + '">✓</div>' +
+          '<div class="lesson-body">' +
+            '<div class="lesson-title">' + esc(lesson.title) + '</div>' +
+            '<div class="lesson-desc">' + esc(lesson.desc) + '</div>' +
+            '<div class="lesson-meta">' +
+              '<span class="lesson-tag ' + (TAG_CLASSES[lesson.tag] || '') + '">' + (TAG_LABELS[lesson.tag] || lesson.tag) + '</span>' +
+              '<span class="lesson-time">⏱ ' + lesson.time + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="lesson-arrow">›</div>' +
+        '</div>';
+
+        /* Expanded lesson container */
+        html += '<div class="lesson-expanded" id="exp-' + lesson.id + '">' +
+          '<div class="exp-header">' +
+            '<span class="exp-title">' + esc(lesson.title) + '</span>' +
+            '<div class="exp-actions-bar">' +
+              '<button class="exp-action-btn" data-share="' + lesson.id + '" title="Compartir">↗</button>' +
+              '<button class="exp-action-btn completed-btn' + (isDone ? ' done' : '') + '" data-complete="' + lesson.id + '" title="Marcar completada">✓</button>' +
+              '<button class="exp-action-btn" data-close="' + lesson.id + '" title="Cerrar">✕</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="exp-body" id="body-' + lesson.id + '">' +
+            '<div class="sk" style="height:16px;width:100%"></div>' +
+            '<div class="sk" style="height:16px;width:85%"></div>' +
+            '<div class="sk" style="height:16px;width:70%"></div>' +
+          '</div>' +
+        '</div>';
+      });
+
+      /* Module complete card */
+      const showComplete = isModuleComplete(key);
+      html += '<div class="module-complete' + (showComplete ? ' show' : '') + '" id="complete-' + key + '">' +
+        '<div class="module-complete-icon">🏆</div>' +
+        '<div class="module-complete-title">Módulo completado</div>' +
+        '<div class="module-complete-desc">Completaste todas las lecciones de ' + esc(m.title) + '. El conocimiento es poder cuando se acciona.</div>' +
+      '</div>';
+
+      /* CTA */
+      html += '<div class="stryv-cta">' +
+        '<div class="stryv-cta-eyebrow">' + esc(m.cta.eyebrow) + '</div>' +
+        '<div class="stryv-cta-title">' + esc(m.cta.title) + '</div>' +
+        '<div class="stryv-cta-desc">' + esc(m.cta.desc) + '</div>' +
+        '<a href="' + esc(m.cta.link) + '" target="_blank" rel="noopener" class="stryv-cta-btn">' + esc(m.cta.btn) + '</a>' +
+        '<a href="https://stryvstudio.com" target="_blank" rel="noopener" class="stryv-cta-link">stryvstudio.com</a>' +
+      '</div>';
+
+      html += '</div>';
+      return html;
+    }).join('');
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  RENDER: BOTTOM NAV                    */
+  /* ═══════════════════════════════════════ */
+  function renderBottomNav() {
+    const navItems = [
+      { key:'dinero', icon:'💰', label:'Dinero' },
+      { key:'poder', icon:'⚡', label:'Poder' },
+      { key:'tecnologia', icon:'🤖', label:'Tech' },
+      { key:'mentalidad', icon:'🧠', label:'Mental' },
+      { key:'stryv', icon:'🚀', label:'Stryv', href:'https://stryvstudio.com' }
+    ];
+    const nav = $('#bottomNav');
+    nav.innerHTML = navItems.map(n => {
+      if (n.href) {
+        return '<a class="nav-item" href="' + n.href + '" target="_blank" rel="noopener">' +
+          '<span class="nav-icon">' + n.icon + '</span><span class="nav-label">' + n.label + '</span></a>';
+      }
+      const active = n.key === state.activeModule ? ' active' : '';
+      return '<div class="nav-item' + active + '" data-nav="' + n.key + '">' +
+        '<span class="nav-icon">' + n.icon + '</span><span class="nav-label">' + n.label + '</span></div>';
+    }).join('');
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  RENDER: STATS                         */
+  /* ═══════════════════════════════════════ */
+  function renderStats() {
+    const total = getTotalLessons();
+    const completed = state.completed.length;
+    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+    $('#statLessons').textContent = completed;
+    $('#statStreak').textContent = state.streak;
+    $('#statModules').textContent = getCompletedModulesCount() + '/6';
+    $('#globalProgress').style.width = pct + '%';
+
+    const streakBadge = $('#streakBadge');
+    if (state.streak > 0) {
+      streakBadge.style.display = 'flex';
+      $('#streakCount').textContent = state.streak;
+    }
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  MODULE SWITCHING                      */
+  /* ═══════════════════════════════════════ */
+  function switchModule(key) {
+    if (!MODULES[key]) return;
+    state.activeModule = key;
+
+    $$('.module-content').forEach(el => el.classList.remove('active'));
+    $$('.module-tab').forEach(el => el.classList.remove('active'));
+    $$('.nav-item').forEach(el => el.classList.remove('active'));
+
+    const mod = $('#mod-' + key);
+    if (mod) mod.classList.add('active');
+
+    const tab = document.querySelector('.module-tab[data-module="' + key + '"]');
+    if (tab) { tab.classList.add('active'); tab.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' }); }
+
+    const navItem = document.querySelector('.nav-item[data-nav="' + key + '"]');
+    if (navItem) navItem.classList.add('active');
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function switchModuleNav(id) {
-    switchModule(id, null);
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-    const tabMap = { dinero: 0, poder: 2, tecnologia: 3, mentalidad: 4 };
-    const tabs = document.querySelectorAll('.module-tab');
-    if (tabMap[id] !== undefined) {
-      tabs.forEach(t => t.classList.remove('active'));
-      tabs[tabMap[id]]?.classList.add('active');
-    }
-  }
-
-  // LESSON TOGGLE
-  const loadedLessons = new Set();
-
+  /* ═══════════════════════════════════════ */
+  /*  LESSON TOGGLE                         */
+  /* ═══════════════════════════════════════ */
   function toggleLesson(id) {
-    const exp = document.getElementById('exp-' + id);
-    const arr = document.getElementById('arr-' + id);
-    const isOpen = exp.classList.contains('open');
+    const exp = $('#exp-' + id);
+    if (!exp) return;
 
-    document.querySelectorAll('.lesson-expanded').forEach(e => e.classList.remove('open'));
-    document.querySelectorAll('.lesson-right').forEach(a => a.textContent = '›');
+    const isOpen = exp.classList.contains('open');
+    const lessonEl = document.querySelector('.lesson[data-lesson="' + id + '"]');
+
+    /* Close all */
+    $$('.lesson-expanded').forEach(e => e.classList.remove('open'));
+    $$('.lesson').forEach(l => l.classList.remove('open'));
 
     if (!isOpen) {
       exp.classList.add('open');
-      arr.textContent = '‹';
-      if (!loadedLessons.has(id)) {
-        loadedLessons.add(id);
+      if (lessonEl) lessonEl.classList.add('open');
+
+      /* Generate content if not cached */
+      if (!state.lessonCache[id] && !state.loadingLessons.has(id)) {
         generateLesson(id);
+      } else if (state.lessonCache[id]) {
+        renderLessonContent(id, state.lessonCache[id]);
       }
-      setTimeout(() => exp.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+
+      setTimeout(() => exp.scrollIntoView({ behavior:'smooth', block:'nearest' }), 120);
     }
   }
 
-  // LESSON PROMPTS
-  const lessonPrompts = {
-    d1: 'Explica de forma clara y accionable cómo el dinero ha sido siempre una herramienta de control geopolítico, desde el patrón oro hasta el petrodólar y los acuerdos de Bretton Woods. Incluye qué puede hacer una persona común con esta información.',
-    d2: 'Explica por qué el dólar está cayendo en 2026, qué lo está causando (guerra en Irán, China, deuda de EE.UU., desdolarización), y qué debe hacer concretamente alguien en Latinoamérica para protegerse.',
-    d3: 'Explica qué es Bitcoin realmente — no como inversión sino como tecnología monetaria. Por qué es diferente a cualquier activo anterior. Cómo empezar a tenerlo de forma segura con poco dinero.',
-    d4: 'Explica cómo diversificar el patrimonio sin ser millonario: oro físico, Bitcoin, cuentas en dólares, activos fuera del país. Pasos concretos y accesibles para alguien en Latinoamérica.',
-    d5: 'Explica por qué ahorrar en pesos mexicanos (o cualquier moneda latinoamericana) es un error silencioso a largo plazo. Inflación, devaluación histórica, pérdida de poder adquisitivo. Qué hacer en cambio.',
-    m1: 'Explica las principales visas de inversión y residencia accesibles para latinoamericanos: España (visa nómada digital), Portugal, Paraguay, México, Uruguay. Costos reales, requisitos, pasos concretos.',
-    m2: 'Explica cómo abrir cuentas bancarias en otros países siendo latinoamericano: Wise, Revolut, Mercury (EE.UU.), bancos en España. Pasos concretos, documentos necesarios, limitaciones.',
-    m3: 'Explica cómo cobrar en dólares desde cualquier país latinoamericano: Stripe, Wise, transferencias internacionales, criptomonedas como intermediario. Plataformas, costos, procesos.',
-    m4: 'Explica por qué tener un segundo pasaporte o residencia cambia fundamentalmente las opciones de vida. Cómo conseguirlo siendo latinoamericano: por ascendencia, inversión, residencia prolongada.',
-    p1: 'Explica el manual real de por qué hay guerras: recursos naturales, rutas comerciales, control monetario, intereses del capital. Usa la guerra de Irán 2026 y Ucrania como ejemplos concretos.',
-    p2: 'Explica el ciclo histórico de los imperios usando el modelo de Ray Dalio: Roma, España, Gran Bretaña, EE.UU. El patrón que se repite y en qué punto está EE.UU. hoy.',
-    p3: 'Explica por qué China ya es la potencia dominante del siglo XXI: economía por PPP, tecnología propia, sistema de pagos CIPS, yuan en comercio global, DeepSeek. Por qué la mayoría aún no lo ve.',
-    p4: 'Explica los mecanismos concretos mediante los cuales el status quo se mantiene: medios de comunicación, sistema educativo, deuda, entretenimiento, narrativa del éxito. Sin teoría de conspiración — solo mecánica.',
-    t1: 'Explica qué es realmente la inteligencia artificial: no un chatbot sino la automatización del trabajo intelectual. Por qué es el cambio más disruptivo en 5,000 años y qué significa para el trabajo humano.',
-    t2: 'Explica cómo usar IA para ganar ventaja real hoy: Claude, ChatGPT, Midjourney, Kling, HeyGen. Casos de uso concretos para trabajo, negocio y productividad personal. Herramientas gratuitas y de pago.',
-    t3: 'Explica la guerra de chips EE.UU.-China: por qué el control de los semiconductores avanzados es el control del futuro. TSMC, Nvidia, DeepSeek, ASML. Por qué afecta a todo el mundo.',
-    t4: 'Explica qué trabajos va a reemplazar la IA primero y cuáles son más seguros. No son los trabajos manuales. Contadores, abogados, diseñadores, periodistas, programadores — qué está pasando con cada uno.',
-    men1: 'Explica la Alegoría de la Caverna de Platón completa y cómo describe exactamente la situación del mundo en 2026: personas que solo conocen las sombras de su contexto y creen que eso es toda la realidad.',
-    men2: 'Explica cómo identificar las prisiones de contexto personales: creencias heredadas del entorno, límites invisibles, narrativas que limitan lo que se puede imaginar como posible. Con ejercicios concretos.',
-    men3: 'Explica la mentalidad mutante: no como motivación sino como necesidad de supervivencia ante un mundo que cambia más rápido que nunca. Cómo desarrollarla concretamente.',
-    men4: 'Explica el costo real de la ignorancia: no se paga inmediatamente sino cuando el mundo cambia y ya no puedes moverte. Ejemplos concretos: los que no entendieron el dólar, Bitcoin, la IA.',
-    n1: 'Explica por qué un negocio puramente local tiene un techo y cómo romperlo: digitalización, mercados latinoamericanos remotos, servicios que no dependen de ubicación física.',
-    n2: 'Explica qué es un sistema operativo digital para negocios: sistema de ventas, atención automatizada con IA, operación interna, conversión local. Por qué es la diferencia entre escalar y estancarse.',
-    n3: 'Explica la diferencia entre ser el negocio y tener un negocio. Cómo construir sistemas que generen ingresos sin requerir tu presencia o tiempo constante. La trampa del autoempleo.',
-    n4: 'Explica cómo un negocio latinoamericano puede escalar a mercados en CDMX, Monterrey, Bogotá, Miami. Estrategia de contenido, LinkedIn, Meta Ads, posicionamiento. Pasos concretos.'
-  };
+  /* ═══════════════════════════════════════ */
+  /*  LESSON COMPLETION                     */
+  /* ═══════════════════════════════════════ */
+  function completeLesson(id) {
+    const idx = state.completed.indexOf(id);
+    if (idx === -1) {
+      state.completed.push(id);
+    } else {
+      state.completed.splice(idx, 1);
+    }
+    saveState();
 
-  // NETLIFY FUNCTION CALLER
-  async function callClaude(prompt, maxTokens = 1000) {
+    /* Update UI for this lesson */
+    const lessonEl = document.querySelector('.lesson[data-lesson="' + id + '"]');
+    if (lessonEl) {
+      const check = lessonEl.querySelector('.lesson-check');
+      if (state.completed.includes(id)) {
+        lessonEl.classList.add('completed');
+        if (check) check.classList.add('done');
+      } else {
+        lessonEl.classList.remove('completed');
+        if (check) check.classList.remove('done');
+      }
+    }
+
+    /* Update complete button */
+    const btn = document.querySelector('[data-complete="' + id + '"]');
+    if (btn) {
+      if (state.completed.includes(id)) btn.classList.add('done');
+      else btn.classList.remove('done');
+    }
+
+    /* Update module completion */
+    const modKey = findModuleForLesson(id);
+    if (modKey) {
+      const completeCard = $('#complete-' + modKey);
+      if (completeCard) {
+        if (isModuleComplete(modKey)) completeCard.classList.add('show');
+        else completeCard.classList.remove('show');
+      }
+
+      /* Update section head count */
+      const modEl = $('#mod-' + modKey);
+      if (modEl) {
+        const countEl = modEl.querySelector('.sec-head-count');
+        if (countEl) countEl.textContent = getModuleCompletedCount(modKey) + '/' + MODULES[modKey].lessons.length;
+      }
+    }
+
+    renderStats();
+    renderModuleNav();
+  }
+
+  function findModuleForLesson(lessonId) {
+    for (const key of MODULE_ORDER) {
+      if (MODULES[key].lessons.some(l => l.id === lessonId)) return key;
+    }
+    return null;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  SHARE                                 */
+  /* ═══════════════════════════════════════ */
+  function shareLesson(id) {
+    const lesson = findLessonById(id);
+    if (!lesson) return;
+
+    const text = lesson.title + '\n\n' + lesson.desc + '\n\nManual del Mundo — por Stryv Studio';
+
+    if (navigator.share) {
+      navigator.share({ title: lesson.title, text: text, url: window.location.href }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('[data-share="' + id + '"]');
+        if (btn) { btn.textContent = '✓'; setTimeout(() => btn.textContent = '↗', 1500); }
+      }).catch(() => {});
+    }
+  }
+
+  function findLessonById(id) {
+    for (const key of MODULE_ORDER) {
+      const found = MODULES[key].lessons.find(l => l.id === id);
+      if (found) return found;
+    }
+    return null;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  SEARCH                                */
+  /* ═══════════════════════════════════════ */
+  function openSearch() {
+    $('#searchOverlay').classList.add('open');
+    setTimeout(() => $('#searchInput').focus(), 100);
+  }
+
+  function closeSearch() {
+    $('#searchOverlay').classList.remove('open');
+    $('#searchInput').value = '';
+    renderSearchResults('');
+  }
+
+  function renderSearchResults(query) {
+    const container = $('#searchResults');
+    if (!query.trim()) {
+      container.innerHTML = '<div class="search-empty">Escribe para buscar en todos los módulos</div>';
+      return;
+    }
+
+    const q = query.toLowerCase();
+    const results = [];
+
+    MODULE_ORDER.forEach(key => {
+      const m = MODULES[key];
+      m.lessons.forEach(lesson => {
+        if (lesson.title.toLowerCase().includes(q) || lesson.desc.toLowerCase().includes(q)) {
+          results.push({ module: m, moduleKey: key, lesson });
+        }
+      });
+    });
+
+    if (results.length === 0) {
+      container.innerHTML = '<div class="search-empty">No se encontraron resultados para "' + esc(query) + '"</div>';
+      return;
+    }
+
+    container.innerHTML = results.map(r =>
+      '<div class="search-result" data-search-module="' + r.moduleKey + '" data-search-lesson="' + r.lesson.id + '">' +
+        '<div class="search-result-module">' + r.module.icon + ' ' + esc(r.module.title) + '</div>' +
+        '<div class="search-result-title">' + esc(r.lesson.title) + '</div>' +
+        '<div class="search-result-desc">' + esc(r.lesson.desc) + '</div>' +
+      '</div>'
+    ).join('');
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  API: CLAUDE                           */
+  /* ═══════════════════════════════════════ */
+  async function callClaude(prompt, maxTokens) {
     const res = await fetch('/.netlify/functions/claude', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, maxTokens })
+      body: JSON.stringify({ prompt: prompt, maxTokens: maxTokens || 1200 })
     });
+    if (!res.ok) throw new Error('API error: ' + res.status);
     const json = await res.json();
+    if (json.error) throw new Error(json.error.message || 'API error');
     return json.content[0].text;
   }
 
-  // LIVE CONTEXT
-  let liveContext = '';
-
+  /* ═══════════════════════════════════════ */
+  /*  LIVE CONTEXT                          */
+  /* ═══════════════════════════════════════ */
   async function fetchLiveContext() {
-    const today = new Date();
-    const dateStr = `${today.getDate()} de ${['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][today.getMonth()]} de ${today.getFullYear()}`;
+    const dateStr = new Date().toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' });
+
+    /* Use cache if same day */
+    if (state.contextCache.date === todayDate && state.contextCache.text) {
+      state.liveContext = state.contextCache.text;
+      showContextBanner(state.liveContext);
+      return;
+    }
+
     try {
-      const text = await callClaude(`Hoy es ${dateStr}. Resume en 3-4 líneas los eventos más relevantes del mundo ahora mismo que afectan a latinoamericanos: economía, geopolítica, tecnología, mercados. Solo hechos concretos y datos reales. Sin opinión.`, 300);
-      liveContext = `Fecha: ${dateStr}. ${text}`;
+      const text = await callClaude(
+        'Hoy es ' + dateStr + '. Resume en 3-4 líneas los eventos más relevantes del mundo ahora mismo que afectan a latinoamericanos: economía, geopolítica, tecnología, mercados. Solo hechos concretos y datos reales de hoy. Sin opinión. Sin introducción.',
+        300
+      );
+      state.liveContext = 'Fecha: ' + dateStr + '. ' + text;
+      state.contextCache = { text: state.liveContext, date: todayDate };
+      saveState();
+      showContextBanner(text);
     } catch(e) {
-      liveContext = `Fecha: ${dateStr}. Guerra EE.UU.-Israel-Irán en curso Día 17. Dólar cayó 10% en 12 meses. Bitcoin $97,420. Oro $3,100. Petróleo $104 por Ormuz paralizado. China consolidando posición dominante.`;
+      state.liveContext = 'Fecha: ' + dateStr + '. Contexto no disponible — las lecciones se generarán con conocimiento base.';
+      if (state.contextCache.text) {
+        state.liveContext = state.contextCache.text;
+        showContextBanner(state.contextCache.text.replace(/^Fecha:.*?\. /, ''));
+      }
     }
   }
 
+  function showContextBanner(text) {
+    const banner = $('#contextBanner');
+    const textEl = $('#contextText');
+    if (banner && textEl && text) {
+      textEl.innerHTML = '<strong>Mundo hoy:</strong> ' + esc(text).substring(0, 280);
+      banner.style.display = 'flex';
+    }
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  GENERATE LESSON                       */
+  /* ═══════════════════════════════════════ */
   async function generateLesson(id) {
-    const bodyEl = document.getElementById('body-' + id);
-    const prompt = lessonPrompts[id];
-    if (!prompt) return;
+    const lesson = findLessonById(id);
+    if (!lesson) return;
+
+    state.loadingLessons.add(id);
+    const bodyEl = $('#body-' + id);
+    if (!bodyEl) return;
+
+    /* Show skeleton */
+    bodyEl.innerHTML = '<div class="sk" style="height:16px;width:100%"></div><div class="sk" style="height:16px;width:85%"></div><div class="sk" style="height:16px;width:70%"></div><div class="sk" style="height:16px;width:90%"></div>';
 
     try {
-      const text = await callClaude(`CONTEXTO DEL MUNDO HOY: ${liveContext}
+      const text = await callClaude(
+        'Eres un analista experto y comunicador directo. Hablas en español latino. Sin motivación barata. Solo verdad cruda con datos.\n\n' +
+        'CONTEXTO ACTUAL DEL MUNDO: ' + state.liveContext + '\n\n' +
+        'INSTRUCCIÓN: ' + lesson.prompt + '\n\n' +
+        'REGLAS:\n' +
+        '- Conecta TODO con eventos actuales de 2026\n' +
+        '- Sé directo, sin relleno ni motivación barata\n' +
+        '- Usa datos concretos y verificables\n' +
+        '- Cada acción debe ser ejecutable HOY\n' +
+        '- Tono: adulto informado hablándole a otro adulto\n\n' +
+        'Responde SOLO con JSON válido sin markdown ni backticks:\n' +
+        '{"dato_clave":"Un dato o estadística impactante que abra los ojos",' +
+        '"resumen":"3-4 párrafos densos. Sin relleno. Conecta con actualidad.",' +
+        '"por_que_importa":"1 párrafo: por qué esto te afecta personalmente si vives en Latinoamérica",' +
+        '"acciones":[' +
+          '{"num":"1","texto":"Acción concreta ejecutable hoy","herramienta":"App o plataforma específica"},' +
+          '{"num":"2","texto":"Segunda acción concreta","herramienta":"Herramienta específica"},' +
+          '{"num":"3","texto":"Acción a mediano plazo","herramienta":"Herramienta específica"}' +
+        ']}',
+        1500
+      );
 
-Con ese contexto actual en mente, ${prompt}
+      const data = JSON.parse(text.replace(/```json|```/g, '').trim());
 
-Es fundamental que conectes el conocimiento con lo que está pasando HOY. Usa datos y eventos actuales.
+      /* Cache the result */
+      state.lessonCache[id] = data;
+      saveState();
 
-Responde SOLO con JSON válido sin backticks ni texto adicional:
-{
-  "resumen": "2-3 párrafos en español latino directo. Sin motivación. Con verdad cruda, datos reales y conexión con eventos actuales.",
-  "acciones": [
-    {"num": "1", "texto": "Acción concreta que puede hacer hoy con herramienta específica"},
-    {"num": "2", "texto": "Segunda acción concreta"},
-    {"num": "3", "texto": "Tercera acción concreta a largo plazo"}
-  ]
-}`);
-
-      const data = JSON.parse(text.replace(/```json|```/g,'').trim());
-
-      bodyEl.innerHTML = `
-        <div class="ai-badge"><div class="ai-dot"></div>Actualizado hoy · IA en tiempo real</div>
-        <div class="lesson-exp-block">
-          <div class="exp-label">Lo que necesitas saber</div>
-          <div class="exp-text">${data.resumen.replace(/\n/g, '<br><br>')}</div>
-        </div>
-        <div class="lesson-exp-block">
-          <div class="exp-label">Pasos accionables</div>
-          <div class="exp-actions">
-            ${data.acciones.map(a => `<div class="exp-action"><div class="exp-action-num">${a.num}</div><div class="exp-action-text">${a.texto}</div></div>`).join('')}
-          </div>
-        </div>`;
+      renderLessonContent(id, data);
     } catch(e) {
-      bodyEl.innerHTML = '<div style="color:#536471;font-size:14px">Error cargando. Intenta de nuevo.</div>';
-      loadedLessons.delete(id);
+      bodyEl.innerHTML = '<div style="padding:8px 0;color:var(--text-2);font-size:14px;text-align:center">' +
+        '<div style="font-size:24px;margin-bottom:8px">⚠️</div>' +
+        'No se pudo cargar el contenido.<br>' +
+        '<button onclick="retry(\'' + id + '\')" style="margin-top:10px;padding:8px 20px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Reintentar</button>' +
+      '</div>';
     }
-  }
-</script>
 
+    state.loadingLessons.delete(id);
+  }
+
+  /* Make retry available */
+  window.retry = function(id) {
+    state.lessonCache[id] = null;
+    delete state.lessonCache[id];
+    saveState();
+    generateLesson(id);
+  };
+
+  function renderLessonContent(id, data) {
+    const bodyEl = $('#body-' + id);
+    if (!bodyEl || !data) return;
+
+    let html = '<div class="ai-badge"><div class="ai-dot"></div>Actualizado hoy · IA en tiempo real</div>';
+
+    /* Key fact */
+    if (data.dato_clave) {
+      html += '<div class="exp-key-fact">' + esc(data.dato_clave) + '</div>';
+    }
+
+    /* Summary */
+    html += '<div class="exp-block"><div class="exp-label">Lo que necesitas saber</div>' +
+      '<div class="exp-text">' + esc(data.resumen).replace(/\n/g, '<br><br>') + '</div></div>';
+
+    /* Why it matters */
+    if (data.por_que_importa) {
+      html += '<div class="exp-block"><div class="exp-label">Por qué te importa</div>' +
+        '<div class="exp-why">' + esc(data.por_que_importa) + '</div></div>';
+    }
+
+    /* Action steps */
+    if (data.acciones && data.acciones.length) {
+      html += '<div class="exp-block"><div class="exp-label">Pasos accionables</div><div class="exp-steps">';
+      data.acciones.forEach(a => {
+        html += '<div class="exp-step">' +
+          '<div class="exp-step-num">' + esc(a.num) + '</div>' +
+          '<div class="exp-step-content">' +
+            '<div class="exp-step-text">' + esc(a.texto) + '</div>' +
+            (a.herramienta ? '<div class="exp-step-tool">🔧 ' + esc(a.herramienta) + '</div>' : '') +
+          '</div></div>';
+      });
+      html += '</div></div>';
+    }
+
+    bodyEl.innerHTML = html;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  TOUCH GESTURES                        */
+  /* ═══════════════════════════════════════ */
+  let touchStartX = 0;
+  function setupSwipe() {
+    const container = $('#moduleContainer');
+    if (!container) return;
+
+    container.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    container.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].screenX;
+      if (Math.abs(diff) < 80) return;
+
+      const currentIdx = MODULE_ORDER.indexOf(state.activeModule);
+      if (diff > 0 && currentIdx < MODULE_ORDER.length - 1) {
+        switchModule(MODULE_ORDER[currentIdx + 1]);
+      } else if (diff < 0 && currentIdx > 0) {
+        switchModule(MODULE_ORDER[currentIdx - 1]);
+      }
+    }, { passive: true });
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  PWA INSTALL                           */
+  /* ═══════════════════════════════════════ */
+  let deferredPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const dismissed = store.get('installDismissed', false);
+    if (!dismissed) $('#installBanner').classList.add('show');
+  });
+
+  /* ═══════════════════════════════════════ */
+  /*  EVENT DELEGATION                      */
+  /* ═══════════════════════════════════════ */
+  document.addEventListener('click', e => {
+    /* Module tab */
+    const tab = e.target.closest('[data-module]');
+    if (tab) { switchModule(tab.dataset.module); return; }
+
+    /* Bottom nav */
+    const nav = e.target.closest('[data-nav]');
+    if (nav) { switchModule(nav.dataset.nav); return; }
+
+    /* Lesson card */
+    const lesson = e.target.closest('.lesson[data-lesson]');
+    if (lesson && !e.target.closest('.lesson-check')) {
+      toggleLesson(lesson.dataset.lesson);
+      return;
+    }
+
+    /* Lesson checkmark (direct complete) */
+    const check = e.target.closest('.lesson-check');
+    if (check) {
+      const lessonEl = check.closest('.lesson[data-lesson]');
+      if (lessonEl) { e.stopPropagation(); completeLesson(lessonEl.dataset.lesson); return; }
+    }
+
+    /* Complete button in expanded */
+    const completeBtn = e.target.closest('[data-complete]');
+    if (completeBtn) { completeLesson(completeBtn.dataset.complete); return; }
+
+    /* Share button */
+    const shareBtn = e.target.closest('[data-share]');
+    if (shareBtn) { shareLesson(shareBtn.dataset.share); return; }
+
+    /* Close button in expanded */
+    const closeBtn = e.target.closest('[data-close]');
+    if (closeBtn) { toggleLesson(closeBtn.dataset.close); return; }
+
+    /* Search result */
+    const result = e.target.closest('.search-result');
+    if (result) {
+      closeSearch();
+      switchModule(result.dataset.searchModule);
+      setTimeout(() => toggleLesson(result.dataset.searchLesson), 300);
+      return;
+    }
+
+    /* Search btn */
+    if (e.target.closest('#searchBtn')) { openSearch(); return; }
+    if (e.target.closest('#searchClose')) { closeSearch(); return; }
+
+    /* Theme toggle */
+    if (e.target.closest('#themeBtn')) { toggleTheme(); return; }
+
+    /* Context close */
+    if (e.target.closest('#contextClose')) { $('#contextBanner').style.display = 'none'; return; }
+
+    /* Install banner */
+    if (e.target.closest('#installBtn')) {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+      }
+      $('#installBanner').classList.remove('show');
+      return;
+    }
+    if (e.target.closest('#installClose')) {
+      $('#installBanner').classList.remove('show');
+      store.set('installDismissed', true);
+      return;
+    }
+
+    /* Onboarding buttons */
+    const onbBtn = e.target.closest('.onb-btn[data-next]');
+    if (onbBtn) {
+      const next = parseInt(onbBtn.dataset.next);
+      $$('.onb-step').forEach(s => s.classList.remove('active'));
+      $$('.onb-dot').forEach(d => d.classList.remove('active'));
+      const nextStep = document.querySelector('.onb-step[data-step="' + next + '"]');
+      if (nextStep) nextStep.classList.add('active');
+      const dots = $$('.onb-dot');
+      if (dots[next]) dots[next].classList.add('active');
+      return;
+    }
+
+    if (e.target.closest('#onbStart') || e.target.closest('#onbSkip')) {
+      state.onboarded = true;
+      store.set('onboarded', true);
+      $('#onboarding').classList.add('hidden');
+      return;
+    }
+  });
+
+  /* Search input */
+  document.addEventListener('input', e => {
+    if (e.target.id === 'searchInput') {
+      renderSearchResults(e.target.value);
+    }
+  });
+
+  /* Escape key for search */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeSearch();
+  });
+
+  /* ═══════════════════════════════════════ */
+  /*  LOADER                                */
+  /* ═══════════════════════════════════════ */
+  function runLoader() {
+    const fill = $('#loaderFill');
+    const tipEl = $('#loaderTip');
+    let prog = 0;
+    let tipIdx = 0;
+
+    tipEl.textContent = TIPS[0];
+
+    const interval = setInterval(() => {
+      prog += Math.random() * 18 + 4;
+      if (prog >= 100) { prog = 100; clearInterval(interval); }
+      fill.style.width = prog + '%';
+
+      const newIdx = Math.min(Math.floor((prog / 100) * TIPS.length), TIPS.length - 1);
+      if (newIdx !== tipIdx) {
+        tipIdx = newIdx;
+        tipEl.style.opacity = '0';
+        setTimeout(() => { tipEl.textContent = TIPS[tipIdx]; tipEl.style.opacity = '1'; }, 150);
+      }
+
+      if (prog >= 100) {
+        fetchLiveContext().then(() => {
+          setTimeout(() => {
+            $('#loader').classList.add('hidden');
+            if (!state.onboarded) {
+              $('#onboarding').classList.remove('hidden');
+            }
+          }, 400);
+        });
+      }
+    }, 140);
+  }
+
+  /* ═══════════════════════════════════════ */
+  /*  INIT                                  */
+  /* ═══════════════════════════════════════ */
+  function init() {
+    applyTheme();
+    updateStreak();
+    $('#dateDisplay').textContent = todayStr;
+
+    renderModuleNav();
+    renderModules();
+    renderBottomNav();
+    renderStats();
+    setupSwipe();
+    runLoader();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
 </body>
 </html>
