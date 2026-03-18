@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Manual del Mundo — Stryv</title>
+<title>Contexto — Stryv</title>
 <meta name="description" content="Conocimiento que el sistema no te da. Dinero, poder, movilidad global, tecnología e IA. Gratis. Sin vender nada. Solo información real con pasos concretos.">
 <meta name="theme-color" content="#0D1117">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Manual del Mundo">
+<meta name="apple-mobile-web-app-title" content="Contexto">
 <link rel="manifest" href="/manifest.json">
-<meta property="og:title" content="Manual del Mundo — Lo que nadie te enseñó">
+<meta property="og:title" content="Contexto — Lo que nadie te enseñó">
 <meta property="og:description" content="Conocimiento accionable sobre dinero, geopolítica, movilidad global, tecnología e IA. Gratis.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Manual del Mundo — Stryv">
+<meta name="twitter:title" content="Contexto — Stryv">
 <meta name="twitter:description" content="Lo que nadie te enseñó porque no les convenía.">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
@@ -316,7 +316,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 
 <!-- ═══════ LOADER ═══════ -->
 <div class="loader" id="loader">
-  <div class="loader-brand">Manual del Mundo</div>
+  <div class="loader-brand">Contexto</div>
   <div class="loader-sub">por Stryv Studio</div>
   <div class="loader-bar"><div class="loader-bar-fill" id="loaderFill"></div></div>
   <div class="loader-tip" id="loaderTip"></div>
@@ -355,7 +355,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 
 <!-- ═══════ TOP BAR ═══════ -->
 <div class="top-bar">
-  <div class="top-bar-title">Manual del Mundo</div>
+  <div class="top-bar-title">Contexto</div>
   <div class="top-bar-streak" id="streakBadge" style="display:none">🔥 <span id="streakCount">0</span></div>
   <button class="top-bar-btn" id="searchBtn" aria-label="Buscar">🔍</button>
   <button class="top-bar-btn" id="themeBtn" aria-label="Cambiar tema">🌙</button>
@@ -928,7 +928,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
     const lesson = findLessonById(id);
     if (!lesson) return;
 
-    const text = lesson.title + '\n\n' + lesson.desc + '\n\nManual del Mundo — por Stryv Studio';
+    const text = lesson.title + '\n\n' + lesson.desc + '\n\nContexto — por Stryv Studio';
 
     if (navigator.share) {
       navigator.share({ title: lesson.title, text: text, url: window.location.href }).catch(() => {});
