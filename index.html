@@ -577,10 +577,11 @@ async function generateBriefing(force){
   try{
     const text = await callClaude(
       'Fecha: '+todayFormatted()+'. Eres el editor jefe de CONTEXTO. A partir de este paquete de noticias reales del día, crea un briefing corto, contundente y útil para un lector latinoamericano.\n\n'+
-      'NOTICIAS REALES DE HOY:\n'+newsSummary+'\n\n'+
+      'NOTICIAS REALES DE HOY:\n'+articles.slice(0, 10).map(item => '['+item.section+'] '+item.title).join('\n')+'\n\n'+
       'Responde SOLO con JSON válido sin markdown con esta estructura exacta: '+
       '{"headline":"1 frase fuerte que describa la jugada del día","summary":"1 párrafo corto y directo explicando la tensión principal del día","watch":["Señal concreta a vigilar 1","Señal concreta a vigilar 2","Señal concreta a vigilar 3"]}',
-      900
+      550,
+      'fast'
     );
 
     const data = JSON.parse(text.replace(/```json|```/g,'').trim());
@@ -625,16 +626,30 @@ function shareBriefing(){
 /* ═══════════════════════════════════════ */
 /*  CALL CLAUDE                           */
 /* ═══════════════════════════════════════ */
-async function callClaude(prompt, maxTokens){
+async function callClaude(prompt, maxTokens, mode){
   const res = await fetch('/.netlify/functions/claude',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({prompt, maxTokens: maxTokens||1200})
+    body:JSON.stringify({prompt, maxTokens: maxTokens||1200, mode: mode||'quality'})
   });
   if(!res.ok) throw new Error('API error');
   const json = await res.json();
   if(json.error) throw new Error(typeof json.error === 'string' ? json.error : (json.error.message||'API error'));
   return json.content[0].text;
+}
+
+function buildRelevantContext(article){
+  const sameSection = articles
+    .filter(item => item.section === article.section)
+    .slice(0, 4)
+    .map(item => '['+item.section+'] '+item.title);
+
+  const crossSection = articles
+    .filter(item => item.section !== article.section)
+    .slice(0, 4)
+    .map(item => '['+item.section+'] '+item.title);
+
+  return sameSection.concat(crossSection).join('\n');
 }
 
 /* ═══════════════════════════════════════ */
@@ -798,16 +813,17 @@ async function generateAnalysis(id, article){
 
   try{
     const text = await callClaude(
-      'Fecha: '+dateStr+'. Eres un analista de inteligencia global para la plataforma CONTEXTO de Stryv Studio. Tu trabajo es analizar noticias y explicar por qué le importan a un latinoamericano.\n\n'+
-      'NOTICIAS REALES DE HOY:\n'+newsSummary+'\n\n'+
+      'Fecha: '+dateStr+'. Eres un analista de inteligencia global para la plataforma CONTEXTO de Stryv Studio. Tu trabajo es analizar noticias y explicar por qué le importan a un latinoamericano. Sé breve, afilado y concreto.\n\n'+
+      'CONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\n'+
       'NOTICIA A ANALIZAR: "'+article.title+'" — Fuente: '+article.source+' — Sección: '+article.section+'\n\n'+
-      'Genera un análisis profundo de esta noticia. Responde SOLO con JSON válido sin markdown:\n'+
-      '{"titular_contexto":"Reescribe el titular en 1 línea revelando lo que realmente significa — el ángulo que los medios no explican",'+ 
-      '"que_esta_pasando":"2-3 párrafos explicando qué está pasando realmente, con contexto histórico y geopolítico. Conecta con otras noticias de hoy si es relevante. Sin relleno.",'+ 
-      '"por_que_te_afecta":"1 párrafo directo: cómo esto impacta la vida, el bolsillo o las opciones de alguien en Latinoamérica",'+ 
-      '"cambio_de_paradigma":"1 párrafo: qué creencia o asunción del status quo esta noticia desafía — qué deberías repensar",'+ 
-      '"que_hacer":[{"num":"1","texto":"Acción concreta inmediata"},{"num":"2","texto":"Acción a mediano plazo"}]}',
-      1500
+      'Responde SOLO con JSON válido sin markdown. Mantén cada campo corto y útil.\n'+
+      '{"titular_contexto":"1 línea, máximo 18 palabras",'+ 
+      '"que_esta_pasando":"1 párrafo, máximo 90 palabras",'+ 
+      '"por_que_te_afecta":"1 párrafo, máximo 55 palabras",'+ 
+      '"cambio_de_paradigma":"1 párrafo, máximo 45 palabras",'+ 
+      '"que_hacer":[{"num":"1","texto":"Acción concreta, máximo 12 palabras"},{"num":"2","texto":"Acción concreta, máximo 12 palabras"}]}',
+      700,
+      'fast'
     );
 
     const data = JSON.parse(text.replace(/```json|```/g,'').trim());
