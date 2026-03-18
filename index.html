@@ -564,7 +564,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
   /*  STATE                                 */
   /* ═══════════════════════════════════════ */
   const LS_PREFIX = 'mdm_';
-  const CACHE_VERSION = 2; /* Increment to force cache clear on deploy */
+  const CACHE_VERSION = 3; /* Increment to force cache clear on deploy */
   const store = {
     get(key, fallback) { try { const v = localStorage.getItem(LS_PREFIX + key); return v !== null ? JSON.parse(v) : fallback; } catch { return fallback; } },
     set(key, val) { try { localStorage.setItem(LS_PREFIX + key, JSON.stringify(val)); } catch {} }
@@ -1011,6 +1011,20 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
   }
 
   /* ═══════════════════════════════════════ */
+  /*  REAL NEWS FETCHER                     */
+  /* ═══════════════════════════════════════ */
+  async function fetchRealNews() {
+    try {
+      const res = await fetch('/.netlify/functions/news');
+      if (!res.ok) throw new Error('News fetch failed');
+      const data = await res.json();
+      return data;
+    } catch(e) {
+      return { headlines: [], summary: '', count: 0 };
+    }
+  }
+
+  /* ═══════════════════════════════════════ */
   /*  LIVE CONTEXT                          */
   /* ═══════════════════════════════════════ */
   async function fetchLiveContext() {
@@ -1019,24 +1033,44 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
     /* Use cache if same day */
     if (state.contextCache.date === todayDate && state.contextCache.text) {
       state.liveContext = state.contextCache.text;
-      showContextBanner(state.liveContext);
+      showContextBanner(state.contextCache.bannerText || state.liveContext);
       return;
     }
 
     try {
+      /* STEP 1: Fetch REAL news from Google News */
+      const news = await fetchRealNews();
+      const newsContext = news.summary || 'No se pudieron obtener noticias en tiempo real.';
+
+      /* STEP 2: Ask Claude to synthesize the real headlines into a coherent context */
       const text = await callClaude(
-        'Hoy es ' + dateStr + '. IMPORTANTE: Estamos en 2026. NO menciones tu fecha de corte de conocimiento ni digas que no tienes información actualizada. Responde con confianza usando el contexto proporcionado y tu conocimiento. Resume en 3-4 líneas los eventos más relevantes del mundo ahora mismo que afectan a latinoamericanos: economía, geopolítica, tecnología, mercados. Solo hechos concretos. Sin opinión. Sin introducción. Sin disclaimers.',
-        300
+        'Hoy es ' + dateStr + '. A continuación tienes TITULARES REALES de noticias de hoy extraídos de Google News:\n\n' +
+        newsContext + '\n\n' +
+        'INSTRUCCIÓN: Con base en estos titulares REALES de hoy, genera un resumen de 4-5 líneas de lo más relevante que está pasando en el mundo y que afecta a latinoamericanos. Organízalo por: economía, geopolítica, tecnología/IA, mercados. Usa datos específicos de los titulares. Sin opinión. Sin introducción. Sin disclaimers. Solo los hechos.',
+        400
       );
-      state.liveContext = 'Fecha: ' + dateStr + '. ' + text;
-      state.contextCache = { text: state.liveContext, date: todayDate };
+
+      state.liveContext = 'Fecha: ' + dateStr + '. NOTICIAS REALES DE HOY:\n' + newsContext + '\n\nRESUMEN: ' + text;
+      state.contextCache = { text: state.liveContext, bannerText: text, date: todayDate };
       saveState();
       showContextBanner(text);
     } catch(e) {
-      state.liveContext = 'Fecha: ' + dateStr + '. Contexto no disponible — las lecciones se generarán con conocimiento base.';
+      /* Fallback: try news only without Claude */
+      try {
+        const news = await fetchRealNews();
+        if (news.summary) {
+          state.liveContext = 'Fecha: ' + dateStr + '. NOTICIAS REALES DE HOY:\n' + news.summary;
+          state.contextCache = { text: state.liveContext, bannerText: news.headlines.slice(0,3).map(h => h.title).join(' · '), date: todayDate };
+          saveState();
+          showContextBanner(state.contextCache.bannerText);
+          return;
+        }
+      } catch(e2) {}
+
+      state.liveContext = 'Fecha: ' + dateStr + '.';
       if (state.contextCache.text) {
         state.liveContext = state.contextCache.text;
-        showContextBanner(state.contextCache.text.replace(/^Fecha:.*?\. /, ''));
+        showContextBanner(state.contextCache.bannerText || '');
       }
     }
   }
@@ -1045,7 +1079,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
     const banner = $('#contextBanner');
     const textEl = $('#contextText');
     if (banner && textEl && text) {
-      textEl.innerHTML = '<strong>Mundo hoy:</strong> ' + esc(text).substring(0, 280);
+      textEl.innerHTML = '<strong>🔴 Mundo hoy:</strong> ' + esc(text).substring(0, 350);
       banner.style.display = 'flex';
     }
   }
