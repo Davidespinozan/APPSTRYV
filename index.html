@@ -1535,13 +1535,8 @@ async function refreshAll(){
   btn.textContent=t('refreshUpdating');
   $('#refreshTime').textContent=t('refreshSearching');
 
-  // Clear analysis cache on refresh
-  analysisCache={};
-  store.set('analysisCache',{});
-  topSignalCache={};
-  store.set('topSignalCache',{});
-  delete briefingCache[todayKey()];
-  store.set('briefingCache', briefingCache);
+  // Keep AI caches — only re-analyze new/changed headlines
+  // analysisCache, topSignalCache and briefingCache persist across refreshes
 
   await fetchNews();
   renderSecNav();
@@ -1554,7 +1549,7 @@ async function refreshAll(){
   btn.disabled=false;
   btn.textContent=t('refreshUpdate');
 
-  // Auto-analyze top signals after refresh
+  // Only analyzes signals not already in cache
   if(articles.length) autoAnalyzeTopSignals();
 }
 
