@@ -100,6 +100,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .top-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:15px;color:var(--text-2);transition:all .15s}
 .top-btn:hover{background:var(--surface-2);color:var(--text)}
+.lang-btn{width:auto;padding:0 10px;font-size:11px;font-weight:800;letter-spacing:.5px;border-radius:999px;height:30px}
 
 /* ═══ DATE HEADER ═══ */
 .date-header{padding:16px 16px 12px;border-bottom:1px solid var(--border-light)}
@@ -314,7 +315,8 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 <!-- TOP BAR -->
 <div class="top-bar">
   <div class="top-bar-brand">CONTEXTO</div>
-  <div class="top-bar-live"><span class="live-dot"></span>EN VIVO</div>
+  <div class="top-bar-live"><span class="live-dot"></span><span id="liveLabel">EN VIVO</span></div>
+  <button class="top-btn lang-btn" id="langBtn">EN</button>
   <button class="top-btn" id="searchBtn">🔍</button>
   <button class="top-btn" id="themeBtn">☀️</button>
 </div>
@@ -415,14 +417,197 @@ const SECTIONS = ['all','saved','Dinero','Poder','Tecnología','Mercados','Movil
 const SECTION_ICONS = {all:'📡',saved:'★',Dinero:'💰',Poder:'⚡','Tecnología':'🤖',Mercados:'📊',Movilidad:'🌍',Latam:'🌎'};
 const SECTION_TAGS = {Dinero:'tag-dinero',Poder:'tag-poder','Tecnología':'tag-tecnologia',Mercados:'tag-mercados',Movilidad:'tag-movilidad',Latam:'tag-latam'};
 
-const CTAS = {
-  Dinero: { title:'¿Tu negocio no tiene sistema financiero digital?', desc:'Construimos la infraestructura que hace que tu negocio opere aunque tú no estés.' },
-  Poder: { title:'El mundo cambia. ¿Tu negocio también?', desc:'Sistemas digitales para negocios que entienden que el mundo ya no es el mismo.' },
-  'Tecnología': { title:'¿Tu negocio ya usa IA?', desc:'Implementamos atención automatizada con IA para negocios que no quieren quedarse atrás.' },
-  Mercados: { title:'¿Operas sin datos en tiempo real?', desc:'Dashboards, automatización y sistemas que te dan visibilidad total de tu negocio.' },
-  Movilidad: { title:'¿Tu negocio puede operar desde cualquier país?', desc:'Si no, hay algo que no está digitalizado. Hablemos.' },
-  Latam: { title:'¿Listo para escalar fuera de tu ciudad?', desc:'Todo lo que aprendiste aquí, Stryv lo implementa. Diagnóstico gratis.' }
+/* ═══════════════════════════════════════ */
+/*  i18n                                  */
+/* ═══════════════════════════════════════ */
+const I18N = {
+  es: {
+    live: 'EN VIVO',
+    langToggle: 'EN',
+    loaderSub: 'Radar para tiempos de cambio',
+    loaderStatuses: ['Conectando fuentes...','Escaneando señales globales...','Priorizando lo relevante...','Preparando tu radar...'],
+    loaderDone: (n) => n+' señales encontradas',
+    tagline: 'Lo que está cambiando el mundo y por qué te deja expuesto si no lo entiendes.',
+    heroKicker: 'Terminal de claridad',
+    heroTitle: 'La mayoría escucha titulares. CONTEXTO te explica el cambio de raíz.',
+    heroSummary: '<strong>Si no entiendes el cambio, reaccionas tarde.</strong> Esta app existe para mostrarte qué está reconfigurando el mundo antes de que te deje sin margen.',
+    heroManifesto: 'Ver manifiesto',
+    heroPower: 'Ir a lo más tenso',
+    briefingLabel: 'Radar del día',
+    briefingPreparing: 'Preparando...',
+    briefingReady: 'Listo para generar',
+    briefingWaiting: 'Esperando titulares',
+    briefingTitle: 'Tu lectura estratégica del día.',
+    briefingCopyReady: 'Genera una lectura para detectar qué está reconfigurando el tablero antes de que la mayoría lo note.',
+    briefingCopyWaiting: 'Aún no hay suficientes señales cargadas para construir una lectura sólida del día.',
+    briefingItems: ['Qué conflicto o cambio está moviendo poder real.','Qué narrativa del status quo ya no se sostiene.','Qué conviene vigilar si operas o vives en Latam.'],
+    briefingGenerate: 'Generar briefing',
+    briefingRefresh: 'Refrescar briefing',
+    briefingGenerating: 'Generando...',
+    briefingAnalyzing: 'Analizando señales',
+    briefingFailed: 'No se pudo generar',
+    briefingApiError: 'La API de Claude no está configurada en Netlify.',
+    briefingError: 'No se pudo generar el briefing ahora.',
+    briefingShare: 'Compartir',
+    briefingCopied: 'Copiado',
+    briefingShareText: 'Estoy usando CONTEXTO para entender qué está pasando hoy y por qué afecta en Latam.',
+    refreshLoading: 'Cargando radar global...',
+    refreshUpdating: 'Actualizando...',
+    refreshSearching: 'Buscando señales clave...',
+    refreshUpdate: 'Actualizar',
+    refreshError: 'Error de conexión con el radar',
+    refreshAt: (t)=>'Actualizado a las '+t,
+    installTitle: 'Instala CONTEXTO',
+    installDesc: 'Ábrelo como app y mantén tu briefing a un toque.',
+    installBtn: 'Instalar',
+    installDismiss: 'Ahora no',
+    topSignalsTitle: 'Lo que no puedes ignorar hoy',
+    topSignalsSub: (n)=>n+' señales clave',
+    signalLoading: 'Generando lectura estratégica...',
+    signalFailed: 'No se pudo generar la lectura.',
+    signalCta: 'Abrir lectura completa →',
+    navAll: 'Todo',
+    navSaved: 'Guardadas',
+    navTech: 'Tech',
+    signals: 'señales',
+    searchPlaceholder: 'Buscar señales, conflictos o cambios...',
+    searchCancel: 'Cancelar',
+    searchEmpty: 'Escribe para buscar en todas las señales',
+    searchNoResults: (q)=>'Sin resultados para "'+q+'"',
+    savedEmptyTitle: 'No has guardado nada todavía',
+    savedEmptyDesc: 'Guarda señales que quieras revisar con calma o compartir con tu audiencia.',
+    savedExplore: 'Explorar radar',
+    feedEmptyTitle: 'No cargó el radar',
+    feedEmptyDesc: 'La conexión con la función de noticias falló. Intenta actualizar.',
+    feedRetry: 'Reintentar',
+    analysisBadge: 'Lectura estratégica',
+    analysisWhat: 'Qué está pasando realmente',
+    analysisWhy: 'Por qué te afecta',
+    analysisShift: 'Cambio de paradigma',
+    analysisAction: 'Qué hacer',
+    analysisShare: 'Compartir análisis ↗',
+    analysisCopied: '✓ Copiado',
+    analysisApiError: '⚠️ Falta configurar CLAUDE_API_KEY en Netlify.',
+    analysisError: '⚠️ No se pudo generar el análisis.',
+    analysisRetry: 'Reintentar',
+    metricSignals: 'señales hoy',
+    metricSaved: 'guardadas',
+    metricStreak: (n)=>n+' día'+(n===1?'':'s')+' de racha',
+    metricAnalyses: 'lecturas hoy',
+    ctaTalk: 'Hablar con Stryv',
+    onboardingSkip: 'Saltar',
+    onboardingNext: 'Siguiente',
+    onboardingEnter: 'Entrar',
+    onboardingStep: (c,t)=>'Paso '+c+' de '+t,
+    onboardingSteps: [
+      { title:'El mundo ya cambió.', copy:'Guerras, IA, Bitcoin, China, monedas, poder. <strong>La mayoría se entera tarde</strong> y reacciona cuando el costo ya llegó.', points:['No estás viendo eventos aislados. Estás viendo una reconfiguración del tablero.','La velocidad del cambio ya es mayor que la capacidad de la mayoría para entenderlo.']},
+      { title:'Escuchar un titular no es entenderlo.', copy:'La mayoría consume noticias como ruido. <strong>Muy pocos entienden el cambio de raíz</strong>, la jugada detrás o el riesgo de quedarse quietos.', points:['Si no entiendes el contexto, reaccionas tarde, proteges mal y decides peor.','La ignorancia no duele hasta que el mundo cambia y te deja sin margen.']},
+      { title:'CONTEXTO existe para cerrar esa brecha.', copy:'Aquí no vienes a consumir noticias. Vienes a entender <strong>qué está pasando, qué significa y por qué te afecta</strong> antes que la mayoría.', points:['Lee las señales más relevantes del día sin perderte en ruido superficial.','Abre cualquier señal y recibe una lectura estratégica, no un resumen genérico.']}
+    ],
+    ctas: {
+      Dinero:{title:'¿Tu negocio no tiene sistema financiero digital?',desc:'Construimos la infraestructura que hace que tu negocio opere aunque tú no estés.'},
+      Poder:{title:'El mundo cambia. ¿Tu negocio también?',desc:'Sistemas digitales para negocios que entienden que el mundo ya no es el mismo.'},
+      'Tecnología':{title:'¿Tu negocio ya usa IA?',desc:'Implementamos atención automatizada con IA para negocios que no quieren quedarse atrás.'},
+      Mercados:{title:'¿Operas sin datos en tiempo real?',desc:'Dashboards, automatización y sistemas que te dan visibilidad total de tu negocio.'},
+      Movilidad:{title:'¿Tu negocio puede operar desde cualquier país?',desc:'Si no, hay algo que no está digitalizado. Hablemos.'},
+      Latam:{title:'¿Listo para escalar fuera de tu ciudad?',desc:'Todo lo que aprendiste aquí, Stryv lo implementa. Diagnóstico gratis.'}
+    }
+  },
+  en: {
+    live: 'LIVE',
+    langToggle: 'ES',
+    loaderSub: 'Radar for changing times',
+    loaderStatuses: ['Connecting sources...','Scanning global signals...','Prioritizing what matters...','Preparing your radar...'],
+    loaderDone: (n) => n+' signals found',
+    tagline: 'What\'s reshaping the world — and why you\'re exposed if you don\'t understand it.',
+    heroKicker: 'Clarity terminal',
+    heroTitle: 'Most people hear headlines. CONTEXTO shows you the root of the shift.',
+    heroSummary: '<strong>If you don\'t understand the shift, you react too late.</strong> This app exists to show you what\'s reshaping the world before it leaves you behind.',
+    heroManifesto: 'View manifesto',
+    heroPower: 'Go to high tension',
+    briefingLabel: 'Daily radar',
+    briefingPreparing: 'Preparing...',
+    briefingReady: 'Ready to generate',
+    briefingWaiting: 'Waiting for signals',
+    briefingTitle: 'Your strategic read for today.',
+    briefingCopyReady: 'Generate a read to detect what\'s reshaping the board before most people notice.',
+    briefingCopyWaiting: 'Not enough signals loaded yet to build a solid read of the day.',
+    briefingItems: ['Which conflict or shift is moving real power.','Which status quo narrative no longer holds.','What to watch if you operate or live in Latam.'],
+    briefingGenerate: 'Generate briefing',
+    briefingRefresh: 'Refresh briefing',
+    briefingGenerating: 'Generating...',
+    briefingAnalyzing: 'Analyzing signals',
+    briefingFailed: 'Could not generate',
+    briefingApiError: 'Claude API key is not configured on Netlify.',
+    briefingError: 'Could not generate the briefing right now.',
+    briefingShare: 'Share',
+    briefingCopied: 'Copied',
+    briefingShareText: 'I\'m using CONTEXTO to understand what\'s happening today and why it matters.',
+    refreshLoading: 'Loading global radar...',
+    refreshUpdating: 'Updating...',
+    refreshSearching: 'Searching key signals...',
+    refreshUpdate: 'Refresh',
+    refreshError: 'Radar connection error',
+    refreshAt: (t)=>'Updated at '+t,
+    installTitle: 'Install CONTEXTO',
+    installDesc: 'Open it as an app and keep your briefing one tap away.',
+    installBtn: 'Install',
+    installDismiss: 'Not now',
+    topSignalsTitle: 'What you can\'t ignore today',
+    topSignalsSub: (n)=>n+' key signals',
+    signalLoading: 'Generating strategic read...',
+    signalFailed: 'Could not generate the read.',
+    signalCta: 'Open full read →',
+    navAll: 'All',
+    navSaved: 'Saved',
+    navTech: 'Tech',
+    signals: 'signals',
+    searchPlaceholder: 'Search signals, conflicts, or shifts...',
+    searchCancel: 'Cancel',
+    searchEmpty: 'Type to search across all signals',
+    searchNoResults: (q)=>'No results for "'+q+'"',
+    savedEmptyTitle: 'Nothing saved yet',
+    savedEmptyDesc: 'Save signals you want to revisit or share with your audience.',
+    savedExplore: 'Explore radar',
+    feedEmptyTitle: 'Radar didn\'t load',
+    feedEmptyDesc: 'The news function connection failed. Try refreshing.',
+    feedRetry: 'Retry',
+    analysisBadge: 'Strategic read',
+    analysisWhat: 'What\'s really happening',
+    analysisWhy: 'Why it affects you',
+    analysisShift: 'Paradigm shift',
+    analysisAction: 'What to do',
+    analysisShare: 'Share analysis ↗',
+    analysisCopied: '✓ Copied',
+    analysisApiError: '⚠️ CLAUDE_API_KEY not configured on Netlify.',
+    analysisError: '⚠️ Could not generate the analysis.',
+    analysisRetry: 'Retry',
+    metricSignals: 'signals today',
+    metricSaved: 'saved',
+    metricStreak: (n)=>n+' day'+(n===1?'':'s')+' streak',
+    metricAnalyses: 'reads today',
+    ctaTalk: 'Talk to Stryv',
+    onboardingSkip: 'Skip',
+    onboardingNext: 'Next',
+    onboardingEnter: 'Enter',
+    onboardingStep: (c,t)=>'Step '+c+' of '+t,
+    onboardingSteps: [
+      { title:'The world already changed.', copy:'Wars, AI, Bitcoin, China, currencies, power. <strong>Most people find out too late</strong> and react when the cost already hit.', points:['You\'re not watching isolated events. You\'re watching a reconfiguration of the board.','The speed of change now exceeds most people\'s ability to understand it.']},
+      { title:'Hearing a headline isn\'t understanding it.', copy:'Most people consume news as noise. <strong>Very few understand the root shift</strong>, the play behind it, or the risk of staying still.', points:['If you don\'t understand the context, you react late, protect poorly, and decide worse.','Ignorance doesn\'t hurt until the world shifts and leaves you with no margin.']},
+      { title:'CONTEXTO exists to close that gap.', copy:'You\'re not here to consume news. You\'re here to understand <strong>what\'s happening, what it means, and why it affects you</strong> before most people.', points:['Read the most relevant signals of the day without drowning in superficial noise.','Open any signal and get a strategic read, not a generic summary.']}
+    ],
+    ctas: {
+      Dinero:{title:'No digital financial system for your business?',desc:'We build the infrastructure that keeps your business running even when you\'re not.'},
+      Poder:{title:'The world is changing. Is your business?',desc:'Digital systems for businesses that understand the world is no longer the same.'},
+      'Tecnología':{title:'Is your business using AI yet?',desc:'We implement automated AI-powered service for businesses that refuse to fall behind.'},
+      Mercados:{title:'Operating without real-time data?',desc:'Dashboards, automation, and systems that give you total business visibility.'},
+      Movilidad:{title:'Can your business operate from any country?',desc:'If not, something isn\'t digitized. Let\'s talk.'},
+      Latam:{title:'Ready to scale beyond your city?',desc:'Everything you learned here, Stryv implements. Free diagnosis.'}
+    }
+  }
 };
+
+function t(key) { return I18N[lang][key]; }
 
 /* ═══════════════════════════════════════ */
 /*  STATE                                 */
@@ -442,37 +627,11 @@ let savedIds = store.get('savedIds', []);
 let usage = store.get('usage', { lastVisit:'', streak:0, analysesToday:0, analysesDate:'' });
 let fetchedAt = '';
 let theme = store.get('theme', 'dark');
+let lang = store.get('lang', 'es');
 let deferredInstallPrompt = null;
 let lastNewsError = '';
 let onboardingSeen = store.get('onboardingSeen', false);
 let onboardingStep = 0;
-
-const ONBOARDING_STEPS = [
-  {
-    title: 'El mundo ya cambió.',
-    copy: 'Guerras, IA, Bitcoin, China, monedas, poder. <strong>La mayoría se entera tarde</strong> y reacciona cuando el costo ya llegó.',
-    points: [
-      'No estás viendo eventos aislados. Estás viendo una reconfiguración del tablero.',
-      'La velocidad del cambio ya es mayor que la capacidad de la mayoría para entenderlo.'
-    ]
-  },
-  {
-    title: 'Escuchar un titular no es entenderlo.',
-    copy: 'La mayoría consume noticias como ruido. <strong>Muy pocos entienden el cambio de raíz</strong>, la jugada detrás o el riesgo de quedarse quietos.',
-    points: [
-      'Si no entiendes el contexto, reaccionas tarde, proteges mal y decides peor.',
-      'La ignorancia no duele hasta que el mundo cambia y te deja sin margen.'
-    ]
-  },
-  {
-    title: 'CONTEXTO existe para cerrar esa brecha.',
-    copy: 'Aquí no vienes a consumir noticias. Vienes a entender <strong>qué está pasando, qué significa y por qué te afecta</strong> antes que la mayoría.',
-    points: [
-      'Lee las señales más relevantes del día sin perderte en ruido superficial.',
-      'Abre cualquier señal y recibe una lectura estratégica, no un resumen genérico.'
-    ]
-  }
-];
 
 /* ═══════════════════════════════════════ */
 /*  HELPERS                               */
@@ -497,6 +656,11 @@ function timeAgo(dateStr){
 
 function todayFormatted(){
   const d=new Date();
+  if(lang==='en'){
+    const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return days[d.getDay()]+', '+months[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();
+  }
   const days=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
   const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   return days[d.getDay()]+' '+d.getDate()+' de '+months[d.getMonth()]+', '+d.getFullYear();
@@ -573,17 +737,19 @@ function registerServiceWorker(){
 }
 
 function renderOnboarding(){
-  const step = ONBOARDING_STEPS[onboardingStep];
-  $('#onboardingStepLabel').textContent = 'Paso '+(onboardingStep + 1)+' de '+ONBOARDING_STEPS.length;
+  const steps = t('onboardingSteps');
+  const step = steps[onboardingStep];
+  $('#onboardingStepLabel').textContent = t('onboardingStep')(onboardingStep + 1, steps.length);
   $('#onboardingTitle').textContent = step.title;
   $('#onboardingCopy').innerHTML = step.copy;
   $('#onboardingPoints').innerHTML = step.points.map((point, index) =>
     '<div class="onboarding-point"><div class="onboarding-point-mark">0'+(index + 1)+'</div><div class="onboarding-point-text">'+esc(point)+'</div></div>'
   ).join('');
-  $('#onboardingDots').innerHTML = ONBOARDING_STEPS.map((_, index) =>
+  $('#onboardingDots').innerHTML = steps.map((_, index) =>
     '<span class="onboarding-dot'+(index === onboardingStep ? ' active' : '')+'"></span>'
   ).join('');
-  $('#onboardingNext').textContent = onboardingStep === ONBOARDING_STEPS.length - 1 ? 'Entrar' : 'Siguiente';
+  $('#onboardingNext').textContent = onboardingStep === steps.length - 1 ? t('onboardingEnter') : t('onboardingNext');
+  $('#onboardingSkip').textContent = t('onboardingSkip');
 }
 
 function closeOnboarding(){
@@ -593,7 +759,7 @@ function closeOnboarding(){
 }
 
 function nextOnboarding(){
-  if(onboardingStep >= ONBOARDING_STEPS.length - 1){
+  if(onboardingStep >= t('onboardingSteps').length - 1){
     closeOnboarding();
     return;
   }
@@ -623,6 +789,60 @@ function toggleTheme(){
   applyTheme();
 }
 
+function toggleLang(){
+  lang = lang==='es'?'en':'es';
+  store.set('lang', lang);
+  applyLang();
+  // Clear caches since they're in the old language
+  analysisCache={};
+  store.set('analysisCache',{});
+  topSignalCache={};
+  store.set('topSignalCache',{});
+  delete briefingCache[todayKey()];
+  store.set('briefingCache', briefingCache);
+  // Re-render everything
+  renderSecNav();
+  renderFeeds();
+  renderHeroMetrics();
+  renderTopSignals();
+  renderBriefing();
+  updateRefreshTime();
+  if(articles.length) autoAnalyzeTopSignals();
+}
+
+function applyLang(){
+  document.documentElement.lang = lang;
+  $('#langBtn').textContent = t('langToggle');
+  $('#liveLabel').textContent = t('live');
+  // Static HTML elements
+  $('.loader-sub').textContent = t('loaderSub');
+  $('.date-tagline').textContent = t('tagline');
+  $('.hero-kicker').textContent = t('heroKicker');
+  $('.hero-title').textContent = t('heroTitle');
+  $('.hero-summary').innerHTML = t('heroSummary');
+  $('#heroManifestoBtn').textContent = t('heroManifesto');
+  $('#heroPowerBtn').textContent = t('heroPower');
+  $('.briefing-label').textContent = t('briefingLabel');
+  $('#searchInput').placeholder = t('searchPlaceholder');
+  $('#searchClose').textContent = t('searchCancel');
+  // Bottom nav
+  const navItems = $$('.nav-item');
+  if(navItems[0]) navItems[0].querySelector('.nav-label').textContent = t('navAll');
+  if(navItems[1]) navItems[1].querySelector('.nav-label').textContent = t('navSaved');
+  // Install banner
+  const installCopy = $('.install-copy');
+  if(installCopy) installCopy.innerHTML = '<strong>'+t('installTitle')+'</strong>'+t('installDesc');
+  const installBtnEl = $('#installBtn');
+  if(installBtnEl) installBtnEl.textContent = t('installBtn');
+  const installDismissEl = $('#installDismiss');
+  if(installDismissEl) installDismissEl.textContent = t('installDismiss');
+  // Refresh button
+  const refreshBtn = $('#refreshBtn');
+  if(refreshBtn && !refreshBtn.disabled) refreshBtn.textContent = t('refreshUpdate');
+  const refreshTime = $('#refreshTime');
+  if(refreshTime && refreshTime.textContent.includes('Cargando') || refreshTime && refreshTime.textContent.includes('Loading')) refreshTime.textContent = t('refreshLoading');
+}
+
 /* ═══════════════════════════════════════ */
 /*  FETCH NEWS                            */
 /* ═══════════════════════════════════════ */
@@ -649,10 +869,10 @@ async function fetchNews(){
 
 function renderHeroMetrics(){
   const metrics = [
-    '<div class="hero-chip"><strong>'+articles.length+'</strong> señales hoy</div>',
-    '<div class="hero-chip"><strong>'+savedIds.length+'</strong> guardadas</div>',
-    '<div class="hero-chip"><strong>'+usage.streak+'</strong> día'+(usage.streak===1?'':'s')+' de racha</div>',
-    '<div class="hero-chip"><strong>'+usage.analysesToday+'</strong> lecturas hoy</div>'
+    '<div class="hero-chip"><strong>'+articles.length+'</strong> '+t('metricSignals')+'</div>',
+    '<div class="hero-chip"><strong>'+savedIds.length+'</strong> '+t('metricSaved')+'</div>',
+    '<div class="hero-chip"><strong>'+t('metricStreak')(usage.streak)+'</strong></div>',
+    '<div class="hero-chip"><strong>'+usage.analysesToday+'</strong> '+t('metricAnalyses')+'</div>'
   ];
   $('#heroMetrics').innerHTML = metrics.join('');
 }
@@ -685,7 +905,7 @@ function renderTopSignals(){
   const topArts = getTopSignals();
   if(!topArts.length){ container.innerHTML = ''; return; }
 
-  let html = '<div class="top-signals-header"><div class="top-signals-title">Lo que no puedes ignorar hoy</div><div class="top-signals-sub">'+topArts.length+' señales clave</div></div>';
+  let html = '<div class="top-signals-header"><div class="top-signals-title">'+t('topSignalsTitle')+'</div><div class="top-signals-sub">'+t('topSignalsSub')(topArts.length)+'</div></div>';
 
   html += topArts.map(a => {
     const id = hashId(a.title);
@@ -694,7 +914,7 @@ function renderTopSignals(){
     const contextHtml = cached
       ? '<div class="signal-card-context">'+esc(cached.context)+'</div>'
         + (cached.impact ? '<div class="signal-card-impact">'+esc(cached.impact)+'</div>' : '')
-      : '<div class="signal-card-context loading">Generando lectura estratégica...</div>';
+      : '<div class="signal-card-context loading">'+t('signalLoading')+'</div>';
     return '<div class="signal-card" data-signal-id="'+id+'">'+
       '<div class="signal-card-section '+tagClass+'">'+(SECTION_ICONS[a.section]||'')+' '+esc(a.section)+'</div>'+
       '<div class="signal-card-title">'+esc(a.title)+'</div>'+
@@ -703,7 +923,7 @@ function renderTopSignals(){
         '<span>'+esc(a.source||'')+'</span>'+
         (a.source?'<span>·</span>':'')+
         '<span>'+timeAgo(a.date)+'</span>'+
-        '<span class="signal-card-cta">Abrir lectura completa →</span>'+
+        '<span class="signal-card-cta">'+t('signalCta')+'</span>'+
       '</div>'+
     '</div>';
   }).join('');
@@ -720,20 +940,16 @@ async function autoAnalyzeTopSignals(){
   for(const article of toAnalyze){
     const id = hashId(article.title);
     try{
-      const text = await callClaude(
-        'Fecha: '+todayFormatted()+'. Eres un analista de inteligencia global de CONTEXTO. Tu trabajo es revelar en pocas palabras el cambio estructural detrás de este titular. No resumas la noticia — explica por qué importa y qué riesgo tiene ignorarlo.\n\n'+
-        'CONTEXTO DEL DÍA:\n'+buildRelevantContext(article)+'\n\n'+
-        'TITULAR: "'+article.title+'"\n\n'+
-        'Responde SOLO con JSON válido: {"context":"1 párrafo de máximo 40 palabras explicando el cambio real detrás de este titular","impact":"1 frase de máximo 20 palabras sobre el riesgo para Latam"}',
-        300,
-        'fast'
-      );
+      const promptLang = lang==='en'
+        ? 'Date: '+todayFormatted()+'. You are a global intelligence analyst for CONTEXTO. Your job is to reveal in few words the structural shift behind this headline. Don\'t summarize the news — explain why it matters and the risk of ignoring it.\n\nTODAY\'S CONTEXT:\n'+buildRelevantContext(article)+'\n\nHEADLINE: "'+article.title+'"\n\nRespond ONLY with valid JSON: {"context":"1 paragraph max 40 words explaining the real shift behind this headline","impact":"1 sentence max 20 words about the risk"}'
+        : 'Fecha: '+todayFormatted()+'. Eres un analista de inteligencia global de CONTEXTO. Tu trabajo es revelar en pocas palabras el cambio estructural detrás de este titular. No resumas la noticia — explica por qué importa y qué riesgo tiene ignorarlo.\n\nCONTEXTO DEL DÍA:\n'+buildRelevantContext(article)+'\n\nTITULAR: "'+article.title+'"\n\nResponde SOLO con JSON válido: {"context":"1 párrafo de máximo 40 palabras explicando el cambio real detrás de este titular","impact":"1 frase de máximo 20 palabras sobre el riesgo para Latam"}';
+      const text = await callClaude(promptLang, 300, 'fast');
       const data = JSON.parse(text.replace(/```json|```/g,'').trim());
       topSignalCache[id] = { context: data.context||'', impact: data.impact||'' };
       store.set('topSignalCache', topSignalCache);
-      renderTopSignals(); // Re-render as each one completes
+      renderTopSignals();
     }catch(e){
-      topSignalCache[id] = { context: 'No se pudo generar la lectura.', impact: '' };
+      topSignalCache[id] = { context: t('signalFailed'), impact: '' };
       renderTopSignals();
     }
   }
@@ -752,27 +968,21 @@ function renderBriefing(){
   const btn = $('#briefingBtn');
 
   if(!briefing){
-    status.textContent = articles.length ? 'Listo para generar' : 'Esperando titulares';
-    title.textContent = 'Tu lectura estratégica del día.';
-    copy.textContent = articles.length
-      ? 'Genera una lectura para detectar qué está reconfigurando el tablero antes de que la mayoría lo note.'
-      : 'Aún no hay suficientes señales cargadas para construir una lectura sólida del día.';
-    list.innerHTML = [
-      'Qué conflicto o cambio está moviendo poder real.',
-      'Qué narrativa del status quo ya no se sostiene.',
-      'Qué conviene vigilar si operas o vives en Latam.'
-    ].map((item,index)=>'<div class="briefing-item"><div class="briefing-item-mark">0'+(index+1)+'</div><div class="briefing-item-text">'+esc(item)+'</div></div>').join('');
-    btn.textContent = 'Generar briefing';
+    status.textContent = articles.length ? t('briefingReady') : t('briefingWaiting');
+    title.textContent = t('briefingTitle');
+    copy.textContent = articles.length ? t('briefingCopyReady') : t('briefingCopyWaiting');
+    list.innerHTML = t('briefingItems').map((item,index)=>'<div class="briefing-item"><div class="briefing-item-mark">0'+(index+1)+'</div><div class="briefing-item-text">'+esc(item)+'</div></div>').join('');
+    btn.textContent = t('briefingGenerate');
     return;
   }
 
-  status.textContent = 'Actualizado ' + (briefing.generatedAt || formatLocalTime(fetchedAt));
-  title.textContent = briefing.headline || 'Tu lectura estratégica del día.';
+  status.textContent = (lang==='en'?'Updated ':'Actualizado ') + (briefing.generatedAt || formatLocalTime(fetchedAt));
+  title.textContent = briefing.headline || t('briefingTitle');
   copy.textContent = briefing.summary || '';
   list.innerHTML = (briefing.watch || []).map((item,index)=>
     '<div class="briefing-item"><div class="briefing-item-mark">0'+(index+1)+'</div><div class="briefing-item-text">'+esc(item)+'</div></div>'
   ).join('');
-  btn.textContent = 'Refrescar briefing';
+  btn.textContent = t('briefingRefresh');
 }
 
 async function generateBriefing(force){
@@ -786,22 +996,18 @@ async function generateBriefing(force){
   const btn = $('#briefingBtn');
   const status = $('#briefingStatus');
   btn.disabled = true;
-  btn.textContent = 'Generando...';
-  status.textContent = 'Analizando señales';
+  btn.textContent = t('briefingGenerating');
+  status.textContent = t('briefingAnalyzing');
 
   try{
-    const text = await callClaude(
-      'Fecha: '+todayFormatted()+'. Eres el editor jefe de CONTEXTO. No resumes noticias: explicas cambios de poder, tecnología, dinero y narrativa que pueden dejar atrás a quien no los entienda. A partir de este paquete de señales reales del día, crea un briefing corto, contundente y útil para un lector latinoamericano.\n\n'+
-      'NOTICIAS REALES DE HOY:\n'+articles.slice(0, 10).map(item => '['+item.section+'] '+item.title).join('\n')+'\n\n'+
-      'Responde SOLO con JSON válido sin markdown con esta estructura exacta: '+
-      '{"headline":"1 frase fuerte que describa la jugada del día","summary":"1 párrafo corto y directo explicando la tensión principal del día","watch":["Señal concreta a vigilar 1","Señal concreta a vigilar 2","Señal concreta a vigilar 3"]}',
-      550,
-      'fast'
-    );
+    const briefPrompt = lang==='en'
+      ? 'Date: '+todayFormatted()+'. You are the editor-in-chief of CONTEXTO. You don\'t summarize news: you explain shifts in power, technology, money, and narrative that can leave behind anyone who doesn\'t understand them. From this package of real signals of the day, create a short, hard-hitting, useful briefing.\n\nREAL NEWS TODAY:\n'+articles.slice(0,10).map(item=>'['+item.section+'] '+item.title).join('\n')+'\n\nRespond ONLY with valid JSON without markdown: {"headline":"1 strong sentence describing today\'s play","summary":"1 short direct paragraph explaining today\'s main tension","watch":["Concrete signal to watch 1","Concrete signal to watch 2","Concrete signal to watch 3"]}'
+      : 'Fecha: '+todayFormatted()+'. Eres el editor jefe de CONTEXTO. No resumes noticias: explicas cambios de poder, tecnología, dinero y narrativa que pueden dejar atrás a quien no los entienda. A partir de este paquete de señales reales del día, crea un briefing corto, contundente y útil para un lector latinoamericano.\n\nNOTICIAS REALES DE HOY:\n'+articles.slice(0,10).map(item=>'['+item.section+'] '+item.title).join('\n')+'\n\nResponde SOLO con JSON válido sin markdown con esta estructura exacta: {"headline":"1 frase fuerte que describa la jugada del día","summary":"1 párrafo corto y directo explicando la tensión principal del día","watch":["Señal concreta a vigilar 1","Señal concreta a vigilar 2","Señal concreta a vigilar 3"]}';
+    const text = await callClaude(briefPrompt, 550, 'fast');
 
     const data = JSON.parse(text.replace(/```json|```/g,'').trim());
     briefingCache[todayKey()] = {
-      headline: data.headline || 'Tu lectura estratégica del día.',
+      headline: data.headline || t('briefingTitle'),
       summary: data.summary || '',
       watch: Array.isArray(data.watch) ? data.watch.slice(0,3) : [],
       generatedAt: formatLocalTime(fetchedAt || new Date().toISOString())
@@ -809,14 +1015,12 @@ async function generateBriefing(force){
     store.set('briefingCache', briefingCache);
     renderBriefing();
   }catch(e){
-    const msg = /API key/i.test(String(e && e.message))
-      ? 'La API de Claude no está configurada en Netlify.'
-      : 'No se pudo generar el briefing ahora.';
-    status.textContent = 'No se pudo generar';
+    const msg = /API key/i.test(String(e && e.message)) ? t('briefingApiError') : t('briefingError');
+    status.textContent = t('briefingFailed');
     $('#briefingCopy').textContent = msg;
   }finally{
     btn.disabled = false;
-    btn.textContent = getBriefing() ? 'Refrescar briefing' : 'Generar briefing';
+    btn.textContent = getBriefing() ? t('briefingRefresh') : t('briefingGenerate');
   }
 }
 
@@ -824,7 +1028,7 @@ function shareBriefing(){
   const briefing = getBriefing();
   const text = briefing
     ? briefing.headline+'\n\n'+briefing.summary+'\n\n- '+(briefing.watch || []).join('\n- ')+'\n\nCONTEXTO por Stryv Studio'
-    : 'Estoy usando CONTEXTO para entender qué está pasando hoy y por qué afecta en Latam.\n\nhttps://stryvstudio.com';
+    : t('briefingShareText')+'\n\nhttps://stryvstudio.com';
 
   if(navigator.share){
     navigator.share({title:'CONTEXTO',text,url:window.location.href}).catch(()=>{});
@@ -833,8 +1037,8 @@ function shareBriefing(){
 
   navigator.clipboard.writeText(text).then(()=>{
     const btn = $('#briefingShareBtn');
-    btn.textContent = 'Copiado';
-    setTimeout(()=>{btn.textContent='Compartir'},1400);
+    btn.textContent = t('briefingCopied');
+    setTimeout(()=>{btn.textContent=t('briefingShare')},1400);
   }).catch(()=>{});
 }
 
@@ -845,7 +1049,7 @@ async function callClaude(prompt, maxTokens, mode){
   const res = await fetch('/.netlify/functions/claude',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({prompt, maxTokens: maxTokens||1200, mode: mode||'quality'})
+    body:JSON.stringify({prompt, maxTokens: maxTokens||1200, mode: mode||'quality', lang})
   });
   if(!res.ok) throw new Error('API error');
   const json = await res.json();
@@ -875,7 +1079,7 @@ function renderSecNav(){
   nav.innerHTML = SECTIONS.map(s=>{
     const active = s===activeSection?' active':'';
     const icon = SECTION_ICONS[s]||'';
-    const label = s==='all'?'Todo':(s==='saved'?'Guardadas':s);
+    const label = s==='all'?t('navAll'):(s==='saved'?t('navSaved'):s);
     const count = s==='all'?articles.length:(s==='saved'?getSavedArticles().length:articles.filter(a=>a.section===s).length);
     if(s!=='all' && s!=='saved' && count===0) return '';
     if(s==='saved' && count===0) return '';
@@ -898,8 +1102,8 @@ function renderFeeds(){
 
   if(filtered.length===0){
     container.innerHTML = activeSection==='saved'
-      ? '<div class="empty-state"><div class="empty-icon">★</div><div class="empty-title">No has guardado nada todavía</div><div class="empty-desc">Guarda señales que quieras revisar con calma o compartir con tu audiencia.</div><a class="empty-action" href="#" data-nav="all">Explorar radar</a></div>'
-      : '<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">No cargó el radar</div><div class="empty-desc">'+esc(lastNewsError || 'La conexión con la función de noticias falló. Intenta actualizar.')+'</div><a class="empty-action" href="#" id="retryFromEmpty">Reintentar</a></div>';
+      ? '<div class="empty-state"><div class="empty-icon">★</div><div class="empty-title">'+t('savedEmptyTitle')+'</div><div class="empty-desc">'+t('savedEmptyDesc')+'</div><a class="empty-action" href="#" data-nav="all">'+t('savedExplore')+'</a></div>'
+      : '<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">'+t('feedEmptyTitle')+'</div><div class="empty-desc">'+esc(lastNewsError || t('feedEmptyDesc'))+'</div><a class="empty-action" href="#" id="retryFromEmpty">'+t('feedRetry')+'</a></div>';
     return;
   }
 
@@ -915,22 +1119,20 @@ function renderFeeds(){
 
     for(const sec of Object.keys(grouped)){
       const arts = grouped[sec];
-      html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[sec]||'')+' '+esc(sec)+'</div><div class="feed-count">'+arts.length+' señales</div></div>';
+      html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[sec]||'')+' '+esc(sec)+'</div><div class="feed-count">'+arts.length+' '+t('signals')+'</div></div>';
       html+=renderCards(arts);
-      // CTA after every 2nd section
       const secKeys = Object.keys(grouped);
       const secIdx = secKeys.indexOf(sec);
       if(secIdx===1 || secIdx===3){
-        const ctaKey = sec;
-        const cta = CTAS[ctaKey] || CTAS.Dinero;
+        const cta = t('ctas')[sec] || t('ctas').Dinero;
         html+=renderCTA(cta);
       }
     }
   } else {
-    html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[activeSection]||'')+' '+esc(activeSection==='saved'?'Guardadas':activeSection)+'</div><div class="feed-count">'+filtered.length+' señales</div></div>';
+    html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[activeSection]||'')+' '+esc(activeSection==='saved'?t('navSaved'):activeSection)+'</div><div class="feed-count">'+filtered.length+' '+t('signals')+'</div></div>';
     html+=renderCards(filtered);
     if(activeSection!=='saved'){
-      const cta = CTAS[activeSection] || CTAS.Dinero;
+      const cta = t('ctas')[activeSection] || t('ctas').Dinero;
       html+=renderCTA(cta);
     }
   }
@@ -958,7 +1160,7 @@ function renderCards(arts){
     '</div>'+
     '<div class="analysis" id="analysis-'+id+'">'+
       '<div class="analysis-bar">'+
-        '<span class="analysis-badge"><span class="analysis-badge-dot"></span>Lectura estratégica</span>'+
+        '<span class="analysis-badge"><span class="analysis-badge-dot"></span>'+t('analysisBadge')+'</span>'+
         '<button class="analysis-close" data-close-analysis="'+id+'">✕</button>'+
       '</div>'+
       '<div class="analysis-body" id="abody-'+id+'">'+
@@ -975,7 +1177,7 @@ function renderCTA(cta){
     '<div class="stryv-cta-eyebrow">Stryv Studio</div>'+
     '<div class="stryv-cta-title">'+esc(cta.title)+'</div>'+
     '<div class="stryv-cta-desc">'+esc(cta.desc)+'</div>'+
-    '<a href="https://wa.me/17373683464" target="_blank" rel="noopener" class="stryv-cta-btn">Hablar con Stryv</a>'+
+    '<a href="https://wa.me/17373683464" target="_blank" rel="noopener" class="stryv-cta-btn">'+t('ctaTalk')+'</a>'+
     '<a href="https://stryvstudio.com" target="_blank" rel="noopener" class="stryv-cta-link">stryvstudio.com</a>'+
   '</div>';
 }
@@ -1027,19 +1229,10 @@ async function generateAnalysis(id, article){
   const dateStr = todayFormatted();
 
   try{
-    const text = await callClaude(
-      'Fecha: '+dateStr+'. Eres un analista de inteligencia global para la plataforma CONTEXTO de Stryv Studio. Tu trabajo no es repetir noticias: es revelar el cambio estructural detrás del titular y explicar por qué importa antes de que sea demasiado tarde. Sé breve, afilado y concreto.\n\n'+
-      'CONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\n'+
-      'NOTICIA A ANALIZAR: "'+article.title+'" — Fuente: '+article.source+' — Sección: '+article.section+'\n\n'+
-      'Responde SOLO con JSON válido sin markdown. Mantén cada campo corto y útil.\n'+
-      '{"titular_contexto":"1 línea, máximo 18 palabras",'+ 
-      '"que_esta_pasando":"1 párrafo, máximo 90 palabras",'+ 
-      '"por_que_te_afecta":"1 párrafo, máximo 55 palabras",'+ 
-      '"cambio_de_paradigma":"1 párrafo, máximo 45 palabras",'+ 
-      '"que_hacer":[{"num":"1","texto":"Acción concreta, máximo 12 palabras"},{"num":"2","texto":"Acción concreta, máximo 12 palabras"}]}',
-      700,
-      'fast'
-    );
+    const analysisPrompt = lang==='en'
+      ? 'Date: '+dateStr+'. You are a global intelligence analyst for CONTEXTO by Stryv Studio. Your job is not to repeat news: it\'s to reveal the structural shift behind the headline and explain why it matters before it\'s too late. Be brief, sharp, and concrete.\n\nRELEVANT CONTEXT TODAY:\n'+buildRelevantContext(article)+'\n\nARTICLE TO ANALYZE: "'+article.title+'" — Source: '+article.source+' — Section: '+article.section+'\n\nRespond ONLY with valid JSON without markdown. Keep each field short and useful.\n{"titular_contexto":"1 line, max 18 words","que_esta_pasando":"1 paragraph, max 90 words","por_que_te_afecta":"1 paragraph, max 55 words","cambio_de_paradigma":"1 paragraph, max 45 words","que_hacer":[{"num":"1","texto":"Concrete action, max 12 words"},{"num":"2","texto":"Concrete action, max 12 words"}]}'
+      : 'Fecha: '+dateStr+'. Eres un analista de inteligencia global para la plataforma CONTEXTO de Stryv Studio. Tu trabajo no es repetir noticias: es revelar el cambio estructural detrás del titular y explicar por qué importa antes de que sea demasiado tarde. Sé breve, afilado y concreto.\n\nCONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\nNOTICIA A ANALIZAR: "'+article.title+'" — Fuente: '+article.source+' — Sección: '+article.section+'\n\nResponde SOLO con JSON válido sin markdown. Mantén cada campo corto y útil.\n{"titular_contexto":"1 línea, máximo 18 palabras","que_esta_pasando":"1 párrafo, máximo 90 palabras","por_que_te_afecta":"1 párrafo, máximo 55 palabras","cambio_de_paradigma":"1 párrafo, máximo 45 palabras","que_hacer":[{"num":"1","texto":"Acción concreta, máximo 12 palabras"},{"num":"2","texto":"Acción concreta, máximo 12 palabras"}]}';
+    const text = await callClaude(analysisPrompt, 700, 'fast');
 
     const data = JSON.parse(text.replace(/```json|```/g,'').trim());
     analysisCache[id] = data;
@@ -1047,11 +1240,11 @@ async function generateAnalysis(id, article){
     renderAnalysis(id, data, article);
   }catch(e){
     const msg = /API key/i.test(String(e && e.message))
-      ? '⚠️ Falta configurar CLAUDE_API_KEY en Netlify.'
-      : '⚠️ No se pudo generar el análisis.';
+      ? t('analysisApiError')
+      : t('analysisError');
     body.innerHTML='<div style="padding:16px;text-align:center;color:var(--text-3);font-size:13px">'+
       msg+'<br>'+
-      '<button onclick="retryAnalysis(\''+id+'\')" style="margin-top:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Reintentar</button></div>';
+      '<button onclick="retryAnalysis(\''+id+'\')" style="margin-top:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">'+t('analysisRetry')+'</button></div>';
   }
 }
 
@@ -1072,28 +1265,28 @@ function renderAnalysis(id, data, article){
     html+='<div class="analysis-headline">'+esc(data.titular_contexto)+'</div>';
   }
 
-  html+='<div class="analysis-section"><div class="analysis-label">Qué está pasando realmente</div>'+
+  html+='<div class="analysis-section"><div class="analysis-label">'+t('analysisWhat')+'</div>'+
     '<div class="analysis-text">'+esc(data.que_esta_pasando||'').replace(/\n/g,'<br><br>')+'</div></div>';
 
   if(data.por_que_te_afecta){
-    html+='<div class="analysis-section"><div class="analysis-label">Por qué te afecta</div>'+
+    html+='<div class="analysis-section"><div class="analysis-label">'+t('analysisWhy')+'</div>'+
       '<div class="analysis-impact">'+esc(data.por_que_te_afecta)+'</div></div>';
   }
 
   if(data.cambio_de_paradigma){
-    html+='<div class="analysis-section"><div class="analysis-label">Cambio de paradigma</div>'+
+    html+='<div class="analysis-section"><div class="analysis-label">'+t('analysisShift')+'</div>'+
       '<div class="analysis-shift">'+esc(data.cambio_de_paradigma)+'</div></div>';
   }
 
   if(data.que_hacer && data.que_hacer.length){
-    html+='<div class="analysis-section"><div class="analysis-label">Qué hacer</div><div class="analysis-actions">';
+    html+='<div class="analysis-section"><div class="analysis-label">'+t('analysisAction')+'</div><div class="analysis-actions">';
     data.que_hacer.forEach(a=>{
       html+='<div class="analysis-action"><div class="analysis-action-num">'+esc(a.num)+'</div><div class="analysis-action-text">'+esc(a.texto)+'</div></div>';
     });
     html+='</div></div>';
   }
 
-  html+='<div class="analysis-share"><button class="analysis-share-btn" data-share="'+id+'">Compartir análisis ↗</button></div>';
+  html+='<div class="analysis-share"><button class="analysis-share-btn" data-share="'+id+'">'+t('analysisShare')+'</button></div>';
 
   body.innerHTML=html;
 }
@@ -1106,10 +1299,10 @@ function closeSearch(){$('#searchOverlay').classList.remove('open');$('#searchIn
 
 function renderSearchResults(q){
   const c=$('#searchResults');
-  if(!q.trim()){c.innerHTML='<div class="search-empty">Escribe para buscar en todas las señales</div>';return}
+  if(!q.trim()){c.innerHTML='<div class="search-empty">'+t('searchEmpty')+'</div>';return}
   const lower=q.toLowerCase();
   const results=articles.filter(a=>a.title.toLowerCase().includes(lower));
-  if(!results.length){c.innerHTML='<div class="search-empty">Sin resultados para "'+esc(q)+'"</div>';return}
+  if(!results.length){c.innerHTML='<div class="search-empty">'+t('searchNoResults')(q)+'</div>';return}
   c.innerHTML=results.map(a=>
     '<div class="search-result" data-search-id="'+hashId(a.title)+'" data-search-section="'+a.section+'">'+
       '<div class="search-result-section">'+(SECTION_ICONS[a.section]||'')+' '+esc(a.section)+'</div>'+
@@ -1158,7 +1351,7 @@ function shareAnalysis(id){
   } else {
     navigator.clipboard.writeText(text).then(()=>{
       const btn=document.querySelector('[data-share="'+id+'"]');
-      if(btn){btn.textContent='✓ Copiado';setTimeout(()=>btn.textContent='Compartir análisis ↗',1500)}
+      if(btn){btn.textContent=t('analysisCopied');setTimeout(()=>btn.textContent=t('analysisShare'),1500)}
     }).catch(()=>{});
   }
 }
@@ -1188,6 +1381,7 @@ document.addEventListener('click',e=>{
   if(e.target.closest('#searchBtn')){openSearch();return}
   if(e.target.closest('#searchClose')){closeSearch();return}
   if(e.target.closest('#themeBtn')){toggleTheme();return}
+  if(e.target.closest('#langBtn')){toggleLang();return}
   if(e.target.closest('#briefingBtn')){generateBriefing(true);return}
   if(e.target.closest('#briefingShareBtn')){shareBriefing();return}
   if(e.target.closest('#installBtn')){installApp();return}
@@ -1240,8 +1434,8 @@ window.addEventListener('appinstalled',()=>{
 async function refreshAll(){
   const btn=$('#refreshBtn');
   btn.disabled=true;
-  btn.textContent='Actualizando...';
-  $('#refreshTime').textContent='Buscando señales clave...';
+  btn.textContent=t('refreshUpdating');
+  $('#refreshTime').textContent=t('refreshSearching');
 
   // Clear analysis cache on refresh
   analysisCache={};
@@ -1260,7 +1454,7 @@ async function refreshAll(){
   updateRefreshTime();
 
   btn.disabled=false;
-  btn.textContent='Actualizar';
+  btn.textContent=t('refreshUpdate');
 
   // Auto-analyze top signals after refresh
   if(articles.length) autoAnalyzeTopSignals();
@@ -1268,8 +1462,8 @@ async function refreshAll(){
 
 function updateRefreshTime(){
   $('#refreshTime').textContent = lastNewsError
-    ? 'Error de conexión con el radar'
-    : 'Actualizado a las '+formatLocalTime(fetchedAt || new Date().toISOString());
+    ? t('refreshError')
+    : t('refreshAt')(formatLocalTime(fetchedAt || new Date().toISOString()));
 }
 
 /* ═══════════════════════════════════════ */
@@ -1292,12 +1486,13 @@ document.addEventListener('touchend',e=>{
 async function init(){
   updateUsageVisit();
   applyTheme();
+  applyLang();
   registerServiceWorker();
   $('#dateMain').textContent = todayFormatted();
 
   // Show loader statuses
   const statusEl=$('#loaderStatus');
-  const statuses=['Conectando fuentes...','Escaneando señales globales...','Priorizando lo relevante...','Preparando tu radar...'];
+  const statuses=t('loaderStatuses');
   let sIdx=0;
 
   const statusInterval=setInterval(()=>{
@@ -1307,7 +1502,7 @@ async function init(){
 
   await fetchNews();
   clearInterval(statusInterval);
-  statusEl.textContent=articles.length+' señales encontradas';
+  statusEl.textContent=t('loaderDone')(articles.length);
 
   renderSecNav();
   renderFeeds();
@@ -1317,6 +1512,7 @@ async function init(){
   updateRefreshTime();
   showInstallBanner();
   $('#refreshBtn').disabled=false;
+  $('#refreshBtn').textContent=t('refreshUpdate');
 
   setTimeout(()=>$('#loader').classList.add('hidden'),600);
   setTimeout(()=>openOnboarding(),750);
