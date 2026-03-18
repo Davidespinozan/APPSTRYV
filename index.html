@@ -469,6 +469,15 @@ const I18N = {
     navAll: 'Todo',
     navSaved: 'Guardadas',
     navTech: 'Tech',
+    saveArticle: 'Guardar noticia',
+    sectionNames: {
+      Dinero: 'Dinero',
+      Poder: 'Poder',
+      'Tecnología': 'Tecnología',
+      Mercados: 'Mercados',
+      Movilidad: 'Movilidad',
+      Latam: 'Latam'
+    },
     signals: 'señales',
     searchPlaceholder: 'Buscar señales, conflictos o cambios...',
     searchCancel: 'Cancelar',
@@ -561,6 +570,15 @@ const I18N = {
     navAll: 'All',
     navSaved: 'Saved',
     navTech: 'Tech',
+    saveArticle: 'Save article',
+    sectionNames: {
+      Dinero: 'Money',
+      Poder: 'Power',
+      'Tecnología': 'Technology',
+      Mercados: 'Markets',
+      Movilidad: 'Mobility',
+      Latam: 'Latam'
+    },
     signals: 'signals',
     searchPlaceholder: 'Search signals, conflicts, or shifts...',
     searchCancel: 'Cancel',
@@ -628,6 +646,8 @@ let usage = store.get('usage', { lastVisit:'', streak:0, analysesToday:0, analys
 let fetchedAt = '';
 let theme = store.get('theme', 'dark');
 let lang = store.get('lang', 'es');
+let titleTranslations = store.get('titleTranslations', { es:{}, en:{} });
+let titleTranslationJob = null;
 let deferredInstallPrompt = null;
 let lastNewsError = '';
 let onboardingSeen = store.get('onboardingSeen', false);
@@ -646,7 +666,7 @@ function timeAgo(dateStr){
     const d=new Date(dateStr);
     const now=new Date();
     const mins=Math.floor((now-d)/60000);
-    if(mins<1) return 'ahora';
+    if(mins<1) return lang==='en' ? 'now' : 'ahora';
     if(mins<60) return mins+'m';
     const hrs=Math.floor(mins/60);
     if(hrs<24) return hrs+'h';
@@ -697,10 +717,20 @@ function incrementAnalyses(){
 }
 
 function formatLocalTime(dateStr){
-  if(!dateStr) return 'hoy';
+  if(!dateStr) return lang==='en' ? 'today' : 'hoy';
   const d = new Date(dateStr);
-  if(Number.isNaN(d.getTime())) return 'hoy';
-  return d.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  if(Number.isNaN(d.getTime())) return lang==='en' ? 'today' : 'hoy';
+  return d.toLocaleTimeString(lang==='en' ? 'en-US' : 'es-MX',{hour:'2-digit',minute:'2-digit'});
+}
+
+function getSectionLabel(section){
+  const labels = t('sectionNames') || {};
+  return labels[section] || section;
+}
+
+function getDisplayTitle(article){
+  const id = hashId(article.title);
+  return (titleTranslations[lang] && titleTranslations[lang][id]) || article.title;
 }
 
 function getSavedArticles(){
@@ -807,6 +837,7 @@ function toggleLang(){
   renderTopSignals();
   renderBriefing();
   updateRefreshTime();
+  queueTitleTranslations(true);
   if(articles.length) autoAnalyzeTopSignals();
 }
 
@@ -858,6 +889,7 @@ async function fetchNews(){
     newsSummary = data.summary || '';
     fetchedAt = data.fetchedAt || '';
     lastNewsError = '';
+    queueTitleTranslations(true);
     return data;
   }catch(e){
     articles = [];
@@ -911,13 +943,14 @@ function renderTopSignals(){
     const id = hashId(a.title);
     const tagClass = SECTION_TAGS[a.section] || 'tag-dinero';
     const cached = topSignalCache[id];
+    const displayTitle = getDisplayTitle(a);
     const contextHtml = cached
       ? '<div class="signal-card-context">'+esc(cached.context)+'</div>'
         + (cached.impact ? '<div class="signal-card-impact">'+esc(cached.impact)+'</div>' : '')
       : '<div class="signal-card-context loading">'+t('signalLoading')+'</div>';
     return '<div class="signal-card" data-signal-id="'+id+'">'+
-      '<div class="signal-card-section '+tagClass+'">'+(SECTION_ICONS[a.section]||'')+' '+esc(a.section)+'</div>'+
-      '<div class="signal-card-title">'+esc(a.title)+'</div>'+
+      '<div class="signal-card-section '+tagClass+'">'+(SECTION_ICONS[a.section]||'')+' '+esc(getSectionLabel(a.section))+'</div>'+
+      '<div class="signal-card-title">'+esc(displayTitle)+'</div>'+
       contextHtml+
       '<div class="signal-card-meta">'+
         '<span>'+esc(a.source||'')+'</span>'+
@@ -1045,11 +1078,11 @@ function shareBriefing(){
 /* ═══════════════════════════════════════ */
 /*  CALL CLAUDE                           */
 /* ═══════════════════════════════════════ */
-async function callClaude(prompt, maxTokens, mode){
+async function callClaude(prompt, maxTokens, mode, requestLang){
   const res = await fetch('/.netlify/functions/claude',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({prompt, maxTokens: maxTokens||1200, mode: mode||'quality', lang})
+    body:JSON.stringify({prompt, maxTokens: maxTokens||1200, mode: mode||'quality', lang: requestLang || lang})
   });
   if(!res.ok){
     const errBody = await res.text().catch(()=>'');
@@ -1065,16 +1098,60 @@ async function callClaude(prompt, maxTokens, mode){
   return json.content[0].text;
 }
 
+async function translateTitleBatch(batch, targetLang){
+  const prompt = (targetLang==='en'
+    ? 'Translate each news headline into natural English. Preserve company names, acronyms, tickers, and proper nouns. Do not add explanations. Respond ONLY with valid JSON as an array of objects using this exact format: [{"id":"same id","title":"translated headline"}].\n\nHeadlines:\n'
+    : 'Traduce cada titular de noticia a español latino natural. Conserva nombres de empresas, siglas, tickers y nombres propios. No agregues explicaciones. Responde SOLO con JSON válido como un arreglo de objetos usando esta forma exacta: [{"id":"mismo id","title":"titular traducido"}].\n\nTitulares:\n')+
+    JSON.stringify(batch.map(article=>({ id: hashId(article.title), title: article.title, source: article.source || '' })));
+  const text = await callClaude(prompt, 900, 'fast', targetLang);
+  const parsed = JSON.parse(text.replace(/```json|```/g,'').trim());
+  if(!Array.isArray(parsed)) return;
+  if(!titleTranslations[targetLang]) titleTranslations[targetLang] = {};
+  parsed.forEach(item=>{
+    if(item && item.id && item.title) titleTranslations[targetLang][item.id] = String(item.title).trim();
+  });
+  store.set('titleTranslations', titleTranslations);
+}
+
+async function queueTitleTranslations(force){
+  if(!articles.length) return;
+  const targetLang = lang;
+  const langCache = titleTranslations[targetLang] || {};
+  const pending = articles.filter(article=>!langCache[hashId(article.title)]);
+  if(!pending.length) return;
+  if(titleTranslationJob && !force) return titleTranslationJob;
+
+  titleTranslationJob = (async()=>{
+    const chunkSize = 20;
+    for(let index=0; index<pending.length; index+=chunkSize){
+      const chunk = pending.slice(index, index + chunkSize);
+      try{
+        await translateTitleBatch(chunk, targetLang);
+      }catch(error){
+        console.error('title translation error:', error);
+        break;
+      }
+      renderFeeds();
+      renderTopSignals();
+      const searchInput = $('#searchInput');
+      if(searchInput && $('#searchOverlay').classList.contains('open')) renderSearchResults(searchInput.value);
+    }
+    titleTranslationJob = null;
+  })();
+
+  return titleTranslationJob;
+}
+
 function buildRelevantContext(article){
   const sameSection = articles
     .filter(item => item.section === article.section)
     .slice(0, 4)
-    .map(item => '['+item.section+'] '+item.title);
+    .map(item => '['+getSectionLabel(item.section)+'] '+getDisplayTitle(item));
 
   const crossSection = articles
     .filter(item => item.section !== article.section)
     .slice(0, 4)
-    .map(item => '['+item.section+'] '+item.title);
+    .map(item => '['+getSectionLabel(item.section)+'] '+getDisplayTitle(item));
 
   return sameSection.concat(crossSection).join('\n');
 }
@@ -1087,7 +1164,7 @@ function renderSecNav(){
   nav.innerHTML = SECTIONS.map(s=>{
     const active = s===activeSection?' active':'';
     const icon = SECTION_ICONS[s]||'';
-    const label = s==='all'?t('navAll'):(s==='saved'?t('navSaved'):s);
+    const label = s==='all'?t('navAll'):(s==='saved'?t('navSaved'):getSectionLabel(s));
     const count = s==='all'?articles.length:(s==='saved'?getSavedArticles().length:articles.filter(a=>a.section===s).length);
     if(s!=='all' && s!=='saved' && count===0) return '';
     if(s==='saved' && count===0) return '';
@@ -1127,7 +1204,7 @@ function renderFeeds(){
 
     for(const sec of Object.keys(grouped)){
       const arts = grouped[sec];
-      html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[sec]||'')+' '+esc(sec)+'</div><div class="feed-count">'+arts.length+' '+t('signals')+'</div></div>';
+      html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[sec]||'')+' '+esc(getSectionLabel(sec))+'</div><div class="feed-count">'+arts.length+' '+t('signals')+'</div></div>';
       html+=renderCards(arts);
       const secKeys = Object.keys(grouped);
       const secIdx = secKeys.indexOf(sec);
@@ -1137,7 +1214,7 @@ function renderFeeds(){
       }
     }
   } else {
-    html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[activeSection]||'')+' '+esc(activeSection==='saved'?t('navSaved'):activeSection)+'</div><div class="feed-count">'+filtered.length+' '+t('signals')+'</div></div>';
+    html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[activeSection]||'')+' '+esc(activeSection==='saved'?t('navSaved'):getSectionLabel(activeSection))+'</div><div class="feed-count">'+filtered.length+' '+t('signals')+'</div></div>';
     html+=renderCards(filtered);
     if(activeSection!=='saved'){
       const cta = t('ctas')[activeSection] || t('ctas').Dinero;
@@ -1153,6 +1230,7 @@ function renderCards(arts){
     const id = hashId(a.title);
     const tagClass = SECTION_TAGS[a.section]||'tag-dinero';
     const saved = savedIds.includes(id) ? ' active' : '';
+    const displayTitle = getDisplayTitle(a);
     return '<div class="news-card" data-id="'+id+'">'+
       '<div class="news-card-topline">'+
         '<div class="news-card-top">'+
@@ -1160,10 +1238,10 @@ function renderCards(arts){
           '<span class="news-card-dot"></span>'+
           '<span class="news-card-time">'+timeAgo(a.date)+'</span>'+
         '</div>'+
-        '<button class="news-card-save'+saved+'" data-save-id="'+id+'" aria-label="Guardar noticia">★</button>'+
+        '<button class="news-card-save'+saved+'" data-save-id="'+id+'" aria-label="'+t('saveArticle')+'">★</button>'+
       '</div>'+
-      '<div class="news-card-title">'+esc(a.title)+'</div>'+
-      '<span class="news-card-tag '+tagClass+'">'+esc(a.section)+'</span>'+
+      '<div class="news-card-title">'+esc(displayTitle)+'</div>'+
+      '<span class="news-card-tag '+tagClass+'">'+esc(getSectionLabel(a.section))+'</span>'+
       '<span class="news-card-arrow">›</span>'+
     '</div>'+
     '<div class="analysis" id="analysis-'+id+'">'+
@@ -1235,11 +1313,12 @@ async function generateAnalysis(id, article){
   body.innerHTML='<div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:85%"></div><div class="sk" style="height:14px;width:70%"></div><div class="sk" style="height:14px;width:90%"></div>';
 
   const dateStr = todayFormatted();
+  const displayTitle = getDisplayTitle(article);
 
   try{
     const analysisPrompt = lang==='en'
-      ? 'Date: '+dateStr+'. You are a global intelligence analyst for CONTEXTO by Stryv Studio. Your job is not to repeat news: it\'s to reveal the structural shift behind the headline and explain why it matters before it\'s too late. Be brief, sharp, and concrete.\n\nRELEVANT CONTEXT TODAY:\n'+buildRelevantContext(article)+'\n\nARTICLE TO ANALYZE: "'+article.title+'" — Source: '+article.source+' — Section: '+article.section+'\n\nRespond ONLY with valid JSON without markdown. Keep each field short and useful.\n{"titular_contexto":"1 line, max 18 words","que_esta_pasando":"1 paragraph, max 90 words","por_que_te_afecta":"1 paragraph, max 55 words","cambio_de_paradigma":"1 paragraph, max 45 words","que_hacer":[{"num":"1","texto":"Concrete action, max 12 words"},{"num":"2","texto":"Concrete action, max 12 words"}]}'
-      : 'Fecha: '+dateStr+'. Eres un analista de inteligencia global para la plataforma CONTEXTO de Stryv Studio. Tu trabajo no es repetir noticias: es revelar el cambio estructural detrás del titular y explicar por qué importa antes de que sea demasiado tarde. Sé breve, afilado y concreto.\n\nCONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\nNOTICIA A ANALIZAR: "'+article.title+'" — Fuente: '+article.source+' — Sección: '+article.section+'\n\nResponde SOLO con JSON válido sin markdown. Mantén cada campo corto y útil.\n{"titular_contexto":"1 línea, máximo 18 palabras","que_esta_pasando":"1 párrafo, máximo 90 palabras","por_que_te_afecta":"1 párrafo, máximo 55 palabras","cambio_de_paradigma":"1 párrafo, máximo 45 palabras","que_hacer":[{"num":"1","texto":"Acción concreta, máximo 12 palabras"},{"num":"2","texto":"Acción concreta, máximo 12 palabras"}]}';
+      ? 'Date: '+dateStr+'. You are a global intelligence analyst for CONTEXTO by Stryv Studio. Your job is not to repeat news: it\'s to reveal the structural shift behind the headline and explain why it matters before it\'s too late. Be brief, sharp, and concrete.\n\nRELEVANT CONTEXT TODAY:\n'+buildRelevantContext(article)+'\n\nARTICLE TO ANALYZE: "'+displayTitle+'" — Source: '+article.source+' — Section: '+getSectionLabel(article.section)+'\n\nRespond ONLY with valid JSON without markdown. Keep each field short and useful.\n{"titular_contexto":"1 line, max 18 words","que_esta_pasando":"1 paragraph, max 90 words","por_que_te_afecta":"1 paragraph, max 55 words","cambio_de_paradigma":"1 paragraph, max 45 words","que_hacer":[{"num":"1","texto":"Concrete action, max 12 words"},{"num":"2","texto":"Concrete action, max 12 words"}]}'
+      : 'Fecha: '+dateStr+'. Eres un analista de inteligencia global para la plataforma CONTEXTO de Stryv Studio. Tu trabajo no es repetir noticias: es revelar el cambio estructural detrás del titular y explicar por qué importa antes de que sea demasiado tarde. Sé breve, afilado y concreto.\n\nCONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\nNOTICIA A ANALIZAR: "'+displayTitle+'" — Fuente: '+article.source+' — Sección: '+getSectionLabel(article.section)+'\n\nResponde SOLO con JSON válido sin markdown. Mantén cada campo corto y útil.\n{"titular_contexto":"1 línea, máximo 18 palabras","que_esta_pasando":"1 párrafo, máximo 90 palabras","por_que_te_afecta":"1 párrafo, máximo 55 palabras","cambio_de_paradigma":"1 párrafo, máximo 45 palabras","que_hacer":[{"num":"1","texto":"Acción concreta, máximo 12 palabras"},{"num":"2","texto":"Acción concreta, máximo 12 palabras"}]}';
     const text = await callClaude(analysisPrompt, 700, 'fast');
 
     const data = JSON.parse(text.replace(/```json|```/g,'').trim());
@@ -1311,12 +1390,12 @@ function renderSearchResults(q){
   const c=$('#searchResults');
   if(!q.trim()){c.innerHTML='<div class="search-empty">'+t('searchEmpty')+'</div>';return}
   const lower=q.toLowerCase();
-  const results=articles.filter(a=>a.title.toLowerCase().includes(lower));
+  const results=articles.filter(a=>(a.title+' '+getDisplayTitle(a)).toLowerCase().includes(lower));
   if(!results.length){c.innerHTML='<div class="search-empty">'+t('searchNoResults')(q)+'</div>';return}
   c.innerHTML=results.map(a=>
     '<div class="search-result" data-search-id="'+hashId(a.title)+'" data-search-section="'+a.section+'">'+
-      '<div class="search-result-section">'+(SECTION_ICONS[a.section]||'')+' '+esc(a.section)+'</div>'+
-      '<div class="search-result-title">'+esc(a.title)+'</div></div>'
+      '<div class="search-result-section">'+(SECTION_ICONS[a.section]||'')+' '+esc(getSectionLabel(a.section))+'</div>'+
+      '<div class="search-result-title">'+esc(getDisplayTitle(a))+'</div></div>'
   ).join('');
 }
 
@@ -1354,10 +1433,10 @@ function shareAnalysis(id){
   const article = articles.find(a=>hashId(a.title)===id);
   const data = analysisCache[id];
   if(!article) return;
-  const text = article.title+'\n\n'+(data?.titular_contexto||'')+'\n\n'+(data?.por_que_te_afecta||'')+'\n\n— CONTEXTO por Stryv Studio';
+  const text = getDisplayTitle(article)+'\n\n'+(data?.titular_contexto||'')+'\n\n'+(data?.por_que_te_afecta||'')+'\n\n— CONTEXTO por Stryv Studio';
 
   if(navigator.share){
-    navigator.share({title:article.title,text,url:window.location.href}).catch(()=>{});
+    navigator.share({title:getDisplayTitle(article),text,url:window.location.href}).catch(()=>{});
   } else {
     navigator.clipboard.writeText(text).then(()=>{
       const btn=document.querySelector('[data-share="'+id+'"]');
