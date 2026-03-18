@@ -110,10 +110,16 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 .hero-shell{padding:16px;border-bottom:1px solid var(--border-light);background:radial-gradient(circle at top right,var(--accent-soft),transparent 28%),linear-gradient(180deg,var(--surface),transparent)}
 .hero-kicker{font-size:10px;font-weight:800;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
 .hero-title{font-size:20px;font-weight:800;line-height:1.2;letter-spacing:-.4px;color:var(--text);margin-bottom:14px;max-width:520px}
+.hero-summary{font-size:14px;line-height:1.65;color:var(--text-2);max-width:520px;margin-bottom:14px}
+.hero-summary strong{color:var(--text);font-weight:800}
 .hero-metrics{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px}
 .hero-metrics::-webkit-scrollbar{display:none}
 .hero-chip{flex-shrink:0;padding:9px 12px;border:1px solid var(--border);border-radius:999px;background:var(--surface-2);font-size:12px;color:var(--text-2)}
 .hero-chip strong{color:var(--text);font-weight:800}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.hero-btn{font-family:inherit;font-size:12px;font-weight:800;border-radius:999px;padding:10px 14px;cursor:pointer}
+.hero-btn-primary{background:var(--accent);border:none;color:#0D1117}
+.hero-btn-secondary{background:none;border:1px solid var(--border);color:var(--text-2)}
 .briefing-card{border:1px solid var(--border);border-radius:18px;padding:16px;background:var(--surface);box-shadow:0 10px 30px rgba(0,0,0,.08)}
 .briefing-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
 .briefing-label{font-size:11px;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.8px}
@@ -317,6 +323,11 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 <div class="hero-shell">
   <div class="hero-kicker">Terminal de claridad</div>
   <div class="hero-title">La mayoría escucha titulares. CONTEXTO te explica el cambio de raíz.</div>
+  <div class="hero-summary"><strong>Si no entiendes el cambio, reaccionas tarde.</strong> Esta app existe para mostrarte qué está reconfigurando el mundo antes de que te deje sin margen.</div>
+  <div class="hero-actions">
+    <button class="hero-btn hero-btn-secondary" id="heroManifestoBtn">Ver manifiesto</button>
+    <button class="hero-btn hero-btn-primary" id="heroPowerBtn">Ir a lo más tenso</button>
+  </div>
   <div class="hero-metrics" id="heroMetrics"></div>
   <div class="briefing-card" id="briefingCard">
     <div class="briefing-top">
@@ -571,8 +582,8 @@ function nextOnboarding(){
   renderOnboarding();
 }
 
-function openOnboarding(){
-  if(onboardingSeen) return;
+function openOnboarding(force){
+  if(onboardingSeen && !force) return;
   onboardingStep = 0;
   renderOnboarding();
   $('#onboarding').classList.add('open');
@@ -1081,6 +1092,8 @@ document.addEventListener('click',e=>{
   if(e.target.closest('#installBtn')){installApp();return}
   if(e.target.closest('#installDismiss')){hideInstallBanner(true);return}
   if(e.target.closest('#retryFromEmpty')){refreshAll();return}
+  if(e.target.closest('#heroManifestoBtn')){openOnboarding(true);return}
+  if(e.target.closest('#heroPowerBtn')){switchSection('Poder');return}
   if(e.target.closest('#onboardingNext')){nextOnboarding();return}
   if(e.target.closest('#onboardingSkip')){closeOnboarding();return}
 
