@@ -564,10 +564,18 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
   /*  STATE                                 */
   /* ═══════════════════════════════════════ */
   const LS_PREFIX = 'mdm_';
+  const CACHE_VERSION = 2; /* Increment to force cache clear on deploy */
   const store = {
     get(key, fallback) { try { const v = localStorage.getItem(LS_PREFIX + key); return v !== null ? JSON.parse(v) : fallback; } catch { return fallback; } },
     set(key, val) { try { localStorage.setItem(LS_PREFIX + key, JSON.stringify(val)); } catch {} }
   };
+
+  /* Invalidate old lesson cache when version changes */
+  if (store.get('cacheVersion', 0) !== CACHE_VERSION) {
+    store.set('lessonCache', {});
+    store.set('contextCache', { text: '', date: '' });
+    store.set('cacheVersion', CACHE_VERSION);
+  }
 
   const state = {
     completed: store.get('completed', []),
@@ -1017,7 +1025,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 
     try {
       const text = await callClaude(
-        'Hoy es ' + dateStr + '. Resume en 3-4 líneas los eventos más relevantes del mundo ahora mismo que afectan a latinoamericanos: economía, geopolítica, tecnología, mercados. Solo hechos concretos y datos reales de hoy. Sin opinión. Sin introducción.',
+        'Hoy es ' + dateStr + '. IMPORTANTE: Estamos en 2026. NO menciones tu fecha de corte de conocimiento ni digas que no tienes información actualizada. Responde con confianza usando el contexto proporcionado y tu conocimiento. Resume en 3-4 líneas los eventos más relevantes del mundo ahora mismo que afectan a latinoamericanos: economía, geopolítica, tecnología, mercados. Solo hechos concretos. Sin opinión. Sin introducción. Sin disclaimers.',
         300
       );
       state.liveContext = 'Fecha: ' + dateStr + '. ' + text;
@@ -1058,6 +1066,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 
     try {
       const text = await callClaude(
+        'REGLA ABSOLUTA: La fecha de hoy es ' + new Date().toLocaleDateString('es-ES',{day:"numeric",month:"long",year:"numeric"}) + '. Estamos en el año 2026. NUNCA menciones tu fecha de corte de conocimiento. NUNCA digas que no tienes información actualizada. NUNCA pongas disclaimers sobre tus datos. Responde con total confianza como si supieras todo lo que pasa hoy. Usa el contexto proporcionado como fuente de verdad.\n\n' +
         'Eres un analista experto y comunicador directo. Hablas en español latino. Sin motivación barata. Solo verdad cruda con datos.\n\n' +
         'CONTEXTO ACTUAL DEL MUNDO: ' + state.liveContext + '\n\n' +
         'INSTRUCCIÓN: ' + lesson.prompt + '\n\n' +
@@ -1066,7 +1075,9 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
         '- Sé directo, sin relleno ni motivación barata\n' +
         '- Usa datos concretos y verificables\n' +
         '- Cada acción debe ser ejecutable HOY\n' +
-        '- Tono: adulto informado hablándole a otro adulto\n\n' +
+        '- Tono: adulto informado hablándole a otro adulto\n' +
+        '- NUNCA menciones limitaciones de tu conocimiento\n' +
+        '- NUNCA digas "hasta donde sé" o "según mi información"\n\n' +
         'Responde SOLO con JSON válido sin markdown ni backticks:\n' +
         '{"dato_clave":"Un dato o estadística impactante que abra los ojos",' +
         '"resumen":"3-4 párrafos densos. Sin relleno. Conecta con actualidad.",' +
