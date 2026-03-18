@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Manual del Mundo — Stryv</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface2: #f7f9f9;
+    --border: #eff3f4;
+    --text: #0f1419;
+    --text2: #536471;
+    --accent: #1d9bf0;
+    --separator: #eff3f4;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-bottom: 70px;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+
+  /* LOADER */
+  .loader {
+    position: fixed;
+    inset: 0;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.6s ease, visibility 0.6s;
+  }
+
+  .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+  .loader-logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0f1419;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  .loader-sub {
+    font-size: 13px;
+    color: #536471;
+    margin-bottom: 40px;
+  }
+
+  .loader-bar-wrap {
+    width: 140px;
+    height: 2px;
+    background: #eff3f4;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .loader-bar-fill {
+    height: 100%;
+    background: #0f1419;
+    width: 0%;
+    transition: width 0.2s ease;
+  }
+
+  .loader-status {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #536471;
+    min-height: 16px;
+    letter-spacing: 0.2px;
+  }
+
+  /* TOP BAR */
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    height: 53px;
+    justify-content: space-between;
+  }
+
+  .top-bar-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .top-bar-right {
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  /* HERO */
+  .hero {
+    padding: 24px 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .hero-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.55;
+  }
+
+  /* MODULE NAV */
+  .module-nav {
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0 16px;
+    gap: 4px;
+  }
+
+  .module-nav::-webkit-scrollbar { display: none; }
+
+  .module-tab {
+    flex-shrink: 0;
+    padding: 14px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+    letter-spacing: -0.1px;
+  }
+
+  .module-tab.active {
+    color: var(--text);
+    border-bottom-color: var(--text);
+  }
+
+  .module-tab:hover { color: var(--text); }
+
+  /* MODULE CONTENT */
+  .module-content { display: none; }
+  .module-content.active { display: block; }
+
+  /* SECTION HEAD */
+  .sec-head {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* LESSON ROW */
+  .lesson {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 16px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+
+  .lesson:hover { background: var(--surface2); }
+  .lesson.done { opacity: 0.5; }
+
+  .lesson-num {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text2);
+    min-width: 20px;
+    margin-top: 2px;
+    letter-spacing: 0.3px;
+  }
+
+  .lesson-body { flex: 1; }
+
+  .lesson-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.2px;
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+
+  .lesson-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.45;
+    margin-bottom: 6px;
+  }
+
+  .lesson-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(29,155,240,0.08);
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  .lesson-tag.warn { color: #f4212e; background: rgba(244,33,46,0.08); }
+  .lesson-tag.gold { color: #f4a100; background: rgba(244,161,0,0.08); }
+  .lesson-tag.green { color: #00ba7c; background: rgba(0,186,124,0.08); }
+
+  .lesson-right {
+    flex-shrink: 0;
+    font-size: 18px;
+    color: var(--border);
+    margin-top: 2px;
+  }
+
+  /* EXPANDED LESSON */
+  .lesson-expanded {
+    display: none;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .lesson-expanded.open { display: block; }
+
+  .lesson-exp-header {
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lesson-exp-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .lesson-exp-close {
+    font-size: 13px;
+    color: var(--text2);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .lesson-exp-body {
+    padding: 16px;
+  }
+
+  .lesson-exp-block { margin-bottom: 20px; }
+  .lesson-exp-block:last-child { margin-bottom: 0; }
+
+  .exp-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .exp-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .exp-text strong { font-weight: 700; }
+
+  .exp-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .exp-action {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .exp-action-num {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 16px;
+    margin-top: 1px;
+  }
+
+  .exp-action-text {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.45;
+  }
+
+  .exp-action-text strong { font-weight: 700; }
+
+  /* SKELETON */
+  .sk {
+    background: linear-gradient(90deg, #f7f9f9 25%, #eff3f4 50%, #f7f9f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+  /* AI BLOCK */
+  .ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(29,155,240,0.08);
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+
+  .ai-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* STRYV CTA */
+  .stryv-cta {
+    margin: 16px;
+    padding: 16px;
+    background: #0f1419;
+    border-radius: 12px;
+    color: #fff;
+  }
+
+  .stryv-cta-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .stryv-cta-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .stryv-cta-btn {
+    display: block;
+    background: #fff;
+    color: #0f1419;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    transition: opacity 0.15s;
+    margin-bottom: 8px;
+  }
+
+  .stryv-cta-btn:active { opacity: 0.8; }
+
+  .stryv-cta-link {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+  }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 600px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    padding: 8px 0 16px;
+    display: flex;
+    justify-content: space-around;
+    z-index: 200;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    color: var(--text2);
+    cursor: pointer;
+    min-width: 50px;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .nav-item.active { color: var(--text); }
+  .nav-item:hover { color: var(--text); }
+  .nav-icon { font-size: 22px; line-height: 1; }
+  .nav-label { font-size: 10px; font-weight: 600; }
+
+  @media (min-width: 600px) {
+    body { box-shadow: 0 0 0 1px var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-logo">Manual del Mundo</div>
+  <div class="loader-sub">por Stryv Studio</div>
+  <div class="loader-bar-wrap">
+    <div class="loader-bar-fill" id="loaderFill"></div>
+  </div>
+  <div class="loader-status" id="loaderStatus">Cargando conocimiento...</div>
+</div>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-title">Manual del Mundo</div>
+  <div class="top-bar-right" id="dateDisplay"></div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Stryv Studio · Acceso libre</div>
+  <div class="hero-title">Lo que nadie te enseñó porque no les convenía.</div>
+  <div class="hero-desc">Dinero, poder, movilidad, tecnología. Conocimiento accionable. Sin vender nada.</div>
+</div>
+
+<!-- MODULE TABS -->
+<div class="module-nav" id="moduleNav">
+  <div class="module-tab active" onclick="switchModule('dinero', this)">💰 Dinero</div>
+  <div class="module-tab" onclick="switchModule('movilidad', this)">🌍 Movilidad</div>
+  <div class="module-tab" onclick="switchModule('poder', this)">⚡ Poder</div>
+  <div class="module-tab" onclick="switchModule('tecnologia', this)">🤖 Tecnología</div>
+  <div class="module-tab" onclick="switchModule('mentalidad', this)">🧠 Mentalidad</div>
+  <div class="module-tab" onclick="switchModule('negocio', this)">🚀 Negocio</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- MÓDULO: DINERO -->
+<!-- ═══════════════════════════════════ -->
+<div class="module-content active" id="mod-dinero">
+
+  <div class="sec-head">Lo que el sistema no quiere que sepas</div>
+
+  <div class="lesson" onclick="toggleLesson('d1')">
+    <div class="lesson-num">01</div>
+    <div class="lesson-body">
+      <div class="lesson-title">El dinero no es neutral. Nunca lo fue.</div>
+      <div class="lesson-desc">Desde Bretton Woods hasta el petrodólar, el dinero siempre fue una herramienta de control geopolítico.</div>
+      <span class="lesson-tag warn">Fundamental</span>
+    </div>
+    <div class="lesson-right" id="arr-d1">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-d1">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">El dinero no es neutral</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('d1')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-d1"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('d2')">
+    <div class="lesson-num">02</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Por qué el dólar está cayendo y qué significa para ti</div>
+      <div class="lesson-desc">El índice del dólar bajó 10% en un año. No es un accidente. Es un síntoma.</div>
+      <span class="lesson-tag warn">Urgente</span>
+    </div>
+    <div class="lesson-right" id="arr-d2">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-d2">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">La caída del dólar</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('d2')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-d2"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('d3')">
+    <div class="lesson-num">03</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Bitcoin: lo que es, lo que no es, y por qué importa</div>
+      <div class="lesson-desc">No es una inversión especulativa. Es el primer activo en la historia que ningún gobierno puede confiscar.</div>
+      <span class="lesson-tag green">Accionable</span>
+    </div>
+    <div class="lesson-right" id="arr-d3">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-d3">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Bitcoin de verdad</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('d3')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-d3"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('d4')">
+    <div class="lesson-num">04</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Cómo diversificar sin ser millonario</div>
+      <div class="lesson-desc">Oro, Bitcoin, cuentas en otras monedas, activos fuera de tu país. Lo que hacen los ricos desde siempre.</div>
+      <span class="lesson-tag green">Accionable</span>
+    </div>
+    <div class="lesson-right" id="arr-d4">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-d4">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Diversificación real</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('d4')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-d4"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('d5')">
+    <div class="lesson-num">05</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Por qué ahorrar en pesos es un error silencioso</div>
+      <div class="lesson-desc">Inflación, devaluación, control de cambios. El sistema está diseñado para que pierdas poder adquisitivo.</div>
+      <span class="lesson-tag warn">Urgente</span>
+    </div>
+    <div class="lesson-right" id="arr-d5">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-d5">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">El error del ahorro en pesos</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('d5')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-d5"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="stryv-cta">
+    <div class="stryv-cta-title">¿Tu negocio opera sin sistema?</div>
+    <div class="stryv-cta-desc">Construimos la infraestructura digital que hace que tu negocio funcione aunque tú no estés. Diagnóstico gratis.</div>
+    <a href="https://wa.me/17373683464" target="_blank" class="stryv-cta-btn">Hablar con Stryv</a>
+    <a href="https://stryvstudio.com" target="_blank" class="stryv-cta-link">stryvstudio.com</a>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- MÓDULO: MOVILIDAD -->
+<!-- ═══════════════════════════════════ -->
+<div class="module-content" id="mod-movilidad">
+
+  <div class="sec-head">Cómo moverte en el mundo real</div>
+
+  <div class="lesson" onclick="toggleLesson('m1')">
+    <div class="lesson-num">01</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Visas de inversión: cómo comprar tu movilidad</div>
+      <div class="lesson-desc">España, Portugal, México, Paraguay. Con menos de $100K puedes obtener residencia en otro país.</div>
+      <span class="lesson-tag green">Accionable</span>
+    </div>
+    <div class="lesson-right" id="arr-m1">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-m1">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Visas de inversión</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('m1')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-m1"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('m2')">
+    <div class="lesson-num">02</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Cómo abrir cuentas bancarias en otros países</div>
+      <div class="lesson-desc">Wise, Revolut, bancos en México, USA, España. Cómo tener acceso a múltiples monedas desde tu teléfono.</div>
+      <span class="lesson-tag green">Accionable</span>
+    </div>
+    <div class="lesson-right" id="arr-m2">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-m2">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Cuentas bancarias globales</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('m2')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-m2"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('m3')">
+    <div class="lesson-num">03</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Cómo cobrar en dólares desde cualquier país</div>
+      <div class="lesson-desc">Stripe, Wise, transferencias internacionales. La infraestructura financiera que usan los nómadas digitales.</div>
+      <span class="lesson-tag green">Accionable</span>
+    </div>
+    <div class="lesson-right" id="arr-m3">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-m3">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Cobrar en dólares</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('m3')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-m3"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('m4')">
+    <div class="lesson-num">04</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Por qué tener un segundo pasaporte cambia todo</div>
+      <div class="lesson-desc">No es para ricos. Es para los que entienden que la nacionalidad es un accidente geográfico, no un destino.</div>
+      <span class="lesson-tag gold">Estratégico</span>
+    </div>
+    <div class="lesson-right" id="arr-m4">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-m4">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Segundo pasaporte</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('m4')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-m4"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="stryv-cta">
+    <div class="stryv-cta-title">¿Tu negocio puede operar desde cualquier país?</div>
+    <div class="stryv-cta-desc">Si no, hay algo que no está digitalizado correctamente. Hablemos.</div>
+    <a href="https://wa.me/17373683464" target="_blank" class="stryv-cta-btn">Hablar con Stryv</a>
+    <a href="https://stryvstudio.com" target="_blank" class="stryv-cta-link">stryvstudio.com</a>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- MÓDULO: PODER -->
+<!-- ═══════════════════════════════════ -->
+<div class="module-content" id="mod-poder">
+
+  <div class="sec-head">Cómo funciona el mundo real</div>
+
+  <div class="lesson" onclick="toggleLesson('p1')">
+    <div class="lesson-num">01</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Por qué hay guerras: el manual real</div>
+      <div class="lesson-desc">Las guerras no son por ideología. Son por recursos, rutas comerciales y control monetario.</div>
+      <span class="lesson-tag warn">Incómodo</span>
+    </div>
+    <div class="lesson-right" id="arr-p1">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-p1">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Por qué hay guerras</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('p1')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-p1"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('p2')">
+    <div class="lesson-num">02</div>
+    <div class="lesson-body">
+      <div class="lesson-title">El ciclo de los imperios: Roma, España, Gran Bretaña, EE.UU.</div>
+      <div class="lesson-desc">Todos creyeron que eran eternos. Todos siguieron el mismo patrón. EE.UU. lleva 80 años. El promedio es 94.</div>
+      <span class="lesson-tag gold">Historia</span>
+    </div>
+    <div class="lesson-right" id="arr-p2">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-p2">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">El ciclo de los imperios</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('p2')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-p2"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('p3')">
+    <div class="lesson-num">03</div>
+    <div class="lesson-body">
+      <div class="lesson-title">China: por qué ya es la nueva potencia dominante</div>
+      <div class="lesson-desc">No es una amenaza futura. Ya pasó. Primera economía por poder de compra, su propia IA, su propio sistema de pagos.</div>
+      <span class="lesson-tag warn">Urgente</span>
+    </div>
+    <div class="lesson-right" id="arr-p3">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-p3">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">China ya ganó</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('p3')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-p3"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('p4')">
+    <div class="lesson-num">04</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Cómo el status quo se mantiene: los mecanismos invisibles</div>
+      <div class="lesson-desc">Media, deuda, educación, entretenimiento. El sistema no necesita conspiraciones. Solo necesita que no preguntes.</div>
+      <span class="lesson-tag warn">Incómodo</span>
+    </div>
+    <div class="lesson-right" id="arr-p4">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-p4">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Los mecanismos del status quo</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('p4')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-p4"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="stryv-cta">
+    <div class="stryv-cta-title">El mundo cambia. ¿Tu negocio también?</div>
+    <div class="stryv-cta-desc">Construimos sistemas digitales para negocios que entienden que el mundo ya no es el mismo.</div>
+    <a href="https://wa.me/17373683464" target="_blank" class="stryv-cta-btn">Hablar con Stryv</a>
+    <a href="https://stryvstudio.com" target="_blank" class="stryv-cta-link">stryvstudio.com</a>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- MÓDULO: TECNOLOGÍA -->
+<!-- ═══════════════════════════════════ -->
+<div class="module-content" id="mod-tecnologia">
+
+  <div class="sec-head">La revolución que ya comenzó</div>
+
+  <div class="lesson" onclick="toggleLesson('t1')">
+    <div class="lesson-num">01</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Qué es realmente la IA y por qué cambia todo</div>
+      <div class="lesson-desc">No es un chatbot sofisticado. Es la automatización del trabajo intelectual. Por primera vez en la historia.</div>
+      <span class="lesson-tag warn">Fundamental</span>
+    </div>
+    <div class="lesson-right" id="arr-t1">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-t1">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Qué es realmente la IA</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('t1')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-t1"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('t2')">
+    <div class="lesson-num">02</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Cómo usar IA para ganar ventaja real hoy</div>
+      <div class="lesson-desc">Claude, ChatGPT, Gemini, Midjourney. Las herramientas concretas y cómo usarlas para trabajar diferente.</div>
+      <span class="lesson-tag green">Accionable</span>
+    </div>
+    <div class="lesson-right" id="arr-t2">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-t2">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">IA para ventaja real</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('t2')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-t2"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('t3')">
+    <div class="lesson-num">03</div>
+    <div class="lesson-body">
+      <div class="lesson-title">La guerra de chips EE.UU.-China: por qué te afecta</div>
+      <div class="lesson-desc">El control de los semiconductores avanzados es el control del futuro. Y está en juego ahora mismo.</div>
+      <span class="lesson-tag warn">Urgente</span>
+    </div>
+    <div class="lesson-right" id="arr-t3">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-t3">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">La guerra de chips</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('t3')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-t3"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('t4')">
+    <div class="lesson-num">04</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Qué trabajos va a reemplazar la IA primero</div>
+      <div class="lesson-desc">No son los trabajos manuales. Son los trabajos de oficina, los administrativos, los de "profesional".</div>
+      <span class="lesson-tag warn">Urgente</span>
+    </div>
+    <div class="lesson-right" id="arr-t4">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-t4">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Los trabajos que desaparecen</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('t4')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-t4"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="stryv-cta">
+    <div class="stryv-cta-title">¿Tu negocio ya usa IA?</div>
+    <div class="stryv-cta-desc">Implementamos sistemas de atención automatizada con IA para negocios que no quieren quedarse atrás.</div>
+    <a href="https://wa.me/17373683464" target="_blank" class="stryv-cta-btn">Hablar con Stryv</a>
+    <a href="https://stryvstudio.com" target="_blank" class="stryv-cta-link">stryvstudio.com</a>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- MÓDULO: MENTALIDAD -->
+<!-- ═══════════════════════════════════ -->
+<div class="module-content" id="mod-mentalidad">
+
+  <div class="sec-head">Rompe las cadenas invisibles</div>
+
+  <div class="lesson" onclick="toggleLesson('men1')">
+    <div class="lesson-num">01</div>
+    <div class="lesson-body">
+      <div class="lesson-title">La Alegoría de la Caverna: por qué tu realidad no es real</div>
+      <div class="lesson-desc">Platón lo describió hace 2,400 años. Sigue siendo la descripción más precisa de cómo vivimos hoy.</div>
+      <span class="lesson-tag">Filosofía</span>
+    </div>
+    <div class="lesson-right" id="arr-men1">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-men1">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">La Alegoría de la Caverna</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('men1')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-men1"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('men2')">
+    <div class="lesson-num">02</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Cómo identificar tus prisiones de contexto</div>
+      <div class="lesson-desc">Las limitaciones más peligrosas son las que no sabes que tienes. Cómo verlas y cómo salir de ellas.</div>
+      <span class="lesson-tag green">Accionable</span>
+    </div>
+    <div class="lesson-right" id="arr-men2">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-men2">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Prisiones de contexto</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('men2')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-men2"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('men3')">
+    <div class="lesson-num">03</div>
+    <div class="lesson-body">
+      <div class="lesson-title">La mentalidad mutante: adaptarse o quedarse atrás</div>
+      <div class="lesson-desc">No es motivación. Es supervivencia. El mundo cambia tan rápido que la rigidez es el riesgo más grande.</div>
+      <span class="lesson-tag gold">Estratégico</span>
+    </div>
+    <div class="lesson-right" id="arr-men3">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-men3">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">La mentalidad mutante</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('men3')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-men3"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('men4')">
+    <div class="lesson-num">04</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Por qué la ignorancia no duele hasta que es tarde</div>
+      <div class="lesson-desc">El costo de no saber no se paga inmediatamente. Se paga cuando el mundo cambia y ya no puedes moverte.</div>
+      <span class="lesson-tag warn">Incómodo</span>
+    </div>
+    <div class="lesson-right" id="arr-men4">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-men4">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">El costo de la ignorancia</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('men4')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-men4"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="stryv-cta">
+    <div class="stryv-cta-title">La mentalidad mutante aplicada al negocio</div>
+    <div class="stryv-cta-desc">Un negocio que no tiene sistemas digitales depende completamente de su dueño. Eso no es libertad.</div>
+    <a href="https://wa.me/17373683464" target="_blank" class="stryv-cta-btn">Hablar con Stryv</a>
+    <a href="https://stryvstudio.com" target="_blank" class="stryv-cta-link">stryvstudio.com</a>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- MÓDULO: NEGOCIO -->
+<!-- ═══════════════════════════════════ -->
+<div class="module-content" id="mod-negocio">
+
+  <div class="sec-head">Construye algo que no dependa de ti</div>
+
+  <div class="lesson" onclick="toggleLesson('n1')">
+    <div class="lesson-num">01</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Por qué tu negocio local tiene un techo y cómo romperlo</div>
+      <div class="lesson-desc">Un negocio que solo opera localmente está atado a la economía de una sola ciudad, de un solo país.</div>
+      <span class="lesson-tag warn">Fundamental</span>
+    </div>
+    <div class="lesson-right" id="arr-n1">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-n1">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">El techo del negocio local</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('n1')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-n1"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('n2')">
+    <div class="lesson-num">02</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Qué es un sistema operativo digital y por qué lo necesitas</div>
+      <div class="lesson-desc">Ventas, atención, operación interna. El conjunto de herramientas que hace que tu negocio funcione solo.</div>
+      <span class="lesson-tag green">Accionable</span>
+    </div>
+    <div class="lesson-right" id="arr-n2">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-n2">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Sistema operativo digital</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('n2')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-n2"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('n3')">
+    <div class="lesson-num">03</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Cómo construir ingresos que no dependan de tu tiempo</div>
+      <div class="lesson-desc">La trampa del autoempleo. La diferencia entre tener un negocio y ser el negocio.</div>
+      <span class="lesson-tag gold">Estratégico</span>
+    </div>
+    <div class="lesson-right" id="arr-n3">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-n3">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Ingresos sin tu tiempo</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('n3')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-n3"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="lesson" onclick="toggleLesson('n4')">
+    <div class="lesson-num">04</div>
+    <div class="lesson-body">
+      <div class="lesson-title">Cómo escalar a mercados fuera de tu país</div>
+      <div class="lesson-desc">LinkedIn, Meta Ads, contenido en español para CDMX y Monterrey. La estrategia que usa Stryv.</div>
+      <span class="lesson-tag green">Accionable</span>
+    </div>
+    <div class="lesson-right" id="arr-n4">›</div>
+  </div>
+  <div class="lesson-expanded" id="exp-n4">
+    <div class="lesson-exp-header">
+      <span class="lesson-exp-title">Escalar internacionalmente</span>
+      <button class="lesson-exp-close" onclick="toggleLesson('n4')">Cerrar</button>
+    </div>
+    <div class="lesson-exp-body" id="body-n4"><div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  </div>
+
+  <div class="stryv-cta">
+    <div class="stryv-cta-title">¿Listo para construir el sistema?</div>
+    <div class="stryv-cta-desc">Diagnóstico gratis. Sin compromiso. Respondemos en menos de 24h.</div>
+    <a href="https://wa.me/17373683464" target="_blank" class="stryv-cta-btn">Agenda tu diagnóstico</a>
+    <a href="https://stryvstudio.com" target="_blank" class="stryv-cta-link">stryvstudio.com</a>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <a class="nav-item active" onclick="switchModuleNav('dinero')">
+    <span class="nav-icon">💰</span>
+    <span class="nav-label">Dinero</span>
+  </a>
+  <a class="nav-item" onclick="switchModuleNav('poder')">
+    <span class="nav-icon">⚡</span>
+    <span class="nav-label">Poder</span>
+  </a>
+  <a class="nav-item" onclick="switchModuleNav('tecnologia')">
+    <span class="nav-icon">🤖</span>
+    <span class="nav-label">Tecnología</span>
+  </a>
+  <a class="nav-item" onclick="switchModuleNav('mentalidad')">
+    <span class="nav-icon">🧠</span>
+    <span class="nav-label">Mentalidad</span>
+  </a>
+  <a class="nav-item" href="https://stryvstudio.com" target="_blank">
+    <span class="nav-icon">🚀</span>
+    <span class="nav-label">Stryv</span>
+  </a>
+</div>
+
+<script>
+  const API_KEY = 'TU_API_KEY_AQUI';
+
+  // DATE
+  const d = new Date();
+  const days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  document.getElementById('dateDisplay').textContent = `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
+
+  // LOADER
+  const fill = document.getElementById('loaderFill');
+  const statusEl = document.getElementById('loaderStatus');
+  const statuses = ['Cargando módulos...','Conectando con el mundo...','Leyendo el contexto actual...','Listo'];
+  let prog = 0, si = 0;
+  const li = setInterval(() => {
+    prog += Math.random() * 20 + 5;
+    if (prog >= 100) { prog = 100; clearInterval(li); }
+    fill.style.width = prog + '%';
+    const nsi = Math.min(Math.floor((prog/100)*(statuses.length-1)), statuses.length-1);
+    if (nsi !== si) { si = nsi; statusEl.textContent = statuses[si]; }
+    if (prog >= 100) {
+      fetchLiveContext().then(() => {
+        setTimeout(() => document.getElementById('loader').classList.add('hidden'), 400);
+      });
+    }
+  }, 150);
+
+  // MODULE SWITCHING
+  function switchModule(id, tab) {
+    document.querySelectorAll('.module-content').forEach(m => m.classList.remove('active'));
+    document.querySelectorAll('.module-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('mod-' + id).classList.add('active');
+    if (tab) tab.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function switchModuleNav(id) {
+    switchModule(id, null);
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    const tabMap = { dinero: 0, poder: 2, tecnologia: 3, mentalidad: 4 };
+    const tabs = document.querySelectorAll('.module-tab');
+    if (tabMap[id] !== undefined) {
+      tabs.forEach(t => t.classList.remove('active'));
+      tabs[tabMap[id]]?.classList.add('active');
+    }
+  }
+
+  // LESSON TOGGLE
+  const loadedLessons = new Set();
+
+  function toggleLesson(id) {
+    const exp = document.getElementById('exp-' + id);
+    const arr = document.getElementById('arr-' + id);
+    const isOpen = exp.classList.contains('open');
+
+    document.querySelectorAll('.lesson-expanded').forEach(e => e.classList.remove('open'));
+    document.querySelectorAll('.lesson-right').forEach(a => a.textContent = '›');
+
+    if (!isOpen) {
+      exp.classList.add('open');
+      arr.textContent = '‹';
+      if (!loadedLessons.has(id)) {
+        loadedLessons.add(id);
+        generateLesson(id);
+      }
+      setTimeout(() => exp.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+    }
+  }
+
+  // LESSON PROMPTS
+  const lessonPrompts = {
+    d1: 'Explica de forma clara y accionable cómo el dinero ha sido siempre una herramienta de control geopolítico, desde el patrón oro hasta el petrodólar y los acuerdos de Bretton Woods. Incluye qué puede hacer una persona común con esta información.',
+    d2: 'Explica por qué el dólar está cayendo en 2026, qué lo está causando (guerra en Irán, China, deuda de EE.UU., desdolarización), y qué debe hacer concretamente alguien en Latinoamérica para protegerse.',
+    d3: 'Explica qué es Bitcoin realmente — no como inversión sino como tecnología monetaria. Por qué es diferente a cualquier activo anterior. Cómo empezar a tenerlo de forma segura con poco dinero.',
+    d4: 'Explica cómo diversificar el patrimonio sin ser millonario: oro físico, Bitcoin, cuentas en dólares, activos fuera del país. Pasos concretos y accesibles para alguien en Latinoamérica.',
+    d5: 'Explica por qué ahorrar en pesos mexicanos (o cualquier moneda latinoamericana) es un error silencioso a largo plazo. Inflación, devaluación histórica, pérdida de poder adquisitivo. Qué hacer en cambio.',
+    m1: 'Explica las principales visas de inversión y residencia accesibles para latinoamericanos: España (visa nómada digital), Portugal, Paraguay, México, Uruguay. Costos reales, requisitos, pasos concretos.',
+    m2: 'Explica cómo abrir cuentas bancarias en otros países siendo latinoamericano: Wise, Revolut, Mercury (EE.UU.), bancos en España. Pasos concretos, documentos necesarios, limitaciones.',
+    m3: 'Explica cómo cobrar en dólares desde cualquier país latinoamericano: Stripe, Wise, transferencias internacionales, criptomonedas como intermediario. Plataformas, costos, procesos.',
+    m4: 'Explica por qué tener un segundo pasaporte o residencia cambia fundamentalmente las opciones de vida. Cómo conseguirlo siendo latinoamericano: por ascendencia, inversión, residencia prolongada.',
+    p1: 'Explica el manual real de por qué hay guerras: recursos naturales, rutas comerciales, control monetario, intereses del capital. Usa la guerra de Irán 2026 y Ucrania como ejemplos concretos.',
+    p2: 'Explica el ciclo histórico de los imperios usando el modelo de Ray Dalio: Roma, España, Gran Bretaña, EE.UU. El patrón que se repite y en qué punto está EE.UU. hoy.',
+    p3: 'Explica por qué China ya es la potencia dominante del siglo XXI: economía por PPP, tecnología propia, sistema de pagos CIPS, yuan en comercio global, DeepSeek. Por qué la mayoría aún no lo ve.',
+    p4: 'Explica los mecanismos concretos mediante los cuales el status quo se mantiene: medios de comunicación, sistema educativo, deuda, entretenimiento, narrativa del éxito. Sin teoría de conspiración — solo mecánica.',
+    t1: 'Explica qué es realmente la inteligencia artificial: no un chatbot sino la automatización del trabajo intelectual. Por qué es el cambio más disruptivo en 5,000 años y qué significa para el trabajo humano.',
+    t2: 'Explica cómo usar IA para ganar ventaja real hoy: Claude, ChatGPT, Midjourney, Kling, HeyGen. Casos de uso concretos para trabajo, negocio y productividad personal. Herramientas gratuitas y de pago.',
+    t3: 'Explica la guerra de chips EE.UU.-China: por qué el control de los semiconductores avanzados es el control del futuro. TSMC, Nvidia, DeepSeek, ASML. Por qué afecta a todo el mundo.',
+    t4: 'Explica qué trabajos va a reemplazar la IA primero y cuáles son más seguros. No son los trabajos manuales. Contadores, abogados, diseñadores, periodistas, programadores — qué está pasando con cada uno.',
+    men1: 'Explica la Alegoría de la Caverna de Platón completa y cómo describe exactamente la situación del mundo en 2026: personas que solo conocen las sombras de su contexto y creen que eso es toda la realidad.',
+    men2: 'Explica cómo identificar las prisiones de contexto personales: creencias heredadas del entorno, límites invisibles, narrativas que limitan lo que se puede imaginar como posible. Con ejercicios concretos.',
+    men3: 'Explica la mentalidad mutante: no como motivación sino como necesidad de supervivencia ante un mundo que cambia más rápido que nunca. Cómo desarrollarla concretamente.',
+    men4: 'Explica el costo real de la ignorancia: no se paga inmediatamente sino cuando el mundo cambia y ya no puedes moverte. Ejemplos concretos: los que no entendieron el dólar, Bitcoin, la IA.',
+    n1: 'Explica por qué un negocio puramente local tiene un techo y cómo romperlo: digitalización, mercados latinoamericanos remotos, servicios que no dependen de ubicación física.',
+    n2: 'Explica qué es un sistema operativo digital para negocios: sistema de ventas, atención automatizada con IA, operación interna, conversión local. Por qué es la diferencia entre escalar y estancarse.',
+    n3: 'Explica la diferencia entre ser el negocio y tener un negocio. Cómo construir sistemas que generen ingresos sin requerir tu presencia o tiempo constante. La trampa del autoempleo.',
+    n4: 'Explica cómo un negocio latinoamericano puede escalar a mercados en CDMX, Monterrey, Bogotá, Miami. Estrategia de contenido, LinkedIn, Meta Ads, posicionamiento. Pasos concretos.'
+  };
+
+  // LIVE NEWS CONTEXT
+  let liveContext = '';
+
+  async function fetchLiveContext() {
+    const today = new Date();
+    const dateStr = `${today.getDate()} de ${['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][today.getMonth()]} de ${today.getFullYear()}`;
+
+    // Use Claude to generate current world context based on known events
+    if (API_KEY === 'TU_API_KEY_AQUI') {
+      liveContext = `Fecha: ${dateStr}. Contexto actual: Guerra EE.UU.-Israel-Irán Día 17 (28 feb 2026). Dólar cayó 10% en 12 meses. Bitcoin $97,420. Oro $3,100. Petróleo $104 por Ormuz paralizado. China con IA propia (DeepSeek). Yuan en 33% del comercio exterior chino.`;
+      return;
+    }
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 300,
+          messages: [{
+            role: 'user',
+            content: `Hoy es ${dateStr}. Resume en 3-4 líneas los eventos más relevantes del mundo ahora mismo que afectan a latinoamericanos: economía, geopolítica, tecnología, mercados. Solo hechos concretos y datos reales. Sin opinión.`
+          }]
+        })
+      });
+      const json = await res.json();
+      liveContext = `Fecha: ${dateStr}. ${json.content[0].text}`;
+    } catch(e) {
+      liveContext = `Fecha: ${dateStr}. Guerra EE.UU.-Israel-Irán en curso. Dólar débil. Bitcoin en máximos históricos. China consolidando posición como potencia dominante.`;
+    }
+  }
+
+  async function generateLesson(id) {
+    const bodyEl = document.getElementById('body-' + id);
+    const prompt = lessonPrompts[id];
+
+    if (!prompt) return;
+
+    if (API_KEY === 'TU_API_KEY_AQUI') {
+      await new Promise(r => setTimeout(r, 800));
+      bodyEl.innerHTML = `
+        <div class="lesson-exp-block">
+          <div class="exp-label">Lo que necesitas saber</div>
+          <div class="exp-text">Este es el contenido que los grandes intereses prefieren que no conozcas. <strong>Pega tu API key de Anthropic</strong> donde dice <code>TU_API_KEY_AQUI</code> en el código para activar el conocimiento generado por IA en tiempo real.</div>
+        </div>
+        <div class="lesson-exp-block">
+          <div class="exp-label">Pasos accionables</div>
+          <div class="exp-actions">
+            <div class="exp-action"><div class="exp-action-num">1</div><div class="exp-action-text">Obtén tu API key en <strong>console.anthropic.com</strong></div></div>
+            <div class="exp-action"><div class="exp-action-num">2</div><div class="exp-action-text">Pégala en el código donde dice <strong>TU_API_KEY_AQUI</strong></div></div>
+            <div class="exp-action"><div class="exp-action-num">3</div><div class="exp-action-text">Cada lección se genera con IA en tiempo real, diferente cada día</div></div>
+          </div>
+        </div>`;
+      return;
+    }
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          messages: [{
+            role: 'user',
+            content: `CONTEXTO DEL MUNDO HOY: ${liveContext}
+
+Con ese contexto actual en mente, ${prompt}
+
+Es fundamental que conectes el conocimiento con lo que está pasando HOY, no con ejemplos genéricos. Usa datos y eventos actuales.
+
+Responde SOLO con JSON válido sin backticks ni texto adicional:
+{
+  "resumen": "2-3 párrafos en español latino directo. Sin motivación. Con verdad cruda, datos reales y conexión con eventos actuales. Lo que realmente necesitan saber HOY.",
+  "acciones": [
+    {"num": "1", "texto": "Acción concreta y específica que puede hacer hoy, esta semana"},
+    {"num": "2", "texto": "Segunda acción concreta con herramienta o recurso específico"},
+    {"num": "3", "texto": "Tercera acción concreta a largo plazo"}
+  ]
+}`
+          }]
+        })
+      });
+      const json = await res.json();
+      const data = JSON.parse(json.content[0].text.replace(/```json|```/g,'').trim());
+
+      bodyEl.innerHTML = `
+        <div class="ai-badge"><div class="ai-dot"></div>Actualizado hoy · IA en tiempo real</div>
+        <div class="lesson-exp-block">
+          <div class="exp-label">Lo que necesitas saber</div>
+          <div class="exp-text">${data.resumen.replace(/\n/g, '<br><br>')}</div>
+        </div>
+        <div class="lesson-exp-block">
+          <div class="exp-label">Pasos accionables</div>
+          <div class="exp-actions">
+            ${data.acciones.map(a => `<div class="exp-action"><div class="exp-action-num">${a.num}</div><div class="exp-action-text">${a.texto}</div></div>`).join('')}
+          </div>
+        </div>`;
+    } catch(e) {
+      bodyEl.innerHTML = '<div style="color:#536471;font-size:14px">Error cargando. Verifica tu API key.</div>';
+      loadedLessons.delete(id);
+    }
+  }
+</script>
+
+</body>
+</html>
