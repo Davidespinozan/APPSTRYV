@@ -1041,7 +1041,7 @@
 </div>
 
 <script>
-  const API_KEY = 'TU_API_KEY_AQUI';
+  const API_KEY = 'NETLIFY'; // La key está en Netlify, no aquí
 
   // DATE
   const d = new Date();
@@ -1139,92 +1139,54 @@
     n4: 'Explica cómo un negocio latinoamericano puede escalar a mercados en CDMX, Monterrey, Bogotá, Miami. Estrategia de contenido, LinkedIn, Meta Ads, posicionamiento. Pasos concretos.'
   };
 
-  // LIVE NEWS CONTEXT
+  // NETLIFY FUNCTION CALLER
+  async function callClaude(prompt, maxTokens = 1000) {
+    const res = await fetch('/.netlify/functions/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, maxTokens })
+    });
+    const json = await res.json();
+    return json.content[0].text;
+  }
+
+  // LIVE CONTEXT
   let liveContext = '';
 
   async function fetchLiveContext() {
     const today = new Date();
     const dateStr = `${today.getDate()} de ${['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][today.getMonth()]} de ${today.getFullYear()}`;
-
-    // Use Claude to generate current world context based on known events
-    if (API_KEY === 'TU_API_KEY_AQUI') {
-      liveContext = `Fecha: ${dateStr}. Contexto actual: Guerra EE.UU.-Israel-Irán Día 17 (28 feb 2026). Dólar cayó 10% en 12 meses. Bitcoin $97,420. Oro $3,100. Petróleo $104 por Ormuz paralizado. China con IA propia (DeepSeek). Yuan en 33% del comercio exterior chino.`;
-      return;
-    }
-
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 300,
-          messages: [{
-            role: 'user',
-            content: `Hoy es ${dateStr}. Resume en 3-4 líneas los eventos más relevantes del mundo ahora mismo que afectan a latinoamericanos: economía, geopolítica, tecnología, mercados. Solo hechos concretos y datos reales. Sin opinión.`
-          }]
-        })
-      });
-      const json = await res.json();
-      liveContext = `Fecha: ${dateStr}. ${json.content[0].text}`;
+      const text = await callClaude(`Hoy es ${dateStr}. Resume en 3-4 líneas los eventos más relevantes del mundo ahora mismo que afectan a latinoamericanos: economía, geopolítica, tecnología, mercados. Solo hechos concretos y datos reales. Sin opinión.`, 300);
+      liveContext = `Fecha: ${dateStr}. ${text}`;
     } catch(e) {
-      liveContext = `Fecha: ${dateStr}. Guerra EE.UU.-Israel-Irán en curso. Dólar débil. Bitcoin en máximos históricos. China consolidando posición como potencia dominante.`;
+      liveContext = `Fecha: ${dateStr}. Guerra EE.UU.-Israel-Irán en curso Día 17. Dólar cayó 10% en 12 meses. Bitcoin $97,420. Oro $3,100. Petróleo $104 por Ormuz paralizado. China consolidando posición dominante.`;
     }
   }
 
   async function generateLesson(id) {
     const bodyEl = document.getElementById('body-' + id);
     const prompt = lessonPrompts[id];
-
     if (!prompt) return;
 
-    if (API_KEY === 'TU_API_KEY_AQUI') {
-      await new Promise(r => setTimeout(r, 800));
-      bodyEl.innerHTML = `
-        <div class="lesson-exp-block">
-          <div class="exp-label">Lo que necesitas saber</div>
-          <div class="exp-text">Este es el contenido que los grandes intereses prefieren que no conozcas. <strong>Pega tu API key de Anthropic</strong> donde dice <code>TU_API_KEY_AQUI</code> en el código para activar el conocimiento generado por IA en tiempo real.</div>
-        </div>
-        <div class="lesson-exp-block">
-          <div class="exp-label">Pasos accionables</div>
-          <div class="exp-actions">
-            <div class="exp-action"><div class="exp-action-num">1</div><div class="exp-action-text">Obtén tu API key en <strong>console.anthropic.com</strong></div></div>
-            <div class="exp-action"><div class="exp-action-num">2</div><div class="exp-action-text">Pégala en el código donde dice <strong>TU_API_KEY_AQUI</strong></div></div>
-            <div class="exp-action"><div class="exp-action-num">3</div><div class="exp-action-text">Cada lección se genera con IA en tiempo real, diferente cada día</div></div>
-          </div>
-        </div>`;
-      return;
-    }
-
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          messages: [{
-            role: 'user',
-            content: `CONTEXTO DEL MUNDO HOY: ${liveContext}
+      const text = await callClaude(`CONTEXTO DEL MUNDO HOY: ${liveContext}
 
 Con ese contexto actual en mente, ${prompt}
 
-Es fundamental que conectes el conocimiento con lo que está pasando HOY, no con ejemplos genéricos. Usa datos y eventos actuales.
+Es fundamental que conectes el conocimiento con lo que está pasando HOY. Usa datos y eventos actuales.
 
 Responde SOLO con JSON válido sin backticks ni texto adicional:
 {
-  "resumen": "2-3 párrafos en español latino directo. Sin motivación. Con verdad cruda, datos reales y conexión con eventos actuales. Lo que realmente necesitan saber HOY.",
+  "resumen": "2-3 párrafos en español latino directo. Sin motivación. Con verdad cruda, datos reales y conexión con eventos actuales.",
   "acciones": [
-    {"num": "1", "texto": "Acción concreta y específica que puede hacer hoy, esta semana"},
-    {"num": "2", "texto": "Segunda acción concreta con herramienta o recurso específico"},
+    {"num": "1", "texto": "Acción concreta que puede hacer hoy con herramienta específica"},
+    {"num": "2", "texto": "Segunda acción concreta"},
     {"num": "3", "texto": "Tercera acción concreta a largo plazo"}
   ]
-}`
-          }]
-        })
-      });
-      const json = await res.json();
-      const data = JSON.parse(json.content[0].text.replace(/```json|```/g,'').trim());
+}`);
+
+      const data = JSON.parse(text.replace(/```json|```/g,'').trim());
 
       bodyEl.innerHTML = `
         <div class="ai-badge"><div class="ai-dot"></div>Actualizado hoy · IA en tiempo real</div>
@@ -1239,7 +1201,7 @@ Responde SOLO con JSON válido sin backticks ni texto adicional:
           </div>
         </div>`;
     } catch(e) {
-      bodyEl.innerHTML = '<div style="color:#536471;font-size:14px">Error cargando. Verifica tu API key.</div>';
+      bodyEl.innerHTML = '<div style="color:#536471;font-size:14px">Error cargando. Intenta de nuevo.</div>';
       loadedLessons.delete(id);
     }
   }
