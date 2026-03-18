@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Contexto — Stryv</title>
-<meta name="description" content="Conocimiento que el sistema no te da. Dinero, poder, movilidad global, tecnología e IA. Gratis. Sin vender nada. Solo información real con pasos concretos.">
+<title>CONTEXTO — Stryv</title>
+<meta name="description" content="Inteligencia en tiempo real. Las noticias que importan, analizadas con IA. Por qué te afectan. Qué hacer. Gratis.">
 <meta name="theme-color" content="#0D1117">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Contexto">
 <link rel="manifest" href="/manifest.json">
-<meta property="og:title" content="Contexto — Lo que nadie te enseñó">
-<meta property="og:description" content="Conocimiento accionable sobre dinero, geopolítica, movilidad global, tecnología e IA. Gratis.">
+<meta property="og:title" content="CONTEXTO — Inteligencia en tiempo real">
+<meta property="og:description" content="Las noticias que importan, analizadas con IA. Por qué te afectan. Qué hacer.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Contexto — Stryv">
-<meta name="twitter:description" content="Lo que nadie te enseñó porque no les convenía.">
+<meta name="twitter:title" content="CONTEXTO — Stryv">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
 <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png">
@@ -24,95 +23,169 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════ */
-/*  RESET & BASE                              */
-/* ═══════════════════════════════════════════ */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;max-width:600px;margin:0 auto;min-height:100dvh;min-height:100vh;transition:background .3s,color .3s}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;max-width:600px;margin:0 auto;min-height:100dvh;transition:background .3s,color .3s}
 
-/* ═══════════════════════════════════════════ */
-/*  CSS VARIABLES — LIGHT                     */
-/* ═══════════════════════════════════════════ */
-:root,[data-theme="light"]{
-  --bg:#EAF0EE;--surface:#ffffff;--surface-alt:#f2f5f4;--surface-hover:#e8edeb;
+/* ═══ THEME: DARK (default) ═══ */
+:root,[data-theme="dark"]{
+  --bg:#0D1117;--surface:#161b22;--surface-2:#1c2128;--surface-3:#272d35;
+  --border:#30363d;--border-light:#21262d;
+  --text:#EAF0EE;--text-2:#8b949e;--text-3:#6e7681;
+  --accent:#4ECDC4;--accent-soft:rgba(78,205,196,.12);--accent-mid:rgba(78,205,196,.25);
+  --danger:#f85149;--danger-soft:rgba(248,81,73,.12);
+  --warning:#d29922;--warning-soft:rgba(210,153,34,.12);
+  --blue:#58a6ff;--blue-soft:rgba(88,166,255,.12);
+  --cta-bg:#4ECDC4;--cta-text:#0D1117;
+  --blur-bg:rgba(13,17,23,.92);
+  --skeleton-a:#161b22;--skeleton-b:#1c2128;
+  --live-dot:#f85149;
+  --card-hover:#1c2128;
+}
+
+/* ═══ THEME: LIGHT ═══ */
+[data-theme="light"]{
+  --bg:#EAF0EE;--surface:#ffffff;--surface-2:#f2f5f4;--surface-3:#e8edeb;
   --border:#d4dbd8;--border-light:#e8edeb;
   --text:#0D1117;--text-2:#3d4a53;--text-3:#6b7c87;
-  --accent:#4ECDC4;--accent-soft:rgba(78,205,196,.1);
-  --success:#4ECDC4;--success-soft:rgba(78,205,196,.1);
-  --warning:#f4a100;--warning-soft:rgba(244,161,0,.1);
-  --danger:#f4212e;--danger-soft:rgba(244,33,46,.08);
-  --gold:#f4a100;--gold-soft:rgba(244,161,0,.1);
-  --cta-bg:#0D1117;--cta-text:#EAF0EE;--cta-btn-bg:#4ECDC4;--cta-btn-text:#0D1117;
-  --card-shadow:0 1px 3px rgba(13,17,23,.06),0 1px 2px rgba(13,17,23,.04);
-  --card-shadow-hover:0 4px 12px rgba(13,17,23,.1),0 2px 4px rgba(13,17,23,.04);
-  --overlay:rgba(13,17,23,.5);--blur-bg:rgba(234,240,238,.88);
-  --progress-bg:#d4dbd8;--progress-fill:#0D1117;
-  --skeleton-from:#e8edeb;--skeleton-mid:#d4dbd8;--skeleton-to:#e8edeb;
+  --accent:#3aafa9;--accent-soft:rgba(58,175,169,.1);--accent-mid:rgba(58,175,169,.2);
+  --danger:#d1242f;--danger-soft:rgba(209,36,47,.08);
+  --warning:#bf8700;--warning-soft:rgba(191,135,0,.08);
+  --blue:#0969da;--blue-soft:rgba(9,105,218,.08);
+  --cta-bg:#0D1117;--cta-text:#EAF0EE;
+  --blur-bg:rgba(234,240,238,.92);
+  --skeleton-a:#e8edeb;--skeleton-b:#d4dbd8;
+  --live-dot:#d1242f;
+  --card-hover:#f2f5f4;
 }
 
-/* ═══════════════════════════════════════════ */
-/*  CSS VARIABLES — DARK                      */
-/* ═══════════════════════════════════════════ */
-[data-theme="dark"]{
-  --bg:#0D1117;--surface:#161b22;--surface-alt:#1c2128;--surface-hover:#272d35;
-  --border:#30363d;--border-light:#30363d;
-  --text:#EAF0EE;--text-2:#8b949e;--text-3:#6e7681;
-  --accent:#4ECDC4;--accent-soft:rgba(78,205,196,.15);
-  --success:#4ECDC4;--success-soft:rgba(78,205,196,.15);
-  --warning:#f4a100;--warning-soft:rgba(244,161,0,.15);
-  --danger:#f4212e;--danger-soft:rgba(244,33,46,.15);
-  --gold:#f4a100;--gold-soft:rgba(244,161,0,.15);
-  --cta-bg:#4ECDC4;--cta-text:#0D1117;--cta-btn-bg:#0D1117;--cta-btn-text:#EAF0EE;
-  --card-shadow:0 1px 3px rgba(0,0,0,.3);
-  --card-shadow-hover:0 4px 16px rgba(0,0,0,.4);
-  --overlay:rgba(0,0,0,.7);--blur-bg:rgba(13,17,23,.88);
-  --progress-bg:#30363d;--progress-fill:#EAF0EE;
-  --skeleton-from:#1c2128;--skeleton-mid:#272d35;--skeleton-to:#1c2128;
-}
+body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px solid var(--border-light);border-right:1px solid var(--border-light)}
 
-body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px solid var(--border);border-right:1px solid var(--border)}
-
-/* ═══════════════════════════════════════════ */
-/*  LOADER                                    */
-/* ═══════════════════════════════════════════ */
+/* ═══ LOADER ═══ */
 .loader{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s,visibility .5s}
 .loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
-.loader-brand{font-size:28px;font-weight:800;color:var(--text);letter-spacing:-1px;margin-bottom:4px}
-.loader-sub{font-size:13px;color:var(--text-2);margin-bottom:32px;letter-spacing:.3px}
-.loader-bar{width:160px;height:3px;background:var(--progress-bg);border-radius:3px;overflow:hidden}
-.loader-bar-fill{height:100%;width:0%;background:var(--accent);border-radius:3px;transition:width .15s ease}
-.loader-tip{margin-top:20px;font-size:12px;color:var(--text-3);max-width:260px;text-align:center;line-height:1.5;min-height:36px;transition:opacity .3s}
+.loader-brand{font-family:'League Spartan',sans-serif;font-size:32px;font-weight:900;color:var(--text);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px}
+.loader-sub{font-size:12px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:32px}
+.loader-pulse{width:40px;height:40px;border-radius:50%;background:var(--accent);animation:loaderPulse 1.2s infinite}
+@keyframes loaderPulse{0%,100%{transform:scale(.8);opacity:.5}50%{transform:scale(1.1);opacity:1}}
+.loader-status{margin-top:20px;font-size:12px;color:var(--text-3);letter-spacing:.3px}
 
-/* ═══════════════════════════════════════════ */
-/*  ONBOARDING                                */
-/* ═══════════════════════════════════════════ */
-.onboarding{position:fixed;inset:0;background:var(--bg);z-index:9998;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;transition:opacity .4s,visibility .4s}
-.onboarding.hidden{opacity:0;visibility:hidden;pointer-events:none}
-.onb-step{display:none;flex-direction:column;align-items:center;max-width:340px}
-.onb-step.active{display:flex}
-.onb-icon{font-size:56px;margin-bottom:20px}
-.onb-title{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.5px;margin-bottom:10px;line-height:1.2}
-.onb-desc{font-size:15px;color:var(--text-2);line-height:1.6;margin-bottom:32px}
-.onb-btn{background:var(--text);color:var(--bg);font-size:15px;font-weight:700;padding:14px 48px;border-radius:50px;border:none;cursor:pointer;font-family:inherit;transition:opacity .15s}
-.onb-btn:active{opacity:.8}
-.onb-dots{display:flex;gap:6px;margin-top:24px}
-.onb-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:background .2s}
-.onb-dot.active{background:var(--text);width:20px;border-radius:3px}
-.onb-skip{position:absolute;top:16px;right:20px;font-size:14px;color:var(--text-3);background:none;border:none;cursor:pointer;font-family:inherit}
+/* ═══ TOP BAR ═══ */
+.top-bar{position:sticky;top:0;z-index:100;background:var(--blur-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border-light);padding:0 16px;display:flex;align-items:center;height:52px;gap:10px}
+.top-bar-brand{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:900;color:var(--text);letter-spacing:2px;text-transform:uppercase;flex:1}
+.top-bar-live{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--live-dot);letter-spacing:.5px;text-transform:uppercase}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--live-dot);animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.top-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:15px;color:var(--text-2);transition:all .15s}
+.top-btn:hover{background:var(--surface-2);color:var(--text)}
 
-/* ═══════════════════════════════════════════ */
-/*  TOP BAR                                   */
-/* ═══════════════════════════════════════════ */
-.top-bar{position:sticky;top:0;z-index:100;background:var(--blur-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;height:52px;gap:12px}
-.top-bar-title{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.4px;flex:1}
-.top-bar-streak{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--warning);background:var(--warning-soft);padding:4px 10px;border-radius:20px}
-.top-bar-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:none;background:var(--surface-alt);cursor:pointer;font-size:16px;color:var(--text-2);transition:background .15s,color .15s}
-.top-bar-btn:hover{background:var(--surface-hover);color:var(--text)}
+/* ═══ DATE HEADER ═══ */
+.date-header{padding:16px 16px 12px;border-bottom:1px solid var(--border-light)}
+.date-main{font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.date-tagline{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.5px;line-height:1.2}
 
-/* ═══════════════════════════════════════════ */
-/*  SEARCH OVERLAY                            */
-/* ═══════════════════════════════════════════ */
+/* ═══ SECTION NAV ═══ */
+.sec-nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border-light);scrollbar-width:none;padding:0 12px;gap:2px}
+.sec-nav::-webkit-scrollbar{display:none}
+.sec-tab{flex-shrink:0;padding:12px 14px;font-size:13px;font-weight:600;color:var(--text-3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:6px;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.sec-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.sec-tab:hover{color:var(--text)}
+.sec-tab-count{font-size:10px;background:var(--surface-2);color:var(--text-3);padding:1px 6px;border-radius:10px;font-weight:700}
+
+/* ═══ FEED ═══ */
+.feed{display:none}
+.feed.active{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.feed-header{padding:12px 16px 8px;display:flex;justify-content:space-between;align-items:center}
+.feed-section-title{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.7px}
+.feed-count{font-size:11px;color:var(--text-3)}
+
+/* ═══ NEWS CARD ═══ */
+.news-card{border-bottom:1px solid var(--border-light);padding:14px 16px;cursor:pointer;transition:background .12s;position:relative}
+.news-card:hover{background:var(--card-hover)}
+.news-card-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.news-card-source{font-size:11px;font-weight:600;color:var(--text-3)}
+.news-card-dot{width:2px;height:2px;border-radius:50%;background:var(--text-3);flex-shrink:0}
+.news-card-time{font-size:11px;color:var(--text-3)}
+.news-card-title{font-size:16px;font-weight:700;color:var(--text);line-height:1.35;letter-spacing:-.2px;margin-bottom:6px}
+.news-card-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;text-transform:uppercase;letter-spacing:.3px}
+.tag-dinero{color:var(--accent);background:var(--accent-soft)}
+.tag-poder{color:var(--danger);background:var(--danger-soft)}
+.tag-tecnologia{color:var(--blue);background:var(--blue-soft)}
+.tag-mercados{color:var(--warning);background:var(--warning-soft)}
+.tag-movilidad{color:var(--accent);background:var(--accent-soft)}
+.tag-latam{color:var(--blue);background:var(--blue-soft)}
+.news-card-arrow{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:14px;opacity:0;transition:opacity .15s}
+.news-card:hover .news-card-arrow{opacity:1}
+
+/* ═══ ANALYSIS PANEL ═══ */
+.analysis{display:none;border-bottom:1px solid var(--border);background:var(--surface);overflow:hidden}
+.analysis.open{display:block;animation:slideOpen .25s ease}
+@keyframes slideOpen{from{opacity:0;max-height:0}to{opacity:1;max-height:3000px}}
+
+.analysis-bar{padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-light)}
+.analysis-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--accent)}
+.analysis-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 1.5s infinite}
+.analysis-close{background:none;border:none;color:var(--text-3);cursor:pointer;font-size:16px;padding:4px}
+
+.analysis-body{padding:16px}
+.analysis-headline{font-size:14px;font-weight:800;color:var(--accent);line-height:1.35;margin-bottom:14px;padding-left:12px;border-left:3px solid var(--accent)}
+
+.analysis-section{margin-bottom:18px}
+.analysis-section:last-child{margin-bottom:0}
+.analysis-label{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.analysis-text{font-size:15px;line-height:1.7;color:var(--text)}
+.analysis-text strong{font-weight:700}
+
+.analysis-impact{font-size:14px;line-height:1.6;color:var(--text);padding:12px 14px;background:var(--danger-soft);border-radius:10px;border-left:3px solid var(--danger)}
+.analysis-shift{font-size:14px;line-height:1.6;color:var(--text);padding:12px 14px;background:var(--accent-soft);border-radius:10px;border-left:3px solid var(--accent)}
+
+.analysis-actions{display:flex;flex-direction:column;gap:8px}
+.analysis-action{display:flex;gap:10px;padding:10px 12px;background:var(--surface-2);border:1px solid var(--border-light);border-radius:8px}
+.analysis-action-num{font-size:12px;font-weight:800;color:var(--accent);min-width:18px;margin-top:1px}
+.analysis-action-text{font-size:13px;color:var(--text);line-height:1.45}
+
+.analysis-share{display:flex;justify-content:center;padding-top:14px;border-top:1px solid var(--border-light);margin-top:16px}
+.analysis-share-btn{font-size:12px;font-weight:600;color:var(--text-3);background:none;border:1px solid var(--border);padding:6px 16px;border-radius:20px;cursor:pointer;font-family:inherit;transition:all .15s}
+.analysis-share-btn:hover{color:var(--text);border-color:var(--text-3)}
+
+/* ═══ SKELETON ═══ */
+.sk{background:linear-gradient(90deg,var(--skeleton-a) 25%,var(--skeleton-b) 50%,var(--skeleton-a) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px;margin-bottom:8px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ═══ EMPTY STATE ═══ */
+.empty-state{padding:60px 24px;text-align:center}
+.empty-icon{font-size:40px;margin-bottom:12px;opacity:.5}
+.empty-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.empty-desc{font-size:13px;color:var(--text-3);line-height:1.5}
+
+/* ═══ STRYV CTA ═══ */
+.stryv-cta{margin:16px;padding:20px;background:var(--cta-bg);border-radius:16px;color:var(--cta-text);position:relative;overflow:hidden}
+.stryv-cta::before{content:'';position:absolute;top:-40%;right:-15%;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08)}
+.stryv-cta-eyebrow{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.5;margin-bottom:6px;position:relative}
+.stryv-cta-title{font-size:17px;font-weight:800;margin-bottom:6px;letter-spacing:-.3px;line-height:1.25;position:relative}
+.stryv-cta-desc{font-size:13px;opacity:.65;line-height:1.55;margin-bottom:14px;position:relative}
+.stryv-cta-btn{display:block;background:var(--bg);color:var(--text);font-size:14px;font-weight:700;padding:12px;border-radius:10px;text-align:center;text-decoration:none;transition:opacity .15s;position:relative}
+.stryv-cta-btn:active{opacity:.85}
+.stryv-cta-link{display:block;text-align:center;font-size:11px;opacity:.35;text-decoration:none;margin-top:8px;position:relative;color:inherit}
+
+/* ═══ REFRESH BAR ═══ */
+.refresh-bar{padding:10px 16px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between}
+.refresh-time{font-size:11px;color:var(--text-3)}
+.refresh-btn{font-size:12px;font-weight:600;color:var(--accent);background:none;border:1px solid var(--accent);padding:4px 14px;border-radius:16px;cursor:pointer;font-family:inherit;transition:all .15s}
+.refresh-btn:hover{background:var(--accent-soft)}
+.refresh-btn:disabled{opacity:.4;cursor:default}
+
+/* ═══ BOTTOM NAV ═══ */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;background:var(--blur-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border-light);padding:6px 0 max(env(safe-area-inset-bottom),12px);display:flex;justify-content:space-around;z-index:200}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text-3);cursor:pointer;min-width:48px;padding:4px 8px;text-decoration:none;transition:color .15s;-webkit-tap-highlight-color:transparent;user-select:none}
+.nav-item.active{color:var(--accent)}
+.nav-item:hover{color:var(--text)}
+.nav-icon{font-size:20px;line-height:1}
+.nav-label{font-size:10px;font-weight:600;letter-spacing:.1px}
+
+/* ═══ SEARCH ═══ */
 .search-overlay{position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column}
 .search-overlay.open{display:flex}
 .search-bar{display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:1px solid var(--border)}
@@ -122,1274 +195,571 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 .search-results{flex:1;overflow-y:auto;padding:8px 0}
 .search-empty{padding:40px 24px;text-align:center;color:var(--text-3);font-size:14px}
 .search-result{padding:14px 16px;border-bottom:1px solid var(--border-light);cursor:pointer;transition:background .1s}
-.search-result:hover{background:var(--surface-alt)}
-.search-result-module{font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.search-result-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px}
-.search-result-desc{font-size:13px;color:var(--text-2);line-height:1.4}
+.search-result:hover{background:var(--surface-2)}
+.search-result-section{font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.search-result-title{font-size:15px;font-weight:700;color:var(--text)}
 
-/* ═══════════════════════════════════════════ */
-/*  CONTEXT BANNER                            */
-/* ═══════════════════════════════════════════ */
-.context-banner{padding:12px 16px;background:var(--accent-soft);border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text);line-height:1.5;cursor:pointer;transition:background .15s}
-.context-banner:hover{background:var(--surface-alt)}
-.context-banner-icon{flex-shrink:0;margin-top:1px}
-.context-banner-text{flex:1}
-.context-banner-text strong{font-weight:700}
-.context-banner-close{flex-shrink:0;color:var(--text-3);background:none;border:none;cursor:pointer;font-size:18px;padding:0 4px}
-
-/* ═══════════════════════════════════════════ */
-/*  HERO                                      */
-/* ═══════════════════════════════════════════ */
-.hero{padding:24px 16px 20px;border-bottom:1px solid var(--border)}
-.hero-eyebrow{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
-.hero-title{font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.5px;line-height:1.2;margin-bottom:8px}
-.hero-desc{font-size:14px;color:var(--text-2);line-height:1.55}
-
-/* ═══════════════════════════════════════════ */
-/*  STATS ROW                                 */
-/* ═══════════════════════════════════════════ */
-.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border)}
-.stat-item{padding:14px 16px;text-align:center;border-right:1px solid var(--border)}
-.stat-item:last-child{border-right:none}
-.stat-value{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.5px}
-.stat-label{font-size:11px;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
-
-/* ═══════════════════════════════════════════ */
-/*  PROGRESS BAR (global)                     */
-/* ═══════════════════════════════════════════ */
-.global-progress{height:2px;background:var(--progress-bg)}
-.global-progress-fill{height:100%;background:var(--accent);transition:width .5s cubic-bezier(.4,0,.2,1);border-radius:0 2px 2px 0}
-
-/* ═══════════════════════════════════════════ */
-/*  MODULE NAV                                */
-/* ═══════════════════════════════════════════ */
-.module-nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);scrollbar-width:none;-ms-overflow-style:none;padding:0 12px;gap:2px}
-.module-nav::-webkit-scrollbar{display:none}
-.module-tab{flex-shrink:0;padding:13px 14px;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:6px;user-select:none;-webkit-user-select:none}
-.module-tab.active{color:var(--text);border-bottom-color:var(--accent)}
-.module-tab:hover{color:var(--text)}
-.module-tab-progress{width:16px;height:16px;border-radius:50%;border:2px solid var(--progress-bg);position:relative;flex-shrink:0}
-.module-tab-progress-fill{position:absolute;inset:0;border-radius:50%}
-.module-tab-progress.done{border-color:var(--success);background:var(--success)}
-.module-tab-progress.done::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:700}
-
-/* ═══════════════════════════════════════════ */
-/*  MODULE CONTENT                            */
-/* ═══════════════════════════════════════════ */
-.module-content{display:none}
-.module-content.active{display:block;animation:fadeUp .25s ease}
-
-/* ═══════════════════════════════════════════ */
-/*  SECTION HEADER                            */
-/* ═══════════════════════════════════════════ */
-.sec-head{padding:14px 16px 10px;font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.6px;display:flex;justify-content:space-between;align-items:center}
-.sec-head-count{font-size:11px;font-weight:600;color:var(--text-3);background:var(--surface-alt);padding:2px 8px;border-radius:10px;text-transform:none;letter-spacing:0}
-
-/* ═══════════════════════════════════════════ */
-/*  LESSON CARD                               */
-/* ═══════════════════════════════════════════ */
-.lesson{border-bottom:1px solid var(--border-light);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:background .12s;position:relative}
-.lesson:hover{background:var(--surface-alt)}
-.lesson.completed .lesson-body{opacity:.55}
-
-.lesson-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .2s;font-size:11px;color:transparent}
-.lesson-check.done{border-color:var(--success);background:var(--success);color:#fff}
-
-.lesson-body{flex:1;min-width:0}
-.lesson-title{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.15px;margin-bottom:3px;line-height:1.35}
-.lesson-desc{font-size:13px;color:var(--text-2);line-height:1.45;margin-bottom:7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.lesson-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-
-.lesson-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.2px;text-transform:uppercase}
-.tag-fundamental{color:var(--danger);background:var(--danger-soft)}
-.tag-urgente{color:var(--danger);background:var(--danger-soft)}
-.tag-accionable{color:var(--success);background:var(--success-soft)}
-.tag-estrategico{color:var(--gold);background:var(--gold-soft)}
-.tag-historia{color:var(--gold);background:var(--gold-soft)}
-.tag-incomodo{color:var(--danger);background:var(--danger-soft)}
-.tag-filosofia{color:var(--accent);background:var(--accent-soft)}
-
-.lesson-time{font-size:11px;color:var(--text-3);font-weight:500}
-
-.lesson-arrow{flex-shrink:0;font-size:16px;color:var(--text-3);margin-top:2px;transition:transform .2s,color .2s}
-.lesson.open .lesson-arrow{transform:rotate(90deg);color:var(--accent)}
-
-/* ═══════════════════════════════════════════ */
-/*  EXPANDED LESSON                           */
-/* ═══════════════════════════════════════════ */
-.lesson-expanded{display:none;border-bottom:1px solid var(--border);background:var(--surface-alt);overflow:hidden}
-.lesson-expanded.open{display:block;animation:slideDown .25s ease}
-
-.exp-header{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
-.exp-title{font-size:14px;font-weight:700;color:var(--text)}
-.exp-actions-bar{display:flex;gap:4px}
-.exp-action-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s}
-.exp-action-btn:hover{background:var(--surface-hover);border-color:var(--text-3)}
-.exp-action-btn.completed-btn.done{background:var(--success);border-color:var(--success);color:#fff}
-
-.exp-body{padding:16px}
-
-/* AI Content */
-.ai-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:20px;margin-bottom:14px}
-.ai-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 1.5s infinite}
-
-.exp-block{margin-bottom:20px}
-.exp-block:last-child{margin-bottom:0}
-
-.exp-label{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-
-.exp-key-fact{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.3px;line-height:1.3;margin-bottom:16px;padding:16px;background:var(--surface);border-radius:12px;border-left:3px solid var(--accent)}
-
-.exp-text{font-size:15px;line-height:1.7;color:var(--text)}
-.exp-text strong{font-weight:700}
-
-.exp-why{font-size:14px;line-height:1.6;color:var(--text);padding:14px;background:var(--warning-soft);border-radius:10px;border-left:3px solid var(--warning)}
-
-.exp-steps{display:flex;flex-direction:column;gap:8px}
-.exp-step{display:flex;gap:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;transition:border-color .15s}
-.exp-step:hover{border-color:var(--text-3)}
-.exp-step-num{font-size:12px;font-weight:800;color:var(--accent);min-width:20px;margin-top:1px}
-.exp-step-content{flex:1}
-.exp-step-text{font-size:14px;color:var(--text);line-height:1.5}
-.exp-step-text strong{font-weight:700}
-.exp-step-tool{display:inline-block;font-size:11px;font-weight:600;color:var(--success);background:var(--success-soft);padding:2px 7px;border-radius:4px;margin-top:4px}
-
-/* ═══════════════════════════════════════════ */
-/*  STRYV CTA                                 */
-/* ═══════════════════════════════════════════ */
-.stryv-cta{margin:16px;padding:20px;background:var(--cta-bg);border-radius:16px;color:var(--cta-text);position:relative;overflow:hidden}
-.stryv-cta::before{content:'';position:absolute;top:-50%;right:-20%;width:140px;height:140px;border-radius:50%;background:rgba(29,155,240,.15)}
-.stryv-cta-eyebrow{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px}
-.stryv-cta-title{font-size:17px;font-weight:800;margin-bottom:8px;letter-spacing:-.3px;line-height:1.25;position:relative}
-.stryv-cta-desc{font-size:13px;color:rgba(255,255,255,.6);line-height:1.55;margin-bottom:16px;position:relative}
-.stryv-cta-btn{display:block;background:var(--cta-btn-bg);color:var(--cta-btn-text);font-size:14px;font-weight:700;padding:12px;border-radius:10px;text-align:center;text-decoration:none;transition:opacity .15s;position:relative}
-.stryv-cta-btn:active{opacity:.85}
-.stryv-cta-link{display:block;text-align:center;font-size:11px;color:rgba(255,255,255,.35);text-decoration:none;margin-top:8px;position:relative}
-
-/* ═══════════════════════════════════════════ */
-/*  MODULE COMPLETE CARD                      */
-/* ═══════════════════════════════════════════ */
-.module-complete{margin:16px;padding:24px;text-align:center;border:2px solid var(--success);border-radius:16px;background:var(--success-soft);display:none}
-.module-complete.show{display:block;animation:scaleIn .3s ease}
-.module-complete-icon{font-size:40px;margin-bottom:8px}
-.module-complete-title{font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px}
-.module-complete-desc{font-size:13px;color:var(--text-2);line-height:1.5}
-
-/* ═══════════════════════════════════════════ */
-/*  BOTTOM NAV                                */
-/* ═══════════════════════════════════════════ */
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;background:var(--blur-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:6px 0 max(env(safe-area-inset-bottom),12px);display:flex;justify-content:space-around;z-index:200}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text-3);cursor:pointer;min-width:48px;padding:4px 8px;text-decoration:none;transition:color .15s;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
-.nav-item.active{color:var(--text)}
-.nav-item:hover{color:var(--text)}
-.nav-icon{font-size:20px;line-height:1}
-.nav-label{font-size:10px;font-weight:600;letter-spacing:.1px}
-
-/* ═══════════════════════════════════════════ */
-/*  INSTALL BANNER                            */
-/* ═══════════════════════════════════════════ */
-.install-banner{padding:12px 16px;background:var(--accent-soft);border-bottom:1px solid var(--border);display:none;align-items:center;gap:10px}
-.install-banner.show{display:flex}
-.install-banner-text{flex:1;font-size:13px;color:var(--text);font-weight:500}
-.install-banner-btn{font-size:13px;font-weight:700;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;white-space:nowrap}
-.install-banner-close{color:var(--text-3);background:none;border:none;cursor:pointer;font-size:16px;padding:4px}
-
-/* ═══════════════════════════════════════════ */
-/*  SKELETON                                  */
-/* ═══════════════════════════════════════════ */
-.sk{background:linear-gradient(90deg,var(--skeleton-from) 25%,var(--skeleton-mid) 50%,var(--skeleton-to) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px;margin-bottom:8px}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* ═══════════════════════════════════════════ */
-/*  ANIMATIONS                                */
-/* ═══════════════════════════════════════════ */
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideDown{from{opacity:0;max-height:0}to{opacity:1;max-height:2000px}}
-@keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-
-/* ═══════════════════════════════════════════ */
-/*  RESPONSIVE                                */
-/* ═══════════════════════════════════════════ */
-@media(min-width:600px){body{box-shadow:0 0 0 1px var(--border)}}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D1117;--surface:#161b22;--surface-alt:#1c2128;--surface-hover:#272d35;--border:#30363d;--border-light:#30363d;--text:#EAF0EE;--text-2:#8b949e;--text-3:#6e7681}}
+@media(min-width:600px){body{box-shadow:0 0 0 1px var(--border-light)}}
 </style>
 </head>
 <body>
 
-<!-- ═══════ LOADER ═══════ -->
+<!-- LOADER -->
 <div class="loader" id="loader">
-  <div class="loader-brand" style="font-family:'League Spartan',sans-serif;text-transform:uppercase;letter-spacing:2px">CONTEXTO</div>
-  <div class="loader-sub">por Stryv Studio</div>
-  <div class="loader-bar"><div class="loader-bar-fill" id="loaderFill"></div></div>
-  <div class="loader-tip" id="loaderTip"></div>
+  <div class="loader-brand">CONTEXTO</div>
+  <div class="loader-sub">Inteligencia en tiempo real</div>
+  <div class="loader-pulse"></div>
+  <div class="loader-status" id="loaderStatus">Conectando fuentes...</div>
 </div>
 
-<!-- ═══════ ONBOARDING ═══════ -->
-<div class="onboarding hidden" id="onboarding">
-  <button class="onb-skip" id="onbSkip">Saltar</button>
-  <div class="onb-step active" data-step="0">
-    <div class="onb-icon">🌍</div>
-    <div class="onb-title">Lo que nadie te enseñó porque no les convenía.</div>
-    <div class="onb-desc">Conocimiento real sobre dinero, poder, movilidad global, tecnología e IA. Sin vender nada. Sin motivación barata.</div>
-    <button class="onb-btn" data-next="1">Continuar</button>
-  </div>
-  <div class="onb-step" data-step="1">
-    <div class="onb-icon">⚡</div>
-    <div class="onb-title">Contenido generado por IA en tiempo real</div>
-    <div class="onb-desc">Cada lección se actualiza con lo que está pasando HOY en el mundo. Conectamos conocimiento histórico con contexto actual.</div>
-    <button class="onb-btn" data-next="2">Continuar</button>
-  </div>
-  <div class="onb-step" data-step="2">
-    <div class="onb-icon">🚀</div>
-    <div class="onb-title">Tu progreso se guarda</div>
-    <div class="onb-desc">Marca lecciones como completadas, lleva tu racha diaria y explora a tu ritmo. Todo gratis.</div>
-    <button class="onb-btn" id="onbStart">Empezar</button>
-  </div>
-  <div class="onb-dots" id="onbDots"><div class="onb-dot active"></div><div class="onb-dot"></div><div class="onb-dot"></div></div>
-</div>
-
-<!-- ═══════ INSTALL BANNER ═══════ -->
-<div class="install-banner" id="installBanner">
-  <span class="install-banner-text">📱 Instala el Manual en tu teléfono</span>
-  <button class="install-banner-btn" id="installBtn">Instalar</button>
-  <button class="install-banner-close" id="installClose">✕</button>
-</div>
-
-<!-- ═══════ TOP BAR ═══════ -->
+<!-- TOP BAR -->
 <div class="top-bar">
-  <div class="top-bar-title" style="font-family:'League Spartan',sans-serif;text-transform:uppercase;letter-spacing:1.5px">CONTEXTO</div>
-  <div class="top-bar-streak" id="streakBadge" style="display:none">🔥 <span id="streakCount">0</span></div>
-  <button class="top-bar-btn" id="searchBtn" aria-label="Buscar">🔍</button>
-  <button class="top-bar-btn" id="themeBtn" aria-label="Cambiar tema">🌙</button>
+  <div class="top-bar-brand">CONTEXTO</div>
+  <div class="top-bar-live"><span class="live-dot"></span>EN VIVO</div>
+  <button class="top-btn" id="searchBtn">🔍</button>
+  <button class="top-btn" id="themeBtn">☀️</button>
 </div>
 
-<!-- ═══════ SEARCH ═══════ -->
+<!-- SEARCH -->
 <div class="search-overlay" id="searchOverlay">
   <div class="search-bar">
-    <input class="search-input" id="searchInput" type="text" placeholder="Buscar lecciones..." autocomplete="off">
+    <input class="search-input" id="searchInput" type="text" placeholder="Buscar noticias..." autocomplete="off">
     <button class="search-cancel" id="searchClose">Cancelar</button>
   </div>
   <div class="search-results" id="searchResults">
-    <div class="search-empty">Escribe para buscar en todos los módulos</div>
+    <div class="search-empty">Escribe para buscar en todas las secciones</div>
   </div>
 </div>
 
-<!-- ═══════ CONTEXT BANNER ═══════ -->
-<div class="context-banner" id="contextBanner" style="display:none">
-  <span class="context-banner-icon">🔴</span>
-  <div class="context-banner-text" id="contextText"></div>
-  <button class="context-banner-close" id="contextClose">✕</button>
+<!-- DATE HEADER -->
+<div class="date-header">
+  <div class="date-main" id="dateMain"></div>
+  <div class="date-tagline">Lo que está pasando hoy y por qué te afecta.</div>
 </div>
 
-<!-- ═══════ HERO ═══════ -->
-<div class="hero">
-  <div class="hero-eyebrow">Stryv Studio · Acceso libre · <span id="dateDisplay"></span></div>
-  <div class="hero-title">Lo que nadie te enseñó porque no les convenía.</div>
-  <div class="hero-desc">Dinero, poder, movilidad, tecnología. Conocimiento accionable. Sin vender nada.</div>
+<!-- REFRESH BAR -->
+<div class="refresh-bar">
+  <div class="refresh-time" id="refreshTime">Cargando noticias...</div>
+  <button class="refresh-btn" id="refreshBtn" disabled>Actualizar</button>
 </div>
 
-<!-- ═══════ STATS ═══════ -->
-<div class="stats-row">
-  <div class="stat-item">
-    <div class="stat-value" id="statLessons">0</div>
-    <div class="stat-label">Completadas</div>
+<!-- SECTION NAV -->
+<div class="sec-nav" id="secNav"></div>
+
+<!-- FEEDS CONTAINER -->
+<div id="feedContainer"></div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-item active" data-nav="all">
+    <span class="nav-icon">📡</span><span class="nav-label">Todo</span>
   </div>
-  <div class="stat-item">
-    <div class="stat-value" id="statStreak">0</div>
-    <div class="stat-label">Días racha</div>
+  <div class="nav-item" data-nav="Dinero">
+    <span class="nav-icon">💰</span><span class="nav-label">Dinero</span>
   </div>
-  <div class="stat-item">
-    <div class="stat-value" id="statModules">0/6</div>
-    <div class="stat-label">Módulos</div>
+  <div class="nav-item" data-nav="Poder">
+    <span class="nav-icon">⚡</span><span class="nav-label">Poder</span>
   </div>
+  <div class="nav-item" data-nav="Tecnología">
+    <span class="nav-icon">🤖</span><span class="nav-label">Tech</span>
+  </div>
+  <a class="nav-item" href="https://stryvstudio.com" target="_blank" rel="noopener">
+    <span class="nav-icon">🚀</span><span class="nav-label">Stryv</span>
+  </a>
 </div>
-
-<!-- ═══════ PROGRESS BAR ═══════ -->
-<div class="global-progress">
-  <div class="global-progress-fill" id="globalProgress" style="width:0%"></div>
-</div>
-
-<!-- ═══════ MODULE NAV ═══════ -->
-<div class="module-nav" id="moduleNav"></div>
-
-<!-- ═══════ MODULE CONTAINER ═══════ -->
-<div id="moduleContainer"></div>
-
-<!-- ═══════ BOTTOM NAV ═══════ -->
-<div class="bottom-nav" id="bottomNav"></div>
 
 <script>
-(function() {
-  'use strict';
+(function(){
+'use strict';
 
-  /* ═══════════════════════════════════════ */
-  /*  DATA                                  */
-  /* ═══════════════════════════════════════ */
-  const MODULES = {
-    dinero: {
-      icon: '💰', title: 'Dinero',
-      subtitle: 'Lo que el sistema no quiere que sepas',
-      cta: {
-        eyebrow: 'Stryv para tu negocio',
-        title: '¿Tu negocio opera sin sistema financiero digital?',
-        desc: 'Construimos la infraestructura que hace que tu negocio funcione aunque tú no estés. Diagnóstico gratis.',
-        btn: 'Hablar con Stryv', link: 'https://wa.me/17373683464'
-      },
-      lessons: [
-        { id:'d1', title:'El dinero no es neutral. Nunca lo fue.', desc:'Desde Bretton Woods hasta el petrodólar, el dinero siempre fue una herramienta de control geopolítico.', tag:'fundamental', time:'5 min',
-          prompt:'Explica de forma clara y accionable cómo el dinero ha sido siempre una herramienta de control geopolítico, desde el patrón oro hasta el petrodólar y los acuerdos de Bretton Woods. Incluye qué puede hacer una persona común con esta información.' },
-        { id:'d2', title:'Por qué el dólar está cayendo y qué significa para ti', desc:'El índice del dólar bajó 10% en un año. No es un accidente. Es un síntoma.', tag:'urgente', time:'5 min',
-          prompt:'Explica por qué el dólar está cayendo en 2026, qué lo está causando (guerra en Irán, China, deuda de EE.UU., desdolarización), y qué debe hacer concretamente alguien en Latinoamérica para protegerse.' },
-        { id:'d3', title:'Bitcoin: lo que es, lo que no es, y por qué importa', desc:'No es una inversión especulativa. Es el primer activo en la historia que ningún gobierno puede confiscar.', tag:'accionable', time:'6 min',
-          prompt:'Explica qué es Bitcoin realmente — no como inversión sino como tecnología monetaria. Por qué es diferente a cualquier activo anterior. Cómo empezar a tenerlo de forma segura con poco dinero.' },
-        { id:'d4', title:'Cómo diversificar sin ser millonario', desc:'Oro, Bitcoin, cuentas en otras monedas, activos fuera de tu país. Lo que hacen los ricos desde siempre.', tag:'accionable', time:'6 min',
-          prompt:'Explica cómo diversificar el patrimonio sin ser millonario: oro físico, Bitcoin, cuentas en dólares, activos fuera del país. Pasos concretos y accesibles para alguien en Latinoamérica.' },
-        { id:'d5', title:'Por qué ahorrar en pesos es un error silencioso', desc:'Inflación, devaluación, control de cambios. El sistema está diseñado para que pierdas poder adquisitivo.', tag:'urgente', time:'5 min',
-          prompt:'Explica por qué ahorrar en pesos mexicanos (o cualquier moneda latinoamericana) es un error silencioso a largo plazo. Inflación, devaluación histórica, pérdida de poder adquisitivo. Qué hacer en cambio.' }
-      ]
-    },
-    movilidad: {
-      icon: '🌍', title: 'Movilidad',
-      subtitle: 'Cómo moverte en el mundo real',
-      cta: {
-        eyebrow: 'Stryv para tu negocio',
-        title: '¿Tu negocio puede operar desde cualquier país?',
-        desc: 'Si no, hay algo que no está digitalizado correctamente. Hablemos.',
-        btn: 'Hablar con Stryv', link: 'https://wa.me/17373683464'
-      },
-      lessons: [
-        { id:'m1', title:'Visas de inversión: cómo comprar tu movilidad', desc:'España, Portugal, México, Paraguay. Con menos de $100K puedes obtener residencia en otro país.', tag:'accionable', time:'6 min',
-          prompt:'Explica las principales visas de inversión y residencia accesibles para latinoamericanos: España (visa nómada digital), Portugal, Paraguay, México, Uruguay. Costos reales, requisitos, pasos concretos.' },
-        { id:'m2', title:'Cómo abrir cuentas bancarias en otros países', desc:'Wise, Revolut, bancos en México, USA, España. Cómo tener acceso a múltiples monedas desde tu teléfono.', tag:'accionable', time:'5 min',
-          prompt:'Explica cómo abrir cuentas bancarias en otros países siendo latinoamericano: Wise, Revolut, Mercury (EE.UU.), bancos en España. Pasos concretos, documentos necesarios, limitaciones.' },
-        { id:'m3', title:'Cómo cobrar en dólares desde cualquier país', desc:'Stripe, Wise, transferencias internacionales. La infraestructura financiera que usan los nómadas digitales.', tag:'accionable', time:'5 min',
-          prompt:'Explica cómo cobrar en dólares desde cualquier país latinoamericano: Stripe, Wise, transferencias internacionales, criptomonedas como intermediario. Plataformas, costos, procesos.' },
-        { id:'m4', title:'Por qué tener un segundo pasaporte cambia todo', desc:'No es para ricos. Es para los que entienden que la nacionalidad es un accidente geográfico, no un destino.', tag:'estrategico', time:'6 min',
-          prompt:'Explica por qué tener un segundo pasaporte o residencia cambia fundamentalmente las opciones de vida. Cómo conseguirlo siendo latinoamericano: por ascendencia, inversión, residencia prolongada.' }
-      ]
-    },
-    poder: {
-      icon: '⚡', title: 'Poder',
-      subtitle: 'Cómo funciona el mundo real',
-      cta: {
-        eyebrow: 'Stryv para tu negocio',
-        title: 'El mundo cambia. ¿Tu negocio también?',
-        desc: 'Construimos sistemas digitales para negocios que entienden que el mundo ya no es el mismo.',
-        btn: 'Hablar con Stryv', link: 'https://wa.me/17373683464'
-      },
-      lessons: [
-        { id:'p1', title:'Por qué hay guerras: el manual real', desc:'Las guerras no son por ideología. Son por recursos, rutas comerciales y control monetario.', tag:'incomodo', time:'6 min',
-          prompt:'Explica el manual real de por qué hay guerras: recursos naturales, rutas comerciales, control monetario, intereses del capital. Usa la guerra de Irán 2026 y Ucrania como ejemplos concretos.' },
-        { id:'p2', title:'El ciclo de los imperios: Roma, España, Gran Bretaña, EE.UU.', desc:'Todos creyeron que eran eternos. Todos siguieron el mismo patrón. EE.UU. lleva 80 años. El promedio es 94.', tag:'historia', time:'7 min',
-          prompt:'Explica el ciclo histórico de los imperios usando el modelo de Ray Dalio: Roma, España, Gran Bretaña, EE.UU. El patrón que se repite y en qué punto está EE.UU. hoy.' },
-        { id:'p3', title:'China: por qué ya es la nueva potencia dominante', desc:'No es una amenaza futura. Ya pasó. Primera economía por poder de compra, su propia IA, su propio sistema de pagos.', tag:'urgente', time:'6 min',
-          prompt:'Explica por qué China ya es la potencia dominante del siglo XXI: economía por PPP, tecnología propia, sistema de pagos CIPS, yuan en comercio global, DeepSeek. Por qué la mayoría aún no lo ve.' },
-        { id:'p4', title:'Cómo el status quo se mantiene: los mecanismos invisibles', desc:'Media, deuda, educación, entretenimiento. El sistema no necesita conspiraciones. Solo necesita que no preguntes.', tag:'incomodo', time:'6 min',
-          prompt:'Explica los mecanismos concretos mediante los cuales el status quo se mantiene: medios de comunicación, sistema educativo, deuda, entretenimiento, narrativa del éxito. Sin teoría de conspiración — solo mecánica.' }
-      ]
-    },
-    tecnologia: {
-      icon: '🤖', title: 'Tecnología',
-      subtitle: 'La revolución que ya comenzó',
-      cta: {
-        eyebrow: 'Stryv para tu negocio',
-        title: '¿Tu negocio ya usa IA?',
-        desc: 'Implementamos sistemas de atención automatizada con IA para negocios que no quieren quedarse atrás.',
-        btn: 'Hablar con Stryv', link: 'https://wa.me/17373683464'
-      },
-      lessons: [
-        { id:'t1', title:'Qué es realmente la IA y por qué cambia todo', desc:'No es un chatbot sofisticado. Es la automatización del trabajo intelectual. Por primera vez en la historia.', tag:'fundamental', time:'5 min',
-          prompt:'Explica qué es realmente la inteligencia artificial: no un chatbot sino la automatización del trabajo intelectual. Por qué es el cambio más disruptivo en 5,000 años y qué significa para el trabajo humano.' },
-        { id:'t2', title:'Cómo usar IA para ganar ventaja real hoy', desc:'Claude, ChatGPT, Gemini, Midjourney. Las herramientas concretas y cómo usarlas para trabajar diferente.', tag:'accionable', time:'6 min',
-          prompt:'Explica cómo usar IA para ganar ventaja real hoy: Claude, ChatGPT, Midjourney, Kling, HeyGen. Casos de uso concretos para trabajo, negocio y productividad personal. Herramientas gratuitas y de pago.' },
-        { id:'t3', title:'La guerra de chips EE.UU.-China: por qué te afecta', desc:'El control de los semiconductores avanzados es el control del futuro. Y está en juego ahora mismo.', tag:'urgente', time:'6 min',
-          prompt:'Explica la guerra de chips EE.UU.-China: por qué el control de los semiconductores avanzados es el control del futuro. TSMC, Nvidia, DeepSeek, ASML. Por qué afecta a todo el mundo.' },
-        { id:'t4', title:'Qué trabajos va a reemplazar la IA primero', desc:'No son los trabajos manuales. Son los trabajos de oficina, los administrativos, los de "profesional".', tag:'urgente', time:'5 min',
-          prompt:'Explica qué trabajos va a reemplazar la IA primero y cuáles son más seguros. No son los trabajos manuales. Contadores, abogados, diseñadores, periodistas, programadores — qué está pasando con cada uno.' }
-      ]
-    },
-    mentalidad: {
-      icon: '🧠', title: 'Mentalidad',
-      subtitle: 'Rompe las cadenas invisibles',
-      cta: {
-        eyebrow: 'Stryv para tu negocio',
-        title: 'La mentalidad mutante aplicada al negocio',
-        desc: 'Un negocio que no tiene sistemas digitales depende completamente de su dueño. Eso no es libertad.',
-        btn: 'Hablar con Stryv', link: 'https://wa.me/17373683464'
-      },
-      lessons: [
-        { id:'men1', title:'La Alegoría de la Caverna: por qué tu realidad no es real', desc:'Platón lo describió hace 2,400 años. Sigue siendo la descripción más precisa de cómo vivimos hoy.', tag:'filosofia', time:'6 min',
-          prompt:'Explica la Alegoría de la Caverna de Platón completa y cómo describe exactamente la situación del mundo en 2026: personas que solo conocen las sombras de su contexto y creen que eso es toda la realidad.' },
-        { id:'men2', title:'Cómo identificar tus prisiones de contexto', desc:'Las limitaciones más peligrosas son las que no sabes que tienes. Cómo verlas y cómo salir de ellas.', tag:'accionable', time:'5 min',
-          prompt:'Explica cómo identificar las prisiones de contexto personales: creencias heredadas del entorno, límites invisibles, narrativas que limitan lo que se puede imaginar como posible. Con ejercicios concretos.' },
-        { id:'men3', title:'La mentalidad mutante: adaptarse o quedarse atrás', desc:'No es motivación. Es supervivencia. El mundo cambia tan rápido que la rigidez es el riesgo más grande.', tag:'estrategico', time:'5 min',
-          prompt:'Explica la mentalidad mutante: no como motivación sino como necesidad de supervivencia ante un mundo que cambia más rápido que nunca. Cómo desarrollarla concretamente.' },
-        { id:'men4', title:'Por qué la ignorancia no duele hasta que es tarde', desc:'El costo de no saber no se paga inmediatamente. Se paga cuando el mundo cambia y ya no puedes moverte.', tag:'incomodo', time:'5 min',
-          prompt:'Explica el costo real de la ignorancia: no se paga inmediatamente sino cuando el mundo cambia y ya no puedes moverte. Ejemplos concretos: los que no entendieron el dólar, Bitcoin, la IA.' }
-      ]
-    },
-    negocio: {
-      icon: '🚀', title: 'Negocio',
-      subtitle: 'Construye algo que no dependa de ti',
-      cta: {
-        eyebrow: 'El siguiente paso',
-        title: '¿Listo para construir el sistema?',
-        desc: 'Todo lo que aprendiste aquí, Stryv lo implementa para tu negocio. Diagnóstico gratis. Sin compromiso.',
-        btn: 'Agenda tu diagnóstico', link: 'https://wa.me/17373683464'
-      },
-      lessons: [
-        { id:'n1', title:'Por qué tu negocio local tiene un techo y cómo romperlo', desc:'Un negocio que solo opera localmente está atado a la economía de una sola ciudad, de un solo país.', tag:'fundamental', time:'5 min',
-          prompt:'Explica por qué un negocio puramente local tiene un techo y cómo romperlo: digitalización, mercados latinoamericanos remotos, servicios que no dependen de ubicación física.' },
-        { id:'n2', title:'Qué es un sistema operativo digital y por qué lo necesitas', desc:'Ventas, atención, operación interna. El conjunto de herramientas que hace que tu negocio funcione solo.', tag:'accionable', time:'6 min',
-          prompt:'Explica qué es un sistema operativo digital para negocios: sistema de ventas, atención automatizada con IA, operación interna, conversión local. Por qué es la diferencia entre escalar y estancarse.' },
-        { id:'n3', title:'Cómo construir ingresos que no dependan de tu tiempo', desc:'La trampa del autoempleo. La diferencia entre tener un negocio y ser el negocio.', tag:'estrategico', time:'6 min',
-          prompt:'Explica la diferencia entre ser el negocio y tener un negocio. Cómo construir sistemas que generen ingresos sin requerir tu presencia o tiempo constante. La trampa del autoempleo.' },
-        { id:'n4', title:'Cómo escalar a mercados fuera de tu país', desc:'LinkedIn, Meta Ads, contenido en español para CDMX y Monterrey. La estrategia que usa Stryv.', tag:'accionable', time:'5 min',
-          prompt:'Explica cómo un negocio latinoamericano puede escalar a mercados en CDMX, Monterrey, Bogotá, Miami. Estrategia de contenido, LinkedIn, Meta Ads, posicionamiento. Pasos concretos.' }
-      ]
-    }
-  };
+/* ═══════════════════════════════════════ */
+/*  CONSTANTS                             */
+/* ═══════════════════════════════════════ */
+const SECTIONS = ['all','Dinero','Poder','Tecnología','Mercados','Movilidad','Latam'];
+const SECTION_ICONS = {all:'📡',Dinero:'💰',Poder:'⚡','Tecnología':'🤖',Mercados:'📊',Movilidad:'🌍',Latam:'🌎'};
+const SECTION_TAGS = {Dinero:'tag-dinero',Poder:'tag-poder','Tecnología':'tag-tecnologia',Mercados:'tag-mercados',Movilidad:'tag-movilidad',Latam:'tag-latam'};
 
-  const MODULE_ORDER = ['dinero','movilidad','poder','tecnologia','mentalidad','negocio'];
-  const TAG_CLASSES = { fundamental:'tag-fundamental', urgente:'tag-urgente', accionable:'tag-accionable', estrategico:'tag-estrategico', historia:'tag-historia', incomodo:'tag-incomodo', filosofia:'tag-filosofia' };
-  const TAG_LABELS = { fundamental:'Fundamental', urgente:'Urgente', accionable:'Accionable', estrategico:'Estratégico', historia:'Historia', incomodo:'Incómodo', filosofia:'Filosofía' };
+const CTAS = {
+  Dinero: { title:'¿Tu negocio no tiene sistema financiero digital?', desc:'Construimos la infraestructura que hace que tu negocio opere aunque tú no estés.' },
+  Poder: { title:'El mundo cambia. ¿Tu negocio también?', desc:'Sistemas digitales para negocios que entienden que el mundo ya no es el mismo.' },
+  'Tecnología': { title:'¿Tu negocio ya usa IA?', desc:'Implementamos atención automatizada con IA para negocios que no quieren quedarse atrás.' },
+  Mercados: { title:'¿Operas sin datos en tiempo real?', desc:'Dashboards, automatización y sistemas que te dan visibilidad total de tu negocio.' },
+  Movilidad: { title:'¿Tu negocio puede operar desde cualquier país?', desc:'Si no, hay algo que no está digitalizado. Hablemos.' },
+  Latam: { title:'¿Listo para escalar fuera de tu ciudad?', desc:'Todo lo que aprendiste aquí, Stryv lo implementa. Diagnóstico gratis.' }
+};
 
-  const TIPS = [
-    'Cada lección se actualiza con eventos del mundo real',
-    'Puedes marcar lecciones como completadas',
-    'Tu progreso se guarda automáticamente',
-    'Prueba el modo oscuro — botón 🌙 arriba',
-    'Busca cualquier tema con 🔍'
-  ];
+/* ═══════════════════════════════════════ */
+/*  STATE                                 */
+/* ═══════════════════════════════════════ */
+const LS = 'ctx_';
+const store = {
+  get(k,fb){try{const v=localStorage.getItem(LS+k);return v!==null?JSON.parse(v):fb}catch{return fb}},
+  set(k,v){try{localStorage.setItem(LS+k,JSON.stringify(v))}catch{}}
+};
 
-  /* ═══════════════════════════════════════ */
-  /*  STATE                                 */
-  /* ═══════════════════════════════════════ */
-  const LS_PREFIX = 'mdm_';
-  const CACHE_VERSION = 3; /* Increment to force cache clear on deploy */
-  const store = {
-    get(key, fallback) { try { const v = localStorage.getItem(LS_PREFIX + key); return v !== null ? JSON.parse(v) : fallback; } catch { return fallback; } },
-    set(key, val) { try { localStorage.setItem(LS_PREFIX + key, JSON.stringify(val)); } catch {} }
-  };
+let articles = [];
+let newsSummary = '';
+let activeSection = 'all';
+let analysisCache = store.get('analysisCache', {});
+let theme = store.get('theme', 'dark');
 
-  /* Invalidate old lesson cache when version changes */
-  if (store.get('cacheVersion', 0) !== CACHE_VERSION) {
-    store.set('lessonCache', {});
-    store.set('contextCache', { text: '', date: '' });
-    store.set('cacheVersion', CACHE_VERSION);
+/* ═══════════════════════════════════════ */
+/*  HELPERS                               */
+/* ═══════════════════════════════════════ */
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+function timeAgo(dateStr){
+  if(!dateStr) return '';
+  try{
+    const d=new Date(dateStr);
+    const now=new Date();
+    const mins=Math.floor((now-d)/60000);
+    if(mins<1) return 'ahora';
+    if(mins<60) return mins+'m';
+    const hrs=Math.floor(mins/60);
+    if(hrs<24) return hrs+'h';
+    return Math.floor(hrs/24)+'d';
+  }catch{return ''}
+}
+
+function todayFormatted(){
+  const d=new Date();
+  const days=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  return days[d.getDay()]+' '+d.getDate()+' de '+months[d.getMonth()]+', '+d.getFullYear();
+}
+
+/* ═══════════════════════════════════════ */
+/*  THEME                                 */
+/* ═══════════════════════════════════════ */
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme', theme);
+  const btn=$('#themeBtn');
+  if(btn) btn.textContent = theme==='dark'?'☀️':'🌙';
+}
+
+function toggleTheme(){
+  theme = theme==='dark'?'light':'dark';
+  store.set('theme', theme);
+  applyTheme();
+}
+
+/* ═══════════════════════════════════════ */
+/*  FETCH NEWS                            */
+/* ═══════════════════════════════════════ */
+async function fetchNews(){
+  try{
+    const res = await fetch('/.netlify/functions/news');
+    if(!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+    articles = data.articles || [];
+    newsSummary = data.summary || '';
+    return data;
+  }catch(e){
+    return {articles:[],sections:{},summary:'',count:0};
+  }
+}
+
+/* ═══════════════════════════════════════ */
+/*  CALL CLAUDE                           */
+/* ═══════════════════════════════════════ */
+async function callClaude(prompt, maxTokens){
+  const res = await fetch('/.netlify/functions/claude',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({prompt, maxTokens: maxTokens||1200})
+  });
+  if(!res.ok) throw new Error('API error');
+  const json = await res.json();
+  if(json.error) throw new Error(json.error.message||'API error');
+  return json.content[0].text;
+}
+
+/* ═══════════════════════════════════════ */
+/*  RENDER SECTION NAV                    */
+/* ═══════════════════════════════════════ */
+function renderSecNav(){
+  const nav=$('#secNav');
+  nav.innerHTML = SECTIONS.map(s=>{
+    const active = s===activeSection?' active':'';
+    const icon = SECTION_ICONS[s]||'';
+    const label = s==='all'?'Todo':s;
+    const count = s==='all'?articles.length:articles.filter(a=>a.section===s).length;
+    if(s!=='all' && count===0) return '';
+    return '<div class="sec-tab'+active+'" data-section="'+s+'">'+
+      icon+' '+label+
+      '<span class="sec-tab-count">'+count+'</span></div>';
+  }).join('');
+}
+
+/* ═══════════════════════════════════════ */
+/*  RENDER FEEDS                          */
+/* ═══════════════════════════════════════ */
+function renderFeeds(){
+  const container=$('#feedContainer');
+  const filtered = activeSection==='all'?articles:articles.filter(a=>a.section===activeSection);
+
+  if(filtered.length===0){
+    container.innerHTML='<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">Sin noticias aún</div><div class="empty-desc">Estamos buscando las noticias más relevantes. Intenta actualizar.</div></div>';
+    return;
   }
 
-  const state = {
-    completed: store.get('completed', []),
-    theme: store.get('theme', 'auto'),
-    streak: store.get('streak', 0),
-    lastVisit: store.get('lastVisit', null),
-    onboarded: store.get('onboarded', false),
-    activeModule: 'dinero',
-    liveContext: '',
-    lessonCache: store.get('lessonCache', {}),
-    contextCache: store.get('contextCache', { text: '', date: '' }),
-    loadingLessons: new Set()
-  };
+  // Group by section if "all"
+  let html='';
 
-  function saveState() {
-    store.set('completed', state.completed);
-    store.set('streak', state.streak);
-    store.set('lastVisit', state.lastVisit);
-    store.set('lessonCache', state.lessonCache);
-    store.set('contextCache', state.contextCache);
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  HELPERS                               */
-  /* ═══════════════════════════════════════ */
-  function $(sel) { return document.querySelector(sel); }
-  function $$(sel) { return document.querySelectorAll(sel); }
-  function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
-
-  const todayStr = (() => {
-    const d = new Date();
-    const days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-    const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-    return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
-  })();
-
-  const todayDate = new Date().toISOString().slice(0,10);
-
-  function getTotalLessons() {
-    let count = 0;
-    MODULE_ORDER.forEach(k => count += MODULES[k].lessons.length);
-    return count;
-  }
-
-  function getModuleLessons(modKey) { return MODULES[modKey].lessons; }
-
-  function getModuleCompletedCount(modKey) {
-    const ids = MODULES[modKey].lessons.map(l => l.id);
-    return state.completed.filter(id => ids.includes(id)).length;
-  }
-
-  function isModuleComplete(modKey) {
-    return getModuleCompletedCount(modKey) === MODULES[modKey].lessons.length;
-  }
-
-  function getCompletedModulesCount() {
-    return MODULE_ORDER.filter(k => isModuleComplete(k)).length;
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  STREAK                                */
-  /* ═══════════════════════════════════════ */
-  function updateStreak() {
-    if (!state.lastVisit) {
-      state.streak = 1;
-    } else {
-      const last = new Date(state.lastVisit);
-      const now = new Date(todayDate);
-      const diffDays = Math.floor((now - last) / 86400000);
-      if (diffDays === 0) { /* same day, no change */ }
-      else if (diffDays === 1) { state.streak += 1; }
-      else { state.streak = 1; }
-    }
-    state.lastVisit = todayDate;
-    saveState();
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  THEME                                 */
-  /* ═══════════════════════════════════════ */
-  function applyTheme() {
-    let theme = state.theme;
-    if (theme === 'auto') {
-      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    document.documentElement.setAttribute('data-theme', theme);
-    const btn = $('#themeBtn');
-    if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
-  }
-
-  function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    state.theme = current === 'dark' ? 'light' : 'dark';
-    store.set('theme', state.theme);
-    applyTheme();
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  RENDER: MODULE NAV                    */
-  /* ═══════════════════════════════════════ */
-  function renderModuleNav() {
-    const nav = $('#moduleNav');
-    nav.innerHTML = MODULE_ORDER.map(key => {
-      const m = MODULES[key];
-      const done = isModuleComplete(key);
-      const active = key === state.activeModule ? ' active' : '';
-      const progressClass = done ? ' done' : '';
-      return '<div class="module-tab' + active + '" data-module="' + key + '">' +
-        '<span class="module-tab-progress' + progressClass + '"><span class="module-tab-progress-fill"></span></span>' +
-        m.icon + ' ' + m.title +
-        '</div>';
-    }).join('');
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  RENDER: MODULES + LESSONS             */
-  /* ═══════════════════════════════════════ */
-  function renderModules() {
-    const container = $('#moduleContainer');
-    container.innerHTML = MODULE_ORDER.map(key => {
-      const m = MODULES[key];
-      const active = key === state.activeModule ? ' active' : '';
-      const completedCount = getModuleCompletedCount(key);
-      const total = m.lessons.length;
-
-      let html = '<div class="module-content' + active + '" id="mod-' + key + '">';
-
-      /* Section head */
-      html += '<div class="sec-head">' + esc(m.subtitle) +
-        '<span class="sec-head-count">' + completedCount + '/' + total + '</span></div>';
-
-      /* Lessons */
-      m.lessons.forEach((lesson, i) => {
-        const isDone = state.completed.includes(lesson.id);
-        const doneClass = isDone ? ' completed' : '';
-        const checkClass = isDone ? ' done' : '';
-
-        html += '<div class="lesson' + doneClass + '" data-lesson="' + lesson.id + '">' +
-          '<div class="lesson-check' + checkClass + '">✓</div>' +
-          '<div class="lesson-body">' +
-            '<div class="lesson-title">' + esc(lesson.title) + '</div>' +
-            '<div class="lesson-desc">' + esc(lesson.desc) + '</div>' +
-            '<div class="lesson-meta">' +
-              '<span class="lesson-tag ' + (TAG_CLASSES[lesson.tag] || '') + '">' + (TAG_LABELS[lesson.tag] || lesson.tag) + '</span>' +
-              '<span class="lesson-time">⏱ ' + lesson.time + '</span>' +
-            '</div>' +
-          '</div>' +
-          '<div class="lesson-arrow">›</div>' +
-        '</div>';
-
-        /* Expanded lesson container */
-        html += '<div class="lesson-expanded" id="exp-' + lesson.id + '">' +
-          '<div class="exp-header">' +
-            '<span class="exp-title">' + esc(lesson.title) + '</span>' +
-            '<div class="exp-actions-bar">' +
-              '<button class="exp-action-btn" data-share="' + lesson.id + '" title="Compartir">↗</button>' +
-              '<button class="exp-action-btn completed-btn' + (isDone ? ' done' : '') + '" data-complete="' + lesson.id + '" title="Marcar completada">✓</button>' +
-              '<button class="exp-action-btn" data-close="' + lesson.id + '" title="Cerrar">✕</button>' +
-            '</div>' +
-          '</div>' +
-          '<div class="exp-body" id="body-' + lesson.id + '">' +
-            '<div class="sk" style="height:16px;width:100%"></div>' +
-            '<div class="sk" style="height:16px;width:85%"></div>' +
-            '<div class="sk" style="height:16px;width:70%"></div>' +
-          '</div>' +
-        '</div>';
-      });
-
-      /* Module complete card */
-      const showComplete = isModuleComplete(key);
-      html += '<div class="module-complete' + (showComplete ? ' show' : '') + '" id="complete-' + key + '">' +
-        '<div class="module-complete-icon">🏆</div>' +
-        '<div class="module-complete-title">Módulo completado</div>' +
-        '<div class="module-complete-desc">Completaste todas las lecciones de ' + esc(m.title) + '. El conocimiento es poder cuando se acciona.</div>' +
-      '</div>';
-
-      /* CTA */
-      html += '<div class="stryv-cta">' +
-        '<div class="stryv-cta-eyebrow">' + esc(m.cta.eyebrow) + '</div>' +
-        '<div class="stryv-cta-title">' + esc(m.cta.title) + '</div>' +
-        '<div class="stryv-cta-desc">' + esc(m.cta.desc) + '</div>' +
-        '<a href="' + esc(m.cta.link) + '" target="_blank" rel="noopener" class="stryv-cta-btn">' + esc(m.cta.btn) + '</a>' +
-        '<a href="https://stryvstudio.com" target="_blank" rel="noopener" class="stryv-cta-link">stryvstudio.com</a>' +
-      '</div>';
-
-      html += '</div>';
-      return html;
-    }).join('');
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  RENDER: BOTTOM NAV                    */
-  /* ═══════════════════════════════════════ */
-  function renderBottomNav() {
-    const navItems = [
-      { key:'dinero', icon:'💰', label:'Dinero' },
-      { key:'poder', icon:'⚡', label:'Poder' },
-      { key:'tecnologia', icon:'🤖', label:'Tech' },
-      { key:'mentalidad', icon:'🧠', label:'Mental' },
-      { key:'stryv', icon:'🚀', label:'Stryv', href:'https://stryvstudio.com' }
-    ];
-    const nav = $('#bottomNav');
-    nav.innerHTML = navItems.map(n => {
-      if (n.href) {
-        return '<a class="nav-item" href="' + n.href + '" target="_blank" rel="noopener">' +
-          '<span class="nav-icon">' + n.icon + '</span><span class="nav-label">' + n.label + '</span></a>';
-      }
-      const active = n.key === state.activeModule ? ' active' : '';
-      return '<div class="nav-item' + active + '" data-nav="' + n.key + '">' +
-        '<span class="nav-icon">' + n.icon + '</span><span class="nav-label">' + n.label + '</span></div>';
-    }).join('');
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  RENDER: STATS                         */
-  /* ═══════════════════════════════════════ */
-  function renderStats() {
-    const total = getTotalLessons();
-    const completed = state.completed.length;
-    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-    $('#statLessons').textContent = completed;
-    $('#statStreak').textContent = state.streak;
-    $('#statModules').textContent = getCompletedModulesCount() + '/6';
-    $('#globalProgress').style.width = pct + '%';
-
-    const streakBadge = $('#streakBadge');
-    if (state.streak > 0) {
-      streakBadge.style.display = 'flex';
-      $('#streakCount').textContent = state.streak;
-    }
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  MODULE SWITCHING                      */
-  /* ═══════════════════════════════════════ */
-  function switchModule(key) {
-    if (!MODULES[key]) return;
-    state.activeModule = key;
-
-    $$('.module-content').forEach(el => el.classList.remove('active'));
-    $$('.module-tab').forEach(el => el.classList.remove('active'));
-    $$('.nav-item').forEach(el => el.classList.remove('active'));
-
-    const mod = $('#mod-' + key);
-    if (mod) mod.classList.add('active');
-
-    const tab = document.querySelector('.module-tab[data-module="' + key + '"]');
-    if (tab) { tab.classList.add('active'); tab.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' }); }
-
-    const navItem = document.querySelector('.nav-item[data-nav="' + key + '"]');
-    if (navItem) navItem.classList.add('active');
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  LESSON TOGGLE                         */
-  /* ═══════════════════════════════════════ */
-  function toggleLesson(id) {
-    const exp = $('#exp-' + id);
-    if (!exp) return;
-
-    const isOpen = exp.classList.contains('open');
-    const lessonEl = document.querySelector('.lesson[data-lesson="' + id + '"]');
-
-    /* Close all */
-    $$('.lesson-expanded').forEach(e => e.classList.remove('open'));
-    $$('.lesson').forEach(l => l.classList.remove('open'));
-
-    if (!isOpen) {
-      exp.classList.add('open');
-      if (lessonEl) lessonEl.classList.add('open');
-
-      /* Generate content if not cached */
-      if (!state.lessonCache[id] && !state.loadingLessons.has(id)) {
-        generateLesson(id);
-      } else if (state.lessonCache[id]) {
-        renderLessonContent(id, state.lessonCache[id]);
-      }
-
-      setTimeout(() => exp.scrollIntoView({ behavior:'smooth', block:'nearest' }), 120);
-    }
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  LESSON COMPLETION                     */
-  /* ═══════════════════════════════════════ */
-  function completeLesson(id) {
-    const idx = state.completed.indexOf(id);
-    if (idx === -1) {
-      state.completed.push(id);
-    } else {
-      state.completed.splice(idx, 1);
-    }
-    saveState();
-
-    /* Update UI for this lesson */
-    const lessonEl = document.querySelector('.lesson[data-lesson="' + id + '"]');
-    if (lessonEl) {
-      const check = lessonEl.querySelector('.lesson-check');
-      if (state.completed.includes(id)) {
-        lessonEl.classList.add('completed');
-        if (check) check.classList.add('done');
-      } else {
-        lessonEl.classList.remove('completed');
-        if (check) check.classList.remove('done');
-      }
-    }
-
-    /* Update complete button */
-    const btn = document.querySelector('[data-complete="' + id + '"]');
-    if (btn) {
-      if (state.completed.includes(id)) btn.classList.add('done');
-      else btn.classList.remove('done');
-    }
-
-    /* Update module completion */
-    const modKey = findModuleForLesson(id);
-    if (modKey) {
-      const completeCard = $('#complete-' + modKey);
-      if (completeCard) {
-        if (isModuleComplete(modKey)) completeCard.classList.add('show');
-        else completeCard.classList.remove('show');
-      }
-
-      /* Update section head count */
-      const modEl = $('#mod-' + modKey);
-      if (modEl) {
-        const countEl = modEl.querySelector('.sec-head-count');
-        if (countEl) countEl.textContent = getModuleCompletedCount(modKey) + '/' + MODULES[modKey].lessons.length;
-      }
-    }
-
-    renderStats();
-    renderModuleNav();
-  }
-
-  function findModuleForLesson(lessonId) {
-    for (const key of MODULE_ORDER) {
-      if (MODULES[key].lessons.some(l => l.id === lessonId)) return key;
-    }
-    return null;
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  SHARE                                 */
-  /* ═══════════════════════════════════════ */
-  function shareLesson(id) {
-    const lesson = findLessonById(id);
-    if (!lesson) return;
-
-    const text = lesson.title + '\n\n' + lesson.desc + '\n\nContexto — por Stryv Studio';
-
-    if (navigator.share) {
-      navigator.share({ title: lesson.title, text: text, url: window.location.href }).catch(() => {});
-    } else {
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = document.querySelector('[data-share="' + id + '"]');
-        if (btn) { btn.textContent = '✓'; setTimeout(() => btn.textContent = '↗', 1500); }
-      }).catch(() => {});
-    }
-  }
-
-  function findLessonById(id) {
-    for (const key of MODULE_ORDER) {
-      const found = MODULES[key].lessons.find(l => l.id === id);
-      if (found) return found;
-    }
-    return null;
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  SEARCH                                */
-  /* ═══════════════════════════════════════ */
-  function openSearch() {
-    $('#searchOverlay').classList.add('open');
-    setTimeout(() => $('#searchInput').focus(), 100);
-  }
-
-  function closeSearch() {
-    $('#searchOverlay').classList.remove('open');
-    $('#searchInput').value = '';
-    renderSearchResults('');
-  }
-
-  function renderSearchResults(query) {
-    const container = $('#searchResults');
-    if (!query.trim()) {
-      container.innerHTML = '<div class="search-empty">Escribe para buscar en todos los módulos</div>';
-      return;
-    }
-
-    const q = query.toLowerCase();
-    const results = [];
-
-    MODULE_ORDER.forEach(key => {
-      const m = MODULES[key];
-      m.lessons.forEach(lesson => {
-        if (lesson.title.toLowerCase().includes(q) || lesson.desc.toLowerCase().includes(q)) {
-          results.push({ module: m, moduleKey: key, lesson });
-        }
-      });
+  if(activeSection==='all'){
+    const grouped={};
+    filtered.forEach(a=>{
+      if(!grouped[a.section]) grouped[a.section]=[];
+      grouped[a.section].push(a);
     });
 
-    if (results.length === 0) {
-      container.innerHTML = '<div class="search-empty">No se encontraron resultados para "' + esc(query) + '"</div>';
-      return;
-    }
-
-    container.innerHTML = results.map(r =>
-      '<div class="search-result" data-search-module="' + r.moduleKey + '" data-search-lesson="' + r.lesson.id + '">' +
-        '<div class="search-result-module">' + r.module.icon + ' ' + esc(r.module.title) + '</div>' +
-        '<div class="search-result-title">' + esc(r.lesson.title) + '</div>' +
-        '<div class="search-result-desc">' + esc(r.lesson.desc) + '</div>' +
-      '</div>'
-    ).join('');
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  API: CLAUDE                           */
-  /* ═══════════════════════════════════════ */
-  async function callClaude(prompt, maxTokens) {
-    const res = await fetch('/.netlify/functions/claude', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: prompt, maxTokens: maxTokens || 1200 })
-    });
-    if (!res.ok) throw new Error('API error: ' + res.status);
-    const json = await res.json();
-    if (json.error) throw new Error(json.error.message || 'API error');
-    return json.content[0].text;
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  REAL NEWS FETCHER                     */
-  /* ═══════════════════════════════════════ */
-  async function fetchRealNews() {
-    try {
-      const res = await fetch('/.netlify/functions/news');
-      if (!res.ok) throw new Error('News fetch failed');
-      const data = await res.json();
-      return data;
-    } catch(e) {
-      return { headlines: [], summary: '', count: 0 };
-    }
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  LIVE CONTEXT                          */
-  /* ═══════════════════════════════════════ */
-  async function fetchLiveContext() {
-    const dateStr = new Date().toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' });
-
-    /* Use cache if same day */
-    if (state.contextCache.date === todayDate && state.contextCache.text) {
-      state.liveContext = state.contextCache.text;
-      showContextBanner(state.contextCache.bannerText || state.liveContext);
-      return;
-    }
-
-    try {
-      /* STEP 1: Fetch REAL news from Google News */
-      const news = await fetchRealNews();
-      const newsContext = news.summary || 'No se pudieron obtener noticias en tiempo real.';
-
-      /* STEP 2: Ask Claude to synthesize the real headlines into a coherent context */
-      const text = await callClaude(
-        'Hoy es ' + dateStr + '. A continuación tienes TITULARES REALES de noticias de hoy extraídos de Google News:\n\n' +
-        newsContext + '\n\n' +
-        'INSTRUCCIÓN: Con base en estos titulares REALES de hoy, genera un resumen de 4-5 líneas de lo más relevante que está pasando en el mundo y que afecta a latinoamericanos. Organízalo por: economía, geopolítica, tecnología/IA, mercados. Usa datos específicos de los titulares. Sin opinión. Sin introducción. Sin disclaimers. Solo los hechos.',
-        400
-      );
-
-      state.liveContext = 'Fecha: ' + dateStr + '. NOTICIAS REALES DE HOY:\n' + newsContext + '\n\nRESUMEN: ' + text;
-      state.contextCache = { text: state.liveContext, bannerText: text, date: todayDate };
-      saveState();
-      showContextBanner(text);
-    } catch(e) {
-      /* Fallback: try news only without Claude */
-      try {
-        const news = await fetchRealNews();
-        if (news.summary) {
-          state.liveContext = 'Fecha: ' + dateStr + '. NOTICIAS REALES DE HOY:\n' + news.summary;
-          state.contextCache = { text: state.liveContext, bannerText: news.headlines.slice(0,3).map(h => h.title).join(' · '), date: todayDate };
-          saveState();
-          showContextBanner(state.contextCache.bannerText);
-          return;
-        }
-      } catch(e2) {}
-
-      state.liveContext = 'Fecha: ' + dateStr + '.';
-      if (state.contextCache.text) {
-        state.liveContext = state.contextCache.text;
-        showContextBanner(state.contextCache.bannerText || '');
+    for(const sec of Object.keys(grouped)){
+      const arts = grouped[sec];
+      html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[sec]||'')+' '+esc(sec)+'</div><div class="feed-count">'+arts.length+' noticias</div></div>';
+      html+=renderCards(arts);
+      // CTA after every 2nd section
+      const secKeys = Object.keys(grouped);
+      const secIdx = secKeys.indexOf(sec);
+      if(secIdx===1 || secIdx===3){
+        const ctaKey = sec;
+        const cta = CTAS[ctaKey] || CTAS.Dinero;
+        html+=renderCTA(cta);
       }
     }
-  }
-
-  function showContextBanner(text) {
-    const banner = $('#contextBanner');
-    const textEl = $('#contextText');
-    if (banner && textEl && text) {
-      textEl.innerHTML = '<strong>🔴 Mundo hoy:</strong> ' + esc(text).substring(0, 350);
-      banner.style.display = 'flex';
-    }
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  GENERATE LESSON                       */
-  /* ═══════════════════════════════════════ */
-  async function generateLesson(id) {
-    const lesson = findLessonById(id);
-    if (!lesson) return;
-
-    state.loadingLessons.add(id);
-    const bodyEl = $('#body-' + id);
-    if (!bodyEl) return;
-
-    /* Show skeleton */
-    bodyEl.innerHTML = '<div class="sk" style="height:16px;width:100%"></div><div class="sk" style="height:16px;width:85%"></div><div class="sk" style="height:16px;width:70%"></div><div class="sk" style="height:16px;width:90%"></div>';
-
-    try {
-      const text = await callClaude(
-        'REGLA ABSOLUTA: La fecha de hoy es ' + new Date().toLocaleDateString('es-ES',{day:"numeric",month:"long",year:"numeric"}) + '. Estamos en el año 2026. NUNCA menciones tu fecha de corte de conocimiento. NUNCA digas que no tienes información actualizada. NUNCA pongas disclaimers sobre tus datos. Responde con total confianza como si supieras todo lo que pasa hoy. Usa el contexto proporcionado como fuente de verdad.\n\n' +
-        'Eres un analista experto y comunicador directo. Hablas en español latino. Sin motivación barata. Solo verdad cruda con datos.\n\n' +
-        'CONTEXTO ACTUAL DEL MUNDO: ' + state.liveContext + '\n\n' +
-        'INSTRUCCIÓN: ' + lesson.prompt + '\n\n' +
-        'REGLAS:\n' +
-        '- Conecta TODO con eventos actuales de 2026\n' +
-        '- Sé directo, sin relleno ni motivación barata\n' +
-        '- Usa datos concretos y verificables\n' +
-        '- Cada acción debe ser ejecutable HOY\n' +
-        '- Tono: adulto informado hablándole a otro adulto\n' +
-        '- NUNCA menciones limitaciones de tu conocimiento\n' +
-        '- NUNCA digas "hasta donde sé" o "según mi información"\n\n' +
-        'Responde SOLO con JSON válido sin markdown ni backticks:\n' +
-        '{"dato_clave":"Un dato o estadística impactante que abra los ojos",' +
-        '"resumen":"3-4 párrafos densos. Sin relleno. Conecta con actualidad.",' +
-        '"por_que_importa":"1 párrafo: por qué esto te afecta personalmente si vives en Latinoamérica",' +
-        '"acciones":[' +
-          '{"num":"1","texto":"Acción concreta ejecutable hoy","herramienta":"App o plataforma específica"},' +
-          '{"num":"2","texto":"Segunda acción concreta","herramienta":"Herramienta específica"},' +
-          '{"num":"3","texto":"Acción a mediano plazo","herramienta":"Herramienta específica"}' +
-        ']}',
-        1500
-      );
-
-      const data = JSON.parse(text.replace(/```json|```/g, '').trim());
-
-      /* Cache the result */
-      state.lessonCache[id] = data;
-      saveState();
-
-      renderLessonContent(id, data);
-    } catch(e) {
-      bodyEl.innerHTML = '<div style="padding:8px 0;color:var(--text-2);font-size:14px;text-align:center">' +
-        '<div style="font-size:24px;margin-bottom:8px">⚠️</div>' +
-        'No se pudo cargar el contenido.<br>' +
-        '<button onclick="retry(\'' + id + '\')" style="margin-top:10px;padding:8px 20px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Reintentar</button>' +
-      '</div>';
-    }
-
-    state.loadingLessons.delete(id);
-  }
-
-  /* Make retry available */
-  window.retry = function(id) {
-    state.lessonCache[id] = null;
-    delete state.lessonCache[id];
-    saveState();
-    generateLesson(id);
-  };
-
-  function renderLessonContent(id, data) {
-    const bodyEl = $('#body-' + id);
-    if (!bodyEl || !data) return;
-
-    let html = '<div class="ai-badge"><div class="ai-dot"></div>Actualizado hoy · IA en tiempo real</div>';
-
-    /* Key fact */
-    if (data.dato_clave) {
-      html += '<div class="exp-key-fact">' + esc(data.dato_clave) + '</div>';
-    }
-
-    /* Summary */
-    html += '<div class="exp-block"><div class="exp-label">Lo que necesitas saber</div>' +
-      '<div class="exp-text">' + esc(data.resumen).replace(/\n/g, '<br><br>') + '</div></div>';
-
-    /* Why it matters */
-    if (data.por_que_importa) {
-      html += '<div class="exp-block"><div class="exp-label">Por qué te importa</div>' +
-        '<div class="exp-why">' + esc(data.por_que_importa) + '</div></div>';
-    }
-
-    /* Action steps */
-    if (data.acciones && data.acciones.length) {
-      html += '<div class="exp-block"><div class="exp-label">Pasos accionables</div><div class="exp-steps">';
-      data.acciones.forEach(a => {
-        html += '<div class="exp-step">' +
-          '<div class="exp-step-num">' + esc(a.num) + '</div>' +
-          '<div class="exp-step-content">' +
-            '<div class="exp-step-text">' + esc(a.texto) + '</div>' +
-            (a.herramienta ? '<div class="exp-step-tool">🔧 ' + esc(a.herramienta) + '</div>' : '') +
-          '</div></div>';
-      });
-      html += '</div></div>';
-    }
-
-    bodyEl.innerHTML = html;
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  TOUCH GESTURES                        */
-  /* ═══════════════════════════════════════ */
-  let touchStartX = 0;
-  function setupSwipe() {
-    const container = $('#moduleContainer');
-    if (!container) return;
-
-    container.addEventListener('touchstart', e => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    container.addEventListener('touchend', e => {
-      const diff = touchStartX - e.changedTouches[0].screenX;
-      if (Math.abs(diff) < 80) return;
-
-      const currentIdx = MODULE_ORDER.indexOf(state.activeModule);
-      if (diff > 0 && currentIdx < MODULE_ORDER.length - 1) {
-        switchModule(MODULE_ORDER[currentIdx + 1]);
-      } else if (diff < 0 && currentIdx > 0) {
-        switchModule(MODULE_ORDER[currentIdx - 1]);
-      }
-    }, { passive: true });
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  PWA INSTALL                           */
-  /* ═══════════════════════════════════════ */
-  let deferredPrompt = null;
-
-  window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
-    deferredPrompt = e;
-    const dismissed = store.get('installDismissed', false);
-    if (!dismissed) $('#installBanner').classList.add('show');
-  });
-
-  /* ═══════════════════════════════════════ */
-  /*  EVENT DELEGATION                      */
-  /* ═══════════════════════════════════════ */
-  document.addEventListener('click', e => {
-    /* Module tab */
-    const tab = e.target.closest('[data-module]');
-    if (tab) { switchModule(tab.dataset.module); return; }
-
-    /* Bottom nav */
-    const nav = e.target.closest('[data-nav]');
-    if (nav) { switchModule(nav.dataset.nav); return; }
-
-    /* Lesson card */
-    const lesson = e.target.closest('.lesson[data-lesson]');
-    if (lesson && !e.target.closest('.lesson-check')) {
-      toggleLesson(lesson.dataset.lesson);
-      return;
-    }
-
-    /* Lesson checkmark (direct complete) */
-    const check = e.target.closest('.lesson-check');
-    if (check) {
-      const lessonEl = check.closest('.lesson[data-lesson]');
-      if (lessonEl) { e.stopPropagation(); completeLesson(lessonEl.dataset.lesson); return; }
-    }
-
-    /* Complete button in expanded */
-    const completeBtn = e.target.closest('[data-complete]');
-    if (completeBtn) { completeLesson(completeBtn.dataset.complete); return; }
-
-    /* Share button */
-    const shareBtn = e.target.closest('[data-share]');
-    if (shareBtn) { shareLesson(shareBtn.dataset.share); return; }
-
-    /* Close button in expanded */
-    const closeBtn = e.target.closest('[data-close]');
-    if (closeBtn) { toggleLesson(closeBtn.dataset.close); return; }
-
-    /* Search result */
-    const result = e.target.closest('.search-result');
-    if (result) {
-      closeSearch();
-      switchModule(result.dataset.searchModule);
-      setTimeout(() => toggleLesson(result.dataset.searchLesson), 300);
-      return;
-    }
-
-    /* Search btn */
-    if (e.target.closest('#searchBtn')) { openSearch(); return; }
-    if (e.target.closest('#searchClose')) { closeSearch(); return; }
-
-    /* Theme toggle */
-    if (e.target.closest('#themeBtn')) { toggleTheme(); return; }
-
-    /* Context close */
-    if (e.target.closest('#contextClose')) { $('#contextBanner').style.display = 'none'; return; }
-
-    /* Install banner */
-    if (e.target.closest('#installBtn')) {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
-      }
-      $('#installBanner').classList.remove('show');
-      return;
-    }
-    if (e.target.closest('#installClose')) {
-      $('#installBanner').classList.remove('show');
-      store.set('installDismissed', true);
-      return;
-    }
-
-    /* Onboarding buttons */
-    const onbBtn = e.target.closest('.onb-btn[data-next]');
-    if (onbBtn) {
-      const next = parseInt(onbBtn.dataset.next);
-      $$('.onb-step').forEach(s => s.classList.remove('active'));
-      $$('.onb-dot').forEach(d => d.classList.remove('active'));
-      const nextStep = document.querySelector('.onb-step[data-step="' + next + '"]');
-      if (nextStep) nextStep.classList.add('active');
-      const dots = $$('.onb-dot');
-      if (dots[next]) dots[next].classList.add('active');
-      return;
-    }
-
-    if (e.target.closest('#onbStart') || e.target.closest('#onbSkip')) {
-      state.onboarded = true;
-      store.set('onboarded', true);
-      $('#onboarding').classList.add('hidden');
-      return;
-    }
-  });
-
-  /* Search input */
-  document.addEventListener('input', e => {
-    if (e.target.id === 'searchInput') {
-      renderSearchResults(e.target.value);
-    }
-  });
-
-  /* Escape key for search */
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeSearch();
-  });
-
-  /* ═══════════════════════════════════════ */
-  /*  LOADER                                */
-  /* ═══════════════════════════════════════ */
-  function runLoader() {
-    const fill = $('#loaderFill');
-    const tipEl = $('#loaderTip');
-    let prog = 0;
-    let tipIdx = 0;
-
-    tipEl.textContent = TIPS[0];
-
-    const interval = setInterval(() => {
-      prog += Math.random() * 18 + 4;
-      if (prog >= 100) { prog = 100; clearInterval(interval); }
-      fill.style.width = prog + '%';
-
-      const newIdx = Math.min(Math.floor((prog / 100) * TIPS.length), TIPS.length - 1);
-      if (newIdx !== tipIdx) {
-        tipIdx = newIdx;
-        tipEl.style.opacity = '0';
-        setTimeout(() => { tipEl.textContent = TIPS[tipIdx]; tipEl.style.opacity = '1'; }, 150);
-      }
-
-      if (prog >= 100) {
-        fetchLiveContext().then(() => {
-          setTimeout(() => {
-            $('#loader').classList.add('hidden');
-            if (!state.onboarded) {
-              $('#onboarding').classList.remove('hidden');
-            }
-          }, 400);
-        });
-      }
-    }, 140);
-  }
-
-  /* ═══════════════════════════════════════ */
-  /*  INIT                                  */
-  /* ═══════════════════════════════════════ */
-  function init() {
-    applyTheme();
-    updateStreak();
-    $('#dateDisplay').textContent = todayStr;
-
-    renderModuleNav();
-    renderModules();
-    renderBottomNav();
-    renderStats();
-    setupSwipe();
-    runLoader();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
   } else {
-    init();
+    html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[activeSection]||'')+' '+esc(activeSection)+'</div><div class="feed-count">'+filtered.length+' noticias</div></div>';
+    html+=renderCards(filtered);
+    const cta = CTAS[activeSection] || CTAS.Dinero;
+    html+=renderCTA(cta);
   }
+
+  container.innerHTML=html;
+}
+
+function renderCards(arts){
+  return arts.map((a,i)=>{
+    const id = hashId(a.title);
+    const tagClass = SECTION_TAGS[a.section]||'tag-dinero';
+    return '<div class="news-card" data-id="'+id+'">'+
+      '<div class="news-card-top">'+
+        '<span class="news-card-source">'+esc(a.source||a.section)+'</span>'+
+        '<span class="news-card-dot"></span>'+
+        '<span class="news-card-time">'+timeAgo(a.date)+'</span>'+
+      '</div>'+
+      '<div class="news-card-title">'+esc(a.title)+'</div>'+
+      '<span class="news-card-tag '+tagClass+'">'+esc(a.section)+'</span>'+
+      '<span class="news-card-arrow">›</span>'+
+    '</div>'+
+    '<div class="analysis" id="analysis-'+id+'">'+
+      '<div class="analysis-bar">'+
+        '<span class="analysis-badge"><span class="analysis-badge-dot"></span>Análisis IA en tiempo real</span>'+
+        '<button class="analysis-close" data-close-analysis="'+id+'">✕</button>'+
+      '</div>'+
+      '<div class="analysis-body" id="abody-'+id+'">'+
+        '<div class="sk" style="height:14px;width:100%"></div>'+
+        '<div class="sk" style="height:14px;width:85%"></div>'+
+        '<div class="sk" style="height:14px;width:70%"></div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function renderCTA(cta){
+  return '<div class="stryv-cta">'+
+    '<div class="stryv-cta-eyebrow">Stryv Studio</div>'+
+    '<div class="stryv-cta-title">'+esc(cta.title)+'</div>'+
+    '<div class="stryv-cta-desc">'+esc(cta.desc)+'</div>'+
+    '<a href="https://wa.me/17373683464" target="_blank" rel="noopener" class="stryv-cta-btn">Hablar con Stryv</a>'+
+    '<a href="https://stryvstudio.com" target="_blank" rel="noopener" class="stryv-cta-link">stryvstudio.com</a>'+
+  '</div>';
+}
+
+function hashId(str){
+  let h=0;
+  for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0}
+  return 'n'+Math.abs(h);
+}
+
+/* ═══════════════════════════════════════ */
+/*  ANALYZE ARTICLE                       */
+/* ═══════════════════════════════════════ */
+function toggleAnalysis(id){
+  const panel=$('#analysis-'+id);
+  if(!panel) return;
+
+  const isOpen = panel.classList.contains('open');
+
+  // Close all open
+  $$('.analysis').forEach(a=>a.classList.remove('open'));
+  $$('.news-card').forEach(c=>c.style.borderLeftColor='transparent');
+
+  if(!isOpen){
+    panel.classList.add('open');
+
+    // Find article
+    const article = articles.find(a=>hashId(a.title)===id);
+    if(!article) return;
+
+    if(analysisCache[id]){
+      renderAnalysis(id, analysisCache[id], article);
+    } else {
+      generateAnalysis(id, article);
+    }
+
+    setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),120);
+  }
+}
+
+async function generateAnalysis(id, article){
+  const body=$('#abody-'+id);
+  if(!body) return;
+
+  body.innerHTML='<div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:85%"></div><div class="sk" style="height:14px;width:70%"></div><div class="sk" style="height:14px;width:90%"></div>';
+
+  const dateStr = todayFormatted();
+
+  try{
+    const text = await callClaude(
+      'Fecha: '+dateStr+'. Eres un analista de inteligencia global para la plataforma CONTEXTO de Stryv Studio. Tu trabajo es analizar noticias y explicar por qué le importan a un latinoamericano.\n\n'+
+      'NOTICIAS REALES DE HOY:\n'+newsSummary+'\n\n'+
+      'NOTICIA A ANALIZAR: "'+article.title+'" — Fuente: '+article.source+' — Sección: '+article.section+'\n\n'+
+      'Genera un análisis profundo de esta noticia. Responde SOLO con JSON válido sin markdown:\n'+
+      '{"titular_contexto":"Reescribe el titular en 1 línea revelando lo que realmente significa — el ángulo que los medios no explican",'+ 
+      '"que_esta_pasando":"2-3 párrafos explicando qué está pasando realmente, con contexto histórico y geopolítico. Conecta con otras noticias de hoy si es relevante. Sin relleno.",'+ 
+      '"por_que_te_afecta":"1 párrafo directo: cómo esto impacta la vida, el bolsillo o las opciones de alguien en Latinoamérica",'+ 
+      '"cambio_de_paradigma":"1 párrafo: qué creencia o asunción del status quo esta noticia desafía — qué deberías repensar",'+ 
+      '"que_hacer":[{"num":"1","texto":"Acción concreta inmediata"},{"num":"2","texto":"Acción a mediano plazo"}]}',
+      1500
+    );
+
+    const data = JSON.parse(text.replace(/```json|```/g,'').trim());
+    analysisCache[id] = data;
+    store.set('analysisCache', analysisCache);
+    renderAnalysis(id, data, article);
+  }catch(e){
+    body.innerHTML='<div style="padding:16px;text-align:center;color:var(--text-3);font-size:13px">'+
+      '⚠️ No se pudo generar el análisis.<br>'+
+      '<button onclick="retryAnalysis(\''+id+'\')" style="margin-top:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Reintentar</button></div>';
+  }
+}
+
+window.retryAnalysis = function(id){
+  delete analysisCache[id];
+  store.set('analysisCache', analysisCache);
+  const article = articles.find(a=>hashId(a.title)===id);
+  if(article) generateAnalysis(id, article);
+};
+
+function renderAnalysis(id, data, article){
+  const body=$('#abody-'+id);
+  if(!body||!data) return;
+
+  let html='';
+
+  if(data.titular_contexto){
+    html+='<div class="analysis-headline">'+esc(data.titular_contexto)+'</div>';
+  }
+
+  html+='<div class="analysis-section"><div class="analysis-label">Qué está pasando realmente</div>'+
+    '<div class="analysis-text">'+esc(data.que_esta_pasando||'').replace(/\n/g,'<br><br>')+'</div></div>';
+
+  if(data.por_que_te_afecta){
+    html+='<div class="analysis-section"><div class="analysis-label">Por qué te afecta</div>'+
+      '<div class="analysis-impact">'+esc(data.por_que_te_afecta)+'</div></div>';
+  }
+
+  if(data.cambio_de_paradigma){
+    html+='<div class="analysis-section"><div class="analysis-label">Cambio de paradigma</div>'+
+      '<div class="analysis-shift">'+esc(data.cambio_de_paradigma)+'</div></div>';
+  }
+
+  if(data.que_hacer && data.que_hacer.length){
+    html+='<div class="analysis-section"><div class="analysis-label">Qué hacer</div><div class="analysis-actions">';
+    data.que_hacer.forEach(a=>{
+      html+='<div class="analysis-action"><div class="analysis-action-num">'+esc(a.num)+'</div><div class="analysis-action-text">'+esc(a.texto)+'</div></div>';
+    });
+    html+='</div></div>';
+  }
+
+  html+='<div class="analysis-share"><button class="analysis-share-btn" data-share="'+id+'">Compartir análisis ↗</button></div>';
+
+  body.innerHTML=html;
+}
+
+/* ═══════════════════════════════════════ */
+/*  SEARCH                                */
+/* ═══════════════════════════════════════ */
+function openSearch(){$('#searchOverlay').classList.add('open');setTimeout(()=>$('#searchInput').focus(),100)}
+function closeSearch(){$('#searchOverlay').classList.remove('open');$('#searchInput').value='';renderSearchResults('')}
+
+function renderSearchResults(q){
+  const c=$('#searchResults');
+  if(!q.trim()){c.innerHTML='<div class="search-empty">Escribe para buscar en todas las noticias</div>';return}
+  const lower=q.toLowerCase();
+  const results=articles.filter(a=>a.title.toLowerCase().includes(lower));
+  if(!results.length){c.innerHTML='<div class="search-empty">Sin resultados para "'+esc(q)+'"</div>';return}
+  c.innerHTML=results.map(a=>
+    '<div class="search-result" data-search-id="'+hashId(a.title)+'" data-search-section="'+a.section+'">'+
+      '<div class="search-result-section">'+(SECTION_ICONS[a.section]||'')+' '+esc(a.section)+'</div>'+
+      '<div class="search-result-title">'+esc(a.title)+'</div></div>'
+  ).join('');
+}
+
+/* ═══════════════════════════════════════ */
+/*  SWITCH SECTION                        */
+/* ═══════════════════════════════════════ */
+function switchSection(sec){
+  activeSection=sec;
+  renderSecNav();
+  renderFeeds();
+  $$('.nav-item').forEach(n=>n.classList.remove('active'));
+  const navMatch = document.querySelector('.nav-item[data-nav="'+sec+'"]');
+  if(navMatch) navMatch.classList.add('active');
+  else $$('.nav-item')[0]?.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ═══════════════════════════════════════ */
+/*  SHARE                                 */
+/* ═══════════════════════════════════════ */
+function shareAnalysis(id){
+  const article = articles.find(a=>hashId(a.title)===id);
+  const data = analysisCache[id];
+  if(!article) return;
+  const text = article.title+'\n\n'+(data?.titular_contexto||'')+'\n\n'+(data?.por_que_te_afecta||'')+'\n\n— CONTEXTO por Stryv Studio';
+
+  if(navigator.share){
+    navigator.share({title:article.title,text,url:window.location.href}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text).then(()=>{
+      const btn=document.querySelector('[data-share="'+id+'"]');
+      if(btn){btn.textContent='✓ Copiado';setTimeout(()=>btn.textContent='Compartir análisis ↗',1500)}
+    }).catch(()=>{});
+  }
+}
+
+/* ═══════════════════════════════════════ */
+/*  EVENTS                                */
+/* ═══════════════════════════════════════ */
+document.addEventListener('click',e=>{
+  const tab=e.target.closest('[data-section]');
+  if(tab){switchSection(tab.dataset.section);return}
+
+  const nav=e.target.closest('[data-nav]');
+  if(nav){switchSection(nav.dataset.nav);return}
+
+  const card=e.target.closest('.news-card');
+  if(card){toggleAnalysis(card.dataset.id);return}
+
+  const closeA=e.target.closest('[data-close-analysis]');
+  if(closeA){const panel=$('#analysis-'+closeA.dataset.closeAnalysis);if(panel)panel.classList.remove('open');return}
+
+  const shareBtn=e.target.closest('[data-share]');
+  if(shareBtn){shareAnalysis(shareBtn.dataset.share);return}
+
+  if(e.target.closest('#searchBtn')){openSearch();return}
+  if(e.target.closest('#searchClose')){closeSearch();return}
+  if(e.target.closest('#themeBtn')){toggleTheme();return}
+
+  const searchR=e.target.closest('.search-result');
+  if(searchR){
+    closeSearch();
+    switchSection(searchR.dataset.searchSection);
+    setTimeout(()=>toggleAnalysis(searchR.dataset.searchId),300);
+    return;
+  }
+
+  if(e.target.closest('#refreshBtn')){refreshAll();return}
+});
+
+document.addEventListener('input',e=>{if(e.target.id==='searchInput')renderSearchResults(e.target.value)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSearch()});
+
+/* ═══════════════════════════════════════ */
+/*  REFRESH                               */
+/* ═══════════════════════════════════════ */
+async function refreshAll(){
+  const btn=$('#refreshBtn');
+  btn.disabled=true;
+  btn.textContent='Actualizando...';
+  $('#refreshTime').textContent='Buscando noticias...';
+
+  // Clear analysis cache on refresh
+  analysisCache={};
+  store.set('analysisCache',{});
+
+  await fetchNews();
+  renderSecNav();
+  renderFeeds();
+  updateRefreshTime();
+
+  btn.disabled=false;
+  btn.textContent='Actualizar';
+}
+
+function updateRefreshTime(){
+  const now=new Date();
+  const h=now.getHours().toString().padStart(2,'0');
+  const m=now.getMinutes().toString().padStart(2,'0');
+  $('#refreshTime').textContent='Actualizado a las '+h+':'+m;
+}
+
+/* ═══════════════════════════════════════ */
+/*  SWIPE                                 */
+/* ═══════════════════════════════════════ */
+let touchX=0;
+document.addEventListener('touchstart',e=>{touchX=e.changedTouches[0].screenX},{passive:true});
+document.addEventListener('touchend',e=>{
+  const diff=touchX-e.changedTouches[0].screenX;
+  if(Math.abs(diff)<80) return;
+  const presentSections = SECTIONS.filter(s=>s==='all'||articles.some(a=>a.section===s));
+  const idx=presentSections.indexOf(activeSection);
+  if(diff>0 && idx<presentSections.length-1) switchSection(presentSections[idx+1]);
+  else if(diff<0 && idx>0) switchSection(presentSections[idx-1]);
+},{passive:true});
+
+/* ═══════════════════════════════════════ */
+/*  LOADER & INIT                         */
+/* ═══════════════════════════════════════ */
+async function init(){
+  applyTheme();
+  $('#dateMain').textContent = todayFormatted();
+
+  // Show loader statuses
+  const statusEl=$('#loaderStatus');
+  const statuses=['Conectando fuentes...','Escaneando Google News...','Analizando titulares...','Preparando tu briefing...'];
+  let sIdx=0;
+
+  const statusInterval=setInterval(()=>{
+    sIdx++;
+    if(sIdx<statuses.length) statusEl.textContent=statuses[sIdx];
+  },800);
+
+  await fetchNews();
+  clearInterval(statusInterval);
+  statusEl.textContent=articles.length+' noticias encontradas';
+
+  renderSecNav();
+  renderFeeds();
+  updateRefreshTime();
+  $('#refreshBtn').disabled=false;
+
+  setTimeout(()=>$('#loader').classList.add('hidden'),600);
+
+  // Auto-refresh every 15 min
+  setInterval(async()=>{
+    await fetchNews();
+    renderSecNav();
+    renderFeeds();
+    updateRefreshTime();
+  }, 900000);
+}
+
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+else init();
 
 })();
 </script>

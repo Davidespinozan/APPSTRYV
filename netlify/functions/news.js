@@ -1,57 +1,73 @@
 exports.handler = async function(event) {
-  const topics = [
-    { q: 'economía latinoamérica dólar', label: 'Economía' },
-    { q: 'geopolítica guerra conflicto mundial', label: 'Geopolítica' },
-    { q: 'inteligencia artificial tecnología', label: 'Tecnología' },
-    { q: 'bitcoin criptomonedas oro mercados', label: 'Mercados' },
-    { q: 'migración visa pasaporte residencia', label: 'Movilidad' }
+  const sections = [
+    { q: 'economía dólar inflación mercados finanzas', label: 'Dinero', icon: '💰' },
+    { q: 'geopolítica guerra conflicto OTAN China Rusia Irán', label: 'Poder', icon: '⚡' },
+    { q: 'inteligencia artificial IA tecnología startup', label: 'Tecnología', icon: '🤖' },
+    { q: 'bitcoin criptomonedas oro petróleo bolsa mercados', label: 'Mercados', icon: '📊' },
+    { q: 'migración visa nómada digital residencia pasaporte', label: 'Movilidad', icon: '🌍' },
+    { q: 'Latinoamérica México Colombia Argentina Brasil', label: 'Latam', icon: '🌎' }
   ];
 
   try {
-    const allHeadlines = [];
+    const allArticles = [];
 
-    for (const topic of topics) {
+    for (const section of sections) {
       try {
-        const url = `https://news.google.com/rss/search?q=${encodeURIComponent(topic.q)}&hl=es-419&gl=MX&ceid=MX:es-419&num=5`;
+        const url = `https://news.google.com/rss/search?q=${encodeURIComponent(section.q)}&hl=es-419&gl=MX&ceid=MX:es-419`;
         const res = await fetch(url, {
           headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ContextoBot/1.0)' }
         });
         const xml = await res.text();
 
-        // Parse titles from RSS XML with regex (simple, no dependency)
         const items = [];
-        const itemRegex = /<item>[\s\S]*?<\/item>/g;
+        const itemRegex = /<item>([\s\S]*?)<\/item>/g;
         const titleRegex = /<title><!\[CDATA\[(.*?)\]\]>|<title>(.*?)<\/title>/;
         const pubDateRegex = /<pubDate>(.*?)<\/pubDate>/;
+        const sourceRegex = /<source[^>]*>(.*?)<\/source>/;
         let match;
 
-        while ((match = itemRegex.exec(xml)) !== null && items.length < 4) {
-          const itemXml = match[0];
+        while ((match = itemRegex.exec(xml)) !== null && items.length < 6) {
+          const itemXml = match[1];
           const titleMatch = itemXml.match(titleRegex);
           const dateMatch = itemXml.match(pubDateRegex);
+          const sourceMatch = itemXml.match(sourceRegex);
 
           if (titleMatch) {
-            const title = (titleMatch[1] || titleMatch[2] || '').trim();
-            // Skip if it's just a source name or too short
-            if (title && title.length > 15) {
+            const rawTitle = (titleMatch[1] || titleMatch[2] || '').trim();
+            // Clean: remove " - Source" suffix that Google News adds
+            const title = rawTitle.replace(/\s*-\s*[^-]+$/, '').trim();
+            const source = sourceMatch ? sourceMatch[1].trim() : '';
+
+            if (title && title.length > 20) {
               items.push({
                 title: title,
+                source: source,
                 date: dateMatch ? dateMatch[1] : '',
-                category: topic.label
+                section: section.label,
+                icon: section.icon
               });
             }
           }
         }
 
-        allHeadlines.push(...items);
+        allArticles.push(...items);
       } catch (e) {
-        // Skip failed topic, continue with others
+        // Skip failed section
       }
     }
 
-    // Build a concise news summary string
-    const summary = allHeadlines.map(h =>
-      `[${h.category}] ${h.title}`
+    // Build structured output
+    const bySections = {};
+    for (const article of allArticles) {
+      if (!bySections[article.section]) {
+        bySections[article.section] = { icon: article.icon, articles: [] };
+      }
+      bySections[article.section].articles.push(article);
+    }
+
+    // Build flat summary for Claude context
+    const summary = allArticles.map(a =>
+      `[${a.section}] ${a.title} (${a.source})`
     ).join('\n');
 
     return {
@@ -59,13 +75,14 @@ exports.handler = async function(event) {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=1800' // Cache 30 min
+        'Cache-Control': 'public, max-age=900' // 15 min cache
       },
       body: JSON.stringify({
-        headlines: allHeadlines,
+        sections: bySections,
+        articles: allArticles,
         summary: summary,
         fetchedAt: new Date().toISOString(),
-        count: allHeadlines.length
+        count: allArticles.length
       })
     };
 
@@ -73,7 +90,7 @@ exports.handler = async function(event) {
     return {
       statusCode: 500,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: error.message, headlines: [], summary: '' })
+      body: JSON.stringify({ error: error.message, sections: {}, articles: [], summary: '' })
     };
   }
 };
