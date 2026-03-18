@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CONTEXTO — Stryv</title>
-<meta name="description" content="Entiende las noticias más importantes del día en minutos, con resúmenes claros y contexto simple.">
+<title>CONTEXTO — IA que te explica el mundo</title>
+<meta name="description" content="IA lee las noticias por ti y te explica lo que está pasando. Sin jerga, sin drama. Solo contexto claro.">
 <meta name="theme-color" content="#0D1117">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Contexto">
 <link rel="manifest" href="/manifest.json">
-<meta property="og:title" content="CONTEXTO — Entiende el día en minutos">
-<meta property="og:description" content="Las noticias más importantes del día, explicadas con claridad y sin ruido.">
+<meta property="og:title" content="CONTEXTO — IA que te explica el mundo">
+<meta property="og:description" content="IA lee las noticias por ti y te explica lo que está pasando. Sin jerga, sin drama.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CONTEXTO — Stryv">
@@ -250,6 +250,16 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 .refresh-btn:hover{background:var(--accent-soft)}
 .refresh-btn:disabled{opacity:.4;cursor:default}
 
+/* ═══ VIEW SWITCHING ═══ */
+body.view-sources .hero-shell,body.view-sources .date-header{display:none}
+body.view-saved .hero-shell,body.view-saved .date-header{display:none}
+body.view-saved .sec-nav{display:none}
+body.view-insights .sec-nav{display:none}
+body.view-insights #feedContainer{display:none}
+body.view-insights .refresh-bar{display:none}
+
+.signal-card-meaning{padding:10px 12px;background:var(--accent-soft);border-radius:10px;border-left:3px solid var(--accent);font-size:13px;line-height:1.55;color:var(--text);margin-bottom:10px}
+
 /* ═══ INSTALL BANNER ═══ */
 .install-banner{display:none;padding:12px 16px;border-bottom:1px solid var(--border-light);background:var(--surface)}
 .install-banner.show{display:block}
@@ -291,7 +301,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 <!-- LOADER -->
 <div class="loader" id="loader">
   <div class="loader-brand">CONTEXTO</div>
-  <div class="loader-sub">Radar para tiempos de cambio</div>
+  <div class="loader-sub">IA que te explica el mundo</div>
   <div class="loader-pulse"></div>
   <div class="loader-status" id="loaderStatus">Conectando fuentes...</div>
 </div>
@@ -335,18 +345,17 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 <!-- DATE HEADER -->
 <div class="date-header">
   <div class="date-main" id="dateMain"></div>
-  <div class="date-tagline">Las noticias importantes del día, explicadas de forma simple.</div>
+  <div class="date-tagline">IA procesó las noticias. Esto es lo que necesitas saber.</div>
 </div>
 
 <div class="hero-shell">
-  <div class="hero-kicker">Entiende el día</div>
-  <div class="hero-title">Menos ruido. Más claridad sobre lo que importa hoy.</div>
-  <div class="hero-summary"><strong>CONTEXTO te ayuda a entender las noticias sin volverte experto.</strong> Te muestra qué pasó, por qué importa y qué vale la pena seguir.</div>
+  <div class="hero-kicker">IA leyó las noticias por ti</div>
+  <div class="hero-title">Lo que pasó hoy, explicado para que lo entiendas.</div>
+  <div class="hero-summary"><strong>Nosotros leemos cientos de noticias. Tú solo lees lo que importa.</strong> Sin jerga, sin drama. Solo contexto claro para tu día.</div>
   <div class="hero-actions">
     <button class="hero-btn hero-btn-secondary" id="heroManifestoBtn">Cómo funciona</button>
-    <button class="hero-btn hero-btn-primary" id="heroPowerBtn">Empezar con el top 3</button>
+    <button class="hero-btn hero-btn-primary" id="heroPowerBtn">Leer lo importante</button>
   </div>
-  <div class="hero-metrics" id="heroMetrics"></div>
   <div class="top-signals" id="topSignals"></div>
   <div class="briefing-card" id="briefingCard">
     <div class="briefing-top">
@@ -365,7 +374,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 
 <!-- REFRESH BAR -->
 <div class="refresh-bar">
-  <div class="refresh-time" id="refreshTime">Cargando radar global...</div>
+  <div class="refresh-time" id="refreshTime">Procesando noticias con IA...</div>
   <button class="refresh-btn" id="refreshBtn" disabled>Actualizar</button>
 </div>
 
@@ -387,14 +396,14 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <div class="nav-item active" data-nav="all">
-    <span class="nav-icon">📡</span><span class="nav-label">Todo</span>
+  <div class="nav-item active" data-nav="insights">
+    <span class="nav-icon">🧠</span><span class="nav-label">Hoy</span>
   </div>
   <div class="nav-item" data-nav="saved">
-    <span class="nav-icon">★</span><span class="nav-label">Guardadas</span>
+    <span class="nav-icon">★</span><span class="nav-label">Guardados</span>
   </div>
-  <div class="nav-item" data-start-here="true">
-    <span class="nav-icon">🔥</span><span class="nav-label">Top 3</span>
+  <div class="nav-item" data-nav="sources">
+    <span class="nav-icon">📰</span><span class="nav-label">Fuentes</span>
   </div>
 </div>
 
@@ -416,53 +425,52 @@ const I18N = {
   es: {
     live: 'EN VIVO',
     langToggle: 'EN',
-    loaderSub: 'Radar para tiempos de cambio',
-    loaderStatuses: ['Conectando fuentes...','Escaneando señales globales...','Priorizando lo relevante...','Preparando tu radar...'],
-    loaderDone: (n) => n+' señales encontradas',
-    tagline: 'Las noticias importantes del día, explicadas de forma simple.',
-    heroKicker: 'Entiende el día',
-    heroTitle: 'Menos ruido. Más claridad sobre lo que importa hoy.',
-    heroSummary: '<strong>CONTEXTO te ayuda a entender las noticias sin volverte experto.</strong> Te muestra qué pasó, por qué importa y qué vale la pena seguir.',
+    loaderSub: 'IA que te explica el mundo',
+    loaderStatuses: ['Conectando fuentes...','Leyendo noticias con IA...','Filtrando lo importante...','Preparando tu resumen...'],
+    loaderDone: (n) => n+' noticias procesadas',
+    tagline: 'IA procesó las noticias. Esto es lo que necesitas saber.',
+    heroKicker: 'IA leyó las noticias por ti',
+    heroTitle: 'Lo que pasó hoy, explicado para que lo entiendas.',
+    heroSummary: '<strong>Nosotros leemos cientos de noticias. Tú solo lees lo que importa.</strong> Sin jerga, sin drama. Solo contexto claro para tu día.',
     heroManifesto: 'Cómo funciona',
-    heroPower: 'Empezar con el top 3',
-    briefingLabel: 'Resumen del día',
+    heroPower: 'Leer lo importante',
+    briefingLabel: 'Tu resumen del día',
     briefingPreparing: 'Preparando...',
     briefingReady: 'Listo para generar',
-    briefingWaiting: 'Esperando titulares',
-    briefingTitle: 'Lo importante de hoy, en claro.',
-    briefingCopyReady: 'Genera un resumen simple para entender rápido las noticias más importantes del día.',
-    briefingCopyWaiting: 'Aún no hay suficientes noticias cargadas para armar un resumen útil del día.',
-    briefingItems: ['Qué pasó realmente.','Por qué está dando de qué hablar.','Qué conviene seguir hoy.'],
-    briefingGenerate: 'Generar briefing',
-    briefingRefresh: 'Refrescar briefing',
+    briefingWaiting: 'Esperando noticias',
+    briefingTitle: 'Lo importante de hoy, explicado.',
+    briefingCopyReady: 'IA va a leer las noticias del día y te va a explicar qué está pasando en un resumen corto y claro.',
+    briefingCopyWaiting: 'Aún no hay suficientes noticias para armar tu resumen del día.',
+    briefingItems: ['Qué pasó realmente.','Por qué le debería importar a cualquiera.','Qué vale la pena seguir.'],
+    briefingGenerate: 'Generar mi resumen',
+    briefingRefresh: 'Actualizar resumen',
     briefingGenerating: 'Generando...',
-    briefingAnalyzing: 'Analizando señales',
+    briefingAnalyzing: 'IA está leyendo noticias',
     briefingFailed: 'No se pudo generar',
-    briefingApiError: 'La API de Claude no está configurada en Netlify.',
-    briefingError: 'No se pudo generar el briefing ahora.',
+    briefingApiError: 'La API no está configurada.',
+    briefingError: 'No se pudo generar el resumen ahora.',
     briefingShare: 'Compartir',
     briefingCopied: 'Copiado',
-    briefingShareText: 'Estoy usando CONTEXTO para entender qué está pasando hoy y por qué afecta en Latam.',
-    refreshLoading: 'Cargando radar global...',
+    briefingShareText: 'Estoy usando CONTEXTO — IA que te explica las noticias sin complicaciones.',
+    refreshLoading: 'Procesando noticias con IA...',
     refreshUpdating: 'Actualizando...',
-    refreshSearching: 'Buscando señales clave...',
+    refreshSearching: 'IA está leyendo las noticias...',
     refreshUpdate: 'Actualizar',
-    refreshError: 'Error de conexión con el radar',
+    refreshError: 'Error de conexión',
     refreshAt: (t)=>'Actualizado a las '+t,
     installTitle: 'Instala CONTEXTO',
-    installDesc: 'Ábrelo como app y mantén tu briefing a un toque.',
+    installDesc: 'Tu resumen diario explicado por IA, a un toque.',
     installBtn: 'Instalar',
     installDismiss: 'Ahora no',
-    topSignalsTitle: 'Empieza aquí',
-    topSignalsSub: (n)=>n+' historias para entender el día',
-    signalLoading: 'Preparando resumen claro...',
-    signalFailed: 'No se pudo generar el resumen.',
-    signalCta: 'Abrir resumen →',
-    navAll: 'Todo',
-    navSaved: 'Guardadas',
-    navTech: 'Tech',
-    navTop: 'Top 3',
-    saveArticle: 'Guardar noticia',
+    topSignalsTitle: 'Lo importante de hoy',
+    topSignalsSub: (n)=>n+' temas explicados por IA',
+    signalLoading: 'IA está preparando la explicación...',
+    signalFailed: 'No se pudo generar la explicación.',
+    signalCta: 'Leer explicación completa →',
+    navInsights: 'Hoy',
+    navSaved: 'Guardados',
+    navSources: 'Fuentes',
+    saveArticle: 'Guardar',
     sectionNames: {
       Dinero: 'Dinero',
       Poder: 'Poder',
@@ -471,40 +479,36 @@ const I18N = {
       Movilidad: 'Movilidad',
       Latam: 'Latam'
     },
-    signals: 'señales',
-    searchPlaceholder: 'Buscar señales, conflictos o cambios...',
+    signals: 'noticias',
+    searchPlaceholder: 'Buscar temas...',
     searchCancel: 'Cancelar',
-    searchEmpty: 'Escribe para buscar en todas las señales',
+    searchEmpty: 'Escribe para buscar en todos los temas',
     searchNoResults: (q)=>'Sin resultados para "'+q+'"',
-    savedEmptyTitle: 'No has guardado nada todavía',
-    savedEmptyDesc: 'Guarda señales que quieras revisar con calma o compartir con tu audiencia.',
-    savedExplore: 'Explorar radar',
-    feedEmptyTitle: 'No cargó el radar',
-    feedEmptyDesc: 'La conexión con la función de noticias falló. Intenta actualizar.',
+    savedEmptyTitle: 'No has guardado nada',
+    savedEmptyDesc: 'Guarda explicaciones que quieras volver a leer después.',
+    savedExplore: 'Volver a Hoy',
+    feedEmptyTitle: 'No se pudieron cargar noticias',
+    feedEmptyDesc: 'Hubo un error conectando con las fuentes. Intenta actualizar.',
     feedRetry: 'Reintentar',
-    analysisBadge: 'Resumen claro',
+    analysisBadge: 'Explicación IA',
     analysisWhat: 'Qué pasó',
     analysisWhy: 'Por qué importa',
     analysisShift: 'Qué puede cambiar',
     analysisAction: 'Qué conviene seguir',
-    analysisShare: 'Compartir resumen ↗',
+    analysisShare: 'Compartir explicación ↗',
     analysisCopied: '✓ Copiado',
-    analysisApiError: '⚠️ Falta configurar CLAUDE_API_KEY en Netlify.',
-    analysisError: '⚠️ No se pudo generar el análisis.',
+    analysisApiError: '⚠️ Falta configurar la API.',
+    analysisError: '⚠️ No se pudo generar la explicación.',
     analysisRetry: 'Reintentar',
-    metricSignals: 'historias hoy',
-    metricTop3: 'top 3 primero',
-    metricLanguages: 'idiomas',
-    metricMinutes: 'min para ponerte al día',
     ctaTalk: 'Hablar con Stryv',
     onboardingSkip: 'Saltar',
     onboardingNext: 'Siguiente',
     onboardingEnter: 'Entrar',
     onboardingStep: (c,t)=>'Paso '+c+' de '+t,
     onboardingSteps: [
-      { title:'Entender las noticias no debería ser complicado.', copy:'Cada día salen demasiados titulares. CONTEXTO te ayuda a ubicar rápido <strong>qué importa y qué puedes ignorar</strong> sin perder tiempo.', points:['Menos ruido, más claridad.','No necesitas seguir diez medios al mismo tiempo.']},
-      { title:'Aquí no vienes a volverte experto.', copy:'Vienes a entender <strong>qué pasó, por qué importa y qué conviene seguir</strong> en un lenguaje claro y directo.', points:['Explicaciones simples, útiles y sin enredos.','Contexto suficiente para no quedarte solo con el titular.']},
-      { title:'Tu día empieza más claro.', copy:'Abre la app y encuentra <strong>las noticias importantes explicadas en sencillo</strong>, con un resumen rápido y opciones para profundizar si quieres.', points:['Lee lo importante en minutos.','Entra más a fondo solo cuando te interese.']}
+      { title:'Las noticias no deberían sentirse como otro idioma.', copy:'Cada día pasan cosas importantes en el mundo. Pero si no eres experto, los titulares <strong>no te dicen nada útil</strong>. CONTEXTO cambia eso.', points:['IA lee cientos de noticias por ti.','Tú solo ves lo que importa, explicado en simple.']},
+      { title:'No necesitas saber de finanzas ni de política.', copy:'Aquí no hay jerga, no hay palabras rebuscadas. <strong>IA traduce las noticias a un lenguaje que cualquiera entiende</strong>, como si un amigo te lo explicara.', points:['Sin tecnicismos, sin tono de noticiero.','Explicaciones que van directo al punto.']},
+      { title:'Abre, lee y entiende tu mundo en minutos.', copy:'Cada mañana tienes <strong>un resumen claro y explicaciones que te ponen al día</strong> sin complicarte la vida.', points:['5 minutos para entender qué está pasando.','Profundiza solo si te interesa.']}
     ],
     ctas: {
       Dinero:{title:'¿Tu negocio no tiene sistema financiero digital?',desc:'Construimos la infraestructura que hace que tu negocio opere aunque tú no estés.'},
@@ -518,53 +522,52 @@ const I18N = {
   en: {
     live: 'LIVE',
     langToggle: 'ES',
-    loaderSub: 'Radar for changing times',
-    loaderStatuses: ['Connecting sources...','Scanning global signals...','Prioritizing what matters...','Preparing your radar...'],
-    loaderDone: (n) => n+' signals found',
-    tagline: 'The important news of the day, explained simply.',
-    heroKicker: 'Understand the day',
-    heroTitle: 'Less noise. More clarity on what matters today.',
-    heroSummary: '<strong>CONTEXTO helps you understand the news without becoming an expert.</strong> It shows you what happened, why it matters, and what is worth following.',
+    loaderSub: 'AI that explains the world to you',
+    loaderStatuses: ['Connecting sources...','AI is reading the news...','Filtering what matters...','Preparing your summary...'],
+    loaderDone: (n) => n+' stories processed',
+    tagline: 'AI processed the news. Here is what you need to know.',
+    heroKicker: 'AI read the news for you',
+    heroTitle: 'What happened today, explained so you understand it.',
+    heroSummary: '<strong>We read hundreds of news stories. You only read what matters.</strong> No jargon, no drama. Just clear context for your day.',
     heroManifesto: 'How it works',
-    heroPower: 'Start with the top 3',
-    briefingLabel: 'Daily summary',
+    heroPower: 'Read what matters',
+    briefingLabel: 'Your daily summary',
     briefingPreparing: 'Preparing...',
     briefingReady: 'Ready to generate',
-    briefingWaiting: 'Waiting for signals',
-    briefingTitle: 'What matters today, made clear.',
-    briefingCopyReady: 'Generate a simple summary to quickly understand the most important news of the day.',
-    briefingCopyWaiting: 'Not enough stories loaded yet to build a useful summary of the day.',
-    briefingItems: ['What actually happened.','Why people are paying attention.','What is worth watching today.'],
-    briefingGenerate: 'Generate briefing',
-    briefingRefresh: 'Refresh briefing',
+    briefingWaiting: 'Waiting for news',
+    briefingTitle: 'What matters today, explained.',
+    briefingCopyReady: 'AI will read today\'s news and explain what is happening in a short, clear summary.',
+    briefingCopyWaiting: 'Not enough stories yet to build your daily summary.',
+    briefingItems: ['What actually happened.','Why anyone should care.','What is worth watching.'],
+    briefingGenerate: 'Generate my summary',
+    briefingRefresh: 'Refresh summary',
     briefingGenerating: 'Generating...',
-    briefingAnalyzing: 'Analyzing signals',
+    briefingAnalyzing: 'AI is reading the news',
     briefingFailed: 'Could not generate',
-    briefingApiError: 'Claude API key is not configured on Netlify.',
-    briefingError: 'Could not generate the briefing right now.',
+    briefingApiError: 'API is not configured.',
+    briefingError: 'Could not generate the summary right now.',
     briefingShare: 'Share',
     briefingCopied: 'Copied',
-    briefingShareText: 'I\'m using CONTEXTO to understand what\'s happening today and why it matters.',
-    refreshLoading: 'Loading global radar...',
+    briefingShareText: 'I\'m using CONTEXTO — AI that explains the news without the complications.',
+    refreshLoading: 'Processing news with AI...',
     refreshUpdating: 'Updating...',
-    refreshSearching: 'Searching key signals...',
+    refreshSearching: 'AI is reading the news...',
     refreshUpdate: 'Refresh',
-    refreshError: 'Radar connection error',
+    refreshError: 'Connection error',
     refreshAt: (t)=>'Updated at '+t,
     installTitle: 'Install CONTEXTO',
-    installDesc: 'Open it as an app and keep your briefing one tap away.',
+    installDesc: 'Your daily AI-explained summary, one tap away.',
     installBtn: 'Install',
     installDismiss: 'Not now',
-    topSignalsTitle: 'Start here',
-    topSignalsSub: (n)=>n+' stories to understand the day',
-    signalLoading: 'Preparing clear summary...',
-    signalFailed: 'Could not generate the summary.',
-    signalCta: 'Open summary →',
-    navAll: 'All',
+    topSignalsTitle: 'What matters today',
+    topSignalsSub: (n)=>n+' topics explained by AI',
+    signalLoading: 'AI is preparing the explanation...',
+    signalFailed: 'Could not generate the explanation.',
+    signalCta: 'Read full explanation →',
+    navInsights: 'Today',
     navSaved: 'Saved',
-    navTech: 'Tech',
-    navTop: 'Top 3',
-    saveArticle: 'Save article',
+    navSources: 'Sources',
+    saveArticle: 'Save',
     sectionNames: {
       Dinero: 'Money',
       Poder: 'Power',
@@ -573,40 +576,36 @@ const I18N = {
       Movilidad: 'Mobility',
       Latam: 'Latam'
     },
-    signals: 'signals',
-    searchPlaceholder: 'Search signals, conflicts, or shifts...',
+    signals: 'stories',
+    searchPlaceholder: 'Search topics...',
     searchCancel: 'Cancel',
-    searchEmpty: 'Type to search across all signals',
+    searchEmpty: 'Type to search across all topics',
     searchNoResults: (q)=>'No results for "'+q+'"',
     savedEmptyTitle: 'Nothing saved yet',
-    savedEmptyDesc: 'Save signals you want to revisit or share with your audience.',
-    savedExplore: 'Explore radar',
-    feedEmptyTitle: 'Radar didn\'t load',
-    feedEmptyDesc: 'The news function connection failed. Try refreshing.',
+    savedEmptyDesc: 'Save explanations you want to read again later.',
+    savedExplore: 'Back to Today',
+    feedEmptyTitle: 'Could not load news',
+    feedEmptyDesc: 'There was an error connecting to sources. Try refreshing.',
     feedRetry: 'Retry',
-    analysisBadge: 'Clear summary',
+    analysisBadge: 'AI Explanation',
     analysisWhat: 'What happened',
     analysisWhy: 'Why it matters',
     analysisShift: 'What could change',
     analysisAction: 'What to watch',
-    analysisShare: 'Share summary ↗',
+    analysisShare: 'Share explanation ↗',
     analysisCopied: '✓ Copied',
-    analysisApiError: '⚠️ CLAUDE_API_KEY not configured on Netlify.',
-    analysisError: '⚠️ Could not generate the analysis.',
+    analysisApiError: '⚠️ API not configured.',
+    analysisError: '⚠️ Could not generate the explanation.',
     analysisRetry: 'Retry',
-    metricSignals: 'stories today',
-    metricTop3: 'top 3 first',
-    metricLanguages: 'languages',
-    metricMinutes: 'min to catch up',
     ctaTalk: 'Talk to Stryv',
     onboardingSkip: 'Skip',
     onboardingNext: 'Next',
     onboardingEnter: 'Enter',
     onboardingStep: (c,t)=>'Step '+c+' of '+t,
     onboardingSteps: [
-      { title:'Understanding the news should not be complicated.', copy:'Every day brings too many headlines. CONTEXTO helps you quickly see <strong>what matters and what you can ignore</strong> without wasting time.', points:['Less noise, more clarity.','You do not need to follow ten outlets at once.']},
-      { title:'You do not come here to become an expert.', copy:'You come here to understand <strong>what happened, why it matters, and what to watch next</strong> in plain language.', points:['Simple, useful explanations without jargon.','Enough context so you are not stuck with just the headline.']},
-      { title:'Your day starts clearer.', copy:'Open the app and find <strong>the important news explained simply</strong>, with a quick summary and deeper reads only if you want them.', points:['Read what matters in minutes.','Go deeper only when it matters to you.']}
+      { title:'The news should not feel like a foreign language.', copy:'Important things happen every day. But if you are not an expert, the headlines <strong>do not tell you anything useful</strong>. CONTEXTO changes that.', points:['AI reads hundreds of news stories for you.','You only see what matters, explained simply.']},
+      { title:'You do not need to know about finance or politics.', copy:'No jargon here, no fancy words. <strong>AI translates the news into language anyone can understand</strong>, like a friend explaining it to you.', points:['No technical terms, no newscast tone.','Explanations that get straight to the point.']},
+      { title:'Open, read, and understand your world in minutes.', copy:'Every morning you get <strong>a clear summary and explanations that bring you up to speed</strong> without complicating your life.', points:['5 minutes to understand what is happening.','Go deeper only if you want to.']}
     ],
     ctas: {
       Dinero:{title:'No digital financial system for your business?',desc:'We build the infrastructure that keeps your business running even when you\'re not.'},
@@ -633,6 +632,7 @@ const store = {
 let articles = [];
 let newsSummary = '';
 let activeSection = 'all';
+let activeView = 'insights';
 let analysisCache = store.get('analysisCache', {});
 let briefingCache = store.get('briefingCache', {});
 let savedIds = store.get('savedIds', []);
@@ -852,9 +852,9 @@ function applyLang(){
   $('#searchClose').textContent = t('searchCancel');
   // Bottom nav
   const navItems = $$('.nav-item');
-  if(navItems[0]) navItems[0].querySelector('.nav-label').textContent = t('navAll');
+  if(navItems[0]) navItems[0].querySelector('.nav-label').textContent = t('navInsights');
   if(navItems[1]) navItems[1].querySelector('.nav-label').textContent = t('navSaved');
-  if(navItems[2]) navItems[2].querySelector('.nav-label').textContent = t('navTop');
+  if(navItems[2]) navItems[2].querySelector('.nav-label').textContent = t('navSources');
   // Install banner
   const installCopy = $('.install-copy');
   if(installCopy) installCopy.innerHTML = '<strong>'+t('installTitle')+'</strong>'+t('installDesc');
@@ -866,7 +866,7 @@ function applyLang(){
   const refreshBtn = $('#refreshBtn');
   if(refreshBtn && !refreshBtn.disabled) refreshBtn.textContent = t('refreshUpdate');
   const refreshTime = $('#refreshTime');
-  if(refreshTime && refreshTime.textContent.includes('Cargando') || refreshTime && refreshTime.textContent.includes('Loading')) refreshTime.textContent = t('refreshLoading');
+  if(refreshTime && (refreshTime.textContent.includes('Procesando') || refreshTime.textContent.includes('Processing') || refreshTime.textContent.includes('Cargando') || refreshTime.textContent.includes('Loading'))) refreshTime.textContent = t('refreshLoading');
 }
 
 /* ═══════════════════════════════════════ */
@@ -895,13 +895,7 @@ async function fetchNews(){
 }
 
 function renderHeroMetrics(){
-  const metrics = [
-    '<div class="hero-chip"><strong>'+articles.length+'</strong> '+t('metricSignals')+'</div>',
-    '<div class="hero-chip"><strong>3</strong> '+t('metricTop3')+'</div>',
-    '<div class="hero-chip"><strong>2</strong> '+t('metricLanguages')+'</div>',
-    '<div class="hero-chip"><strong>1</strong> '+t('metricMinutes')+'</div>'
-  ];
-  $('#heroMetrics').innerHTML = metrics.join('');
+  /* Removed — AI-first design has no metrics grid */
 }
 
 /* ═══════════════════════════════════════ */
@@ -910,15 +904,15 @@ function renderHeroMetrics(){
 let topSignalCache = store.get('topSignalCache', {});
 
 function getTopSignals(){
-  // Get the 3 highest-scored articles from different sections
+  // Get the 7 highest-scored articles with section diversity
   const used = new Set();
   const top = [];
   const sorted = articles.slice().sort((a,b)=>(b.score||0)-(a.score||0));
   for(const a of sorted){
-    if(used.has(a.section) && top.length < 2) continue; // diversity: try different sections first
+    if(used.has(a.section) && top.length < 4) continue; // diversity: different sections first
     top.push(a);
     used.add(a.section);
-    if(top.length >= 3) break;
+    if(top.length >= 7) break;
   }
   return top;
 }
@@ -938,11 +932,12 @@ function renderTopSignals(){
     const id = hashId(a.title);
     const tagClass = SECTION_TAGS[a.section] || 'tag-dinero';
     const cached = topSignalCache[id];
-    const displayTitle = getDisplayTitle(a);
     const rank = topArts.indexOf(a) + 1;
+    // Use AI-generated headline if available, otherwise fall back to translated title
+    const displayTitle = (cached && cached.headline) ? cached.headline : getDisplayTitle(a);
     const contextHtml = cached
       ? '<div class="signal-card-context">'+esc(cached.context)+'</div>'
-        + (cached.impact ? '<div class="signal-card-impact">'+esc(cached.impact)+'</div>' : '')
+        + (cached.meaning ? '<div class="signal-card-meaning">'+esc(cached.meaning)+'</div>' : '')
       : '<div class="signal-card-context loading">'+t('signalLoading')+'</div>';
     return '<div class="signal-card" data-signal-id="'+id+'">'+
       '<div class="signal-rank">'+rank+'</div>'+
@@ -954,6 +949,17 @@ function renderTopSignals(){
         (a.source?'<span>·</span>':'')+
         '<span>'+timeAgo(a.date)+'</span>'+
         '<span class="signal-card-cta">'+t('signalCta')+'</span>'+
+      '</div>'+
+    '</div>'+
+    '<div class="analysis" id="analysis-'+id+'">'+
+      '<div class="analysis-bar">'+
+        '<span class="analysis-badge"><span class="analysis-badge-dot"></span>'+t('analysisBadge')+'</span>'+
+        '<button class="analysis-close" data-close-analysis="'+id+'">✕</button>'+
+      '</div>'+
+      '<div class="analysis-body" id="abody-'+id+'">'+
+        '<div class="sk" style="height:14px;width:100%"></div>'+
+        '<div class="sk" style="height:14px;width:85%"></div>'+
+        '<div class="sk" style="height:14px;width:70%"></div>'+
       '</div>'+
     '</div>';
   }).join('');
@@ -971,15 +977,15 @@ async function autoAnalyzeTopSignals(){
     const id = hashId(article.title);
     try{
       const promptLang = lang==='en'
-        ? 'Date: '+todayFormatted()+'. You write for a general reader. Explain this headline in plain language, with no jargon and no dramatic tone. Focus on what happened and why it matters.\n\nTODAY\'S CONTEXT:\n'+buildRelevantContext(article)+'\n\nHEADLINE: "'+getDisplayTitle(article)+'"\n\nRespond ONLY with valid JSON: {"context":"1 paragraph, max 40 words, in simple language explaining the headline","impact":"1 sentence, max 20 words, saying why an everyday reader should care"}'
-        : 'Fecha: '+todayFormatted()+'. Escribes para una persona común. Explica este titular con lenguaje simple, sin jerga y sin tono dramático. Enfócate en qué pasó y por qué importa.\n\nCONTEXTO DEL DÍA:\n'+buildRelevantContext(article)+'\n\nTITULAR: "'+getDisplayTitle(article)+'"\n\nResponde SOLO con JSON válido: {"context":"1 párrafo, máximo 40 palabras, con lenguaje simple explicando el titular","impact":"1 frase, máximo 20 palabras, diciendo por qué le debería importar a cualquier persona"}';
-      const text = await callClaude(promptLang, 300, 'fast');
+        ? 'Date: '+todayFormatted()+'. You explain news for people who do NOT follow the news. Write like a smart friend explaining what happened. No jargon, no dramatic tone, no technical terms.\n\nTODAY\'S CONTEXT:\n'+buildRelevantContext(article)+'\n\nORIGINAL HEADLINE: "'+getDisplayTitle(article)+'"\n\nRespond ONLY with valid JSON: {"headline":"Rewrite the headline in 8-12 simple words that anyone would understand","context":"2-3 sentences explaining what happened and why it matters, in plain everyday language, max 60 words","meaning":"1 sentence starting with \'This means...\' explaining what this means for a regular person, max 20 words"}'
+        : 'Fecha: '+todayFormatted()+'. Explicas noticias para personas que NO siguen las noticias. Escribe como un amigo inteligente explicando qué pasó. Sin jerga, sin tono dramático, sin tecnicismos.\n\nCONTEXTO DEL DÍA:\n'+buildRelevantContext(article)+'\n\nTITULAR ORIGINAL: "'+getDisplayTitle(article)+'"\n\nResponde SOLO con JSON válido: {"headline":"Reescribe el titular en 8-12 palabras simples que cualquiera entienda","context":"2-3 frases explicando qué pasó y por qué importa, en lenguaje cotidiano, máximo 60 palabras","meaning":"1 frase que empiece con \'Esto significa que...\' explicando qué significa para una persona normal, máximo 20 palabras"}';
+      const text = await callClaude(promptLang, 400, 'fast');
       const data = JSON.parse(text.replace(/```json|```/g,'').trim());
-      topSignalCache[id] = { context: data.context||'', impact: data.impact||'' };
+      topSignalCache[id] = { headline: data.headline||'', context: data.context||'', meaning: data.meaning||'' };
       store.set('topSignalCache', topSignalCache);
       renderTopSignals();
     }catch(e){
-      topSignalCache[id] = { context: t('signalFailed'), impact: '' };
+      topSignalCache[id] = { headline: '', context: t('signalFailed'), meaning: '' };
       renderTopSignals();
     }
   }
@@ -1031,8 +1037,8 @@ async function generateBriefing(force){
 
   try{
     const briefPrompt = lang==='en'
-      ? 'Date: '+todayFormatted()+'. You are writing a short daily summary for a general reader. Use plain language, avoid jargon, and make it easy to understand in under a minute.\n\nREAL NEWS TODAY:\n'+articles.slice(0,10).map(item=>'['+getSectionLabel(item.section)+'] '+getDisplayTitle(item)).join('\n')+'\n\nRespond ONLY with valid JSON without markdown: {"headline":"1 clear sentence saying what matters most today","summary":"1 short paragraph in simple language explaining the day","watch":["Simple thing to watch 1","Simple thing to watch 2","Simple thing to watch 3"]}'
-      : 'Fecha: '+todayFormatted()+'. Estás escribiendo un resumen diario para una persona común. Usa lenguaje simple, evita la jerga y haz que se entienda en menos de un minuto.\n\nNOTICIAS REALES DE HOY:\n'+articles.slice(0,10).map(item=>'['+getSectionLabel(item.section)+'] '+getDisplayTitle(item)).join('\n')+'\n\nResponde SOLO con JSON válido sin markdown con esta estructura exacta: {"headline":"1 frase clara diciendo qué fue lo más importante de hoy","summary":"1 párrafo corto en lenguaje simple explicando el día","watch":["Tema simple a seguir 1","Tema simple a seguir 2","Tema simple a seguir 3"]}';
+      ? 'Date: '+todayFormatted()+'. You are explaining today\'s news to someone who does NOT follow the news at all. Write like a smart friend catching them up over coffee. No jargon, no technical words, no dramatic tone.\n\nREAL NEWS TODAY:\n'+articles.slice(0,10).map(item=>'['+getSectionLabel(item.section)+'] '+getDisplayTitle(item)).join('\n')+'\n\nRespond ONLY with valid JSON without markdown: {"headline":"1 clear sentence saying what matters most today in everyday words","summary":"1 short paragraph in simple everyday language explaining the day, like talking to a friend","watch":["Simple thing to follow 1","Simple thing to follow 2","Simple thing to follow 3"]}'
+      : 'Fecha: '+todayFormatted()+'. Estás explicándole las noticias de hoy a alguien que NO sigue las noticias. Escribe como un amigo inteligente poniéndolo al día en un café. Sin jerga, sin tecnicismos, sin tono dramático.\n\nNOTICIAS REALES DE HOY:\n'+articles.slice(0,10).map(item=>'['+getSectionLabel(item.section)+'] '+getDisplayTitle(item)).join('\n')+'\n\nResponde SOLO con JSON válido sin markdown: {"headline":"1 frase clara diciendo qué fue lo más importante de hoy en palabras cotidianas","summary":"1 párrafo corto en lenguaje simple explicando el día, como hablándole a un amigo","watch":["Tema simple a seguir 1","Tema simple a seguir 2","Tema simple a seguir 3"]}';
     const text = await callClaude(briefPrompt, 550, 'fast');
 
     const data = JSON.parse(text.replace(/```json|```/g,'').trim());
@@ -1161,7 +1167,7 @@ function renderSecNav(){
   nav.innerHTML = SECTIONS.map(s=>{
     const active = s===activeSection?' active':'';
     const icon = SECTION_ICONS[s]||'';
-    const label = s==='all'?t('navAll'):(s==='saved'?t('navSaved'):getSectionLabel(s));
+    const label = s==='all'?(lang==='en'?'All':'Todo'):(s==='saved'?t('navSaved'):getSectionLabel(s));
     const count = s==='all'?articles.length:(s==='saved'?getSavedArticles().length:articles.filter(a=>a.section===s).length);
     if(s!=='all' && s!=='saved' && count===0) return '';
     if(s==='saved' && count===0) return '';
@@ -1184,7 +1190,7 @@ function renderFeeds(){
 
   if(filtered.length===0){
     container.innerHTML = activeSection==='saved'
-      ? '<div class="empty-state"><div class="empty-icon">★</div><div class="empty-title">'+t('savedEmptyTitle')+'</div><div class="empty-desc">'+t('savedEmptyDesc')+'</div><a class="empty-action" href="#" data-nav="all">'+t('savedExplore')+'</a></div>'
+      ? '<div class="empty-state"><div class="empty-icon">★</div><div class="empty-title">'+t('savedEmptyTitle')+'</div><div class="empty-desc">'+t('savedEmptyDesc')+'</div><a class="empty-action" href="#" data-nav="insights">'+t('savedExplore')+'</a></div>'
       : '<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">'+t('feedEmptyTitle')+'</div><div class="empty-desc">'+esc(lastNewsError || t('feedEmptyDesc'))+'</div><a class="empty-action" href="#" id="retryFromEmpty">'+t('feedRetry')+'</a></div>';
     return;
   }
@@ -1306,8 +1312,8 @@ async function generateAnalysis(id, article){
 
   try{
     const analysisPrompt = lang==='en'
-      ? 'Date: '+dateStr+'. You explain news for a general reader. Use simple language, avoid jargon, and focus on clarity over sophistication. Explain what happened, why it matters, and what to keep an eye on next.\n\nRELEVANT CONTEXT TODAY:\n'+buildRelevantContext(article)+'\n\nARTICLE TO ANALYZE: "'+displayTitle+'" — Source: '+article.source+' — Section: '+getSectionLabel(article.section)+'\n\nRespond ONLY with valid JSON without markdown. Keep each field short, useful, and easy to understand.\n{"titular_contexto":"1 line, max 18 words","que_esta_pasando":"1 paragraph, max 90 words, plain language","por_que_te_afecta":"1 paragraph, max 55 words, why it matters","cambio_de_paradigma":"1 paragraph, max 45 words, what could change next","que_hacer":[{"num":"1","texto":"What to watch, max 12 words"},{"num":"2","texto":"What to watch, max 12 words"}]}'
-      : 'Fecha: '+dateStr+'. Explicas noticias para una persona común. Usa lenguaje simple, evita la jerga y prioriza la claridad sobre sonar sofisticado. Explica qué pasó, por qué importa y qué conviene seguir.\n\nCONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\nNOTICIA A ANALIZAR: "'+displayTitle+'" — Fuente: '+article.source+' — Sección: '+getSectionLabel(article.section)+'\n\nResponde SOLO con JSON válido sin markdown. Mantén cada campo corto, útil y fácil de entender.\n{"titular_contexto":"1 línea, máximo 18 palabras","que_esta_pasando":"1 párrafo, máximo 90 palabras, en lenguaje simple","por_que_te_afecta":"1 párrafo, máximo 55 palabras, explicando por qué importa","cambio_de_paradigma":"1 párrafo, máximo 45 palabras, sobre qué podría cambiar","que_hacer":[{"num":"1","texto":"Qué seguir, máximo 12 palabras"},{"num":"2","texto":"Qué seguir, máximo 12 palabras"}]}';
+      ? 'Date: '+dateStr+'. You explain news to people who do NOT follow the news. Write like a smart friend. No jargon, no technical terms, no newscast tone. Make it feel like a conversation.\n\nRELEVANT CONTEXT TODAY:\n'+buildRelevantContext(article)+'\n\nNEWS TO EXPLAIN: "'+displayTitle+'" — Source: '+article.source+' — Section: '+getSectionLabel(article.section)+'\n\nRespond ONLY with valid JSON without markdown. Keep each field short and in everyday language.\n{"titular_contexto":"1 line rewriting the headline in simple words, max 18 words","que_esta_pasando":"1 paragraph, max 90 words, explaining what happened like you would tell a friend","por_que_te_afecta":"1 paragraph, max 55 words, why a regular person should care","cambio_de_paradigma":"1 paragraph, max 45 words, what could change going forward","que_hacer":[{"num":"1","texto":"What to keep an eye on, max 12 words"},{"num":"2","texto":"What to keep an eye on, max 12 words"}]}'
+      : 'Fecha: '+dateStr+'. Explicas noticias a personas que NO siguen las noticias. Escribe como un amigo inteligente. Sin jerga, sin tecnicismos, sin tono de noticiero. Que se sienta como una conversación.\n\nCONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\nNOTICIA A EXPLICAR: "'+displayTitle+'" — Fuente: '+article.source+' — Sección: '+getSectionLabel(article.section)+'\n\nResponde SOLO con JSON válido sin markdown. Mantén cada campo corto y en lenguaje cotidiano.\n{"titular_contexto":"1 línea reescribiendo el titular en palabras simples, máximo 18 palabras","que_esta_pasando":"1 párrafo, máximo 90 palabras, explicando qué pasó como se lo dirías a un amigo","por_que_te_afecta":"1 párrafo, máximo 55 palabras, por qué le debería importar a una persona normal","cambio_de_paradigma":"1 párrafo, máximo 45 palabras, qué podría cambiar de aquí en adelante","que_hacer":[{"num":"1","texto":"Qué conviene seguir, máximo 12 palabras"},{"num":"2","texto":"Qué conviene seguir, máximo 12 palabras"}]}';
     const text = await callClaude(analysisPrompt, 700, 'fast');
 
     const data = JSON.parse(text.replace(/```json|```/g,'').trim());
@@ -1389,17 +1395,33 @@ function renderSearchResults(q){
 }
 
 /* ═══════════════════════════════════════ */
-/*  SWITCH SECTION                        */
+/*  SWITCH VIEW / SECTION                   */
 /* ═══════════════════════════════════════ */
+function switchView(view){
+  activeView = view;
+  document.body.className = 'view-' + view;
+  $$('.nav-item').forEach(n => n.classList.remove('active'));
+  const navMatch = document.querySelector('.nav-item[data-nav="' + view + '"]');
+  if(navMatch) navMatch.classList.add('active');
+
+  if(view === 'insights'){
+    window.scrollTo({top:0, behavior:'smooth'});
+  } else if(view === 'sources'){
+    activeSection = 'all';
+    renderSecNav();
+    renderFeeds();
+    window.scrollTo({top:0, behavior:'smooth'});
+  } else if(view === 'saved'){
+    activeSection = 'saved';
+    renderFeeds();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+}
+
 function switchSection(sec){
   activeSection=sec;
   renderSecNav();
   renderFeeds();
-  renderHeroMetrics();
-  $$('.nav-item').forEach(n=>n.classList.remove('active'));
-  const navMatch = document.querySelector('.nav-item[data-nav="'+sec+'"]');
-  if(navMatch) navMatch.classList.add('active');
-  else $$('.nav-item')[0]?.classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -1412,7 +1434,6 @@ function toggleSaved(id){
   store.set('savedIds', savedIds);
   renderSecNav();
   renderFeeds();
-  renderHeroMetrics();
 }
 
 /* ═══════════════════════════════════════ */
@@ -1445,10 +1466,7 @@ document.addEventListener('click',e=>{
   if(tab){switchSection(tab.dataset.section);return}
 
   const nav=e.target.closest('[data-nav]');
-  if(nav){switchSection(nav.dataset.nav);return}
-
-  const startHere=e.target.closest('[data-start-here]');
-  if(startHere){document.querySelector('#topSignals')?.scrollIntoView({behavior:'smooth',block:'start'});return}
+  if(nav){switchView(nav.dataset.nav);return}
 
   const card=e.target.closest('.news-card');
   if(card){toggleAnalysis(card.dataset.id);return}
@@ -1476,18 +1494,17 @@ document.addEventListener('click',e=>{
   const signalCard=e.target.closest('.signal-card');
   if(signalCard){
     const sid = signalCard.dataset.signalId;
-    const article = articles.find(a=>hashId(a.title)===sid);
-    if(article){
-      switchSection(article.section);
-      setTimeout(()=>toggleAnalysis(sid),300);
-    }
+    toggleAnalysis(sid);
     return;
   }
 
   const searchR=e.target.closest('.search-result');
   if(searchR){
     closeSearch();
-    switchSection(searchR.dataset.searchSection);
+    switchView('sources');
+    activeSection = searchR.dataset.searchSection;
+    renderSecNav();
+    renderFeeds();
     setTimeout(()=>toggleAnalysis(searchR.dataset.searchId),300);
     return;
   }
@@ -1555,10 +1572,10 @@ document.addEventListener('touchstart',e=>{touchX=e.changedTouches[0].screenX},{
 document.addEventListener('touchend',e=>{
   const diff=touchX-e.changedTouches[0].screenX;
   if(Math.abs(diff)<80) return;
-  const presentSections = SECTIONS.filter(s=>s==='all'||(s==='saved'&&savedIds.length>0)||articles.some(a=>a.section===s));
-  const idx=presentSections.indexOf(activeSection);
-  if(diff>0 && idx<presentSections.length-1) switchSection(presentSections[idx+1]);
-  else if(diff<0 && idx>0) switchSection(presentSections[idx-1]);
+  const views = ['insights','saved','sources'];
+  const idx = views.indexOf(activeView);
+  if(diff>0 && idx<views.length-1) switchView(views[idx+1]);
+  else if(diff<0 && idx>0) switchView(views[idx-1]);
 },{passive:true});
 
 /* ═══════════════════════════════════════ */
@@ -1570,6 +1587,8 @@ async function init(){
   applyLang();
   registerServiceWorker();
   $('#dateMain').textContent = todayFormatted();
+  // Start in insights view
+  document.body.className = 'view-insights';
 
   // Show loader statuses
   const statusEl=$('#loaderStatus');
@@ -1597,8 +1616,10 @@ async function init(){
 
   setTimeout(()=>$('#loader').classList.add('hidden'),600);
   setTimeout(()=>openOnboarding(),750);
-  if(articles.length && !getBriefing()) setTimeout(()=>generateBriefing(false),900);
-  if(articles.length) setTimeout(()=>autoAnalyzeTopSignals(),1200);
+  // Auto-generate briefing immediately
+  if(articles.length && !getBriefing()) setTimeout(()=>generateBriefing(false),800);
+  // Auto-analyze insights (the core experience)
+  if(articles.length) setTimeout(()=>autoAnalyzeTopSignals(),1000);
 
   // Auto-refresh every 15 min
   setInterval(async()=>{
