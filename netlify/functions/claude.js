@@ -21,7 +21,7 @@ exports.handler = async function(event, context) {
     }
 
     const model = mode === 'fast'
-      ? (process.env.CLAUDE_FAST_MODEL || 'claude-3-5-haiku-latest')
+      ? (process.env.CLAUDE_FAST_MODEL || 'claude-3-5-haiku-20241022')
       : 'claude-sonnet-4-20250514';
 
     const dateStr = lang === 'en'
