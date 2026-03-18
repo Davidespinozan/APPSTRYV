@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>CONTEXTO — Stryv</title>
-<meta name="description" content="No necesitas más noticias. Necesitas contexto. Entiende los cambios que están reconfigurando el mundo antes de que te pasen por encima.">
+<meta name="description" content="Entiende las noticias más importantes del día en minutos, con resúmenes claros y contexto simple.">
 <meta name="theme-color" content="#0D1117">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Contexto">
 <link rel="manifest" href="/manifest.json">
-<meta property="og:title" content="CONTEXTO — Entiende el cambio antes que te golpee">
-<meta property="og:description" content="Guerras, poder, IA, dinero, Bitcoin, China. No es escuchar titulares. Es entender lo que te puede dejar atrás.">
+<meta property="og:title" content="CONTEXTO — Entiende el día en minutos">
+<meta property="og:description" content="Las noticias más importantes del día, explicadas con claridad y sin ruido.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CONTEXTO — Stryv">
@@ -151,6 +151,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 .top-signals-title{font-size:11px;font-weight:800;color:var(--danger);text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:6px}
 .top-signals-title::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--danger);animation:blink 1.5s infinite}
 .top-signals-sub{font-size:11px;color:var(--text-3)}
+.signal-rank{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:900;margin-bottom:8px}
 .signal-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
 .signal-card:hover{border-color:var(--accent);background:var(--card-hover)}
 .signal-card-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
@@ -234,7 +235,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 .empty-action{display:inline-block;margin-top:14px;padding:10px 16px;border-radius:12px;background:var(--accent);color:#0D1117;text-decoration:none;font-size:13px;font-weight:800}
 
 /* ═══ STRYV CTA ═══ */
-.stryv-cta{margin:16px;padding:20px;background:var(--cta-bg);border-radius:16px;color:var(--cta-text);position:relative;overflow:hidden}
+.stryv-cta{display:none}
 .stryv-cta::before{content:'';position:absolute;top:-40%;right:-15%;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08)}
 .stryv-cta-eyebrow{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.5;margin-bottom:6px;position:relative}
 .stryv-cta-title{font-size:17px;font-weight:800;margin-bottom:6px;letter-spacing:-.3px;line-height:1.25;position:relative}
@@ -343,8 +344,8 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
   <div class="hero-title">Menos ruido. Más claridad sobre lo que importa hoy.</div>
   <div class="hero-summary"><strong>CONTEXTO te ayuda a entender las noticias sin volverte experto.</strong> Te muestra qué pasó, por qué importa y qué vale la pena seguir.</div>
   <div class="hero-actions">
-    <button class="hero-btn hero-btn-secondary" id="heroManifestoBtn">Ver manifiesto</button>
-    <button class="hero-btn hero-btn-primary" id="heroPowerBtn">Ver noticias clave</button>
+    <button class="hero-btn hero-btn-secondary" id="heroManifestoBtn">Cómo funciona</button>
+    <button class="hero-btn hero-btn-primary" id="heroPowerBtn">Empezar con el top 3</button>
   </div>
   <div class="hero-metrics" id="heroMetrics"></div>
   <div class="briefing-card" id="briefingCard">
@@ -401,9 +402,9 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
   <div class="nav-item" data-nav="Tecnología">
     <span class="nav-icon">🤖</span><span class="nav-label">Tech</span>
   </div>
-  <a class="nav-item" href="https://stryvstudio.com" target="_blank" rel="noopener">
-    <span class="nav-icon">🚀</span><span class="nav-label">Stryv</span>
-  </a>
+  <div class="nav-item" data-start-here="true">
+    <span class="nav-icon">🔥</span><span class="nav-label">Top 3</span>
+  </div>
 </div>
 
 <script>
@@ -431,8 +432,8 @@ const I18N = {
     heroKicker: 'Entiende el día',
     heroTitle: 'Menos ruido. Más claridad sobre lo que importa hoy.',
     heroSummary: '<strong>CONTEXTO te ayuda a entender las noticias sin volverte experto.</strong> Te muestra qué pasó, por qué importa y qué vale la pena seguir.',
-    heroManifesto: 'Ver manifiesto',
-    heroPower: 'Ver noticias clave',
+    heroManifesto: 'Cómo funciona',
+    heroPower: 'Empezar con el top 3',
     briefingLabel: 'Resumen del día',
     briefingPreparing: 'Preparando...',
     briefingReady: 'Listo para generar',
@@ -461,14 +462,15 @@ const I18N = {
     installDesc: 'Ábrelo como app y mantén tu briefing a un toque.',
     installBtn: 'Instalar',
     installDismiss: 'Ahora no',
-    topSignalsTitle: 'Lo más importante de hoy',
-    topSignalsSub: (n)=>n+' señales clave',
+    topSignalsTitle: 'Empieza aquí',
+    topSignalsSub: (n)=>n+' historias para entender el día',
     signalLoading: 'Preparando resumen claro...',
     signalFailed: 'No se pudo generar el resumen.',
     signalCta: 'Abrir resumen →',
     navAll: 'Todo',
     navSaved: 'Guardadas',
     navTech: 'Tech',
+    navTop: 'Top 3',
     saveArticle: 'Guardar noticia',
     sectionNames: {
       Dinero: 'Dinero',
@@ -499,10 +501,10 @@ const I18N = {
     analysisApiError: '⚠️ Falta configurar CLAUDE_API_KEY en Netlify.',
     analysisError: '⚠️ No se pudo generar el análisis.',
     analysisRetry: 'Reintentar',
-    metricSignals: 'señales hoy',
-    metricSaved: 'guardadas',
-    metricStreak: (n)=>n+' día'+(n===1?'':'s')+' de racha',
-    metricAnalyses: 'resúmenes hoy',
+    metricSignals: 'historias hoy',
+    metricTop3: 'top 3 primero',
+    metricLanguages: 'idiomas',
+    metricMinutes: 'min para ponerte al día',
     ctaTalk: 'Hablar con Stryv',
     onboardingSkip: 'Saltar',
     onboardingNext: 'Siguiente',
@@ -532,8 +534,8 @@ const I18N = {
     heroKicker: 'Understand the day',
     heroTitle: 'Less noise. More clarity on what matters today.',
     heroSummary: '<strong>CONTEXTO helps you understand the news without becoming an expert.</strong> It shows you what happened, why it matters, and what is worth following.',
-    heroManifesto: 'View manifesto',
-    heroPower: 'See top stories',
+    heroManifesto: 'How it works',
+    heroPower: 'Start with the top 3',
     briefingLabel: 'Daily summary',
     briefingPreparing: 'Preparing...',
     briefingReady: 'Ready to generate',
@@ -562,14 +564,15 @@ const I18N = {
     installDesc: 'Open it as an app and keep your briefing one tap away.',
     installBtn: 'Install',
     installDismiss: 'Not now',
-    topSignalsTitle: 'What matters most today',
-    topSignalsSub: (n)=>n+' key signals',
+    topSignalsTitle: 'Start here',
+    topSignalsSub: (n)=>n+' stories to understand the day',
     signalLoading: 'Preparing clear summary...',
     signalFailed: 'Could not generate the summary.',
     signalCta: 'Open summary →',
     navAll: 'All',
     navSaved: 'Saved',
     navTech: 'Tech',
+    navTop: 'Top 3',
     saveArticle: 'Save article',
     sectionNames: {
       Dinero: 'Money',
@@ -600,10 +603,10 @@ const I18N = {
     analysisApiError: '⚠️ CLAUDE_API_KEY not configured on Netlify.',
     analysisError: '⚠️ Could not generate the analysis.',
     analysisRetry: 'Retry',
-    metricSignals: 'signals today',
-    metricSaved: 'saved',
-    metricStreak: (n)=>n+' day'+(n===1?'':'s')+' streak',
-    metricAnalyses: 'summaries today',
+    metricSignals: 'stories today',
+    metricTop3: 'top 3 first',
+    metricLanguages: 'languages',
+    metricMinutes: 'min to catch up',
     ctaTalk: 'Talk to Stryv',
     onboardingSkip: 'Skip',
     onboardingNext: 'Next',
@@ -860,6 +863,9 @@ function applyLang(){
   const navItems = $$('.nav-item');
   if(navItems[0]) navItems[0].querySelector('.nav-label').textContent = t('navAll');
   if(navItems[1]) navItems[1].querySelector('.nav-label').textContent = t('navSaved');
+  if(navItems[2]) navItems[2].querySelector('.nav-label').textContent = getSectionLabel('Dinero');
+  if(navItems[3]) navItems[3].querySelector('.nav-label').textContent = t('navTech');
+  if(navItems[4]) navItems[4].querySelector('.nav-label').textContent = t('navTop');
   // Install banner
   const installCopy = $('.install-copy');
   if(installCopy) installCopy.innerHTML = '<strong>'+t('installTitle')+'</strong>'+t('installDesc');
@@ -902,9 +908,9 @@ async function fetchNews(){
 function renderHeroMetrics(){
   const metrics = [
     '<div class="hero-chip"><strong>'+articles.length+'</strong> '+t('metricSignals')+'</div>',
-    '<div class="hero-chip"><strong>'+savedIds.length+'</strong> '+t('metricSaved')+'</div>',
-    '<div class="hero-chip"><strong>'+t('metricStreak')(usage.streak)+'</strong></div>',
-    '<div class="hero-chip"><strong>'+usage.analysesToday+'</strong> '+t('metricAnalyses')+'</div>'
+    '<div class="hero-chip"><strong>3</strong> '+t('metricTop3')+'</div>',
+    '<div class="hero-chip"><strong>2</strong> '+t('metricLanguages')+'</div>',
+    '<div class="hero-chip"><strong>1</strong> '+t('metricMinutes')+'</div>'
   ];
   $('#heroMetrics').innerHTML = metrics.join('');
 }
@@ -944,11 +950,13 @@ function renderTopSignals(){
     const tagClass = SECTION_TAGS[a.section] || 'tag-dinero';
     const cached = topSignalCache[id];
     const displayTitle = getDisplayTitle(a);
+    const rank = topArts.indexOf(a) + 1;
     const contextHtml = cached
       ? '<div class="signal-card-context">'+esc(cached.context)+'</div>'
         + (cached.impact ? '<div class="signal-card-impact">'+esc(cached.impact)+'</div>' : '')
       : '<div class="signal-card-context loading">'+t('signalLoading')+'</div>';
     return '<div class="signal-card" data-signal-id="'+id+'">'+
+      '<div class="signal-rank">'+rank+'</div>'+
       '<div class="signal-card-section '+tagClass+'">'+(SECTION_ICONS[a.section]||'')+' '+esc(getSectionLabel(a.section))+'</div>'+
       '<div class="signal-card-title">'+esc(displayTitle)+'</div>'+
       contextHtml+
@@ -1208,18 +1216,10 @@ function renderFeeds(){
       html+=renderCards(arts);
       const secKeys = Object.keys(grouped);
       const secIdx = secKeys.indexOf(sec);
-      if(secIdx===1 || secIdx===3){
-        const cta = t('ctas')[sec] || t('ctas').Dinero;
-        html+=renderCTA(cta);
-      }
     }
   } else {
     html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[activeSection]||'')+' '+esc(activeSection==='saved'?t('navSaved'):getSectionLabel(activeSection))+'</div><div class="feed-count">'+filtered.length+' '+t('signals')+'</div></div>';
     html+=renderCards(filtered);
-    if(activeSection!=='saved'){
-      const cta = t('ctas')[activeSection] || t('ctas').Dinero;
-      html+=renderCTA(cta);
-    }
   }
 
   container.innerHTML=html;
@@ -1458,6 +1458,9 @@ document.addEventListener('click',e=>{
   const nav=e.target.closest('[data-nav]');
   if(nav){switchSection(nav.dataset.nav);return}
 
+  const startHere=e.target.closest('[data-start-here]');
+  if(startHere){document.querySelector('#topSignals')?.scrollIntoView({behavior:'smooth',block:'start'});return}
+
   const card=e.target.closest('.news-card');
   if(card){toggleAnalysis(card.dataset.id);return}
 
@@ -1477,7 +1480,7 @@ document.addEventListener('click',e=>{
   if(e.target.closest('#installDismiss')){hideInstallBanner(true);return}
   if(e.target.closest('#retryFromEmpty')){refreshAll();return}
   if(e.target.closest('#heroManifestoBtn')){openOnboarding(true);return}
-  if(e.target.closest('#heroPowerBtn')){switchSection('Poder');return}
+  if(e.target.closest('#heroPowerBtn')){document.querySelector('#topSignals')?.scrollIntoView({behavior:'smooth',block:'start'});return}
   if(e.target.closest('#onboardingNext')){nextOnboarding();return}
   if(e.target.closest('#onboardingSkip')){closeOnboarding();return}
 
