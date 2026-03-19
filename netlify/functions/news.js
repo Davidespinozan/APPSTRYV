@@ -177,6 +177,16 @@ exports.handler = async function(event) {
     return '';
   };
 
+  const extractLink = (itemXml) => {
+    const linkCdata = itemXml.match(/<link><!\[CDATA\[(.*?)\]\]><\/link>/i);
+    if (linkCdata) return linkCdata[1];
+    const linkTag = itemXml.match(/<link>(.*?)<\/link>/i);
+    if (linkTag) return linkTag[1];
+    const atomLink = itemXml.match(/<link[^>]+href=["']([^"']+)["'][^>]*\/?>(?:<\/link>)?/i);
+    if (atomLink) return atomLink[1];
+    return '';
+  };
+
   // Parse Google News RSS
   const parseGoogleFeed = (xml, section) => {
     const items = [];
@@ -199,6 +209,7 @@ exports.handler = async function(event) {
       const source = sourceMatch ? sourceMatch[1].trim() : '';
       const date = dateMatch ? dateMatch[1] : '';
       const image = extractImage(itemXml);
+      const link = extractLink(itemXml);
 
       if (!title || title.length <= 20) continue;
       if (!isRecent(date)) continue; // HARD CUTOFF: skip old articles
@@ -208,6 +219,7 @@ exports.handler = async function(event) {
         source,
         date,
         image,
+        link,
         section: section.label,
         icon: section.icon,
         score: scoreArticle(title, source, date, section.label)
@@ -239,6 +251,7 @@ exports.handler = async function(event) {
       const title = (titleMatch[1] || titleMatch[2] || '').trim();
       const date = dateMatch ? (dateMatch[1] || dateMatch[2] || dateMatch[3]) : '';
       const image = extractImage(itemXml);
+      const link = extractLink(itemXml);
       const source = feedName || (creatorMatch ? (creatorMatch[1] || creatorMatch[2] || creatorMatch[3] || '').trim() : '');
 
       if (!title || title.length <= 15) continue;
@@ -249,6 +262,7 @@ exports.handler = async function(event) {
         source,
         date,
         image,
+        link,
         section: sectionLabel,
         icon: sectionIcon,
         score: scoreArticle(title, source, date, sectionLabel)
