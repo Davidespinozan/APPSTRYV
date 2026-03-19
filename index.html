@@ -3,22 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CONTEXTO — Entiende lo que está pasando en el mundo</title>
-<meta name="description" content="El mundo se está reconfigurando. Una IA analiza las noticias del día y te explica lo que realmente significan. Sin jerga. 5 minutos.">
+<title>CONTEXTO — Lo que nadie te enseñó porque no les convenía</title>
+<meta name="description" content="Herramienta educativa gratuita. Dinero, poder, movilidad, tecnología, mentalidad. Conocimiento accionable con IA en tiempo real. Sin vender nada.">
 <meta name="theme-color" content="#0D1117">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Contexto">
 <link rel="manifest" href="/manifest.json">
-<meta property="og:title" content="CONTEXTO — Entiende lo que está pasando en el mundo">
-<meta property="og:description" content="Guerras, IA, Bitcoin, China, monedas. ¿Lo escuchaste? Pero ¿lo entiendes? CONTEXTO te da el contexto que nadie más te da.">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CONTEXTO — La IA que te explica las noticias">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
 <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png">
-<link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700;800;900&display=swap" rel="stylesheet">
@@ -27,7 +21,6 @@
 html{scroll-behavior:smooth}
 body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;max-width:600px;margin:0 auto;min-height:100dvh;transition:background .3s,color .3s}
 
-/* ═══ THEME: DARK (default) ═══ */
 :root,[data-theme="dark"]{
   --bg:#0D1117;--surface:#161b22;--surface-2:#1c2128;--surface-3:#272d35;
   --border:#30363d;--border-light:#21262d;
@@ -36,14 +29,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
   --danger:#f85149;--danger-soft:rgba(248,81,73,.12);
   --warning:#d29922;--warning-soft:rgba(210,153,34,.12);
   --blue:#58a6ff;--blue-soft:rgba(88,166,255,.12);
+  --green:#3fb950;--green-soft:rgba(63,185,80,.12);
   --cta-bg:#4ECDC4;--cta-text:#0D1117;
   --blur-bg:rgba(13,17,23,.92);
   --skeleton-a:#161b22;--skeleton-b:#1c2128;
-  --live-dot:#f85149;
-  --card-hover:#1c2128;
 }
 
-/* ═══ THEME: LIGHT ═══ */
 [data-theme="light"]{
   --bg:#EAF0EE;--surface:#ffffff;--surface-2:#f2f5f4;--surface-3:#e8edeb;
   --border:#d4dbd8;--border-light:#e8edeb;
@@ -52,16 +43,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue'
   --danger:#d1242f;--danger-soft:rgba(209,36,47,.08);
   --warning:#bf8700;--warning-soft:rgba(191,135,0,.08);
   --blue:#0969da;--blue-soft:rgba(9,105,218,.08);
+  --green:#1a7f37;--green-soft:rgba(26,127,55,.08);
   --cta-bg:#0D1117;--cta-text:#EAF0EE;
   --blur-bg:rgba(234,240,238,.92);
   --skeleton-a:#e8edeb;--skeleton-b:#d4dbd8;
-  --live-dot:#d1242f;
-  --card-hover:#f2f5f4;
 }
 
 body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px solid var(--border-light);border-right:1px solid var(--border-light)}
 
-/* ═══ LOADER ═══ */
 .loader{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s,visibility .5s}
 .loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .loader-brand{font-family:'League Spartan',sans-serif;font-size:32px;font-weight:900;color:var(--text);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px}
@@ -70,1675 +59,611 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 @keyframes loaderPulse{0%,100%{transform:scale(.8);opacity:.5}50%{transform:scale(1.1);opacity:1}}
 .loader-status{margin-top:20px;font-size:12px;color:var(--text-3);letter-spacing:.3px}
 
-/* ═══ ONBOARDING ═══ */
-.onboarding{position:fixed;inset:0;z-index:9500;background:rgba(13,17,23,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:none;align-items:flex-end;justify-content:center;padding:24px 16px max(24px,env(safe-area-inset-bottom))}
-.onboarding.open{display:flex}
-.onboarding-card{width:100%;max-width:560px;background:var(--surface);border:1px solid var(--border);border-radius:28px;padding:24px 20px 20px;box-shadow:0 24px 80px rgba(0,0,0,.35);position:relative;overflow:hidden}
-.onboarding-card::before{content:'';position:absolute;top:-35%;right:-10%;width:180px;height:180px;border-radius:50%;background:var(--accent-soft)}
-.onboarding-step{font-size:10px;font-weight:800;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;position:relative}
-.onboarding-title{font-size:28px;line-height:1.02;letter-spacing:-1px;font-weight:900;color:var(--text);margin-bottom:14px;position:relative;max-width:460px}
-.onboarding-copy{font-size:15px;line-height:1.65;color:var(--text-2);margin-bottom:18px;position:relative}
-.onboarding-copy strong{color:var(--text);font-weight:800}
-.onboarding-points{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;position:relative}
-.onboarding-point{display:flex;gap:10px;align-items:flex-start;padding:12px 13px;border-radius:14px;background:var(--surface-2);border:1px solid var(--border-light)}
-.onboarding-point-mark{font-size:12px;font-weight:900;color:var(--accent);min-width:18px;line-height:1.5}
-.onboarding-point-text{font-size:13px;line-height:1.55;color:var(--text)}
-.onboarding-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative}
-.onboarding-dots{display:flex;gap:8px}
-.onboarding-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
-.onboarding-dot.active{background:var(--accent)}
-.onboarding-actions{display:flex;gap:10px}
-.onboarding-btn{font-family:inherit;border-radius:999px;padding:11px 15px;font-size:13px;font-weight:800;cursor:pointer}
-.onboarding-btn-secondary{background:none;border:1px solid var(--border);color:var(--text-2)}
-.onboarding-btn-primary{background:var(--accent);border:none;color:#0D1117}
-
-/* ═══ TOP BAR ═══ */
 .top-bar{position:sticky;top:0;z-index:100;background:var(--blur-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border-light);padding:0 16px;display:flex;align-items:center;height:52px;gap:10px}
 .top-bar-brand{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:900;color:var(--text);letter-spacing:2px;text-transform:uppercase;flex:1}
-.top-bar-live{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--live-dot);letter-spacing:.5px;text-transform:uppercase}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--live-dot);animation:blink 1.5s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.top-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:15px;color:var(--text-2);transition:all .15s}
+.top-bar-date{font-size:11px;color:var(--text-3)}
+.top-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:15px;color:var(--text-2);transition:all .15s;-webkit-tap-highlight-color:transparent}
 .top-btn:hover{background:var(--surface-2);color:var(--text)}
-.lang-btn{width:auto;padding:0 10px;font-size:11px;font-weight:800;letter-spacing:.5px;border-radius:999px;height:30px}
 
-/* ═══ DATE HEADER ═══ */
-.date-header{padding:14px 16px 8px;border-bottom:0}
-.date-main{font-size:12px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
-.date-tagline{font-size:16px;font-weight:700;color:var(--text-2);letter-spacing:-.2px;line-height:1.35;max-width:520px}
+.hero{padding:24px 16px 20px;border-bottom:1px solid var(--border-light);background:radial-gradient(circle at top right,var(--accent-soft),transparent 40%)}
+.hero-eyebrow{font-size:10px;font-weight:800;color:var(--accent);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px}
+.hero-title{font-size:28px;font-weight:900;line-height:1.08;letter-spacing:-1px;color:var(--text);margin-bottom:10px;max-width:500px}
+.hero-desc{font-size:15px;line-height:1.6;color:var(--text-2);max-width:520px}
 
-/* ═══ HERO BRIEFING ═══ */
-.hero-shell{padding:20px 16px 18px;border-bottom:1px solid var(--border-light);background:radial-gradient(circle at top right,var(--accent-soft),transparent 30%),linear-gradient(180deg,var(--surface),var(--bg))}
-.hero-kicker{font-size:11px;font-weight:900;color:var(--accent);letter-spacing:1.1px;text-transform:uppercase;margin-bottom:10px}
-.hero-title{font-size:32px;font-weight:900;line-height:1.02;letter-spacing:-1.1px;color:var(--text);margin-bottom:12px;max-width:560px}
-.hero-summary{font-size:16px;line-height:1.6;color:var(--text-2);max-width:560px;margin-bottom:18px}
-.hero-summary strong{color:var(--text);font-weight:800}
-.hero-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:18px}
-.hero-chip{min-height:62px;padding:12px 14px;border:1px solid var(--border);border-radius:16px;background:var(--surface);font-size:12px;color:var(--text-2);display:flex;flex-direction:column;justify-content:center}
-.hero-chip strong{color:var(--text);font-weight:800}
-.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-.hero-btn{font-family:inherit;font-size:13px;font-weight:800;border-radius:14px;padding:12px 15px;cursor:pointer}
-.hero-btn-primary{background:var(--accent);border:none;color:#0D1117}
-.hero-btn-secondary{background:none;border:1px solid var(--border);color:var(--text-2)}
-.briefing-card{border:1px solid var(--border);border-radius:22px;padding:18px;background:linear-gradient(180deg,var(--surface),var(--surface-2));box-shadow:0 10px 30px rgba(0,0,0,.08)}
-.briefing-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-.briefing-label{font-size:11px;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.8px}
-.briefing-status{font-size:11px;font-weight:700;color:var(--accent)}
-.briefing-title{font-size:17px;font-weight:800;line-height:1.3;color:var(--text);margin-bottom:8px}
-.briefing-copy{font-size:14px;line-height:1.65;color:var(--text-2);margin-bottom:14px}
-.briefing-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
-.briefing-item{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border-light)}
-.briefing-item-mark{font-size:12px;font-weight:800;color:var(--accent);line-height:1.4;min-width:18px}
-.briefing-item-text{font-size:13px;line-height:1.5;color:var(--text)}
-.briefing-actions{display:flex;gap:10px;flex-wrap:wrap}
-.briefing-btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:12px;padding:11px 14px;cursor:pointer;transition:all .15s}
-.briefing-btn-primary{background:var(--accent);color:#0D1117;border:none}
-.briefing-btn-secondary{background:none;color:var(--text-2);border:1px solid var(--border)}
-.briefing-btn:disabled{opacity:.5;cursor:default}
+.pulse{margin:16px;padding:20px;border:1px solid var(--border);border-radius:20px;background:linear-gradient(180deg,var(--surface),var(--surface-2));box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.pulse-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.pulse-label{font-size:10px;font-weight:800;color:var(--accent);letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.pulse-date{font-size:11px;color:var(--text-3)}
+.pulse-title{font-size:17px;font-weight:800;line-height:1.3;color:var(--text);margin-bottom:10px}
+.pulse-body{font-size:14px;line-height:1.65;color:var(--text-2);margin-bottom:14px}
+.pulse-items{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.pulse-item{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border-light);cursor:pointer;transition:background .12s}
+.pulse-item:hover{background:var(--surface-3)}
+.pulse-item-icon{font-size:14px;min-width:20px;text-align:center;margin-top:1px}
+.pulse-item-text{font-size:13px;line-height:1.5;color:var(--text);flex:1}
+.pulse-item-mod{font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;white-space:nowrap}
+.pulse-refresh{font-family:inherit;font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);border:none;padding:8px 16px;border-radius:12px;cursor:pointer;transition:all .15s}
+.pulse-refresh:hover{background:var(--accent-mid)}
+.pulse-refresh:disabled{opacity:.5;cursor:default}
 
-/* ═══ SECTION NAV ═══ */
-.sec-nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border-light);scrollbar-width:none;padding:0 12px;gap:2px}
-.sec-nav::-webkit-scrollbar{display:none}
-.sec-tab{flex-shrink:0;padding:12px 14px;font-size:13px;font-weight:600;color:var(--text-3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:6px;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
-.sec-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
-.sec-tab:hover{color:var(--text)}
-.sec-tab-count{font-size:10px;background:var(--surface-2);color:var(--text-3);padding:1px 6px;border-radius:10px;font-weight:700}
+.progress-wrap{margin:0 16px 16px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+.progress-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-label{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px}
+.progress-count{font-size:12px;font-weight:800;color:var(--accent)}
+.progress-track{height:4px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width .4s ease}
 
-/* ═══ TOP SIGNALS ═══ */
-.top-signals{padding:0 0 8px;border-bottom:0;margin-bottom:18px}
-.top-signals-header{display:flex;align-items:flex-end;justify-content:space-between;padding:0 0 12px}
-.top-signals-title{font-size:12px;font-weight:900;color:var(--danger);text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:6px}
-.top-signals-title::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--danger);animation:blink 1.5s infinite}
-.top-signals-sub{font-size:12px;color:var(--text-3)}
-.signal-rank{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:900;margin-bottom:10px}
-.signal-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;margin-bottom:12px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
-.signal-card:hover{border-color:var(--accent);background:var(--card-hover)}
-.signal-ai-badge{display:inline-block;font-size:10px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:3px 10px;border-radius:20px;margin-bottom:8px}
-.signal-card-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.signal-card-title{font-size:22px;font-weight:900;line-height:1.15;letter-spacing:-.6px;color:var(--text);margin-bottom:10px;max-width:520px}
-.signal-card-context{font-size:14px;line-height:1.65;color:var(--text-2);margin-bottom:12px}
-.signal-card-context.loading{color:var(--text-3);font-style:italic}
-.signal-card-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-3)}
-.signal-card-cta{font-size:11px;font-weight:700;color:var(--accent);margin-left:auto}
-.signal-card-impact{margin-top:10px;padding:10px 12px;background:var(--danger-soft);border-radius:10px;border-left:3px solid var(--danger);font-size:13px;line-height:1.5;color:var(--text)}
+.module-nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border-light);scrollbar-width:none;padding:0 12px;gap:2px}
+.module-nav::-webkit-scrollbar{display:none}
+.module-tab{flex-shrink:0;padding:13px 13px;font-size:13px;font-weight:600;color:var(--text-3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.module-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.module-tab:hover{color:var(--text)}
 
-/* ═══ FEED ═══ */
-.feed{display:none}
-.feed.active{display:block;animation:fadeIn .2s ease}
+.module-content{display:none}
+.module-content.active{display:block;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-.feed-header{padding:12px 16px 8px;display:flex;justify-content:space-between;align-items:center}
-.feed-section-title{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.7px}
-.feed-count{font-size:11px;color:var(--text-3)}
+.sec-head{padding:14px 16px 10px;font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px}
 
-/* ═══ NEWS CARD ═══ */
-.news-card{border-bottom:1px solid var(--border-light);padding:14px 16px;cursor:pointer;transition:background .12s;position:relative}
-.news-card:hover{background:var(--card-hover)}
-.news-card-topline{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.news-card-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.news-card-source{font-size:11px;font-weight:600;color:var(--text-3)}
-.news-card-dot{width:2px;height:2px;border-radius:50%;background:var(--text-3);flex-shrink:0}
-.news-card-time{font-size:11px;color:var(--text-3)}
-.news-card-title{font-size:16px;font-weight:700;color:var(--text);line-height:1.35;letter-spacing:-.2px;margin-bottom:6px}
-.news-card-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;text-transform:uppercase;letter-spacing:.3px}
-.tag-dinero{color:var(--accent);background:var(--accent-soft)}
-.tag-poder{color:var(--danger);background:var(--danger-soft)}
-.tag-tecnologia{color:var(--blue);background:var(--blue-soft)}
-.tag-mercados{color:var(--warning);background:var(--warning-soft)}
-.tag-movilidad{color:var(--accent);background:var(--accent-soft)}
-.tag-latam{color:var(--blue);background:var(--blue-soft)}
-.news-card-save{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text-3);cursor:pointer;flex-shrink:0;transition:all .15s}
-.news-card-save.active{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
-.news-card-arrow{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:14px;opacity:0;transition:opacity .15s}
-.news-card:hover .news-card-arrow{opacity:1}
+.lesson{border-bottom:1px solid var(--border-light);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;cursor:pointer;transition:background .12s;-webkit-tap-highlight-color:transparent}
+.lesson:hover{background:var(--surface-2)}
+.lesson-num{font-size:12px;font-weight:700;color:var(--text-3);min-width:22px;margin-top:2px;letter-spacing:.3px}
+.lesson-body{flex:1;min-width:0}
+.lesson-title{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.2px;margin-bottom:3px;line-height:1.3}
+.lesson-desc{font-size:13px;color:var(--text-2);line-height:1.45;margin-bottom:6px}
+.lesson-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px}
+.tag-warn{color:var(--danger);background:var(--danger-soft)}
+.tag-green{color:var(--green);background:var(--green-soft)}
+.tag-gold{color:var(--warning);background:var(--warning-soft)}
+.tag-blue{color:var(--blue);background:var(--blue-soft)}
+.tag-default{color:var(--accent);background:var(--accent-soft)}
+.lesson-right{flex-shrink:0;font-size:18px;color:var(--text-3);margin-top:2px;transition:transform .2s}
+.lesson-right.open{transform:rotate(90deg)}
 
-/* ═══ ANALYSIS PANEL ═══ */
-.analysis{display:none;border-bottom:1px solid var(--border);background:var(--surface);overflow:hidden}
-.analysis.open{display:block;animation:slideOpen .25s ease}
-@keyframes slideOpen{from{opacity:0;max-height:0}to{opacity:1;max-height:3000px}}
+.lesson-expanded{display:none;border-bottom:1px solid var(--border-light);background:var(--surface);overflow:hidden}
+.lesson-expanded.open{display:block;animation:slideOpen .25s ease}
+@keyframes slideOpen{from{opacity:0;max-height:0}to{opacity:1;max-height:4000px}}
+.lesson-exp-header{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-light)}
+.lesson-exp-title{font-size:14px;font-weight:700;color:var(--text)}
+.lesson-exp-close{font-size:13px;color:var(--text-3);background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 8px}
+.lesson-exp-body{padding:16px}
+.lesson-exp-block{margin-bottom:20px}
+.lesson-exp-block:last-child{margin-bottom:0}
+.exp-label{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.exp-text{font-size:15px;line-height:1.65;color:var(--text)}
+.exp-text strong{font-weight:700}
+.exp-actions{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.exp-action{display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px}
+.exp-action-num{font-size:12px;font-weight:800;color:var(--accent);min-width:18px;margin-top:1px}
+.exp-action-text{font-size:14px;color:var(--text);line-height:1.45}
 
-.analysis-bar{padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-light)}
-.analysis-badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--accent);background:var(--accent-soft);padding:4px 12px;border-radius:20px}
-.analysis-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 1.5s infinite}
-.analysis-close{background:none;border:none;color:var(--text-3);cursor:pointer;font-size:16px;padding:4px}
+.ai-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:20px;margin-bottom:12px}
+.ai-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 1.5s infinite}
 
-.analysis-body{padding:16px}
-.analysis-headline{font-size:14px;font-weight:800;color:var(--accent);line-height:1.35;margin-bottom:14px;padding-left:12px;border-left:3px solid var(--accent)}
+.ask-lesson{margin-top:16px;padding-top:14px;border-top:1px solid var(--border-light)}
+.ask-lesson-label{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.ask-lesson-row{display:flex;gap:8px}
+.ask-lesson-input{flex:1;font-family:inherit;font-size:13px;padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);outline:none;transition:border-color .15s}
+.ask-lesson-input:focus{border-color:var(--accent)}
+.ask-lesson-btn{font-family:inherit;font-size:12px;font-weight:700;color:#0D1117;background:var(--accent);border:none;padding:10px 14px;border-radius:12px;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+.ask-lesson-btn:hover{opacity:.9}
+.ask-lesson-btn:disabled{opacity:.5;cursor:default}
+.ask-lesson-reply{margin-top:10px;font-size:14px;line-height:1.6;color:var(--text-2);display:none;padding:12px;background:var(--surface-2);border-radius:12px;border:1px solid var(--border-light)}
+.ask-lesson-reply.show{display:block}
 
-.analysis-section{margin-bottom:18px}
-.analysis-section:last-child{margin-bottom:0}
-.analysis-label{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
-.analysis-text{font-size:15px;line-height:1.7;color:var(--text)}
-.analysis-text strong{font-weight:700}
-
-.analysis-impact{font-size:14px;line-height:1.6;color:var(--text);padding:12px 14px;background:var(--danger-soft);border-radius:10px;border-left:3px solid var(--danger)}
-.analysis-shift{font-size:14px;line-height:1.6;color:var(--text);padding:12px 14px;background:var(--accent-soft);border-radius:10px;border-left:3px solid var(--accent)}
-
-.analysis-actions{display:flex;flex-direction:column;gap:8px}
-.analysis-action{display:flex;gap:10px;padding:10px 12px;background:var(--surface-2);border:1px solid var(--border-light);border-radius:8px}
-.analysis-action-num{font-size:12px;font-weight:800;color:var(--accent);min-width:18px;margin-top:1px}
-.analysis-action-text{font-size:13px;color:var(--text);line-height:1.45}
-
-.analysis-share{display:flex;justify-content:center;padding-top:14px;border-top:1px solid var(--border-light);margin-top:16px}
-.analysis-share-btn{font-size:12px;font-weight:600;color:var(--text-3);background:none;border:1px solid var(--border);padding:6px 16px;border-radius:20px;cursor:pointer;font-family:inherit;transition:all .15s}
-.analysis-share-btn:hover{color:var(--text);border-color:var(--text-3)}
-
-/* ═══ SKELETON ═══ */
-.sk{background:linear-gradient(90deg,var(--skeleton-a) 25%,var(--skeleton-b) 50%,var(--skeleton-a) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px;margin-bottom:8px}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* ═══ EMPTY STATE ═══ */
-.empty-state{padding:60px 24px;text-align:center}
-.empty-icon{font-size:40px;margin-bottom:12px;opacity:.5}
-.empty-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
-.empty-desc{font-size:13px;color:var(--text-3);line-height:1.5}
-.empty-action{display:inline-block;margin-top:14px;padding:10px 16px;border-radius:12px;background:var(--accent);color:#0D1117;text-decoration:none;font-size:13px;font-weight:800}
-
-/* ═══ STRYV CTA ═══ */
-.stryv-cta{margin:12px 16px;padding:20px 18px;background:var(--cta-bg);color:var(--cta-text);border-radius:16px;position:relative;overflow:hidden}
+.stryv-cta{margin:16px;padding:20px 18px;background:var(--cta-bg);color:var(--cta-text);border-radius:16px;position:relative;overflow:hidden}
 .stryv-cta::before{content:'';position:absolute;top:-40%;right:-15%;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08)}
-.stryv-cta-eyebrow{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.5;margin-bottom:6px;position:relative}
 .stryv-cta-title{font-size:17px;font-weight:800;margin-bottom:6px;letter-spacing:-.3px;line-height:1.25;position:relative}
 .stryv-cta-desc{font-size:13px;opacity:.65;line-height:1.55;margin-bottom:14px;position:relative}
 .stryv-cta-btn{display:block;background:var(--bg);color:var(--text);font-size:14px;font-weight:700;padding:12px;border-radius:10px;text-align:center;text-decoration:none;transition:opacity .15s;position:relative}
 .stryv-cta-btn:active{opacity:.85}
 .stryv-cta-link{display:block;text-align:center;font-size:11px;opacity:.35;text-decoration:none;margin-top:8px;position:relative;color:inherit}
 
-/* ═══ URGENCY TAGS ═══ */
-.signal-tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
-.signal-tag-urgente{color:var(--danger);background:var(--danger-soft)}
-.signal-tag-accionable{color:#00ba7c;background:rgba(0,186,124,.1)}
-.signal-tag-fundamental{color:var(--warning);background:var(--warning-soft)}
-.signal-tag-estrategico{color:var(--blue);background:var(--blue-soft)}
+.sk{background:linear-gradient(90deg,var(--skeleton-a) 25%,var(--skeleton-b) 50%,var(--skeleton-a) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px;margin-bottom:8px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* ═══ REFRESH BAR ═══ */
-.refresh-bar{padding:10px 16px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between}
-.refresh-time{font-size:11px;color:var(--text-3)}
-.refresh-btn{font-size:12px;font-weight:600;color:var(--accent);background:none;border:1px solid var(--accent);padding:4px 14px;border-radius:16px;cursor:pointer;font-family:inherit;transition:all .15s}
-.refresh-btn:hover{background:var(--accent-soft)}
-.refresh-btn:disabled{opacity:.4;cursor:default}
-
-/* ═══ VIEW SWITCHING ═══ */
-body.view-sources .hero-shell,body.view-sources .date-header{display:none}
-body.view-saved .hero-shell,body.view-saved .date-header{display:none}
-body.view-saved .sec-nav{display:none}
-body.view-insights .sec-nav{display:none}
-body.view-insights #feedContainer{display:none}
-body.view-insights .refresh-bar{display:none}
-
-.signal-card-meaning{padding:10px 12px;background:var(--accent-soft);border-radius:10px;border-left:3px solid var(--accent);font-size:13px;line-height:1.55;color:var(--text);margin-bottom:10px}
-
-/* ═══ ARTICLE IMAGES ═══ */
-.signal-card-img{width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:12px;background:var(--surface-2);animation:imgShimmer 1.5s infinite}
-.signal-card-img[src]{animation:none}
-.news-card-img{width:72px;height:72px;object-fit:cover;border-radius:10px;flex-shrink:0;background:var(--surface-2);animation:imgShimmer 1.5s infinite}
-.news-card-img[src]{animation:none}
-@keyframes imgShimmer{0%{background:var(--skeleton-a)}50%{background:var(--skeleton-b)}100%{background:var(--skeleton-a)}}
-.news-card-body{display:flex;gap:12px}
-.news-card-text{flex:1;min-width:0}
-
-/* ═══ HERO STATS ═══ */
-.hero-stats{display:flex;gap:1px;background:var(--border-light);border-radius:14px;overflow:hidden;margin-bottom:20px}
-.hero-stat{flex:1;padding:14px 10px;background:var(--surface);text-align:center}
-.hero-stat-num{font-size:22px;font-weight:900;color:var(--accent);letter-spacing:-.5px;line-height:1}
-.hero-stat-label{font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
-
-/* ═══ SOURCE TRUST BAR ═══ */
-.trust-bar{padding:16px 16px 8px;text-align:center}
-.trust-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-3);margin-bottom:10px}
-.trust-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 12px}
-.trust-logos span{font-size:11px;font-weight:700;color:var(--text-3);opacity:.55;letter-spacing:.3px;white-space:nowrap}
-
-/* ═══ SECTION GRADIENT FALLBACKS ═══ */
-.img-fallback{display:flex;align-items:center;justify-content:center;font-size:32px;border-radius:12px}
-.img-fallback-sm{width:100%;height:180px}
-.img-fallback-th{width:72px;height:72px;border-radius:10px;flex-shrink:0;font-size:22px}
-.img-fb-dinero{background:linear-gradient(135deg,#1a472a 0%,#2d6a4f 100%)}
-.img-fb-poder{background:linear-gradient(135deg,#4a1942 0%,#6b2d5b 100%)}
-.img-fb-tecnologia{background:linear-gradient(135deg,#1a1a3e 0%,#2d2d6b 100%)}
-.img-fb-mercados{background:linear-gradient(135deg,#1a3a4a 0%,#2d5a6b 100%)}
-.img-fb-movilidad{background:linear-gradient(135deg,#3a2a1a 0%,#5a4a2d 100%)}
-.img-fb-latam{background:linear-gradient(135deg,#2a1a3a 0%,#4a2d5a 100%)}
-
-/* ═══ CONNECTIONS BLOCK ═══ */
-.connections-card{margin:16px;padding:20px 18px;background:var(--surface);border:1px solid var(--border);border-radius:20px;position:relative;overflow:hidden}
-.connections-card::before{content:'';position:absolute;top:-60%;right:-20%;width:200px;height:200px;border-radius:50%;background:var(--accent-soft);pointer-events:none}
-.connections-header{display:flex;align-items:center;gap:8px;margin-bottom:14px;position:relative}
-.connections-icon{font-size:20px}
-.connections-title{font-size:14px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.5px}
-.connections-body{font-size:15px;line-height:1.7;color:var(--text);position:relative}
-.connections-body strong{font-weight:700;color:var(--accent)}
-.connections-threads{margin-top:14px;display:flex;flex-direction:column;gap:8px;position:relative}
-.connections-thread{display:flex;gap:10px;padding:10px 12px;background:var(--surface-2);border-radius:10px;border-left:3px solid var(--accent)}
-.connections-thread-icon{font-size:16px;flex-shrink:0;margin-top:1px}
-.connections-thread-text{font-size:13px;line-height:1.5;color:var(--text)}
-.connections-loading{color:var(--text-3);font-style:italic;font-size:13px;position:relative}
-.connections-loading::after{content:'...';animation:dots 1.5s infinite}
-@keyframes dots{0%{content:'...'}33%{content:'.'}66%{content:'..'}100%{content:'...'}}
-
-/* ═══ ASK AI CHAT ═══ */
-.ask-ai{margin-top:16px;padding-top:14px;border-top:1px solid var(--border-light)}
-.ask-ai-row{display:flex;gap:8px}
-.ask-ai-input{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border-color .15s}
-.ask-ai-input:focus{border-color:var(--accent)}
-.ask-ai-input::placeholder{color:var(--text-3)}
-.ask-ai-btn{padding:10px 14px;border-radius:12px;background:var(--accent);color:var(--cta-text);border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;transition:opacity .15s}
-.ask-ai-btn:disabled{opacity:.4;cursor:default}
-.ask-ai-btn:active{opacity:.8}
-.ask-ai-reply{margin-top:12px;padding:12px 14px;background:var(--accent-soft);border-radius:10px;border-left:3px solid var(--accent);font-size:14px;line-height:1.65;color:var(--text)}
-.ask-ai-reply.loading{color:var(--text-3);font-style:italic}
-
-/* ═══ PROGRESS TRACKER ═══ */
-.progress-card{margin:0 16px 16px;padding:18px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
-.progress-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.progress-title{font-size:12px;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.8px}
-.progress-level{font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:3px 10px;border-radius:12px}
-.progress-stats{display:flex;gap:1px;background:var(--border-light);border-radius:10px;overflow:hidden;margin-bottom:12px}
-.progress-stat{flex:1;padding:10px 8px;background:var(--surface);text-align:center}
-.progress-stat-num{font-size:18px;font-weight:900;color:var(--text);line-height:1}
-.progress-stat-label{font-size:9px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
-.progress-bar-wrap{height:6px;background:var(--surface-2);border-radius:6px;overflow:hidden}
-.progress-bar-fill{height:100%;background:var(--accent);border-radius:6px;transition:width .4s ease}
-.progress-next{margin-top:8px;font-size:11px;color:var(--text-3);text-align:center}
-
-/* ═══ INSTALL BANNER ═══ */
-.install-banner{display:none;padding:12px 16px;border-bottom:1px solid var(--border-light);background:var(--surface)}
-.install-banner.show{display:block}
-.install-banner-inner{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.install-copy{font-size:12px;line-height:1.5;color:var(--text-2)}
-.install-copy strong{display:block;font-size:13px;color:var(--text);font-weight:800;margin-bottom:2px}
-.install-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.install-btn,.install-dismiss{font-family:inherit;font-size:12px;font-weight:700;border-radius:999px;padding:8px 12px;cursor:pointer}
-.install-btn{background:var(--accent);color:#0D1117;border:none}
-.install-dismiss{background:none;color:var(--text-3);border:1px solid var(--border)}
-
-/* ═══ BOTTOM NAV ═══ */
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;background:var(--blur-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border-light);padding:6px 0 max(env(safe-area-inset-bottom),12px);display:flex;justify-content:space-around;z-index:200}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text-3);cursor:pointer;min-width:48px;padding:4px 8px;text-decoration:none;transition:color .15s;-webkit-tap-highlight-color:transparent;user-select:none}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;background:var(--blur-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border-light);padding:8px 0 max(16px,env(safe-area-inset-bottom));display:flex;justify-content:space-around;z-index:200}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text-3);cursor:pointer;min-width:50px;text-decoration:none;transition:color .15s;-webkit-tap-highlight-color:transparent}
 .nav-item.active{color:var(--accent)}
 .nav-item:hover{color:var(--text)}
-.nav-icon{font-size:20px;line-height:1}
-.nav-label{font-size:10px;font-weight:600;letter-spacing:.1px}
+.nav-icon{font-size:22px;line-height:1}
+.nav-label{font-size:10px;font-weight:600}
 
-/* ═══ SEARCH ═══ */
-.search-overlay{position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column}
-.search-overlay.open{display:flex}
-.search-bar{display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:1px solid var(--border)}
-.search-input{flex:1;font-size:16px;font-family:inherit;border:none;background:none;color:var(--text);outline:none;padding:10px 0}
-.search-input::placeholder{color:var(--text-3)}
-.search-cancel{font-size:14px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600}
-.search-results{flex:1;overflow-y:auto;padding:8px 0}
-.search-empty{padding:40px 24px;text-align:center;color:var(--text-3);font-size:14px}
-.search-result{padding:14px 16px;border-bottom:1px solid var(--border-light);cursor:pointer;transition:background .1s}
-.search-result:hover{background:var(--surface-2)}
-.search-result-section{font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.search-result-title{font-size:15px;font-weight:700;color:var(--text)}
-
-@media(min-width:600px){body{box-shadow:0 0 0 1px var(--border-light)}}
+@media(min-width:600px){body{box-shadow:0 0 0 1px var(--border)}}
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
 <div class="loader" id="loader">
   <div class="loader-brand">CONTEXTO</div>
-  <div class="loader-sub">El contexto que las noticias no te dan</div>
+  <div class="loader-sub">El contexto que la escuela no te dio</div>
   <div class="loader-pulse"></div>
   <div class="loader-status" id="loaderStatus">Conectando con el mundo...</div>
 </div>
 
-<div class="onboarding" id="onboarding">
-  <div class="onboarding-card">
-    <div class="onboarding-step" id="onboardingStepLabel">Paso 1 de 3</div>
-    <div class="onboarding-title" id="onboardingTitle">El mundo se está reconfigurando.</div>
-    <div class="onboarding-copy" id="onboardingCopy">Guerras, IA, Bitcoin, China, monedas, poder. <strong>Todo esto ya está pasando</strong> y la mayoría de la gente no tiene ni el vocabulario para entenderlo.</div>
-    <div class="onboarding-points" id="onboardingPoints"></div>
-    <div class="onboarding-footer">
-      <div class="onboarding-dots" id="onboardingDots"></div>
-      <div class="onboarding-actions">
-        <button class="onboarding-btn onboarding-btn-secondary" id="onboardingSkip">Saltar</button>
-        <button class="onboarding-btn onboarding-btn-primary" id="onboardingNext">Siguiente</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- TOP BAR -->
 <div class="top-bar">
   <div class="top-bar-brand">CONTEXTO</div>
-  <div class="top-bar-live"><span class="live-dot"></span><span id="liveLabel">EN VIVO</span></div>
-  <button class="top-btn lang-btn" id="langBtn">EN</button>
-  <button class="top-btn" id="searchBtn">🔍</button>
+  <div class="top-bar-date" id="topDate"></div>
   <button class="top-btn" id="themeBtn">☀️</button>
 </div>
 
-<!-- SEARCH -->
-<div class="search-overlay" id="searchOverlay">
-  <div class="search-bar">
-    <input class="search-input" id="searchInput" type="text" placeholder="Buscar señales, conflictos o cambios..." autocomplete="off">
-    <button class="search-cancel" id="searchClose">Cancelar</button>
-  </div>
-  <div class="search-results" id="searchResults">
-    <div class="search-empty">Escribe para buscar en todas las secciones</div>
-  </div>
+<div class="hero">
+  <div class="hero-eyebrow">Herramienta gratuita · Stryv Studio</div>
+  <div class="hero-title">Lo que nadie te enseñó porque no les convenía.</div>
+  <div class="hero-desc">Dinero, poder, movilidad, tecnología. Conocimiento accionable para tomar mejores decisiones. Sin vender nada. Sin motivación barata. Solo información real con pasos concretos.</div>
 </div>
 
-<!-- DATE HEADER -->
-<div class="date-header">
-  <div class="date-main" id="dateMain"></div>
-  <div class="date-tagline">El mundo cambió. Aquí entiendes cómo.</div>
+<div class="pulse" id="pulseCard">
+  <div class="pulse-header">
+    <div class="pulse-label"><span class="pulse-dot"></span> Pulso del día</div>
+    <div class="pulse-date" id="pulseDate"></div>
+  </div>
+  <div class="pulse-title" id="pulseTitle">Leyendo lo que está pasando en el mundo...</div>
+  <div class="pulse-body" id="pulseBody">Una IA analiza más de 25 fuentes internacionales para conectar lo que pasa hoy con lo que necesitas saber.</div>
+  <div class="pulse-items" id="pulseItems">
+    <div class="sk" style="height:44px;width:100%;border-radius:12px"></div>
+    <div class="sk" style="height:44px;width:100%;border-radius:12px"></div>
+    <div class="sk" style="height:44px;width:100%;border-radius:12px"></div>
+  </div>
+  <button class="pulse-refresh" id="pulseRefresh">Actualizar pulso</button>
 </div>
 
-<div class="hero-shell">
-  <div class="hero-kicker">Guerras · IA · Bitcoin · China · Poder</div>
-  <div class="hero-title">Todo eso ya pasó. ¿Pero realmente lo entiendes?</div>
-  <div class="hero-summary"><strong>Hay una diferencia enorme entre escuchar una noticia y entender lo que está pasando.</strong> Una IA analiza las noticias del día y te explica qué significan realmente — sin jerga, sin drama, sin tono de noticiero. Como si alguien que sí entiende te lo explicara en persona.</div>
-  <div class="hero-actions">
-    <button class="hero-btn hero-btn-secondary" id="heroManifestoBtn">Por qué existe esto</button>
-    <button class="hero-btn hero-btn-primary" id="heroPowerBtn">Entender lo de hoy</button>
-  </div>
-  <div class="hero-stats" id="heroStats">
-    <div class="hero-stat"><div class="hero-stat-num" id="statSources">0</div><div class="hero-stat-label">Fuentes</div></div>
-    <div class="hero-stat"><div class="hero-stat-num" id="statAnalyzed">0</div><div class="hero-stat-label">Noticias</div></div>
-    <div class="hero-stat"><div class="hero-stat-num" id="statContexts">0</div><div class="hero-stat-label">Explicadas por IA</div></div>
-  </div>
-  <div class="trust-bar">
-    <div class="trust-label">Fuentes que analiza la IA cada día</div>
-    <div class="trust-logos">
-      <span>BBC</span><span>NYT</span><span>Reuters</span><span>Al Jazeera</span><span>Bloomberg</span>
-      <span>TechCrunch</span><span>Wired</span><span>The Verge</span><span>CoinDesk</span><span>Ars Technica</span>
-      <span>Washington Post</span><span>El País</span><span>France 24</span><span>Yahoo Finance</span>
-    </div>
-  </div>
-  <div id="progressTracker"></div>
-  <div class="top-signals" id="topSignals"></div>
-  <div id="connectionsBlock"></div>
-  <div class="briefing-card" id="briefingCard">
-    <div class="briefing-top">
-      <div class="briefing-label">Tu contexto del día</div>
-      <div class="briefing-status" id="briefingStatus">Preparando...</div>
-    </div>
-    <div class="briefing-title" id="briefingTitle">Lo que está pasando hoy, sin filtro y sin jerga.</div>
-    <div class="briefing-copy" id="briefingCopy">IA analizó las noticias del día y te va a explicar qué está pasando realmente.</div>
-    <div class="briefing-list" id="briefingList"></div>
-    <div class="briefing-actions">
-      <button class="briefing-btn briefing-btn-primary" id="briefingBtn">Generar mi contexto</button>
-      <button class="briefing-btn briefing-btn-secondary" id="briefingShareBtn">Compartir</button>
-    </div>
-  </div>
-</div>
+<div id="progressBar"></div>
+<div class="module-nav" id="moduleNav"></div>
+<div id="moduleContainer"></div>
 
-<!-- REFRESH BAR -->
-<div class="refresh-bar">
-  <div class="refresh-time" id="refreshTime">Analizando el mundo con IA...</div>
-  <button class="refresh-btn" id="refreshBtn" disabled>Actualizar</button>
-</div>
-
-<div class="install-banner" id="installBanner">
-  <div class="install-banner-inner">
-    <div class="install-copy"><strong>Instala CONTEXTO</strong>Entiende el mundo en 5 minutos. Todos los días.</div>
-    <div class="install-actions">
-      <button class="install-btn" id="installBtn">Instalar</button>
-      <button class="install-dismiss" id="installDismiss">Ahora no</button>
-    </div>
-  </div>
-</div>
-
-<!-- SECTION NAV -->
-<div class="sec-nav" id="secNav"></div>
-
-<!-- FEEDS CONTAINER -->
-<div id="feedContainer"></div>
-
-<!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <div class="nav-item active" data-nav="insights">
-    <span class="nav-icon">🧠</span><span class="nav-label">Hoy</span>
+  <div class="nav-item active" data-nav="top">
+    <span class="nav-icon">📍</span><span class="nav-label">Hoy</span>
   </div>
-  <div class="nav-item" data-nav="saved">
-    <span class="nav-icon">★</span><span class="nav-label">Guardados</span>
+  <div class="nav-item" data-nav="modules">
+    <span class="nav-icon">📚</span><span class="nav-label">Módulos</span>
   </div>
-  <div class="nav-item" data-nav="sources">
-    <span class="nav-icon">📰</span><span class="nav-label">Fuentes</span>
-  </div>
+  <a class="nav-item" href="https://stryvstudio.com" target="_blank" rel="noopener">
+    <span class="nav-icon">🚀</span><span class="nav-label">Stryv</span>
+  </a>
 </div>
 
 <script>
 (function(){
 'use strict';
 
-/* ═══════════════════════════════════════ */
-/*  CONSTANTS                             */
-/* ═══════════════════════════════════════ */
-const SECTIONS = ['all','saved','Dinero','Poder','Tecnología','Mercados','Movilidad','Latam'];
-const SECTION_ICONS = {all:'📡',saved:'★',Dinero:'💰',Poder:'⚡','Tecnología':'🤖',Mercados:'📊',Movilidad:'🌍',Latam:'🌎'};
-const SECTION_TAGS = {Dinero:'tag-dinero',Poder:'tag-poder','Tecnología':'tag-tecnologia',Mercados:'tag-mercados',Movilidad:'tag-movilidad',Latam:'tag-latam'};
-
-/* ═══════════════════════════════════════ */
-/*  i18n                                  */
-/* ═══════════════════════════════════════ */
-const I18N = {
-  es: {
-    live: 'EN VIVO',
-    langToggle: 'EN',
-    loaderSub: 'El contexto que las noticias no te dan',
-    loaderStatuses: ['Conectando con el mundo...','Leyendo lo que está pasando...','Separando el ruido de lo importante...','Preparando tu contexto del día...'],
-    loaderDone: (n) => n+' noticias analizadas',
-    tagline: 'El mundo cambió. Aquí entiendes cómo.',
-    heroKicker: 'Guerras · IA · Bitcoin · China · Poder',
-    heroTitle: 'Todo eso ya pasó. ¿Pero realmente lo entiendes?',
-    heroSummary: '<strong>Hay una diferencia enorme entre escuchar una noticia y entender lo que está pasando.</strong> Una IA analiza las noticias del día y te explica qué significan realmente — sin jerga, sin drama, sin tono de noticiero. Como si alguien que sí entiende te lo explicara en persona.',
-    heroManifesto: 'Por qué existe esto',
-    heroPower: 'Entender lo de hoy',
-    briefingLabel: 'Tu contexto del día',
-    briefingPreparing: 'Preparando...',
-    briefingReady: 'Listo',
-    briefingWaiting: 'Esperando noticias',
-    briefingTitle: 'Lo que está pasando hoy, sin filtro y sin jerga.',
-    briefingCopyReady: 'Una IA analizó las noticias del día y te explica qué está pasando realmente — no lo que dicen los titulares, sino lo que significan.',
-    briefingCopyWaiting: 'Aún no hay suficientes noticias para armar tu contexto del día.',
-    briefingItems: ['Qué pasó en realidad.','Por qué importa aunque no lo creas.','Qué conviene no perder de vista.'],
-    briefingGenerate: 'Generar mi contexto',
-    briefingRefresh: 'Actualizar contexto',
-    briefingGenerating: 'IA analizando...',
-    briefingAnalyzing: 'IA procesando las noticias',
-    briefingFailed: 'No se pudo generar',
-    briefingApiError: 'La API no está configurada.',
-    briefingError: 'No se pudo generar el contexto ahora.',
-    briefingShare: 'Compartir',
-    briefingCopied: 'Copiado',
-    briefingShareText: 'Estoy usando CONTEXTO — porque hay una diferencia entre escuchar las noticias y entender lo que está pasando.',
-    refreshLoading: 'IA analizando el mundo...',
-    refreshUpdating: 'Actualizando...',
-    refreshSearching: 'Conectando con las fuentes...',
-    refreshUpdate: 'Actualizar',
-    refreshError: 'Error de conexión',
-    refreshAt: (t)=>'Actualizado a las '+t,
-    installTitle: 'Instala CONTEXTO',
-    installDesc: 'Entiende el mundo en 5 minutos. Todos los días.',
-    installBtn: 'Instalar',
-    installDismiss: 'Ahora no',
-    topSignalsTitle: 'Lo que está moviendo el mundo hoy',
-    topSignalsSub: (n)=>n+' temas explicados por IA',
-    signalLoading: 'IA armando tu explicación...',
-    signalFailed: 'No se pudo generar la explicación.',
-    signalCta: 'Entender a fondo →',
-    navInsights: 'Hoy',
-    navSaved: 'Guardados',
-    navSources: 'Fuentes',
-    saveArticle: 'Guardar',
-    sectionNames: {
-      Dinero: 'Dinero',
-      Poder: 'Poder',
-      'Tecnología': 'Tecnología',
-      Mercados: 'Mercados',
-      Movilidad: 'Movilidad',
-      Latam: 'Latam'
-    },
-    signals: 'noticias',
-    searchPlaceholder: 'Buscar temas...',
-    searchCancel: 'Cancelar',
-    searchEmpty: 'Escribe para buscar en todos los temas',
-    searchNoResults: (q)=>'Sin resultados para "'+q+'"',
-    savedEmptyTitle: 'No has guardado nada',
-    savedEmptyDesc: 'Guarda lo que quieras volver a leer o entender mejor.',
-    savedExplore: 'Volver a Hoy',
-    feedEmptyTitle: 'No se pudieron cargar noticias',
-    feedEmptyDesc: 'Hubo un error conectando con las fuentes. Intenta actualizar.',
-    feedRetry: 'Reintentar',
-    analysisBadge: '✨ Explicado por IA',
-    analysisWhat: 'Qué pasó',
-    analysisWhy: 'Por qué importa',
-    analysisShift: 'Qué puede cambiar',
-    analysisAction: 'Qué puedes hacer',
-    analysisShare: 'Compartir explicación ↗',
-    analysisCopied: '✓ Copiado',
-    analysisApiError: '⚠️ Falta configurar la API.',
-    analysisError: '⚠️ No se pudo generar la explicación.',
-    analysisRetry: 'Reintentar',
-    askAiPlaceholder: '¿Tienes alguna duda? Pregúntale a la IA...',
-    askAiSend: 'Preguntar',
-    askAiThinking: 'Pensando...',
-    connectionsTitle: 'Cómo se conecta todo',
-    connectionsLoading: 'IA buscando conexiones entre las noticias',
-    progressTitle: 'Tu nivel de contexto',
-    progressTopics: 'Temas',
-    progressStreak: 'Racha',
-    progressLevel: (l) => 'Nivel '+l,
-    progressNext: (n) => n+' temas más para el siguiente nivel',
-    progressDays: 'días',
-    ctaTalk: 'Hablar con Stryv',
-    onboardingSkip: 'Saltar',
-    onboardingNext: 'Siguiente',
-    onboardingEnter: 'Entrar',
-    onboardingStep: (c,t)=>'Paso '+c+' de '+t,
-    onboardingSteps: [
-      { title:'El mundo se está reconfigurando. La mayoría no se va a dar cuenta.', copy:'Guerras, inteligencia artificial, Bitcoin, China, monedas, poder. <strong>Todo esto ya está pasando</strong> y la mayoría de la gente no tiene ni el vocabulario para entenderlo.', points:['No es falta de inteligencia. Es falta de contexto.','La ignorancia no duele hasta que el mundo cambia y ya no puedes actuar.']},
-      { title:'Una IA te explica lo que los noticieros no.', copy:'Los titulares no te dicen nada útil si no tienes el contexto detrás. <strong>Una IA analiza las noticias del día y te explica lo que realmente significan</strong> — sin jerga, sin tono de noticiero. También puedes hacerle preguntas sobre cualquier noticia.', points:['✨ IA que lee 14+ fuentes y escribe explicaciones claras.','Pregunta lo que quieras. La IA te responde.']},
-      { title:'5 minutos al día para no quedarte atrás.', copy:'Cada mañana tienes <strong>un panorama claro del mundo</strong> — los temas que importan, explicados para que los entiendas y puedas tomar mejores decisiones.', points:['Entiende guerras, economía e IA sin ser experto.','Profundiza solo si te interesa.']}
-    ],
-    ctas: {
-      Dinero:{title:'¿Tu negocio no tiene sistema financiero digital?',desc:'Construimos la infraestructura que hace que tu negocio opere aunque tú no estés.'},
-      Poder:{title:'El mundo cambia. ¿Tu negocio también?',desc:'Sistemas digitales para negocios que entienden que el mundo ya no es el mismo.'},
-      'Tecnología':{title:'¿Tu negocio ya usa IA?',desc:'Implementamos atención automatizada con IA para negocios que no quieren quedarse atrás.'},
-      Mercados:{title:'¿Operas sin datos en tiempo real?',desc:'Dashboards, automatización y sistemas que te dan visibilidad total de tu negocio.'},
-      Movilidad:{title:'¿Tu negocio puede operar desde cualquier país?',desc:'Si no, hay algo que no está digitalizado. Hablemos.'},
-      Latam:{title:'¿Listo para escalar fuera de tu ciudad?',desc:'Todo lo que aprendiste aquí, Stryv lo implementa. Diagnóstico gratis.'}
-    }
+const MODULES = [
+  {
+    id:'dinero', icon:'💰', label:'Dinero',
+    header:'Lo que el sistema no quiere que sepas',
+    cta:{ title:'¿Tu negocio opera sin sistema?', desc:'Construimos la infraestructura digital que hace que tu negocio funcione aunque tú no estés. Diagnóstico gratis.' },
+    lessons:[
+      { id:'d1', title:'El dinero no es neutral. Nunca lo fue.', desc:'Desde Bretton Woods hasta el petrodólar, el dinero siempre fue una herramienta de control geopolítico.', tag:'Fundamental', tagClass:'tag-warn' },
+      { id:'d2', title:'Por qué el dólar está cayendo y qué significa para ti', desc:'El índice del dólar bajó significativamente en el último año. No es un accidente. Es un síntoma.', tag:'Urgente', tagClass:'tag-warn' },
+      { id:'d3', title:'Bitcoin: lo que es, lo que no es, y por qué importa', desc:'No es una inversión especulativa. Es el primer activo en la historia que ningún gobierno puede confiscar.', tag:'Accionable', tagClass:'tag-green' },
+      { id:'d4', title:'Cómo diversificar sin ser millonario', desc:'Oro, Bitcoin, cuentas en otras monedas, activos fuera de tu país. Lo que hacen los ricos desde siempre.', tag:'Accionable', tagClass:'tag-green' },
+      { id:'d5', title:'Por qué ahorrar en pesos es un error silencioso', desc:'Inflación, devaluación, control de cambios. El sistema está diseñado para que pierdas poder adquisitivo.', tag:'Urgente', tagClass:'tag-warn' }
+    ]
   },
-  en: {
-    live: 'LIVE',
-    langToggle: 'ES',
-    loaderSub: 'The context the news won\'t give you',
-    loaderStatuses: ['Connecting to the world...','Reading what\'s happening...','Separating noise from signal...','Building your context...'],
-    loaderDone: (n) => n+' stories analyzed',
-    tagline: 'The world changed. Here you understand how.',
-    heroKicker: 'Wars · AI · Bitcoin · China · Power',
-    heroTitle: 'All of that already happened. But do you really understand it?',
-    heroSummary: '<strong>There is a massive difference between hearing the news and understanding what is happening.</strong> An AI analyzes today\'s news and explains what they actually mean — no jargon, no drama, no newscast tone. Like someone who gets it explaining it to you in person.',
-    heroManifesto: 'Why this exists',
-    heroPower: 'Understand today',
-    briefingLabel: 'Your daily context',
-    briefingPreparing: 'Preparing...',
-    briefingReady: 'Ready',
-    briefingWaiting: 'Waiting for news',
-    briefingTitle: 'What is happening today, no filter, no jargon.',
-    briefingCopyReady: 'An AI analyzed today\'s news and explains what is actually happening — not what headlines say, but what they mean.',
-    briefingCopyWaiting: 'Not enough stories yet to build your daily context.',
-    briefingItems: ['What actually happened.','Why it matters even if you don\'t think so.','What\'s worth keeping an eye on.'],
-    briefingGenerate: 'Generate my context',
-    briefingRefresh: 'Refresh context',
-    briefingGenerating: 'AI analyzing...',
-    briefingAnalyzing: 'AI processing the news',
-    briefingFailed: 'Could not generate',
-    briefingApiError: 'API is not configured.',
-    briefingError: 'Could not generate context right now.',
-    briefingShare: 'Share',
-    briefingCopied: 'Copied',
-    briefingShareText: 'I\'m using CONTEXTO — because there\'s a difference between hearing the news and understanding what\'s happening.',
-    refreshLoading: 'AI analyzing the world...',
-    refreshUpdating: 'Updating...',
-    refreshSearching: 'Connecting to sources...',
-    refreshUpdate: 'Refresh',
-    refreshError: 'Connection error',
-    refreshAt: (t)=>'Updated at '+t,
-    installTitle: 'Install CONTEXTO',
-    installDesc: 'Understand the world in 5 minutes. Every day.',
-    installBtn: 'Install',
-    installDismiss: 'Not now',
-    topSignalsTitle: 'What is moving the world today',
-    topSignalsSub: (n)=>n+' topics explained by AI',
-    signalLoading: 'AI building your explanation...',
-    signalFailed: 'Could not generate the explanation.',
-    signalCta: 'Understand in depth →',
-    navInsights: 'Today',
-    navSaved: 'Saved',
-    navSources: 'Sources',
-    saveArticle: 'Save',
-    sectionNames: {
-      Dinero: 'Money',
-      Poder: 'Power',
-      'Tecnología': 'Technology',
-      Mercados: 'Markets',
-      Movilidad: 'Mobility',
-      Latam: 'Latam'
-    },
-    signals: 'stories',
-    searchPlaceholder: 'Search topics...',
-    searchCancel: 'Cancel',
-    searchEmpty: 'Type to search across all topics',
-    searchNoResults: (q)=>'No results for "'+q+'"',
-    savedEmptyTitle: 'Nothing saved yet',
-    savedEmptyDesc: 'Save what you want to read again or understand better.',
-    savedExplore: 'Back to Today',
-    feedEmptyTitle: 'Could not load news',
-    feedEmptyDesc: 'There was an error connecting to sources. Try refreshing.',
-    feedRetry: 'Retry',
-    analysisBadge: '✨ Explained by AI',
-    analysisWhat: 'What happened',
-    analysisWhy: 'Why it matters',
-    analysisShift: 'What could change',
-    analysisAction: 'What you can do',
-    analysisShare: 'Share explanation ↗',
-    analysisCopied: '✓ Copied',
-    analysisApiError: '⚠️ API not configured.',
-    analysisError: '⚠️ Could not generate the explanation.',
-    analysisRetry: 'Retry',
-    askAiPlaceholder: 'Have a question? Ask the AI...',
-    askAiSend: 'Ask',
-    askAiThinking: 'Thinking...',
-    connectionsTitle: 'How it all connects',
-    connectionsLoading: 'AI finding connections between stories',
-    progressTitle: 'Your context level',
-    progressTopics: 'Topics',
-    progressStreak: 'Streak',
-    progressLevel: (l) => 'Level '+l,
-    progressNext: (n) => n+' more topics to next level',
-    progressDays: 'days',
-    ctaTalk: 'Talk to Stryv',
-    onboardingSkip: 'Skip',
-    onboardingNext: 'Next',
-    onboardingEnter: 'Enter',
-    onboardingStep: (c,t)=>'Step '+c+' of '+t,
-    onboardingSteps: [
-      { title:'The world is reconfiguring. Most people won\'t realize it.', copy:'Wars, artificial intelligence, Bitcoin, China, currencies, power. <strong>All of this is already happening</strong> and most people don\'t even have the vocabulary to understand it.', points:['It\'s not a lack of intelligence. It\'s a lack of context.','Ignorance doesn\'t hurt until the world shifts and you can\'t act.']},
-      { title:'An AI explains what the news won\'t.', copy:'Headlines don\'t tell you anything useful without the context behind them. <strong>An AI analyzes today\'s news and explains what they actually mean</strong> — no jargon, no newscast tone. You can also ask it questions about any story.', points:['✨ AI reads 14+ sources and writes clear explanations.','Ask anything. The AI answers.']},
-      { title:'5 minutes a day to not fall behind.', copy:'Every morning you get <strong>a clear picture of the world</strong> — the topics that matter, explained so you understand them and can make better decisions.', points:['Understand wars, economy and AI without being an expert.','Go deeper only if you want to.']}
-    ],
-    ctas: {
-      Dinero:{title:'No digital financial system for your business?',desc:'We build the infrastructure that keeps your business running even when you\'re not.'},
-      Poder:{title:'The world is changing. Is your business?',desc:'Digital systems for businesses that understand the world is no longer the same.'},
-      'Tecnología':{title:'Is your business using AI yet?',desc:'We implement automated AI-powered service for businesses that refuse to fall behind.'},
-      Mercados:{title:'Operating without real-time data?',desc:'Dashboards, automation, and systems that give you total business visibility.'},
-      Movilidad:{title:'Can your business operate from any country?',desc:'If not, something isn\'t digitized. Let\'s talk.'},
-      Latam:{title:'Ready to scale beyond your city?',desc:'Everything you learned here, Stryv implements. Free diagnosis.'}
-    }
+  {
+    id:'movilidad', icon:'🌍', label:'Movilidad',
+    header:'Cómo moverte en el mundo real',
+    cta:{ title:'¿Tu negocio puede operar desde cualquier país?', desc:'Si no, hay algo que no está digitalizado correctamente. Hablemos.' },
+    lessons:[
+      { id:'m1', title:'Visas de inversión: cómo comprar tu movilidad', desc:'España, Portugal, México, Paraguay. Con menos de $100K puedes obtener residencia en otro país.', tag:'Accionable', tagClass:'tag-green' },
+      { id:'m2', title:'Cómo abrir cuentas bancarias en otros países', desc:'Wise, Revolut, bancos en México, USA, España. Cómo tener acceso a múltiples monedas desde tu teléfono.', tag:'Accionable', tagClass:'tag-green' },
+      { id:'m3', title:'Cómo cobrar en dólares desde cualquier país', desc:'Stripe, Wise, transferencias internacionales. La infraestructura financiera que usan los nómadas digitales.', tag:'Accionable', tagClass:'tag-green' },
+      { id:'m4', title:'Por qué tener un segundo pasaporte cambia todo', desc:'No es para ricos. Es para los que entienden que la nacionalidad es un accidente geográfico, no un destino.', tag:'Estratégico', tagClass:'tag-gold' }
+    ]
+  },
+  {
+    id:'poder', icon:'⚡', label:'Poder',
+    header:'Cómo funciona el mundo real',
+    cta:{ title:'El mundo cambia. ¿Tu negocio también?', desc:'Construimos sistemas digitales para negocios que entienden que el mundo ya no es el mismo.' },
+    lessons:[
+      { id:'p1', title:'Por qué hay guerras: el manual real', desc:'Las guerras no son por ideología. Son por recursos, rutas comerciales y control monetario.', tag:'Incómodo', tagClass:'tag-warn' },
+      { id:'p2', title:'El ciclo de los imperios: Roma, España, Gran Bretaña, EE.UU.', desc:'Todos creyeron que eran eternos. Todos siguieron el mismo patrón. EE.UU. lleva 80 años. El promedio es 94.', tag:'Historia', tagClass:'tag-gold' },
+      { id:'p3', title:'China: por qué ya es la nueva potencia dominante', desc:'No es una amenaza futura. Ya pasó. Primera economía por poder de compra, su propia IA, su propio sistema de pagos.', tag:'Urgente', tagClass:'tag-warn' },
+      { id:'p4', title:'Cómo el status quo se mantiene: los mecanismos invisibles', desc:'Media, deuda, educación, entretenimiento. El sistema no necesita conspiraciones. Solo necesita que no preguntes.', tag:'Incómodo', tagClass:'tag-warn' }
+    ]
+  },
+  {
+    id:'tecnologia', icon:'🤖', label:'Tecnología',
+    header:'La revolución que ya comenzó',
+    cta:{ title:'¿Tu negocio ya usa IA?', desc:'Implementamos sistemas de atención automatizada con IA para negocios que no quieren quedarse atrás.' },
+    lessons:[
+      { id:'t1', title:'Qué es realmente la IA y por qué cambia todo', desc:'No es un chatbot sofisticado. Es la automatización del trabajo intelectual. Por primera vez en la historia.', tag:'Fundamental', tagClass:'tag-warn' },
+      { id:'t2', title:'Cómo usar IA para ganar ventaja real hoy', desc:'Claude, ChatGPT, Gemini, Midjourney. Las herramientas concretas y cómo usarlas para trabajar diferente.', tag:'Accionable', tagClass:'tag-green' },
+      { id:'t3', title:'La guerra de chips EE.UU.-China: por qué te afecta', desc:'El control de los semiconductores avanzados es el control del futuro. Y está en juego ahora mismo.', tag:'Urgente', tagClass:'tag-warn' },
+      { id:'t4', title:'Qué trabajos va a reemplazar la IA primero', desc:'No son los trabajos manuales. Son los trabajos de oficina, los administrativos, los de "profesional".', tag:'Urgente', tagClass:'tag-warn' }
+    ]
+  },
+  {
+    id:'mentalidad', icon:'🧠', label:'Mentalidad',
+    header:'Rompe las cadenas invisibles',
+    cta:{ title:'La mentalidad mutante aplicada al negocio', desc:'Un negocio que no tiene sistemas digitales depende completamente de su dueño. Eso no es libertad.' },
+    lessons:[
+      { id:'men1', title:'La Alegoría de la Caverna: por qué tu realidad no es real', desc:'Platón lo describió hace 2,400 años. Sigue siendo la descripción más precisa de cómo vivimos hoy.', tag:'Filosofía', tagClass:'tag-default' },
+      { id:'men2', title:'Cómo identificar tus prisiones de contexto', desc:'Las limitaciones más peligrosas son las que no sabes que tienes. Cómo verlas y cómo salir de ellas.', tag:'Accionable', tagClass:'tag-green' },
+      { id:'men3', title:'La mentalidad mutante: adaptarse o quedarse atrás', desc:'No es motivación. Es supervivencia. El mundo cambia tan rápido que la rigidez es el riesgo más grande.', tag:'Estratégico', tagClass:'tag-gold' },
+      { id:'men4', title:'Por qué la ignorancia no duele hasta que es tarde', desc:'El costo de no saber no se paga inmediatamente. Se paga cuando el mundo cambia y ya no puedes moverte.', tag:'Incómodo', tagClass:'tag-warn' }
+    ]
+  },
+  {
+    id:'negocio', icon:'🚀', label:'Negocio',
+    header:'Construye algo que no dependa de ti',
+    cta:{ title:'¿Listo para construir el sistema?', desc:'Diagnóstico gratis. Sin compromiso. Respondemos en menos de 24h.' },
+    lessons:[
+      { id:'n1', title:'Por qué tu negocio local tiene un techo y cómo romperlo', desc:'Un negocio que solo opera localmente está atado a la economía de una sola ciudad, de un solo país.', tag:'Fundamental', tagClass:'tag-warn' },
+      { id:'n2', title:'Qué es un sistema operativo digital y por qué lo necesitas', desc:'Ventas, atención, operación interna. El conjunto de herramientas que hace que tu negocio funcione solo.', tag:'Accionable', tagClass:'tag-green' },
+      { id:'n3', title:'Cómo construir ingresos que no dependan de tu tiempo', desc:'La trampa del autoempleo. La diferencia entre tener un negocio y ser el negocio.', tag:'Estratégico', tagClass:'tag-gold' },
+      { id:'n4', title:'Cómo escalar a mercados fuera de tu país', desc:'LinkedIn, Meta Ads, contenido en español para CDMX y Monterrey. La estrategia que usa Stryv.', tag:'Accionable', tagClass:'tag-green' }
+    ]
   }
+];
+
+const LESSON_PROMPTS = {
+  d1:'Explica de forma clara y accionable cómo el dinero ha sido siempre una herramienta de control geopolítico, desde el patrón oro hasta el petrodólar y los acuerdos de Bretton Woods. Incluye qué puede hacer una persona común con esta información.',
+  d2:'Explica por qué el dólar está cayendo, qué lo está causando (deuda de EE.UU., desdolarización, tensiones geopolíticas), y qué debe hacer concretamente alguien en Latinoamérica para protegerse.',
+  d3:'Explica qué es Bitcoin realmente — no como inversión sino como tecnología monetaria. Por qué es diferente a cualquier activo anterior. Cómo empezar a tenerlo de forma segura con poco dinero.',
+  d4:'Explica cómo diversificar el patrimonio sin ser millonario: oro físico, Bitcoin, cuentas en dólares, activos fuera del país. Pasos concretos y accesibles para alguien en Latinoamérica.',
+  d5:'Explica por qué ahorrar en pesos mexicanos (o cualquier moneda latinoamericana) es un error silencioso a largo plazo. Inflación, devaluación histórica, pérdida de poder adquisitivo. Qué hacer en cambio.',
+  m1:'Explica las principales visas de inversión y residencia accesibles para latinoamericanos: España (visa nómada digital), Portugal, Paraguay, México, Uruguay. Costos reales, requisitos, pasos concretos.',
+  m2:'Explica cómo abrir cuentas bancarias en otros países siendo latinoamericano: Wise, Revolut, Mercury (EE.UU.), bancos en España. Pasos concretos, documentos necesarios, limitaciones.',
+  m3:'Explica cómo cobrar en dólares desde cualquier país latinoamericano: Stripe, Wise, transferencias internacionales, criptomonedas como intermediario. Plataformas, costos, procesos.',
+  m4:'Explica por qué tener un segundo pasaporte o residencia cambia fundamentalmente las opciones de vida. Cómo conseguirlo siendo latinoamericano: por ascendencia, inversión, residencia prolongada.',
+  p1:'Explica el manual real de por qué hay guerras: recursos naturales, rutas comerciales, control monetario, intereses del capital. Usa conflictos actuales como ejemplos concretos.',
+  p2:'Explica el ciclo histórico de los imperios usando el modelo de Ray Dalio: Roma, España, Gran Bretaña, EE.UU. El patrón que se repite y en qué punto está EE.UU. hoy.',
+  p3:'Explica por qué China ya es la potencia dominante del siglo XXI: economía por PPP, tecnología propia, sistema de pagos CIPS, yuan en comercio global, DeepSeek. Por qué la mayoría aún no lo ve.',
+  p4:'Explica los mecanismos concretos mediante los cuales el status quo se mantiene: medios de comunicación, sistema educativo, deuda, entretenimiento, narrativa del éxito. Sin teoría de conspiración — solo mecánica.',
+  t1:'Explica qué es realmente la inteligencia artificial: no un chatbot sino la automatización del trabajo intelectual. Por qué es el cambio más disruptivo en la historia y qué significa para el trabajo humano.',
+  t2:'Explica cómo usar IA para ganar ventaja real hoy: Claude, ChatGPT, Midjourney, Kling, HeyGen. Casos de uso concretos para trabajo, negocio y productividad personal.',
+  t3:'Explica la guerra de chips EE.UU.-China: por qué el control de los semiconductores avanzados es el control del futuro. TSMC, Nvidia, DeepSeek, ASML. Por qué afecta a todo el mundo.',
+  t4:'Explica qué trabajos va a reemplazar la IA primero y cuáles son más seguros. No son los trabajos manuales. Contadores, abogados, diseñadores, periodistas, programadores — qué está pasando con cada uno.',
+  men1:'Explica la Alegoría de la Caverna de Platón completa y cómo describe exactamente la situación del mundo hoy: personas que solo conocen las sombras de su contexto y creen que eso es toda la realidad.',
+  men2:'Explica cómo identificar las prisiones de contexto personales: creencias heredadas del entorno, límites invisibles, narrativas que limitan lo que se puede imaginar como posible. Con ejercicios concretos.',
+  men3:'Explica la mentalidad mutante: no como motivación sino como necesidad de supervivencia ante un mundo que cambia más rápido que nunca. Cómo desarrollarla concretamente.',
+  men4:'Explica el costo real de la ignorancia: no se paga inmediatamente sino cuando el mundo cambia y ya no puedes moverte. Ejemplos concretos de gente que no entendió cambios a tiempo.',
+  n1:'Explica por qué un negocio puramente local tiene un techo y cómo romperlo: digitalización, mercados latinoamericanos remotos, servicios que no dependen de ubicación física.',
+  n2:'Explica qué es un sistema operativo digital para negocios: sistema de ventas, atención automatizada con IA, operación interna. Por qué es la diferencia entre escalar y estancarse.',
+  n3:'Explica la diferencia entre ser el negocio y tener un negocio. Cómo construir sistemas que generen ingresos sin requerir tu presencia o tiempo constante. La trampa del autoempleo.',
+  n4:'Explica cómo un negocio latinoamericano puede escalar a mercados en CDMX, Monterrey, Bogotá, Miami. Estrategia de contenido, LinkedIn, Meta Ads, posicionamiento. Pasos concretos.'
 };
 
-function t(key) { return I18N[lang][key]; }
+const KNOWLEDGE_BASE = {
+  dinero:'El dinero nunca fue neutral — desde Bretton Woods (1944) hasta el petrodólar, siempre fue herramienta de control geopolítico. Hoy hay desdolarización activa (BRICS, yuan). Ahorrar en moneda local latinoamericana es erosión silenciosa. Bitcoin es el primer activo que ningún gobierno puede confiscar. Diversificar no es para ricos: oro, Bitcoin, Wise/Revolut.',
+  movilidad:'La nacionalidad es un accidente geográfico. Un segundo pasaporte cambia las opciones de vida. Visas de inversión accesibles (España, Portugal, Paraguay) con menos de $100K. Cuentas bancarias globales (Wise, Revolut, Mercury). Cobrar en dólares desde Latam es posible con Stripe y cripto.',
+  poder:'Las guerras no son por ideología — son por recursos, rutas comerciales y control monetario. Los imperios siguen un ciclo (Ray Dalio): Roma, España, Gran Bretaña, EE.UU. (lleva ~80 años, promedio 94). China ya es primera economía por poder de compra, IA propia (DeepSeek), CIPS. El status quo se mantiene con medios, deuda, educación y entretenimiento.',
+  tecnologia:'La IA no es un chatbot — es la automatización del trabajo intelectual por primera vez. Los trabajos que desaparecen primero son los de oficina: contadores, abogados, diseñadores, programadores. La guerra de chips EE.UU.-China (TSMC, Nvidia, ASML) es el control del futuro.',
+  mentalidad:'La Alegoría de la Caverna de Platón describe exactamente cómo vivimos — personas que solo ven sombras de su contexto. Las limitaciones más peligrosas son las que no sabes que tienes. La rigidez mental es el riesgo más grande en un mundo que cambia a esta velocidad.',
+  negocio:'Un negocio puramente local está atado a una sola economía. La diferencia entre tener un negocio y ser el negocio. Un sistema operativo digital (ventas, atención IA, operación) permite escalar. Mercados latinoamericanos remotos (CDMX, Monterrey, Bogotá, Miami) son accesibles con contenido + ads.'
+};
 
-/* ═══════════════════════════════════════ */
-/*  STATE                                 */
-/* ═══════════════════════════════════════ */
-const LS = 'ctx_';
+/* ═══ STATE ═══ */
 const store = {
-  get(k,fb){try{const v=localStorage.getItem(LS+k);return v!==null?JSON.parse(v):fb}catch{return fb}},
-  set(k,v){try{localStorage.setItem(LS+k,JSON.stringify(v))}catch{}}
+  get(k,fb){ try{ const v=localStorage.getItem('ctx_'+k); return v!==null?JSON.parse(v):fb }catch{ return fb } },
+  set(k,v){ try{ localStorage.setItem('ctx_'+k,JSON.stringify(v)) }catch{} }
 };
 
+let theme = store.get('theme','dark');
 let articles = [];
-let newsSummary = '';
-let activeSection = 'all';
-let activeView = 'insights';
-let analysisCache = store.get('analysisCache', {});
-let briefingCache = store.get('briefingCache', {});
-let savedIds = store.get('savedIds', []);
-let usage = store.get('usage', { lastVisit:'', streak:0, analysesToday:0, analysesDate:'' });
-let fetchedAt = '';
-let theme = store.get('theme', 'dark');
-let lang = store.get('lang', 'es');
-let titleTranslations = store.get('titleTranslations', { es:{}, en:{} });
-let titleTranslationJob = null;
-let deferredInstallPrompt = null;
-let lastNewsError = '';
-let onboardingSeen = store.get('onboardingSeen', false);
-let onboardingStep = 0;
-let imageCache = store.get('imageCache', {});  // { keyword: { sm:'url', th:'url' } }
-let connectionsCache = store.get('connectionsCache', {});  // { todayKey: { narrative, threads[] } }
-let topicsUnderstood = store.get('topicsUnderstood', []);  // ['bitcoin','bretton woods','desdolarizacion',...]
+let liveContext = '';
+let pulseCache = store.get('pulseCache',{});
+let lessonCache = store.get('lessonCache',{});
+let topicsExplored = store.get('topicsExplored',[]);
+const loadedLessons = new Set();
 
-/* ═══════════════════════════════════════ */
-/*  HELPERS                               */
-/* ═══════════════════════════════════════ */
-const $=s=>document.querySelector(s);
-const $$=s=>document.querySelectorAll(s);
-function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
-
-function timeAgo(dateStr){
-  if(!dateStr) return '';
-  try{
-    const d=new Date(dateStr);
-    const now=new Date();
-    const mins=Math.floor((now-d)/60000);
-    if(mins<1) return lang==='en' ? 'now' : 'ahora';
-    if(mins<60) return mins+'m';
-    const hrs=Math.floor(mins/60);
-    if(hrs<24) return hrs+'h';
-    return Math.floor(hrs/24)+'d';
-  }catch{return ''}
-}
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+function esc(s){ const d=document.createElement('div');d.textContent=s;return d.innerHTML }
+function todayKey(){ return new Date().toISOString().slice(0,10) }
 
 function todayFormatted(){
   const d=new Date();
-  if(lang==='en'){
-    const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-    return days[d.getDay()]+', '+months[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();
-  }
   const days=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
   const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   return days[d.getDay()]+' '+d.getDate()+' de '+months[d.getMonth()]+', '+d.getFullYear();
 }
 
-function todayKey(){
-  return new Date().toISOString().slice(0,10);
+function shortDate(){
+  const d=new Date();
+  const days=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const months=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return days[d.getDay()]+' '+d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
 }
 
-function updateUsageVisit(){
-  const today = todayKey();
-  if(usage.lastVisit === today) return;
-  const last = usage.lastVisit ? new Date(usage.lastVisit + 'T00:00:00') : null;
-  const current = new Date(today + 'T00:00:00');
-  const diffDays = last ? Math.round((current - last) / 86400000) : 0;
-  usage.streak = diffDays === 1 ? usage.streak + 1 : 1;
-  usage.lastVisit = today;
-  if(usage.analysesDate !== today){
-    usage.analysesDate = today;
-    usage.analysesToday = 0;
-  }
-  store.set('usage', usage);
+function getModuleForLesson(id){
+  if(id.startsWith('men')) return 'mentalidad';
+  if(id.startsWith('d')) return 'dinero';
+  if(id.startsWith('m')) return 'movilidad';
+  if(id.startsWith('p')) return 'poder';
+  if(id.startsWith('t')) return 'tecnologia';
+  if(id.startsWith('n')) return 'negocio';
+  return 'dinero';
 }
 
-function incrementAnalyses(){
-  const today = todayKey();
-  if(usage.analysesDate !== today){
-    usage.analysesDate = today;
-    usage.analysesToday = 0;
-  }
-  usage.analysesToday += 1;
-  store.set('usage', usage);
-  renderHeroMetrics();
-}
-
-function formatLocalTime(dateStr){
-  if(!dateStr) return lang==='en' ? 'today' : 'hoy';
-  const d = new Date(dateStr);
-  if(Number.isNaN(d.getTime())) return lang==='en' ? 'today' : 'hoy';
-  return d.toLocaleTimeString(lang==='en' ? 'en-US' : 'es-MX',{hour:'2-digit',minute:'2-digit'});
-}
-
-function getSectionLabel(section){
-  const labels = t('sectionNames') || {};
-  return labels[section] || section;
-}
-
-function getDisplayTitle(article){
-  const id = hashId(article.title);
-  return (titleTranslations[lang] && titleTranslations[lang][id]) || article.title;
-}
-
-function getSavedArticles(){
-  return articles.filter(a=>savedIds.includes(hashId(a.title)));
-}
-
-function isStandalone(){
-  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-}
-
-function showInstallBanner(){
-  if(isStandalone() || store.get('installDismissed', false)) return;
-  const banner = $('#installBanner');
-  if(banner && deferredInstallPrompt) banner.classList.add('show');
-}
-
-function hideInstallBanner(persist){
-  const banner = $('#installBanner');
-  if(banner) banner.classList.remove('show');
-  if(persist) store.set('installDismissed', true);
-}
-
-async function installApp(){
-  if(!deferredInstallPrompt) return;
-  deferredInstallPrompt.prompt();
-  const choice = await deferredInstallPrompt.userChoice.catch(()=>null);
-  deferredInstallPrompt = null;
-  hideInstallBanner(choice?.outcome !== 'accepted');
-}
-
-function registerServiceWorker(){
-  if(!('serviceWorker' in navigator)) return;
-  navigator.serviceWorker.register('/service-worker.js').catch(()=>{});
-}
-
-function renderOnboarding(){
-  const steps = t('onboardingSteps');
-  const step = steps[onboardingStep];
-  $('#onboardingStepLabel').textContent = t('onboardingStep')(onboardingStep + 1, steps.length);
-  $('#onboardingTitle').textContent = step.title;
-  $('#onboardingCopy').innerHTML = step.copy;
-  $('#onboardingPoints').innerHTML = step.points.map((point, index) =>
-    '<div class="onboarding-point"><div class="onboarding-point-mark">0'+(index + 1)+'</div><div class="onboarding-point-text">'+esc(point)+'</div></div>'
-  ).join('');
-  $('#onboardingDots').innerHTML = steps.map((_, index) =>
-    '<span class="onboarding-dot'+(index === onboardingStep ? ' active' : '')+'"></span>'
-  ).join('');
-  $('#onboardingNext').textContent = onboardingStep === steps.length - 1 ? t('onboardingEnter') : t('onboardingNext');
-  $('#onboardingSkip').textContent = t('onboardingSkip');
-}
-
-function closeOnboarding(){
-  onboardingSeen = true;
-  store.set('onboardingSeen', true);
-  $('#onboarding').classList.remove('open');
-}
-
-function nextOnboarding(){
-  if(onboardingStep >= t('onboardingSteps').length - 1){
-    closeOnboarding();
-    return;
-  }
-  onboardingStep += 1;
-  renderOnboarding();
-}
-
-function openOnboarding(force){
-  if(onboardingSeen && !force) return;
-  onboardingStep = 0;
-  renderOnboarding();
-  $('#onboarding').classList.add('open');
-}
-
-/* ═══════════════════════════════════════ */
-/*  THEME                                 */
-/* ═══════════════════════════════════════ */
+/* ═══ THEME ═══ */
 function applyTheme(){
-  document.documentElement.setAttribute('data-theme', theme);
+  document.documentElement.setAttribute('data-theme',theme);
   const btn=$('#themeBtn');
-  if(btn) btn.textContent = theme==='dark'?'☀️':'🌙';
+  if(btn) btn.textContent=theme==='dark'?'☀️':'🌙';
 }
 
 function toggleTheme(){
-  theme = theme==='dark'?'light':'dark';
-  store.set('theme', theme);
+  theme=theme==='dark'?'light':'dark';
+  store.set('theme',theme);
   applyTheme();
 }
 
-function toggleLang(){
-  lang = lang==='es'?'en':'es';
-  store.set('lang', lang);
-  applyLang();
-  // Clear caches since they're in the old language
-  analysisCache={};
-  store.set('analysisCache',{});
-  topSignalCache={};
-  store.set('topSignalCache',{});
-  delete briefingCache[todayKey()];
-  store.set('briefingCache', briefingCache);
-  // Re-render everything
-  renderSecNav();
-  renderFeeds();
-  renderHeroMetrics();
-  renderTopSignals();
-  renderBriefing();
-  updateRefreshTime();
-  queueTitleTranslations(true);
-  if(articles.length) autoAnalyzeTopSignals();
-}
-
-function applyLang(){
-  document.documentElement.lang = lang;
-  $('#langBtn').textContent = t('langToggle');
-  $('#liveLabel').textContent = t('live');
-  // Static HTML elements
-  $('.loader-sub').textContent = t('loaderSub');
-  $('.date-tagline').textContent = t('tagline');
-  $('.hero-kicker').textContent = t('heroKicker');
-  $('.hero-title').textContent = t('heroTitle');
-  $('.hero-summary').innerHTML = t('heroSummary');
-  $('#heroManifestoBtn').textContent = t('heroManifesto');
-  $('#heroPowerBtn').textContent = t('heroPower');
-  $('.briefing-label').textContent = t('briefingLabel');
-  $('#searchInput').placeholder = t('searchPlaceholder');
-  $('#searchClose').textContent = t('searchCancel');
-  // Bottom nav
-  const navItems = $$('.nav-item');
-  if(navItems[0]) navItems[0].querySelector('.nav-label').textContent = t('navInsights');
-  if(navItems[1]) navItems[1].querySelector('.nav-label').textContent = t('navSaved');
-  if(navItems[2]) navItems[2].querySelector('.nav-label').textContent = t('navSources');
-  // Install banner
-  const installCopy = $('.install-copy');
-  if(installCopy) installCopy.innerHTML = '<strong>'+t('installTitle')+'</strong>'+t('installDesc');
-  const installBtnEl = $('#installBtn');
-  if(installBtnEl) installBtnEl.textContent = t('installBtn');
-  const installDismissEl = $('#installDismiss');
-  if(installDismissEl) installDismissEl.textContent = t('installDismiss');
-  // Refresh button
-  const refreshBtn = $('#refreshBtn');
-  if(refreshBtn && !refreshBtn.disabled) refreshBtn.textContent = t('refreshUpdate');
-  const refreshTime = $('#refreshTime');
-  if(refreshTime && (refreshTime.textContent.includes('Procesando') || refreshTime.textContent.includes('Processing') || refreshTime.textContent.includes('Cargando') || refreshTime.textContent.includes('Loading'))) refreshTime.textContent = t('refreshLoading');
-}
-
-/* ═══════════════════════════════════════ */
-/*  FETCH NEWS                            */
-/* ═══════════════════════════════════════ */
-async function fetchNews(){
-  try{
-    const res = await fetch('/.netlify/functions/news', { cache:'no-store' });
-    if(!res.ok) throw new Error('No respondió la función de noticias');
-    const contentType = res.headers.get('content-type') || '';
-    if(!contentType.includes('application/json')) throw new Error('La función de noticias no devolvió JSON');
-    const data = await res.json();
-    if(!Array.isArray(data.articles)) throw new Error('La respuesta de noticias vino incompleta');
-    articles = data.articles || [];
-    newsSummary = data.summary || '';
-    fetchedAt = data.fetchedAt || '';
-    lastNewsError = '';
-    queueTitleTranslations(true);
-    return data;
-  }catch(e){
-    articles = [];
-    newsSummary = '';
-    lastNewsError = e.message || 'No se pudieron cargar las noticias';
-    return {articles:[],sections:{},summary:'',count:0};
-  }
-}
-
-function renderHeroMetrics(){
-  if(!articles.length) return;
-  var sources = new Set();
-  articles.forEach(function(a){ if(a.source) sources.add(a.source); });
-  var el = function(id,val){ var e=document.getElementById(id); if(e) e.textContent=val; };
-  el('statSources', sources.size);
-  el('statAnalyzed', articles.length);
-  // Contexts generated = signal analyses + article analyses + briefings
-  var ctx = Object.keys(topSignalCache).length + Object.keys(analysisCache).length + Object.keys(briefingCache).length;
-  var totalContexts = store.get('totalContexts', 0);
-  if(ctx > totalContexts){ totalContexts = ctx; store.set('totalContexts', totalContexts); }
-  el('statContexts', totalContexts);
-}
-
-/* ═══════════════════════════════════════ */
-/*  TOP SIGNALS (analysis-first)          */
-/* ═══════════════════════════════════════ */
-let topSignalCache = store.get('topSignalCache', {});
-
-function getTopSignals(){
-  // Get the 7 highest-scored articles with section diversity
-  const used = new Set();
-  const top = [];
-  const sorted = articles.slice().sort((a,b)=>(b.score||0)-(a.score||0));
-  for(const a of sorted){
-    if(used.has(a.section) && top.length < 4) continue; // diversity: different sections first
-    top.push(a);
-    used.add(a.section);
-    if(top.length >= 7) break;
-  }
-  return top;
-}
-
-function renderTopSignals(){
-  const container = $('#topSignals');
-  if(!articles.length){
-    container.innerHTML = '';
-    return;
-  }
-  const topArts = getTopSignals();
-  if(!topArts.length){ container.innerHTML = ''; return; }
-
-  let html = '<div class="top-signals-header"><div class="top-signals-title">'+t('topSignalsTitle')+'</div><div class="top-signals-sub">'+t('topSignalsSub')(topArts.length)+'</div></div>';
-
-  html += topArts.map(a => {
-    const id = hashId(a.title);
-    const tagClass = SECTION_TAGS[a.section] || 'tag-dinero';
-    const cached = topSignalCache[id];
-    const rank = topArts.indexOf(a) + 1;
-    // Use AI-generated headline if available, otherwise fall back to translated title
-    const displayTitle = (cached && cached.headline) ? cached.headline : getDisplayTitle(a);
-    const tagMap = {urgente:'signal-tag-urgente',urgent:'signal-tag-urgente',accionable:'signal-tag-accionable',actionable:'signal-tag-accionable',fundamental:'signal-tag-fundamental',estrategico:'signal-tag-estrategico','estratégico':'signal-tag-estrategico',strategic:'signal-tag-estrategico'};
-    const tagLabels = {urgente:'🔴 Urgente',urgent:'🔴 Urgent',accionable:'Haz algo',actionable:'Take action',fundamental:'Clave',estrategico:'A futuro','estratégico':'A futuro',strategic:'Long-term'};
-    const rawTag = cached && cached.tag ? cached.tag.toLowerCase().trim() : '';
-    const tagHtml = tagMap[rawTag] ? '<span class="signal-tag '+tagMap[rawTag]+'">'+tagLabels[rawTag]+'</span>' : '';
-    const contextHtml = cached
-      ? '<div class="signal-ai-badge">✨ Explicado por IA</div>'+tagHtml+'<div class="signal-card-context">'+esc(cached.context)+'</div>'
-        + (cached.meaning ? '<div class="signal-card-meaning">'+esc(cached.meaning)+'</div>' : '')
-      : '<div class="signal-card-context loading">'+t('signalLoading')+'</div>';
-    return '<div class="signal-card" data-signal-id="'+id+'">'+
-      renderImageOrFallback(a, 400, 180, 'signal-card-img', 'sm')+
-      '<div class="signal-rank">'+rank+'</div>'+
-      '<div class="signal-card-section '+tagClass+'">'+(SECTION_ICONS[a.section]||'')+' '+esc(getSectionLabel(a.section))+'</div>'+
-      '<div class="signal-card-title">'+esc(displayTitle)+'</div>'+
-      contextHtml+
-      '<div class="signal-card-meta">'+
-        '<span>'+esc(a.source||'')+'</span>'+
-        (a.source?'<span>·</span>':'')+
-        '<span>'+timeAgo(a.date)+'</span>'+
-        '<span class="signal-card-cta">'+t('signalCta')+'</span>'+
-      '</div>'+
-    '</div>'+
-    '<div class="analysis" id="analysis-'+id+'">'+
-      '<div class="analysis-bar">'+
-        '<span class="analysis-badge"><span class="analysis-badge-dot"></span>'+t('analysisBadge')+'</span>'+
-        '<button class="analysis-close" data-close-analysis="'+id+'">✕</button>'+
-      '</div>'+
-      '<div class="analysis-body" id="abody-'+id+'">'+
-        '<div class="sk" style="height:14px;width:100%"></div>'+
-        '<div class="sk" style="height:14px;width:85%"></div>'+
-        '<div class="sk" style="height:14px;width:70%"></div>'+
-      '</div>'+
-    '</div>';
-  }).join('');
-
-  container.innerHTML = html;
-}
-
-async function autoAnalyzeTopSignals(){
-  const topArts = getTopSignals();
-  const toAnalyze = topArts.filter(a => !topSignalCache[hashId(a.title)]);
-  if(!toAnalyze.length) return;
-
-  // Analyze them sequentially to avoid rate limits
-  for(const article of toAnalyze){
-    const id = hashId(article.title);
-    try{
-      const promptLang = lang==='en'
-        ? 'Date: '+todayFormatted()+'. You explain news for people who do NOT follow the news. Write like a smart friend explaining what happened. No jargon, no dramatic tone, no technical terms.\n\nTODAY\'S CONTEXT:\n'+buildRelevantContext(article)+'\n\nORIGINAL HEADLINE: "'+getDisplayTitle(article)+'"\n\nRespond ONLY with valid JSON: {"headline":"Rewrite the headline in 8-12 simple words that anyone would understand","context":"2-3 sentences explaining what happened and why it matters, in plain everyday language, max 60 words","meaning":"1 sentence starting with \'This means...\' explaining what this means for a regular person, max 20 words","tag":"ONE word classifying this: urgent (breaking/time-sensitive), actionable (person can do something), fundamental (key concept), or strategic (long-term shift)","imageSearch":"2-3 English words describing the main visual subject of this news, for searching a stock photo (e.g. \'bitcoin chart\', \'white house\', \'AI robot\', \'oil pipeline\')"}'
-        : 'Fecha: '+todayFormatted()+'. Explicas noticias para personas que NO siguen las noticias. Escribe como un amigo inteligente explicando qué pasó. Sin jerga, sin tono dramático, sin tecnicismos.\n\nCONTEXTO DEL DÍA:\n'+buildRelevantContext(article)+'\n\nTITULAR ORIGINAL: "'+getDisplayTitle(article)+'"\n\nResponde SOLO con JSON válido: {"headline":"Reescribe el titular en 8-12 palabras simples que cualquiera entienda","context":"2-3 frases explicando qué pasó y por qué importa, en lenguaje cotidiano, máximo 60 palabras","meaning":"1 frase que empiece con \'Esto significa que...\' explicando qué significa para una persona normal, máximo 20 palabras","tag":"UNA palabra clasificando esto: urgente (última hora/tiempo limitado), accionable (la persona puede hacer algo), fundamental (concepto clave), o estrategico (cambio a largo plazo)","imageSearch":"2-3 palabras EN INGLÉS describiendo el sujeto visual principal de esta noticia, para buscar una foto (ej: \'bitcoin chart\', \'white house\', \'AI robot\', \'oil pipeline\')"}';
-      const text = await callClaude(promptLang, 400, 'fast');
-      const data = JSON.parse(text.replace(/```json|```/g,'').trim());
-      topSignalCache[id] = { headline: data.headline||'', context: data.context||'', meaning: data.meaning||'', tag: data.tag||'', imageSearch: data.imageSearch||'' };
-      store.set('topSignalCache', topSignalCache);
-      renderTopSignals();
-    }catch(e){
-      topSignalCache[id] = { headline: '', context: t('signalFailed'), meaning: '' };
-      renderTopSignals();
-    }
-  }
-  // After all signals are analyzed, fetch their specific images
-  fetchUnsplashImages();
-  // Generate connections between stories
-  generateConnections();
-}
-
-function getBriefing(){
-  return briefingCache[todayKey()] || null;
-}
-
-function renderBriefing(){
-  const briefing = getBriefing();
-  const list = $('#briefingList');
-  const status = $('#briefingStatus');
-  const title = $('#briefingTitle');
-  const copy = $('#briefingCopy');
-  const btn = $('#briefingBtn');
-
-  if(!briefing){
-    status.textContent = articles.length ? t('briefingReady') : t('briefingWaiting');
-    title.textContent = t('briefingTitle');
-    copy.textContent = articles.length ? t('briefingCopyReady') : t('briefingCopyWaiting');
-    list.innerHTML = t('briefingItems').map((item,index)=>'<div class="briefing-item"><div class="briefing-item-mark">0'+(index+1)+'</div><div class="briefing-item-text">'+esc(item)+'</div></div>').join('');
-    btn.textContent = t('briefingGenerate');
-    return;
-  }
-
-  status.textContent = (lang==='en'?'Updated ':'Actualizado ') + (briefing.generatedAt || formatLocalTime(fetchedAt));
-  title.textContent = briefing.headline || t('briefingTitle');
-  copy.textContent = briefing.summary || '';
-  list.innerHTML = (briefing.watch || []).map((item,index)=>
-    '<div class="briefing-item"><div class="briefing-item-mark">0'+(index+1)+'</div><div class="briefing-item-text">'+esc(item)+'</div></div>'
-  ).join('');
-  btn.textContent = t('briefingRefresh');
-}
-
-async function generateBriefing(force){
-  if(!articles.length) return;
-  const existing = getBriefing();
-  if(existing && !force){
-    renderBriefing();
-    return;
-  }
-
-  const btn = $('#briefingBtn');
-  const status = $('#briefingStatus');
-  btn.disabled = true;
-  btn.textContent = t('briefingGenerating');
-  status.textContent = t('briefingAnalyzing');
-
-  try{
-    const briefPrompt = lang==='en'
-      ? 'Date: '+todayFormatted()+'. You are explaining today\'s news to someone who does NOT follow the news at all. Write like a smart friend catching them up over coffee. No jargon, no technical words, no dramatic tone.\n\nREAL NEWS TODAY:\n'+articles.slice(0,10).map(item=>'['+getSectionLabel(item.section)+'] '+getDisplayTitle(item)).join('\n')+'\n\nRespond ONLY with valid JSON without markdown: {"headline":"1 clear sentence saying what matters most today in everyday words","summary":"1 short paragraph in simple everyday language explaining the day, like talking to a friend","watch":["Simple thing to follow 1","Simple thing to follow 2","Simple thing to follow 3"]}'
-      : 'Fecha: '+todayFormatted()+'. Estás explicándole las noticias de hoy a alguien que NO sigue las noticias. Escribe como un amigo inteligente poniéndolo al día en un café. Sin jerga, sin tecnicismos, sin tono dramático.\n\nNOTICIAS REALES DE HOY:\n'+articles.slice(0,10).map(item=>'['+getSectionLabel(item.section)+'] '+getDisplayTitle(item)).join('\n')+'\n\nResponde SOLO con JSON válido sin markdown: {"headline":"1 frase clara diciendo qué fue lo más importante de hoy en palabras cotidianas","summary":"1 párrafo corto en lenguaje simple explicando el día, como hablándole a un amigo","watch":["Tema simple a seguir 1","Tema simple a seguir 2","Tema simple a seguir 3"]}';
-    const text = await callClaude(briefPrompt, 550, 'fast');
-
-    const data = JSON.parse(text.replace(/```json|```/g,'').trim());
-    briefingCache[todayKey()] = {
-      headline: data.headline || t('briefingTitle'),
-      summary: data.summary || '',
-      watch: Array.isArray(data.watch) ? data.watch.slice(0,3) : [],
-      generatedAt: formatLocalTime(fetchedAt || new Date().toISOString())
-    };
-    store.set('briefingCache', briefingCache);
-    renderBriefing();
-  }catch(e){
-    const msg = /API key/i.test(String(e && e.message)) ? t('briefingApiError') : t('briefingError');
-    status.textContent = t('briefingFailed');
-    $('#briefingCopy').textContent = msg;
-  }finally{
-    btn.disabled = false;
-    btn.textContent = getBriefing() ? t('briefingRefresh') : t('briefingGenerate');
-  }
-}
-
-function shareBriefing(){
-  const briefing = getBriefing();
-  const text = briefing
-    ? briefing.headline+'\n\n'+briefing.summary+'\n\n- '+(briefing.watch || []).join('\n- ')+'\n\nCONTEXTO por Stryv Studio'
-    : t('briefingShareText')+'\n\nhttps://stryvstudio.com';
-
-  if(navigator.share){
-    navigator.share({title:'CONTEXTO',text,url:window.location.href}).catch(()=>{});
-    return;
-  }
-
-  navigator.clipboard.writeText(text).then(()=>{
-    const btn = $('#briefingShareBtn');
-    btn.textContent = t('briefingCopied');
-    setTimeout(()=>{btn.textContent=t('briefingShare')},1400);
-  }).catch(()=>{});
-}
-
-/* ═══════════════════════════════════════ */
-/*  CALL CLAUDE                           */
-/* ═══════════════════════════════════════ */
-async function callClaude(prompt, maxTokens, mode, requestLang){
+/* ═══ CLAUDE API ═══ */
+async function callClaude(prompt, maxTokens){
   const res = await fetch('/.netlify/functions/claude',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({prompt, maxTokens: maxTokens||1200, mode: mode||'quality', lang: requestLang || lang})
+    body:JSON.stringify({ prompt, maxTokens: maxTokens||1200 })
   });
   if(!res.ok){
     const errBody = await res.text().catch(()=>'');
-    console.error('Claude API HTTP error:', res.status, errBody);
     throw new Error('API error: '+res.status+' '+errBody.slice(0,200));
   }
   const json = await res.json();
-  if(json.error){
-    const errMsg = typeof json.error === 'string' ? json.error : (json.error.message||'API error');
-    console.error('Claude API response error:', json.error);
-    throw new Error(errMsg);
-  }
+  if(json.error) throw new Error(typeof json.error==='string'?json.error:(json.error.message||'API error'));
   return json.content[0].text;
 }
 
-async function translateTitleBatch(batch, targetLang){
-  const prompt = (targetLang==='en'
-    ? 'Translate each news headline into natural English. Preserve company names, acronyms, tickers, and proper nouns. Do not add explanations. Respond ONLY with valid JSON as an array of objects using this exact format: [{"id":"same id","title":"translated headline"}].\n\nHeadlines:\n'
-    : 'Traduce cada titular de noticia a español latino natural. Conserva nombres de empresas, siglas, tickers y nombres propios. No agregues explicaciones. Responde SOLO con JSON válido como un arreglo de objetos usando esta forma exacta: [{"id":"mismo id","title":"titular traducido"}].\n\nTitulares:\n')+
-    JSON.stringify(batch.map(article=>({ id: hashId(article.title), title: article.title, source: article.source || '' })));
-  const text = await callClaude(prompt, 900, 'fast', targetLang);
-  const parsed = JSON.parse(text.replace(/```json|```/g,'').trim());
-  if(!Array.isArray(parsed)) return;
-  if(!titleTranslations[targetLang]) titleTranslations[targetLang] = {};
-  parsed.forEach(item=>{
-    if(item && item.id && item.title) titleTranslations[targetLang][item.id] = String(item.title).trim();
-  });
-  store.set('titleTranslations', titleTranslations);
-}
-
-async function queueTitleTranslations(force){
-  if(!articles.length) return;
-  const targetLang = lang;
-  const langCache = titleTranslations[targetLang] || {};
-  const pending = articles.filter(article=>!langCache[hashId(article.title)]);
-  if(!pending.length) return;
-  if(titleTranslationJob && !force) return titleTranslationJob;
-
-  titleTranslationJob = (async()=>{
-    const chunkSize = 20;
-    for(let index=0; index<pending.length; index+=chunkSize){
-      const chunk = pending.slice(index, index + chunkSize);
-      try{
-        await translateTitleBatch(chunk, targetLang);
-      }catch(error){
-        console.error('title translation error:', error);
-        break;
-      }
-      renderFeeds();
-      renderTopSignals();
-      const searchInput = $('#searchInput');
-      if(searchInput && $('#searchOverlay').classList.contains('open')) renderSearchResults(searchInput.value);
+/* ═══ FETCH NEWS (silent) ═══ */
+async function fetchNewsContext(){
+  try{
+    const res = await fetch('/.netlify/functions/news',{cache:'no-store'});
+    if(!res.ok) return;
+    const data = await res.json();
+    articles = data.articles || [];
+    if(articles.length){
+      liveContext = 'NOTICIAS REALES DE HOY ('+todayFormatted()+'):\n'+
+        articles.slice(0,15).map(a=>'['+a.section+'] '+a.title+(a.source?' — '+a.source:'')).join('\n');
     }
-    titleTranslationJob = null;
-  })();
-
-  return titleTranslationJob;
+  }catch{
+    liveContext = 'Fecha: '+todayFormatted()+'.';
+  }
 }
 
-/* ── Deep knowledge frameworks (from Manual del Mundo) ── */
-const KNOWLEDGE_BASE = {
-  Dinero: 'CONTEXTO PROFUNDO DINERO: El dinero nunca fue neutral — desde Bretton Woods (1944) hasta el petrodólar, siempre fue herramienta de control geopolítico. Hoy hay desdolarización activa (BRICS, yuan). Ahorrar en moneda local latinoamericana es erosión silenciosa por inflación y devaluación. Bitcoin es el primer activo en la historia que ningún gobierno puede confiscar. Diversificar no es para ricos: oro, Bitcoin, cuentas en dólares (Wise/Revolut), activos fuera del país.',
-  Poder: 'CONTEXTO PROFUNDO PODER: Las guerras no son por ideología — son por recursos, rutas comerciales y control monetario. Los imperios siguen un ciclo (modelo Ray Dalio): ascenso → auge → declive. Roma, España, Gran Bretaña, ahora EE.UU. (lleva ~80 años, el promedio es 94). China ya es primera economía por poder de compra, tiene IA propia (DeepSeek), sistema de pagos propio (CIPS), y yuan en comercio global. El status quo se mantiene sin conspiración: medios, deuda, educación y entretenimiento hacen que la gente no pregunte.',
-  'Tecnología': 'CONTEXTO PROFUNDO TECNOLOGÍA: La IA no es un chatbot — es la automatización del trabajo intelectual por primera vez en la historia. Los trabajos que desaparecen primero no son los manuales sino los de oficina: contadores, abogados, diseñadores, programadores. La guerra de chips EE.UU.-China (TSMC, Nvidia, ASML) es el control del futuro. Quien controla los semiconductores avanzados controla la IA.',
-  Mercados: 'CONTEXTO PROFUNDO MERCADOS: Los mercados financieros reflejan los movimientos geopolíticos — no son independientes. El índice del dólar, el precio del oro y Bitcoin son termómetros del orden mundial. Cuando el dólar cae, no es accidente: es síntoma de cambio de poder global. Los mercados de commodities (petróleo, gas, minerales) son donde se juega la geopolítica real.',
-  Movilidad: 'CONTEXTO PROFUNDO MOVILIDAD: La nacionalidad es un accidente geográfico, no un destino. Un segundo pasaporte o residencia cambia fundamentalmente las opciones de vida. Visas de inversión accesibles (España, Portugal, Paraguay) con menos de $100K. Cuentas bancarias globales (Wise, Revolut, Mercury) permiten operar en múltiples monedas desde el teléfono. Cobrar en dólares desde Latam es posible hoy con Stripe y cripto.',
-  Latam: 'CONTEXTO PROFUNDO LATAM: Latinoamérica está en la intersección de todos los cambios globales — desdolarización, IA, migración, recursos naturales (litio, cobre). La región tiene la oportunidad de posicionarse pero históricamente sus gobiernos repiten los mismos errores: control de cambios, inflación, dependencia de commodities. El individuo que entiende estos patrones puede moverse antes que los demás.'
-};
-
-function buildRelevantContext(article){
-  const sameSection = articles
-    .filter(item => item.section === article.section)
-    .slice(0, 4)
-    .map(item => '['+getSectionLabel(item.section)+'] '+getDisplayTitle(item));
-
-  const crossSection = articles
-    .filter(item => item.section !== article.section)
-    .slice(0, 4)
-    .map(item => '['+getSectionLabel(item.section)+'] '+getDisplayTitle(item));
-
-  const newsContext = sameSection.concat(crossSection).join('\n');
-  const deepContext = KNOWLEDGE_BASE[article.section] || '';
-  return (deepContext ? deepContext + '\n\n' : '') + 'NOTICIAS RELACIONADAS HOY:\n' + newsContext;
-}
-
-/* ═══════════════════════════════════════ */
-/*  RENDER SECTION NAV                    */
-/* ═══════════════════════════════════════ */
-function renderSecNav(){
-  const nav=$('#secNav');
-  nav.innerHTML = SECTIONS.map(s=>{
-    const active = s===activeSection?' active':'';
-    const icon = SECTION_ICONS[s]||'';
-    const label = s==='all'?(lang==='en'?'All':'Todo'):(s==='saved'?t('navSaved'):getSectionLabel(s));
-    const count = s==='all'?articles.length:(s==='saved'?getSavedArticles().length:articles.filter(a=>a.section===s).length);
-    if(s!=='all' && s!=='saved' && count===0) return '';
-    if(s==='saved' && count===0) return '';
-    return '<div class="sec-tab'+active+'" data-section="'+s+'">'+
-      icon+' '+label+
-      '<span class="sec-tab-count">'+count+'</span></div>';
-  }).join('');
-}
-
-/* ═══════════════════════════════════════ */
-/*  RENDER FEEDS                          */
-/* ═══════════════════════════════════════ */
-function renderFeeds(){
-  const container=$('#feedContainer');
-  const filtered = activeSection==='all'
-    ? articles
-    : activeSection==='saved'
-      ? getSavedArticles()
-      : articles.filter(a=>a.section===activeSection);
-
-  if(filtered.length===0){
-    container.innerHTML = activeSection==='saved'
-      ? '<div class="empty-state"><div class="empty-icon">★</div><div class="empty-title">'+t('savedEmptyTitle')+'</div><div class="empty-desc">'+t('savedEmptyDesc')+'</div><a class="empty-action" href="#" data-nav="insights">'+t('savedExplore')+'</a></div>'
-      : '<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">'+t('feedEmptyTitle')+'</div><div class="empty-desc">'+esc(lastNewsError || t('feedEmptyDesc'))+'</div><a class="empty-action" href="#" id="retryFromEmpty">'+t('feedRetry')+'</a></div>';
+/* ═══ DAILY PULSE ═══ */
+async function generatePulse(force){
+  const key = todayKey();
+  if(!force && pulseCache[key]){
+    renderPulse(pulseCache[key]);
     return;
   }
 
-  // Group by section if "all"
-  let html='';
-
-  if(activeSection==='all'){
-    const grouped={};
-    filtered.forEach(a=>{
-      if(!grouped[a.section]) grouped[a.section]=[];
-      grouped[a.section].push(a);
-    });
-
-    const secKeys = Object.keys(grouped);
-    for(let si=0; si<secKeys.length; si++){
-      const sec = secKeys[si];
-      const arts = grouped[sec];
-      html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[sec]||'')+' '+esc(getSectionLabel(sec))+'</div><div class="feed-count">'+arts.length+' '+t('signals')+'</div></div>';
-      html+=renderCards(arts);
-      if((si+1)%2===0){
-        var ctaData = t('ctas')[sec] || t('ctas')['Dinero'];
-        if(ctaData) html+=renderCTA(ctaData);
-      }
-    }
-  } else {
-    html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[activeSection]||'')+' '+esc(activeSection==='saved'?t('navSaved'):getSectionLabel(activeSection))+'</div><div class="feed-count">'+filtered.length+' '+t('signals')+'</div></div>';
-    html+=renderCards(filtered);
+  if(!articles.length){
+    $('#pulseTitle').textContent='No se pudieron cargar noticias';
+    $('#pulseBody').textContent='Intenta actualizar en unos minutos.';
+    $('#pulseItems').innerHTML='';
+    return;
   }
 
-  container.innerHTML=html;
+  const btn = $('#pulseRefresh');
+  if(btn){ btn.disabled=true; btn.textContent='Generando...'; }
+
+  try{
+    const newsBlock = articles.slice(0,12).map(a=>'['+a.section+'] '+a.title).join('\n');
+    const moduleList = MODULES.map(m=>m.id).join(', ');
+    const text = await callClaude(
+      'Fecha: '+todayFormatted()+'. Eres un amigo inteligente que le explica a alguien que NO sigue las noticias qué está pasando hoy. Lenguaje cotidiano, directo, sin jerga, sin drama.\n\n'+
+      'NOTICIAS REALES DE HOY:\n'+newsBlock+'\n\n'+
+      'Los módulos educativos disponibles son: '+moduleList+'.\n\n'+
+      'Responde SOLO con JSON válido sin backticks:\n'+
+      '{"titulo":"1 frase corta diciendo qué fue lo más relevante hoy, máximo 12 palabras","resumen":"1 párrafo corto (3-4 líneas) explicando el día como se lo dirías a un amigo que no sigue las noticias","temas":[{"icon":"emoji relevante","texto":"Tema relevante conectado a algo que la persona debería entender, máximo 25 palabras","modulo":"uno de: '+moduleList+'"},{"icon":"emoji","texto":"Segundo tema conectado a otro módulo","modulo":"modulo"},{"icon":"emoji","texto":"Tercer tema","modulo":"modulo"}]}', 600);
+
+    const data = JSON.parse(text.replace(/```json|```/g,'').trim());
+    pulseCache[key] = data;
+    store.set('pulseCache',pulseCache);
+    renderPulse(data);
+  }catch{
+    $('#pulseTitle').textContent='No se pudo generar el pulso';
+    $('#pulseBody').textContent='Error conectando con la IA. Intenta de nuevo.';
+    $('#pulseItems').innerHTML='';
+  }finally{
+    if(btn){ btn.disabled=false; btn.textContent='Actualizar pulso'; }
+  }
 }
 
-function renderCards(arts){
-  return arts.map((a,i)=>{
-    const id = hashId(a.title);
-    const tagClass = SECTION_TAGS[a.section]||'tag-dinero';
-    const saved = savedIds.includes(id) ? ' active' : '';
-    const displayTitle = getDisplayTitle(a);
-    return '<div class="news-card" data-id="'+id+'">'+
-      '<div class="news-card-topline">'+
-        '<div class="news-card-top">'+
-          '<span class="news-card-source">'+esc(a.source||a.section)+'</span>'+
-          '<span class="news-card-dot"></span>'+
-          '<span class="news-card-time">'+timeAgo(a.date)+'</span>'+
-        '</div>'+
-        '<button class="news-card-save'+saved+'" data-save-id="'+id+'" aria-label="'+t('saveArticle')+'">★</button>'+
-      '</div>'+
-      '<div class="news-card-body">'+
-        '<div class="news-card-text">'+
-          '<div class="news-card-title">'+esc(displayTitle)+'</div>'+
-          '<span class="news-card-tag '+tagClass+'">'+esc(getSectionLabel(a.section))+'</span>'+
-        '</div>'+
-        renderImageOrFallback(a, 72, 72, 'news-card-img', 'th')+
-      '</div>'+
-      '<span class="news-card-arrow">›</span>'+
-    '</div>'+
-    '<div class="analysis" id="analysis-'+id+'">'+
-      '<div class="analysis-bar">'+
-        '<span class="analysis-badge"><span class="analysis-badge-dot"></span>'+t('analysisBadge')+'</span>'+
-        '<button class="analysis-close" data-close-analysis="'+id+'">✕</button>'+
-      '</div>'+
-      '<div class="analysis-body" id="abody-'+id+'">'+
-        '<div class="sk" style="height:14px;width:100%"></div>'+
-        '<div class="sk" style="height:14px;width:85%"></div>'+
-        '<div class="sk" style="height:14px;width:70%"></div>'+
-      '</div>'+
-    '</div>';
+function renderPulse(data){
+  $('#pulseTitle').textContent = data.titulo || 'Tu contexto del día';
+  $('#pulseBody').textContent = data.resumen || '';
+  if(data.temas && data.temas.length){
+    $('#pulseItems').innerHTML = data.temas.map(function(t){
+      var modData = MODULES.find(function(m){ return m.id===t.modulo; });
+      return '<div class="pulse-item" data-pulse-mod="'+(t.modulo||'')+'">'+
+        '<div class="pulse-item-icon">'+(t.icon||'→')+'</div>'+
+        '<div class="pulse-item-text">'+esc(t.texto)+'</div>'+
+        (modData ? '<div class="pulse-item-mod">'+modData.icon+' '+modData.label+'</div>' : '')+
+      '</div>';
+    }).join('');
+  }
+}
+
+/* ═══ RENDER MODULES ═══ */
+function renderModuleTabs(){
+  $('#moduleNav').innerHTML = MODULES.map(function(m,i){
+    return '<div class="module-tab'+(i===0?' active':'')+'" data-mod="'+m.id+'">'+m.icon+' '+m.label+'</div>';
   }).join('');
 }
 
-function renderCTA(cta){
-  return '<div class="stryv-cta">'+
-    '<div class="stryv-cta-eyebrow">Stryv Studio</div>'+
-    '<div class="stryv-cta-title">'+esc(cta.title)+'</div>'+
-    '<div class="stryv-cta-desc">'+esc(cta.desc)+'</div>'+
-    '<a href="https://wa.me/17373683464" target="_blank" rel="noopener" class="stryv-cta-btn">'+t('ctaTalk')+'</a>'+
-    '<a href="https://stryvstudio.com" target="_blank" rel="noopener" class="stryv-cta-link">stryvstudio.com</a>'+
-  '</div>';
-}
+function renderModuleContents(){
+  $('#moduleContainer').innerHTML = MODULES.map(function(m,i){
+    var html = '<div class="module-content'+(i===0?' active':'')+'" id="mod-'+m.id+'">';
+    html += '<div class="sec-head">'+esc(m.header)+'</div>';
 
-function hashId(str){
-  let h=0;
-  for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0}
-  return 'n'+Math.abs(h);
-}
-
-/* ── Free stock image fallback ── */
-var SECTION_FALLBACK_CLASS = {'Dinero':'img-fb-dinero','Poder':'img-fb-poder','Tecnología':'img-fb-tecnologia','Mercados':'img-fb-mercados','Movilidad':'img-fb-movilidad','Latam':'img-fb-latam'};
-var SECTION_FALLBACK_ICON = {'Dinero':'💰','Poder':'⚡','Tecnología':'🤖','Mercados':'📊','Movilidad':'🌍','Latam':'🌎'};
-
-function getArticleImageUrl(article, w, h){
-  if(article.image) return article.image;
-  // Check Unsplash cache (keyed by article hash id)
-  var id = hashId(article.title);
-  if(imageCache[id]) return w > 100 ? imageCache[id].sm : imageCache[id].th;
-  // Check section-level Unsplash cache
-  var secKey = 'sec_' + (article.section || 'general');
-  if(imageCache[secKey]){
-    var pool = imageCache[secKey];
-    var idx = Math.abs(id.replace('n','')|0) % pool.length;
-    return w > 100 ? pool[idx].sm : pool[idx].th;
-  }
-  return '';
-}
-
-function getImageFallbackHtml(article, size){
-  var cls = SECTION_FALLBACK_CLASS[article.section] || 'img-fb-dinero';
-  var icon = SECTION_FALLBACK_ICON[article.section] || '📰';
-  var sizeClass = size === 'sm' ? 'img-fallback-sm' : 'img-fallback-th';
-  return '<div class="img-fallback '+sizeClass+' '+cls+'">'+icon+'</div>';
-}
-
-function renderImageOrFallback(article, w, h, cssClass, size){
-  var url = getArticleImageUrl(article, w, h);
-  if(url) return '<img class="'+cssClass+'" src="'+esc(url)+'" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling&&(this.nextElementSibling.style.display=\'flex\')">'+
-    '<div class="img-fallback '+(size==='sm'?'img-fallback-sm':'img-fallback-th')+' '+(SECTION_FALLBACK_CLASS[article.section]||'img-fb-dinero')+'" style="display:none">'+(SECTION_FALLBACK_ICON[article.section]||'📰')+'</div>';
-  return getImageFallbackHtml(article, size);
-}
-
-/* ── Section → Unsplash search keywords ── */
-const SECTION_IMAGE_KEYWORDS = {
-  'Dinero':      'economy finance money currency bank',
-  'Poder':       'geopolitics world leader diplomacy government',
-  'Tecnología':  'technology artificial intelligence computer',
-  'Mercados':    'stock market trading cryptocurrency chart',
-  'Movilidad':   'travel passport immigration airport globe',
-  'Latam':       'latin america city people culture'
-};
-
-/* ── Extract 2-3 meaningful keywords from a title ── */
-function extractTitleKeywords(title){
-  var stop = new Set(['de','la','el','los','las','en','del','un','una','por','con','que','se','al','y','o','a','the','a','an','in','on','of','to','for','and','is','are','at','by','it','its','be','as','or','with','that','this','from','has','was','not','but','will','have','had','new','after','over','into','how','why','what','who','more','could','says','said']);
-  return title.replace(/[^\w\sáéíóúñü]/gi,'').split(/\s+/)
-    .filter(function(w){ return w.length > 2 && !stop.has(w.toLowerCase()); })
-    .slice(0, 3).join(' ');
-}
-
-/* ── Fetch images from Unsplash via proxy ── */
-async function fetchUnsplashImages(){
-  if(!articles.length) return;
-  var queries = [];
-
-  // 1) Top signal cards — specific keywords per article
-  var topArts = getTopSignals();
-  topArts.forEach(function(a){
-    var id = hashId(a.title);
-    if(a.image || imageCache[id]) return; // already has image
-    var cached = topSignalCache[id];
-    var kw = (cached && cached.imageSearch) ? cached.imageSearch : extractTitleKeywords(a.title);
-    if(kw) queries.push({ key: id, query: kw, count: 2 });
-  });
-
-  // 2) Section pools — one search per section
-  var sections = {};
-  articles.forEach(function(a){ sections[a.section] = true; });
-  Object.keys(sections).forEach(function(sec){
-    var secKey = 'sec_' + sec;
-    if(imageCache[secKey]) return;
-    var kw = SECTION_IMAGE_KEYWORDS[sec] || sec;
-    queries.push({ key: secKey, query: kw, count: 15 });
-  });
-
-  if(!queries.length) return;
-
-  try {
-    var res = await fetch('/.netlify/functions/images', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ queries: queries })
-    });
-    if(!res.ok) return;
-    var data = await res.json();
-    var results = data.results || {};
-
-    // Store individual article images (pick first result)
-    Object.keys(results).forEach(function(key){
-      var imgs = results[key];
-      if(!imgs || !imgs.length) return;
-      if(key.startsWith('sec_')){
-        imageCache[key] = imgs;
-      } else {
-        imageCache[key] = imgs[0]; // { sm, th }
-      }
+    m.lessons.forEach(function(lesson,li){
+      html += '<div class="lesson" data-lesson="'+lesson.id+'">'+
+        '<div class="lesson-num">'+(String(li+1).padStart(2,'0'))+'</div>'+
+        '<div class="lesson-body">'+
+          '<div class="lesson-title">'+esc(lesson.title)+'</div>'+
+          '<div class="lesson-desc">'+esc(lesson.desc)+'</div>'+
+          '<span class="lesson-tag '+lesson.tagClass+'">'+esc(lesson.tag)+'</span>'+
+        '</div>'+
+        '<div class="lesson-right" id="arr-'+lesson.id+'">›</div>'+
+      '</div>';
+      html += '<div class="lesson-expanded" id="exp-'+lesson.id+'">'+
+        '<div class="lesson-exp-header">'+
+          '<span class="lesson-exp-title">'+esc(lesson.title)+'</span>'+
+          '<button class="lesson-exp-close" data-close="'+lesson.id+'">Cerrar</button>'+
+        '</div>'+
+        '<div class="lesson-exp-body" id="body-'+lesson.id+'">'+
+          '<div class="sk" style="height:14px;width:100%"></div>'+
+          '<div class="sk" style="height:14px;width:85%"></div>'+
+          '<div class="sk" style="height:14px;width:70%"></div>'+
+        '</div>'+
+      '</div>';
     });
 
-    store.set('imageCache', imageCache);
-    // Re-render to show loaded images
-    renderTopSignals();
-    renderFeeds();
-  } catch(e) {
-    // Silently fail — images are not critical
-  }
+    html += '<div class="stryv-cta">'+
+      '<div class="stryv-cta-title">'+esc(m.cta.title)+'</div>'+
+      '<div class="stryv-cta-desc">'+esc(m.cta.desc)+'</div>'+
+      '<a href="https://wa.me/17373683464" target="_blank" rel="noopener" class="stryv-cta-btn">Hablar con Stryv</a>'+
+      '<a href="https://stryvstudio.com" target="_blank" rel="noopener" class="stryv-cta-link">stryvstudio.com</a>'+
+    '</div>';
+
+    html += '</div>';
+    return html;
+  }).join('');
 }
 
-/* ═══════════════════════════════════════ */
-/*  ANALYZE ARTICLE                       */
-/* ═══════════════════════════════════════ */
-function toggleAnalysis(id){
-  const panel=$('#analysis-'+id);
-  if(!panel) return;
+/* ═══ MODULE SWITCHING ═══ */
+function switchModule(id){
+  $$('.module-content').forEach(function(m){ m.classList.remove('active'); });
+  $$('.module-tab').forEach(function(t){ t.classList.remove('active'); });
+  var mod = $('#mod-'+id);
+  var tab = document.querySelector('[data-mod="'+id+'"]');
+  if(mod) mod.classList.add('active');
+  if(tab){ tab.classList.add('active'); tab.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); }
+}
 
-  const isOpen = panel.classList.contains('open');
+/* ═══ LESSON TOGGLE & GENERATE ═══ */
+function toggleLesson(id){
+  var exp = $('#exp-'+id);
+  var arr = $('#arr-'+id);
+  if(!exp) return;
+  var isOpen = exp.classList.contains('open');
 
-  // Close all open
-  $$('.analysis').forEach(a=>a.classList.remove('open'));
-  $$('.news-card').forEach(c=>c.style.borderLeftColor='transparent');
+  $$('.lesson-expanded').forEach(function(e){ e.classList.remove('open'); });
+  $$('.lesson-right').forEach(function(a){ a.classList.remove('open'); });
 
   if(!isOpen){
-    panel.classList.add('open');
+    exp.classList.add('open');
+    if(arr) arr.classList.add('open');
 
-    // Find article
-    const article = articles.find(a=>hashId(a.title)===id);
-    if(!article) return;
+    var cacheKey = todayKey()+'_'+id;
+    if(lessonCache[cacheKey]){
+      loadedLessons.add(id);
+      renderLessonContent(id, lessonCache[cacheKey]);
+    } else if(!loadedLessons.has(id)){
+      loadedLessons.add(id);
+      generateLesson(id);
+    }
+    setTimeout(function(){ exp.scrollIntoView({behavior:'smooth',block:'nearest'}); },100);
+  }
+}
 
-    incrementAnalyses();
+function renderLessonContent(id, data){
+  var bodyEl = $('#body-'+id);
+  if(!bodyEl || !data) return;
 
-    if(analysisCache[id]){
-      renderAnalysis(id, analysisCache[id], article);
-    } else {
-      generateAnalysis(id, article);
+  bodyEl.innerHTML =
+    '<div class="ai-badge"><span class="ai-dot"></span>Actualizado hoy · IA en tiempo real</div>'+
+    '<div class="lesson-exp-block">'+
+      '<div class="exp-label">Lo que necesitas saber</div>'+
+      '<div class="exp-text">'+data.resumen.replace(/\n/g,'<br><br>')+'</div>'+
+    '</div>'+
+    '<div class="lesson-exp-block">'+
+      '<div class="exp-label">Pasos accionables</div>'+
+      '<div class="exp-actions">'+
+        (data.acciones||[]).map(function(a){
+          return '<div class="exp-action"><div class="exp-action-num">'+esc(a.num)+'</div><div class="exp-action-text">'+a.texto+'</div></div>';
+        }).join('')+
+      '</div>'+
+    '</div>'+
+    '<div class="ask-lesson">'+
+      '<div class="ask-lesson-label">¿Tienes dudas sobre este tema?</div>'+
+      '<div class="ask-lesson-row">'+
+        '<input class="ask-lesson-input" data-ask-lesson="'+id+'" placeholder="Pregúntale a la IA..." />'+
+        '<button class="ask-lesson-btn" data-ask-lesson-send="'+id+'">Preguntar</button>'+
+      '</div>'+
+      '<div class="ask-lesson-reply" id="reply-'+id+'"></div>'+
+    '</div>';
+}
+
+async function generateLesson(id){
+  var bodyEl = $('#body-'+id);
+  var prompt = LESSON_PROMPTS[id];
+  if(!prompt || !bodyEl) return;
+
+  bodyEl.innerHTML =
+    '<div class="sk" style="height:14px;width:100%"></div>'+
+    '<div class="sk" style="height:14px;width:85%"></div>'+
+    '<div class="sk" style="height:14px;width:70%"></div>'+
+    '<div class="sk" style="height:14px;width:90%"></div>'+
+    '<div style="margin-top:12px;font-size:12px;color:var(--text-3)">IA generando contenido con el contexto de hoy...</div>';
+
+  var module = getModuleForLesson(id);
+  var deepContext = KNOWLEDGE_BASE[module] || '';
+
+  try{
+    var text = await callClaude(
+      'CONOCIMIENTO BASE: '+deepContext+'\n\n'+
+      (liveContext ? liveContext+'\n\n' : 'Fecha: '+todayFormatted()+'.\n\n')+
+      'Con ese contexto actual en mente, '+prompt+'\n\n'+
+      'IMPORTANTE: Conecta el conocimiento con lo que está pasando HOY en el mundo. Usa datos y eventos actuales reales. '+
+      'Escribe como un amigo inteligente que sabe mucho — directo, sin jerga, sin motivación barata. Español latino.\n\n'+
+      'Responde SOLO con JSON válido sin backticks ni texto adicional:\n'+
+      '{"resumen":"2-3 párrafos en español latino directo. Verdad cruda, datos reales, conexión con eventos actuales. Máximo 200 palabras.","acciones":[{"num":"1","texto":"Acción concreta que puede hacer HOY con herramienta específica"},{"num":"2","texto":"Segunda acción concreta"},{"num":"3","texto":"Tercera acción a mediano/largo plazo"}]}', 1200);
+
+    var data = JSON.parse(text.replace(/```json|```/g,'').trim());
+    var cacheKey = todayKey()+'_'+id;
+    lessonCache[cacheKey] = data;
+    store.set('lessonCache',lessonCache);
+
+    if(!topicsExplored.includes(id)){
+      topicsExplored.push(id);
+      store.set('topicsExplored',topicsExplored);
+      renderProgress();
     }
 
-    setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),120);
+    renderLessonContent(id, data);
+  }catch{
+    bodyEl.innerHTML = '<div style="color:var(--text-3);font-size:14px;padding:8px 0">Error cargando contenido. Toca "Cerrar" y vuelve a abrir para intentar de nuevo.</div>';
+    loadedLessons.delete(id);
   }
 }
 
-async function generateAnalysis(id, article){
-  const body=$('#abody-'+id);
-  if(!body) return;
-
-  body.innerHTML='<div class="sk" style="height:14px;width:100%"></div><div class="sk" style="height:14px;width:85%"></div><div class="sk" style="height:14px;width:70%"></div><div class="sk" style="height:14px;width:90%"></div>';
-
-  const dateStr = todayFormatted();
-  const displayTitle = getDisplayTitle(article);
-
-  try{
-    const analysisPrompt = lang==='en'
-      ? 'Date: '+dateStr+'. You explain news to people who do NOT follow the news. Write like a smart friend. No jargon, no technical terms, no newscast tone. Make it feel like a conversation.\n\nRELEVANT CONTEXT TODAY:\n'+buildRelevantContext(article)+'\n\nNEWS TO EXPLAIN: "'+displayTitle+'" — Source: '+article.source+' — Section: '+getSectionLabel(article.section)+'\n\nRespond ONLY with valid JSON without markdown. Keep each field short and in everyday language.\n{"titular_contexto":"1 line rewriting the headline in simple words, max 18 words","que_esta_pasando":"1 paragraph, max 90 words, explaining what happened like you would tell a friend","por_que_te_afecta":"1 paragraph, max 55 words, why a regular person should care","cambio_de_paradigma":"1 paragraph, max 45 words, what could change going forward","que_hacer":[{"num":"1","texto":"Concrete action a person can take TODAY with a specific tool or step, max 18 words"},{"num":"2","texto":"Second concrete action or thing to research/read, max 18 words"},{"num":"3","texto":"What to keep watching long-term, max 15 words"}]}'
-      : 'Fecha: '+dateStr+'. Explicas noticias a personas que NO siguen las noticias. Escribe como un amigo inteligente. Sin jerga, sin tecnicismos, sin tono de noticiero. Que se sienta como una conversación.\n\nCONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\nNOTICIA A EXPLICAR: "'+displayTitle+'" — Fuente: '+article.source+' — Sección: '+getSectionLabel(article.section)+'\n\nResponde SOLO con JSON válido sin markdown. Mantén cada campo corto y en lenguaje cotidiano.\n{"titular_contexto":"1 línea reescribiendo el titular en palabras simples, máximo 18 palabras","que_esta_pasando":"1 párrafo, máximo 90 palabras, explicando qué pasó como se lo dirías a un amigo","por_que_te_afecta":"1 párrafo, máximo 55 palabras, por qué le debería importar a una persona normal","cambio_de_paradigma":"1 párrafo, máximo 45 palabras, qué podría cambiar de aquí en adelante","que_hacer":[{"num":"1","texto":"Acción concreta que puedes hacer HOY con herramienta o paso específico, máximo 18 palabras"},{"num":"2","texto":"Segunda acción concreta o cosa que investigar/leer, máximo 18 palabras"},{"num":"3","texto":"Qué conviene seguir a largo plazo, máximo 15 palabras"}]}';
-    const text = await callClaude(analysisPrompt, 700, 'fast');
-
-    const data = JSON.parse(text.replace(/```json|```/g,'').trim());
-    analysisCache[id] = data;
-    store.set('analysisCache', analysisCache);
-    renderAnalysis(id, data, article);
-  }catch(e){
-    console.error('generateAnalysis error:', e);
-    const errDetail = e && e.message ? e.message : String(e);
-    const msg = /API key/i.test(errDetail)
-      ? t('analysisApiError')
-      : t('analysisError');
-    body.innerHTML='<div style="padding:16px;text-align:center;color:var(--text-3);font-size:13px">'+
-      msg+'<br><span style="font-size:10px;opacity:.6;word-break:break-all">'+esc(errDetail)+'</span><br>'+
-      '<button onclick="retryAnalysis(\''+id+'\')" style="margin-top:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">'+t('analysisRetry')+'</button></div>';
-  }
-}
-
-window.retryAnalysis = function(id){
-  delete analysisCache[id];
-  store.set('analysisCache', analysisCache);
-  const article = articles.find(a=>hashId(a.title)===id);
-  if(article) generateAnalysis(id, article);
-};
-
-function renderAnalysis(id, data, article){
-  const body=$('#abody-'+id);
-  if(!body||!data) return;
-
-  let html='';
-
-  if(data.titular_contexto){
-    html+='<div class="analysis-headline">'+esc(data.titular_contexto)+'</div>';
-  }
-
-  html+='<div class="analysis-section"><div class="analysis-label">'+t('analysisWhat')+'</div>'+
-    '<div class="analysis-text">'+esc(data.que_esta_pasando||'').replace(/\n/g,'<br><br>')+'</div></div>';
-
-  if(data.por_que_te_afecta){
-    html+='<div class="analysis-section"><div class="analysis-label">'+t('analysisWhy')+'</div>'+
-      '<div class="analysis-impact">'+esc(data.por_que_te_afecta)+'</div></div>';
-  }
-
-  if(data.cambio_de_paradigma){
-    html+='<div class="analysis-section"><div class="analysis-label">'+t('analysisShift')+'</div>'+
-      '<div class="analysis-shift">'+esc(data.cambio_de_paradigma)+'</div></div>';
-  }
-
-  if(data.que_hacer && data.que_hacer.length){
-    html+='<div class="analysis-section"><div class="analysis-label">'+t('analysisAction')+'</div><div class="analysis-actions">';
-    data.que_hacer.forEach(a=>{
-      html+='<div class="analysis-action"><div class="analysis-action-num">'+esc(a.num)+'</div><div class="analysis-action-text">'+esc(a.texto)+'</div></div>';
-    });
-    html+='</div></div>';
-  }
-
-  html+='<div class="analysis-share"><button class="analysis-share-btn" data-share="'+id+'">'+t('analysisShare')+'</button></div>';
-
-  // Ask AI chat input
-  html+='<div class="ask-ai"><div class="ask-ai-row"><input class="ask-ai-input" data-ask-id="'+id+'" placeholder="'+t('askAiPlaceholder')+'" /><button class="ask-ai-btn" data-ask-send="'+id+'">'+t('askAiSend')+'</button></div><div class="ask-ai-reply" id="ask-reply-'+id+'"></div></div>';
-
-  body.innerHTML=html;
-
-  // Update progress when analysis renders
-  updateProgress(data);
-}
-
-/* ═══════════════════════════════════════ */
-/*  CONNECTIONS BLOCK                     */
-/* ═══════════════════════════════════════ */
-async function generateConnections(){
-  const key = todayKey();
-  if(connectionsCache[key]){
-    renderConnections(connectionsCache[key]);
-    return;
-  }
-
-  const topArts = getTopSignals();
-  const analyzed = topArts.filter(a => topSignalCache[hashId(a.title)]);
-  if(analyzed.length < 3) return;
-
-  const container = $('#connectionsBlock');
-  container.innerHTML = '<div class="connections-card"><div class="connections-header">🔗 '+t('connectionsTitle')+'</div><div class="connections-body"><div class="connections-loading">'+t('connectionsLoading')+'...</div></div></div>';
-
-  const summaries = analyzed.map(a => {
-    const c = topSignalCache[hashId(a.title)];
-    return '- '+( c.headline || getDisplayTitle(a) )+': '+(c.context||'');
-  }).join('\n');
-
-  try{
-    const prompt = lang==='en'
-      ? 'Here are today\'s top stories:\n'+summaries+'\n\nFind the HIDDEN CONNECTIONS between these stories. How do they relate to each other? What bigger picture emerges?\n\nRespond ONLY with valid JSON:\n{"narrative":"2-3 sentences connecting the dots between these stories in plain language, max 80 words","threads":[{"icon":"emoji","text":"One connecting thread, max 20 words"},{"icon":"emoji","text":"Another connection, max 20 words"},{"icon":"emoji","text":"A third connection or pattern, max 20 words"}]}'
-      : 'Estas son las noticias principales de hoy:\n'+summaries+'\n\nEncuentra las CONEXIONES OCULTAS entre estas noticias. ¿Cómo se relacionan? ¿Qué panorama más grande emerge?\n\nResponde SOLO con JSON válido:\n{"narrative":"2-3 frases conectando los puntos entre estas noticias en lenguaje simple, máximo 80 palabras","threads":[{"icon":"emoji","text":"Un hilo conector, máximo 20 palabras"},{"icon":"emoji","text":"Otra conexión, máximo 20 palabras"},{"icon":"emoji","text":"Una tercera conexión o patrón, máximo 20 palabras"}]}';
-
-    const text = await callClaude(prompt, 500, 'fast');
-    const data = JSON.parse(text.replace(/```json|```/g,'').trim());
-    connectionsCache[key] = data;
-    store.set('connectionsCache', connectionsCache);
-    renderConnections(data);
-  }catch(e){
-    console.error('generateConnections error:', e);
-    container.innerHTML = '';
-  }
-}
-
-function renderConnections(data){
-  const container = $('#connectionsBlock');
-  if(!data || !data.threads) { container.innerHTML=''; return; }
-
-  let html = '<div class="connections-card"><div class="connections-header">🔗 '+t('connectionsTitle')+'</div><div class="connections-body">';
-  if(data.narrative) html += '<p style="margin:0 0 12px;line-height:1.5;opacity:.9">'+esc(data.narrative)+'</p>';
-  html += '<div class="connections-threads">';
-  data.threads.forEach(th => {
-    html += '<div class="connections-thread"><span>'+esc(th.icon||'→')+'</span> '+esc(th.text)+'</div>';
-  });
-  html += '</div></div></div>';
-  container.innerHTML = html;
-}
-
-/* ═══════════════════════════════════════ */
-/*  ASK AI                                */
-/* ═══════════════════════════════════════ */
-async function askAiQuestion(id){
-  const input = document.querySelector('.ask-ai-input[data-ask-id="'+id+'"]');
-  const replyEl = $('#ask-reply-'+id);
+/* ═══ ASK AI ═══ */
+async function askLessonQuestion(id){
+  var input = document.querySelector('[data-ask-lesson="'+id+'"]');
+  var replyEl = $('#reply-'+id);
   if(!input || !replyEl) return;
 
-  const question = input.value.trim();
+  var question = input.value.trim();
   if(!question) return;
 
-  const btn = document.querySelector('.ask-ai-btn[data-ask-send="'+id+'"]');
+  var btn = document.querySelector('[data-ask-lesson-send="'+id+'"]');
   if(btn) btn.disabled = true;
   input.disabled = true;
-  replyEl.textContent = t('askAiThinking')+'...';
-  replyEl.style.display = 'block';
+  replyEl.textContent = 'Pensando...';
+  replyEl.classList.add('show');
 
-  // Build context from analysis
-  const cached = analysisCache[id];
-  const contextParts = [];
-  if(cached){
-    if(cached.titular_contexto) contextParts.push(cached.titular_contexto);
-    if(cached.que_esta_pasando) contextParts.push(cached.que_esta_pasando);
-    if(cached.por_que_te_afecta) contextParts.push(cached.por_que_te_afecta);
-    if(cached.cambio_de_paradigma) contextParts.push(cached.cambio_de_paradigma);
-  }
+  var cacheKey = todayKey()+'_'+id;
+  var cached = lessonCache[cacheKey];
+  var module = getModuleForLesson(id);
+  var deep = KNOWLEDGE_BASE[module] || '';
 
   try{
-    const prompt = lang==='en'
-      ? 'You already explained this news:\n'+contextParts.join('\n')+'\n\nThe user asks: "'+question+'"\n\nAnswer in 2-3 sentences, simple language, like a smart friend. Be direct and helpful.'
-      : 'Ya explicaste esta noticia:\n'+contextParts.join('\n')+'\n\nEl usuario pregunta: "'+question+'"\n\nResponde en 2-3 frases, lenguaje simple, como un amigo inteligente. Sé directo y útil.';
-
-    const text = await callClaude(prompt, 300, 'fast');
+    var text = await callClaude(
+      'CONTEXTO: '+deep+'\n\n'+
+      (cached && cached.resumen ? 'Ya explicaste este tema:\n'+cached.resumen+'\n\n' : '')+
+      'El usuario pregunta: "'+question+'"\n\n'+
+      'Responde en 2-4 frases, lenguaje simple y directo, como un amigo inteligente. Sin jerga. Sé útil y concreto.', 400);
     replyEl.textContent = text;
-  }catch(e){
-    console.error('askAi error:', e);
-    replyEl.textContent = lang==='en' ? 'Could not get an answer. Try again.' : 'No se pudo obtener respuesta. Intenta de nuevo.';
+  }catch{
+    replyEl.textContent = 'No se pudo obtener respuesta. Intenta de nuevo.';
   }finally{
     if(btn) btn.disabled = false;
     input.disabled = false;
@@ -1746,343 +671,111 @@ async function askAiQuestion(id){
   }
 }
 
-/* ═══════════════════════════════════════ */
-/*  PROGRESS TRACKER                      */
-/* ═══════════════════════════════════════ */
-function updateProgress(analysisData){
-  if(!analysisData) return;
-
-  // Extract key topics from analysis text
-  const text = [
-    analysisData.titular_contexto||'',
-    analysisData.que_esta_pasando||'',
-    analysisData.cambio_de_paradigma||''
-  ].join(' ').toLowerCase();
-
-  // Key topic keywords to track
-  const topicKeywords = [
-    'bitcoin','criptomoneda','crypto','blockchain',
-    'dólar','dollar','inflación','inflation','fed','tasas de interés','interest rates',
-    'china','eeuu','estados unidos','rusia','russia','europa','europe','latinoamérica',
-    'petróleo','oil','oro','gold','commodities',
-    'inteligencia artificial','artificial intelligence','ai','ia','automatización','automation',
-    'aranceles','tariffs','comercio','trade','sanctions','sanciones',
-    'deuda','debt','bonos','bonds','mercados','markets',
-    'geopolítica','geopolitics','guerra','war','conflicto',
-    'tecnología','technology','semiconductores','chips',
-    'empleo','employment','recesión','recession','pib','gdp',
-    'energía','energy','renovable','renewable','nuclear',
-    'migración','migration','frontera','border',
-    'brics','desdolarización','de-dollarization',
-    'bancos','banks','regulación','regulation'
-  ];
-
-  const newTopics = topicKeywords.filter(kw => text.includes(kw) && !topicsUnderstood.includes(kw));
-  if(newTopics.length){
-    topicsUnderstood = topicsUnderstood.concat(newTopics);
-    store.set('topicsUnderstood', topicsUnderstood);
-  }
-  renderProgressTracker();
-}
-
-function getStreak(){
-  const visits = store.get('ctx_usage', { days:0, streak:0 });
-  return visits.streak || 0;
-}
-
-function renderProgressTracker(){
-  const container = $('#progressTracker');
+/* ═══ PROGRESS ═══ */
+function renderProgress(){
+  var count = topicsExplored.length;
+  var total = Object.keys(LESSON_PROMPTS).length;
+  var container = $('#progressBar');
   if(!container) return;
 
-  const count = topicsUnderstood.length;
   if(count === 0){ container.innerHTML=''; return; }
 
-  const level = Math.floor(count / 10) + 1;
-  const progress = (count % 10) * 10;
-  const streak = getStreak();
-  const remaining = 10 - (count % 10);
-
-  let html = '<div class="progress-card">';
-  html += '<div class="progress-header"><div class="progress-title">📊 '+t('progressTitle')+'</div><div class="progress-level">'+t('progressLevel')(level)+'</div></div>';
-  html += '<div class="progress-stats">';
-  html += '<div class="progress-stat"><strong>'+count+'</strong><span>'+t('progressTopics')+'</span></div>';
-  html += '<div class="progress-stat"><strong>'+streak+'</strong><span>'+t('progressStreak')+'</span></div>';
-  html += '<div class="progress-stat"><strong>'+level+'</strong><span>'+t('progressLevel')(level).split(' ')[0]+'</span></div>';
-  html += '</div>';
-  html += '<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:'+progress+'%"></div></div>';
-  html += '<div class="progress-next">'+t('progressNext')(remaining)+'</div>';
-  html += '</div>';
-  container.innerHTML = html;
+  container.innerHTML =
+    '<div class="progress-wrap">'+
+      '<div class="progress-info">'+
+        '<div class="progress-label">📊 Tu nivel de contexto</div>'+
+        '<div class="progress-count">'+count+' de '+total+' temas</div>'+
+      '</div>'+
+      '<div class="progress-track"><div class="progress-fill" style="width:'+Math.round((count/total)*100)+'%"></div></div>'+
+    '</div>';
 }
 
-/* ═══════════════════════════════════════ */
-/*  SEARCH                                */
-/* ═══════════════════════════════════════ */
-function openSearch(){$('#searchOverlay').classList.add('open');setTimeout(()=>$('#searchInput').focus(),100)}
-function closeSearch(){$('#searchOverlay').classList.remove('open');$('#searchInput').value='';renderSearchResults('')}
+/* ═══ EVENTS ═══ */
+document.addEventListener('click',function(e){
+  if(e.target.closest('#themeBtn')){ toggleTheme(); return; }
 
-function renderSearchResults(q){
-  const c=$('#searchResults');
-  if(!q.trim()){c.innerHTML='<div class="search-empty">'+t('searchEmpty')+'</div>';return}
-  const lower=q.toLowerCase();
-  const results=articles.filter(a=>(a.title+' '+getDisplayTitle(a)).toLowerCase().includes(lower));
-  if(!results.length){c.innerHTML='<div class="search-empty">'+t('searchNoResults')(q)+'</div>';return}
-  c.innerHTML=results.map(a=>
-    '<div class="search-result" data-search-id="'+hashId(a.title)+'" data-search-section="'+a.section+'">'+
-      '<div class="search-result-section">'+(SECTION_ICONS[a.section]||'')+' '+esc(getSectionLabel(a.section))+'</div>'+
-      '<div class="search-result-title">'+esc(getDisplayTitle(a))+'</div></div>'
-  ).join('');
-}
+  var tab = e.target.closest('[data-mod]');
+  if(tab){ switchModule(tab.dataset.mod); return; }
 
-/* ═══════════════════════════════════════ */
-/*  SWITCH VIEW / SECTION                   */
-/* ═══════════════════════════════════════ */
-function switchView(view){
-  activeView = view;
-  document.body.className = 'view-' + view;
-  $$('.nav-item').forEach(n => n.classList.remove('active'));
-  const navMatch = document.querySelector('.nav-item[data-nav="' + view + '"]');
-  if(navMatch) navMatch.classList.add('active');
+  var lesson = e.target.closest('.lesson');
+  if(lesson && lesson.dataset.lesson){ toggleLesson(lesson.dataset.lesson); return; }
 
-  if(view === 'insights'){
-    window.scrollTo({top:0, behavior:'smooth'});
-  } else if(view === 'sources'){
-    activeSection = 'all';
-    renderSecNav();
-    renderFeeds();
-    window.scrollTo({top:0, behavior:'smooth'});
-  } else if(view === 'saved'){
-    activeSection = 'saved';
-    renderFeeds();
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-}
+  var closeBtn = e.target.closest('[data-close]');
+  if(closeBtn){ toggleLesson(closeBtn.dataset.close); return; }
 
-function switchSection(sec){
-  activeSection=sec;
-  renderSecNav();
-  renderFeeds();
-  window.scrollTo({top:0,behavior:'smooth'});
-}
+  if(e.target.closest('#pulseRefresh')){ generatePulse(true); return; }
 
-function toggleSaved(id){
-  if(savedIds.includes(id)){
-    savedIds = savedIds.filter(item=>item!==id);
-  } else {
-    savedIds = [id].concat(savedIds);
-  }
-  store.set('savedIds', savedIds);
-  renderSecNav();
-  renderFeeds();
-}
-
-/* ═══════════════════════════════════════ */
-/*  SHARE                                 */
-/* ═══════════════════════════════════════ */
-function shareAnalysis(id){
-  const article = articles.find(a=>hashId(a.title)===id);
-  const data = analysisCache[id];
-  if(!article) return;
-  const text = getDisplayTitle(article)+'\n\n'+(data?.titular_contexto||'')+'\n\n'+(data?.por_que_te_afecta||'')+'\n\n— CONTEXTO por Stryv Studio';
-
-  if(navigator.share){
-    navigator.share({title:getDisplayTitle(article),text,url:window.location.href}).catch(()=>{});
-  } else {
-    navigator.clipboard.writeText(text).then(()=>{
-      const btn=document.querySelector('[data-share="'+id+'"]');
-      if(btn){btn.textContent=t('analysisCopied');setTimeout(()=>btn.textContent=t('analysisShare'),1500)}
-    }).catch(()=>{});
-  }
-}
-
-/* ═══════════════════════════════════════ */
-/*  EVENTS                                */
-/* ═══════════════════════════════════════ */
-document.addEventListener('click',e=>{
-  const saveBtn=e.target.closest('[data-save-id]');
-  if(saveBtn){toggleSaved(saveBtn.dataset.saveId);return}
-
-  const tab=e.target.closest('[data-section]');
-  if(tab){switchSection(tab.dataset.section);return}
-
-  const nav=e.target.closest('[data-nav]');
-  if(nav){switchView(nav.dataset.nav);return}
-
-  const card=e.target.closest('.news-card');
-  if(card){toggleAnalysis(card.dataset.id);return}
-
-  const closeA=e.target.closest('[data-close-analysis]');
-  if(closeA){const panel=$('#analysis-'+closeA.dataset.closeAnalysis);if(panel)panel.classList.remove('open');return}
-
-  const shareBtn=e.target.closest('[data-share]');
-  if(shareBtn){shareAnalysis(shareBtn.dataset.share);return}
-
-  const askBtn=e.target.closest('[data-ask-send]');
-  if(askBtn){askAiQuestion(askBtn.dataset.askSend);return}
-
-  if(e.target.closest('#searchBtn')){openSearch();return}
-  if(e.target.closest('#searchClose')){closeSearch();return}
-  if(e.target.closest('#themeBtn')){toggleTheme();return}
-  if(e.target.closest('#langBtn')){toggleLang();return}
-  if(e.target.closest('#briefingBtn')){generateBriefing(true);return}
-  if(e.target.closest('#briefingShareBtn')){shareBriefing();return}
-  if(e.target.closest('#installBtn')){installApp();return}
-  if(e.target.closest('#installDismiss')){hideInstallBanner(true);return}
-  if(e.target.closest('#retryFromEmpty')){refreshAll();return}
-  if(e.target.closest('#heroManifestoBtn')){openOnboarding(true);return}
-  if(e.target.closest('#heroPowerBtn')){document.querySelector('#topSignals')?.scrollIntoView({behavior:'smooth',block:'start'});return}
-  if(e.target.closest('#onboardingNext')){nextOnboarding();return}
-  if(e.target.closest('#onboardingSkip')){closeOnboarding();return}
-
-  const signalCard=e.target.closest('.signal-card');
-  if(signalCard){
-    const sid = signalCard.dataset.signalId;
-    toggleAnalysis(sid);
+  var pulseMod = e.target.closest('[data-pulse-mod]');
+  if(pulseMod && pulseMod.dataset.pulseMod){
+    switchModule(pulseMod.dataset.pulseMod);
+    $('#moduleNav').scrollIntoView({behavior:'smooth',block:'start'});
     return;
   }
 
-  const searchR=e.target.closest('.search-result');
-  if(searchR){
-    closeSearch();
-    switchView('sources');
-    activeSection = searchR.dataset.searchSection;
-    renderSecNav();
-    renderFeeds();
-    setTimeout(()=>toggleAnalysis(searchR.dataset.searchId),300);
-    return;
-  }
+  var askBtn = e.target.closest('[data-ask-lesson-send]');
+  if(askBtn){ askLessonQuestion(askBtn.dataset.askLessonSend); return; }
 
-  if(e.target.closest('#refreshBtn')){refreshAll();return}
-});
-
-document.addEventListener('input',e=>{if(e.target.id==='searchInput')renderSearchResults(e.target.value)});
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')closeSearch();
-  if(e.key==='Enter' && e.target.classList.contains('ask-ai-input')){
-    const id=e.target.dataset.askId;
-    if(id) askAiQuestion(id);
+  var navItem = e.target.closest('[data-nav]');
+  if(navItem){
+    $$('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+    navItem.classList.add('active');
+    if(navItem.dataset.nav==='top') window.scrollTo({top:0,behavior:'smooth'});
+    if(navItem.dataset.nav==='modules') $('#moduleNav').scrollIntoView({behavior:'smooth',block:'start'});
   }
 });
 
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();
-  deferredInstallPrompt = e;
-  showInstallBanner();
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter' && e.target.classList.contains('ask-lesson-input')){
+    var id = e.target.dataset.askLesson;
+    if(id) askLessonQuestion(id);
+  }
 });
 
-window.addEventListener('appinstalled',()=>{
-  deferredInstallPrompt = null;
-  hideInstallBanner(false);
-});
-
-/* ═══════════════════════════════════════ */
-/*  REFRESH                               */
-/* ═══════════════════════════════════════ */
-async function refreshAll(){
-  const btn=$('#refreshBtn');
-  btn.disabled=true;
-  btn.textContent=t('refreshUpdating');
-  $('#refreshTime').textContent=t('refreshSearching');
-
-  // Keep AI caches — only re-analyze new/changed headlines
-  // analysisCache, topSignalCache and briefingCache persist across refreshes
-
-  await fetchNews();
-  renderSecNav();
-  renderFeeds();
-  renderHeroMetrics();
-  renderTopSignals();
-  renderBriefing();
-  updateRefreshTime();
-
-  btn.disabled=false;
-  btn.textContent=t('refreshUpdate');
-
-  // Only analyzes signals not already in cache
-  if(articles.length) autoAnalyzeTopSignals();
-  // Fetch topic images for new articles
-  if(articles.length) fetchUnsplashImages();
-}
-
-function updateRefreshTime(){
-  $('#refreshTime').textContent = lastNewsError
-    ? t('refreshError')
-    : t('refreshAt')(formatLocalTime(fetchedAt || new Date().toISOString()));
-}
-
-/* ═══════════════════════════════════════ */
-/*  SWIPE                                 */
-/* ═══════════════════════════════════════ */
-let touchX=0;
-document.addEventListener('touchstart',e=>{touchX=e.changedTouches[0].screenX},{passive:true});
-document.addEventListener('touchend',e=>{
-  const diff=touchX-e.changedTouches[0].screenX;
-  if(Math.abs(diff)<80) return;
-  const views = ['insights','saved','sources'];
-  const idx = views.indexOf(activeView);
-  if(diff>0 && idx<views.length-1) switchView(views[idx+1]);
-  else if(diff<0 && idx>0) switchView(views[idx-1]);
-},{passive:true});
-
-/* ═══════════════════════════════════════ */
-/*  LOADER & INIT                         */
-/* ═══════════════════════════════════════ */
+/* ═══ INIT ═══ */
 async function init(){
-  updateUsageVisit();
   applyTheme();
-  applyLang();
-  registerServiceWorker();
-  $('#dateMain').textContent = todayFormatted();
-  // Start in insights view
-  document.body.className = 'view-insights';
+  $('#topDate').textContent = shortDate();
+  $('#pulseDate').textContent = todayFormatted();
 
-  // Show loader statuses
-  const statusEl=$('#loaderStatus');
-  const statuses=t('loaderStatuses');
-  let sIdx=0;
+  renderModuleTabs();
+  renderModuleContents();
+  renderProgress();
 
-  const statusInterval=setInterval(()=>{
-    sIdx++;
-    if(sIdx<statuses.length) statusEl.textContent=statuses[sIdx];
-  },800);
+  var statusEl = $('#loaderStatus');
+  var statuses = ['Conectando con el mundo...','Leyendo lo que está pasando...','Separando el ruido de lo importante...','Preparando tu contexto...'];
+  var sIdx = 0;
+  var statusInterval = setInterval(function(){ sIdx++; if(sIdx<statuses.length) statusEl.textContent=statuses[sIdx]; },900);
 
-  await fetchNews();
+  await fetchNewsContext();
   clearInterval(statusInterval);
-  statusEl.textContent=t('loaderDone')(articles.length);
+  statusEl.textContent = articles.length ? articles.length+' fuentes analizadas' : 'Listo';
 
-  renderSecNav();
-  renderFeeds();
-  renderHeroMetrics();
-  renderTopSignals();
-  renderBriefing();
-  renderProgressTracker();
-  if(connectionsCache[todayKey()]) renderConnections(connectionsCache[todayKey()]);
-  updateRefreshTime();
-  showInstallBanner();
-  $('#refreshBtn').disabled=false;
-  $('#refreshBtn').textContent=t('refreshUpdate');
+  setTimeout(function(){ $('#loader').classList.add('hidden'); },500);
 
-  setTimeout(()=>$('#loader').classList.add('hidden'),600);
-  setTimeout(()=>openOnboarding(),750);
-  // Auto-generate briefing immediately
-  if(articles.length && !getBriefing()) setTimeout(()=>generateBriefing(false),800);
-  // Auto-analyze insights (the core experience)
-  if(articles.length) setTimeout(()=>autoAnalyzeTopSignals(),1000);
-  // Fetch topic-relevant images from Unsplash
-  if(articles.length) setTimeout(()=>fetchUnsplashImages(),500);
+  generatePulse(false);
 
-  // Auto-refresh every 15 min
-  setInterval(async()=>{
-    await fetchNews();
-    renderSecNav();
-    renderFeeds();
-    renderHeroMetrics();
-    renderTopSignals();
-    renderBriefing();
-    updateRefreshTime();
-    if(articles.length) autoAnalyzeTopSignals();
-    if(articles.length) fetchUnsplashImages();
-  }, 900000);
+  var today = todayKey();
+  Object.keys(lessonCache).forEach(function(k){
+    if(k.startsWith(today+'_')){
+      var lessonId = k.replace(today+'_','');
+      loadedLessons.add(lessonId);
+    }
+  });
+
+  var twoDaysAgo = new Date(Date.now()-2*86400000).toISOString().slice(0,10);
+  Object.keys(lessonCache).forEach(function(k){
+    var dateKey = k.split('_')[0];
+    if(dateKey < twoDaysAgo) delete lessonCache[k];
+  });
+  store.set('lessonCache',lessonCache);
+  Object.keys(pulseCache).forEach(function(k){
+    if(k < twoDaysAgo) delete pulseCache[k];
+  });
+  store.set('pulseCache',pulseCache);
+
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js').catch(function(){});
+
+  setInterval(function(){ fetchNewsContext().then(function(){ generatePulse(false); }); },1800000);
 }
 
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
