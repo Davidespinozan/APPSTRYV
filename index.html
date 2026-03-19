@@ -1215,6 +1215,16 @@ async function queueTitleTranslations(force){
   return titleTranslationJob;
 }
 
+/* ── Deep knowledge frameworks (from Manual del Mundo) ── */
+const KNOWLEDGE_BASE = {
+  Dinero: 'CONTEXTO PROFUNDO DINERO: El dinero nunca fue neutral — desde Bretton Woods (1944) hasta el petrodólar, siempre fue herramienta de control geopolítico. Hoy hay desdolarización activa (BRICS, yuan). Ahorrar en moneda local latinoamericana es erosión silenciosa por inflación y devaluación. Bitcoin es el primer activo en la historia que ningún gobierno puede confiscar. Diversificar no es para ricos: oro, Bitcoin, cuentas en dólares (Wise/Revolut), activos fuera del país.',
+  Poder: 'CONTEXTO PROFUNDO PODER: Las guerras no son por ideología — son por recursos, rutas comerciales y control monetario. Los imperios siguen un ciclo (modelo Ray Dalio): ascenso → auge → declive. Roma, España, Gran Bretaña, ahora EE.UU. (lleva ~80 años, el promedio es 94). China ya es primera economía por poder de compra, tiene IA propia (DeepSeek), sistema de pagos propio (CIPS), y yuan en comercio global. El status quo se mantiene sin conspiración: medios, deuda, educación y entretenimiento hacen que la gente no pregunte.',
+  'Tecnología': 'CONTEXTO PROFUNDO TECNOLOGÍA: La IA no es un chatbot — es la automatización del trabajo intelectual por primera vez en la historia. Los trabajos que desaparecen primero no son los manuales sino los de oficina: contadores, abogados, diseñadores, programadores. La guerra de chips EE.UU.-China (TSMC, Nvidia, ASML) es el control del futuro. Quien controla los semiconductores avanzados controla la IA.',
+  Mercados: 'CONTEXTO PROFUNDO MERCADOS: Los mercados financieros reflejan los movimientos geopolíticos — no son independientes. El índice del dólar, el precio del oro y Bitcoin son termómetros del orden mundial. Cuando el dólar cae, no es accidente: es síntoma de cambio de poder global. Los mercados de commodities (petróleo, gas, minerales) son donde se juega la geopolítica real.',
+  Movilidad: 'CONTEXTO PROFUNDO MOVILIDAD: La nacionalidad es un accidente geográfico, no un destino. Un segundo pasaporte o residencia cambia fundamentalmente las opciones de vida. Visas de inversión accesibles (España, Portugal, Paraguay) con menos de $100K. Cuentas bancarias globales (Wise, Revolut, Mercury) permiten operar en múltiples monedas desde el teléfono. Cobrar en dólares desde Latam es posible hoy con Stripe y cripto.',
+  Latam: 'CONTEXTO PROFUNDO LATAM: Latinoamérica está en la intersección de todos los cambios globales — desdolarización, IA, migración, recursos naturales (litio, cobre). La región tiene la oportunidad de posicionarse pero históricamente sus gobiernos repiten los mismos errores: control de cambios, inflación, dependencia de commodities. El individuo que entiende estos patrones puede moverse antes que los demás.'
+};
+
 function buildRelevantContext(article){
   const sameSection = articles
     .filter(item => item.section === article.section)
@@ -1226,7 +1236,9 @@ function buildRelevantContext(article){
     .slice(0, 4)
     .map(item => '['+getSectionLabel(item.section)+'] '+getDisplayTitle(item));
 
-  return sameSection.concat(crossSection).join('\n');
+  const newsContext = sameSection.concat(crossSection).join('\n');
+  const deepContext = KNOWLEDGE_BASE[article.section] || '';
+  return (deepContext ? deepContext + '\n\n' : '') + 'NOTICIAS RELACIONADAS HOY:\n' + newsContext;
 }
 
 /* ═══════════════════════════════════════ */
