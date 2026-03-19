@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CONTEXTO — Expansión de Conciencia</title>
-<meta name="description" content="El mapa que nadie te dio. Dinero, poder, movilidad, tecnología, historia, filosofía, geopolítica. Gratis. En español. Para cualquiera.">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0D1117" media="(prefers-color-scheme: dark)">
+<title>CONTEXTO — El Sistema Para Entender El Mundo</title>
+<meta name="description" content="Una app diaria para formar criterio real sobre dinero, poder, tecnología, historia, cultura y estrategia. Gratis. En español. Hecha por Stryv Studio.">
+<meta name="theme-color" content="#f4efe6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#080c11" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Contexto">
@@ -15,1298 +15,311 @@
 <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
-:root{--bg:#fff;--text:#111;--text2:#555;--text3:#999;--surface:#f5f5f5;--border:#eaeaea;--card:#fff;--blur:rgba(255,255,255,.92);--accent:#111}
-@media(prefers-color-scheme:dark){:root{--bg:#0a0a0a;--text:#e8e8e8;--text2:#999;--text3:#666;--surface:#141414;--border:#1e1e1e;--card:#111;--blur:rgba(10,10,10,.92);--accent:#e8e8e8}}
-body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;max-width:600px;margin:0 auto;background:var(--bg);color:var(--text);min-height:100dvh;line-height:1.5}
-@media(min-width:600px){body{border-left:1px solid var(--border);border-right:1px solid var(--border)}}
-
-/* Top bar */
-.bar{position:sticky;top:0;z-index:100;background:var(--blur);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
-.bar-l{display:flex;align-items:center;gap:10px}
-.bar-brand{font-size:14px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
-.streak{font-size:12px;font-weight:700;background:var(--surface);padding:2px 8px;border-radius:20px;color:var(--text2);display:none}
-.streak.show{display:inline-flex;align-items:center;gap:3px}
-.bar-date{font-size:12px;color:var(--text3)}
-
-/* Install banner */
-.install-banner{margin:12px 16px 0;padding:14px 16px;background:var(--surface);border-radius:14px;display:none;align-items:center;gap:12px}
-.install-banner.show{display:flex}
-.install-text{flex:1;font-size:13px;font-weight:600;line-height:1.4}
-.install-btn{font-family:inherit;font-size:12px;font-weight:700;background:var(--text);color:var(--bg);border:none;padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap}
-.install-x{font-size:18px;color:var(--text3);cursor:pointer;padding:0 4px;background:none;border:none}
-
-/* Lesson of the day */
-.lotd{margin:16px 16px 0;padding:24px 20px;border:2px solid var(--text);border-radius:18px;background:var(--card);position:relative;overflow:hidden}
-.lotd::before{content:'';position:absolute;top:-30%;right:-10%;width:100px;height:100px;border-radius:50%;background:var(--surface);opacity:.5}
-.lotd-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;position:relative}
-.lotd-title{font-size:20px;font-weight:800;line-height:1.2;letter-spacing:-.3px;margin-bottom:8px;position:relative}
-.lotd-hook{font-size:14px;color:var(--text2);line-height:1.55;margin-bottom:14px;position:relative}
-.lotd-open{font-size:13px;font-weight:700;color:var(--text);position:relative;cursor:pointer}
-.lotd-body{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);position:relative}
-.lotd.open .lotd-body{display:block;animation:fadeIn .2s}
-.lotd.open .lotd-open{display:none}
-
-/* Brief */
-.brief{margin:12px 16px 0;padding:18px 16px;background:var(--surface);border-radius:14px;font-size:14px}
-.brief-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.brief-dot{width:5px;height:5px;border-radius:50%;background:#4ECDC4;animation:blink 1.5s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.brief-loading{color:var(--text3);font-size:13px}
-.radar{margin:12px 16px 0}
-.radar-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:10px}
-.radar-kicker{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.radar-title{font-size:18px;font-weight:800;line-height:1.15;letter-spacing:-.3px}
-.radar-meta{font-size:11px;color:var(--text3);white-space:nowrap}
-.radar-grid{display:grid;gap:10px}
-.radar-main,.radar-mini{display:block;color:inherit;text-decoration:none;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--card)}
-.radar-main-media{position:relative;height:220px;background:#121212}
-.radar-main-img{width:100%;height:100%;object-fit:cover;display:block}
-.radar-main-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.62) 100%)}
-.radar-main-body{position:absolute;left:0;right:0;bottom:0;padding:16px;color:#fff}
-.radar-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.radar-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.14);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.radar-main-title{font-size:20px;font-weight:800;line-height:1.15;letter-spacing:-.3px;margin-bottom:8px}
-.radar-main-source{font-size:12px;opacity:.82}
-.radar-list{display:grid;gap:10px}
-.radar-mini{display:grid;grid-template-columns:88px 1fr;background:var(--surface)}
-.radar-thumb{width:88px;min-height:96px;background:#161616;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.radar-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.radar-thumb-fallback{font-size:28px}
-.radar-copy{padding:12px}
-.radar-mini-top{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
-.radar-pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--card);border:1px solid var(--border);color:var(--text2)}
-.radar-mini-title{font-size:14px;font-weight:800;line-height:1.25;letter-spacing:-.15px;margin-bottom:4px}
-.radar-mini-source{font-size:12px;color:var(--text3);line-height:1.4}
-.brief-item{padding:10px 0;border-bottom:1px solid var(--border)}
-.brief-item:last-child{border-bottom:none;padding-bottom:0}
-.brief-item:first-child{padding-top:0}
-.brief-hl{font-size:14px;font-weight:700;line-height:1.35;margin-bottom:4px}
-.brief-why{font-size:13px;color:var(--text2);line-height:1.5}
-.brief-ctx{font-size:12px;color:var(--text3);margin-top:3px;font-style:italic}
-
-/* Progress */
-.progress{margin:16px 16px 0;padding:16px;background:var(--surface);border-radius:14px}
-.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.progress-level{font-size:14px;font-weight:800}
-.progress-count{font-size:12px;color:var(--text3)}
-.progress-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
-.progress-fill{height:100%;background:var(--text);border-radius:4px;transition:width .4s}
-.progress-mods{display:flex;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.progress-mods::-webkit-scrollbar{display:none}
-.progress-mod{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:20px;background:var(--card);border:1px solid var(--border);color:var(--text3);font-weight:600;white-space:nowrap}
-.progress-mod.done{border-color:var(--text);color:var(--text)}
-
-/* Section label */
-.section-label{padding:20px 20px 10px;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
-
-/* Cards */
-.card{margin:0 16px 12px;padding:20px;border:1px solid var(--border);border-radius:16px;background:var(--card);cursor:pointer;transition:border-color .15s;-webkit-tap-highlight-color:transparent}
-.card:active{background:var(--surface)}
-.card-mod{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:8px}
-.card-title{font-size:17px;font-weight:800;line-height:1.22;letter-spacing:-.2px;margin-bottom:6px}
-.card-hook{font-size:14px;color:var(--text2);line-height:1.5;margin-bottom:10px}
-.card-foot{display:flex;justify-content:space-between;align-items:center}
-.card-more{font-size:13px;font-weight:700;color:var(--text)}
-.card-read{font-size:10px;font-weight:600;color:var(--text3);background:var(--surface);padding:2px 8px;border-radius:10px;display:none}
-.card-read.show{display:inline}
-.card.open{border-color:var(--text3)}
-.card.open .card-more{display:none}
-
-/* Card expanded */
-.card-body{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
-.card.open .card-body{display:block;animation:fadeIn .2s}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.ai-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#4ECDC4;background:rgba(78,205,196,.08);padding:3px 9px;border-radius:20px;margin-bottom:12px}
-.ai-dot{width:4px;height:4px;border-radius:50%;background:#4ECDC4;animation:blink 1.5s infinite}
-.exp-text{font-size:15px;line-height:1.65;color:var(--text);margin-bottom:16px}
-.exp-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.actions{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.action{display:flex;gap:10px;padding:12px;background:var(--surface);border-radius:10px}
-.action-n{font-size:12px;font-weight:800;min-width:16px;margin-top:1px}
-.action-t{font-size:14px;line-height:1.45}
-.card-actions-row{display:flex;gap:8px;margin-bottom:14px}
-.share-btn{font-family:inherit;font-size:12px;font-weight:700;color:var(--text2);background:var(--surface);border:1px solid var(--border);padding:8px 14px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:6px}
-.share-btn:active{background:var(--border)}
-
-/* Card Q&A */
-.card-q{padding-top:14px;border-top:1px solid var(--border)}
-.card-q-row{display:flex;gap:8px}
-.card-q-in{flex:1;font-family:inherit;font-size:13px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);outline:none}
-.card-q-in:focus{border-color:var(--text3)}
-.card-q-btn{font-family:inherit;font-size:20px;background:var(--text);color:var(--bg);border:none;width:42px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.card-q-btn:disabled{opacity:.4}
-.card-q-reply{margin-top:10px;font-size:14px;line-height:1.6;color:var(--text2);padding:12px;background:var(--surface);border-radius:10px;display:none}
-.card-q-reply.show{display:block}
-.card-close{margin-top:14px;text-align:center;font-size:12px;color:var(--text3);cursor:pointer;padding:6px}
-
-/* Skeleton */
-.sk{height:14px;background:linear-gradient(90deg,var(--surface) 25%,var(--border) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:4px;margin-bottom:8px}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* Explore */
-.explore{margin:24px 16px 0}
-.explore-toggle{font-size:14px;font-weight:700;cursor:pointer;padding:14px 0;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);-webkit-tap-highlight-color:transparent}
-.explore-arrow{font-size:16px;color:var(--text3);transition:transform .2s}
-.explore-toggle.open .explore-arrow{transform:rotate(90deg)}
-.explore-list{display:none;padding-bottom:8px}
-.explore-toggle.open+.explore-list{display:block}
-.explore-cat{font-size:12px;font-weight:700;color:var(--text3);padding:12px 0 6px;text-transform:uppercase;letter-spacing:.3px}
-.explore-item{padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;-webkit-tap-highlight-color:transparent}
-.explore-item:active{color:var(--text2)}
-.explore-item-check{font-size:11px;color:var(--text3)}
-
-/* Reminder */
-.remind{margin:16px 16px 0;padding:16px;border:1px solid var(--border);border-radius:14px;background:var(--card)}
-.remind-title{font-size:14px;font-weight:700;margin-bottom:6px}
-.remind-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:12px}
-.remind-row{display:flex;gap:8px;align-items:center}
-.remind-time{font-family:inherit;font-size:14px;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);outline:none}
-.remind-btn{font-family:inherit;font-size:12px;font-weight:700;background:var(--text);color:var(--bg);border:none;padding:8px 14px;border-radius:8px;cursor:pointer}
-.remind-btn:disabled{opacity:.4}
-.remind-status{font-size:12px;color:var(--text3);margin-top:8px;display:none}
-.remind-status.show{display:block}
-
-/* CTA */
-.cta{margin:24px 16px 0;padding:20px;background:var(--text);color:var(--bg);border-radius:16px}
-.cta-title{font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:6px}
-.cta-desc{font-size:13px;opacity:.55;line-height:1.5;margin-bottom:14px}
-.cta-btn{display:block;background:var(--bg);color:var(--text);font-size:14px;font-weight:700;padding:12px;border-radius:10px;text-align:center;text-decoration:none}
-.cta-link{display:block;text-align:center;font-size:11px;opacity:.3;text-decoration:none;color:inherit;margin-top:8px}
-
-/* Footer */
-.foot{padding:24px 20px 40px;text-align:center;font-size:12px;color:var(--text3);line-height:1.7}
-.foot a{color:var(--text3);text-decoration:underline}
-
-/* Chat button */
-.chat-fab{position:fixed;bottom:24px;right:max(24px,calc(50% - 276px));z-index:150;width:52px;height:52px;border-radius:50%;background:var(--text);color:var(--bg);border:none;font-size:24px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;transition:transform .15s;-webkit-tap-highlight-color:transparent}
-.chat-fab:active{transform:scale(.92)}
-
-/* Chat overlay */
-.chat-overlay{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;flex-direction:column}
-.chat-overlay.open{display:flex}
-.chat-bar{padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
-.chat-bar-title{font-size:16px;font-weight:800}
-.chat-bar-close{font-size:14px;font-weight:600;color:var(--text2);background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 8px}
-.chat-msgs{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px}
-.chat-msg{max-width:85%;padding:12px 14px;border-radius:14px;font-size:14px;line-height:1.55;word-break:break-word}
-.chat-msg.user{align-self:flex-end;background:var(--text);color:var(--bg);border-bottom-right-radius:4px}
-.chat-msg.ai{align-self:flex-start;background:var(--surface);border:1px solid var(--border);border-bottom-left-radius:4px}
-.chat-msg.ai.loading{color:var(--text3)}
-.chat-input-row{padding:12px 16px max(16px,env(safe-area-inset-bottom));display:flex;gap:8px;border-top:1px solid var(--border);background:var(--bg)}
-.chat-input{flex:1;font-family:inherit;font-size:14px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);outline:none;resize:none;max-height:120px;line-height:1.4}
-.chat-input:focus{border-color:var(--text3)}
-.chat-send{font-family:inherit;font-size:22px;background:var(--text);color:var(--bg);border:none;width:48px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.chat-send:disabled{opacity:.4}
-
-/* Share canvas (hidden) */
-.share-canvas{position:fixed;left:-9999px;top:-9999px}
-
-/* Onboarding */
-.onboarding{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:32px 24px;animation:fadeIn .3s}
-.ob-inner{max-width:340px;width:100%;text-align:center}
-.ob-logo{font-size:12px;font-weight:800;letter-spacing:3px;color:var(--text3);text-transform:uppercase;margin-bottom:36px}
-.ob-emoji{font-size:52px;margin-bottom:18px;line-height:1}
-.ob-title{font-size:24px;font-weight:800;letter-spacing:-.5px;line-height:1.2;margin-bottom:14px}
-.ob-text{font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:36px}
-.ob-text b{color:var(--text);font-weight:700}
-.ob-btn{font-family:inherit;font-size:15px;font-weight:800;background:var(--text);color:var(--bg);border:none;padding:16px 28px;border-radius:14px;cursor:pointer;width:100%;margin-bottom:12px;letter-spacing:-.2px}
-.ob-sub{font-size:11px;color:var(--text3);line-height:1.7}
-
-/* Day counter in bar */
-.bar-day{font-size:11px;font-weight:700;color:var(--text3);background:var(--surface);padding:2px 8px;border-radius:20px;display:none}
-.bar-day.show{display:inline-block}
-
-/* Share app CTA */
-.share-cta{margin:24px 16px 0;padding:22px 20px;background:var(--surface);border-radius:16px;text-align:center;border:1px solid var(--border)}
-.share-cta-title{font-size:15px;font-weight:800;line-height:1.4;margin-bottom:6px}
-.share-cta-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:16px}
-.share-cta-btn{font-family:inherit;font-size:13px;font-weight:700;background:var(--text);color:var(--bg);border:none;padding:12px 20px;border-radius:10px;cursor:pointer;width:100%}
-.share-cta-btn:active{opacity:.8}
+:root{--bg:#f4efe6;--bg-soft:#fbf8f2;--card:#fffdf8;--ink:#101316;--muted:#63707b;--muted-2:#8b949d;--line:rgba(16,19,22,.12);--accent:#0f766e;--accent-2:#c96a3d;--accent-3:#203447;--hero:linear-gradient(140deg,#102331 0%,#183b4d 45%,#8c4c2b 100%);--shadow:0 18px 60px rgba(15,22,32,.10);--glass:rgba(251,248,242,.82)}
+@media(prefers-color-scheme:dark){:root{--bg:#080c11;--bg-soft:#0c141d;--card:#111922;--ink:#eef2f4;--muted:#a8b0b7;--muted-2:#74808a;--line:rgba(238,242,244,.10);--accent:#66d9d1;--accent-2:#f0a36f;--accent-3:#90abc6;--hero:linear-gradient(140deg,#0e1f2d 0%,#133041 45%,#774529 100%);--shadow:0 20px 60px rgba(0,0,0,.35);--glass:rgba(8,12,17,.82)}}
+html{background:var(--bg)}
+body{font-family:"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;max-width:640px;margin:0 auto;min-height:100dvh;color:var(--ink);background:radial-gradient(circle at top left,rgba(201,106,61,.10),transparent 28%),radial-gradient(circle at top right,rgba(15,118,110,.12),transparent 26%),var(--bg)}
+@media(min-width:680px){body{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
+button,input,textarea{font:inherit}
+.topbar{position:sticky;top:0;z-index:120;padding:14px 18px;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand-stack{display:flex;align-items:center;gap:10px;min-width:0}.brand-mark{width:34px;height:34px;border-radius:12px;background:var(--hero);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;box-shadow:var(--shadow)}.brand-text{min-width:0}.brand-name{font-size:11px;font-weight:800;letter-spacing:2.2px;text-transform:uppercase}.brand-sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.top-meta{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.pill{font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--muted)}
+.onboarding{position:fixed;inset:0;z-index:400;background:linear-gradient(160deg,rgba(16,35,49,.96) 0%,rgba(12,20,29,.97) 42%,rgba(119,69,41,.94) 100%);display:none;align-items:center;justify-content:center;padding:28px}.onboarding.show{display:flex}.ob-card{width:100%;max-width:360px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:28px;padding:26px 22px;color:#fff;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 26px 70px rgba(0,0,0,.25)}.ob-kicker{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;opacity:.72;margin-bottom:26px}.ob-title{font-family:"Iowan Old Style","Palatino Linotype","Times New Roman",serif;font-size:34px;line-height:1.02;letter-spacing:-1px;margin-bottom:14px}.ob-copy{font-size:15px;line-height:1.75;color:rgba(255,255,255,.82);margin-bottom:24px}.ob-points{display:grid;gap:10px;margin-bottom:26px}.ob-point{padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.08);font-size:13px;line-height:1.55}.ob-button{width:100%;border:none;border-radius:16px;padding:16px 18px;background:#fff;color:#0e1820;font-size:15px;font-weight:800;cursor:pointer}.ob-meta{margin-top:12px;text-align:center;font-size:11px;opacity:.66;line-height:1.6}
+.hero{padding:18px 16px 0}.hero-panel{background:var(--hero);color:#fff;border-radius:28px;padding:22px 20px 20px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero-panel::before{content:"";position:absolute;inset:auto -50px -80px auto;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.07)}.hero-kicker{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;opacity:.74;margin-bottom:12px;position:relative}.hero-title{font-family:"Iowan Old Style","Palatino Linotype","Times New Roman",serif;font-size:38px;line-height:1;letter-spacing:-1.2px;max-width:470px;margin-bottom:12px;position:relative}.hero-copy{font-size:15px;line-height:1.65;color:rgba(255,255,255,.84);max-width:500px;margin-bottom:18px;position:relative}.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;position:relative}.hero-stat{padding:12px 12px 14px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10)}.hero-stat-n{font-size:22px;font-weight:800;line-height:1;margin-bottom:4px}.hero-stat-l{font-size:11px;line-height:1.45;opacity:.74;text-transform:uppercase;letter-spacing:.8px}
+.install-banner{margin:12px 16px 0;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:18px;display:none;align-items:center;gap:12px;box-shadow:var(--shadow)}.install-banner.show{display:flex}.install-copy{flex:1;font-size:13px;line-height:1.45;color:var(--muted)}.install-action{display:flex;gap:8px}.install-btn,.ghost-btn,.primary-btn,.share-btn,.remind-btn,.chat-send,.studio-btn,.lens-btn,.mini-btn{border:none;cursor:pointer}.install-btn,.primary-btn,.studio-btn,.chat-send,.remind-btn{background:var(--ink);color:var(--bg-soft)}.install-btn,.mini-btn,.ghost-btn,.primary-btn,.remind-btn,.studio-btn,.lens-btn,.share-btn{padding:10px 14px;border-radius:12px;font-size:12px;font-weight:800}.ghost-btn,.mini-btn,.lens-btn,.share-btn{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.section{padding:22px 16px 0}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:12px}.section-kicker{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted-2);margin-bottom:4px}.section-title{font-family:"Iowan Old Style","Palatino Linotype","Times New Roman",serif;font-size:28px;line-height:1.05;letter-spacing:-.8px}.section-sub{font-size:13px;color:var(--muted);line-height:1.55;max-width:510px}.section-meta{font-size:11px;color:var(--muted-2);white-space:nowrap}
+.radar-grid{display:grid;gap:12px}.radar-lead,.radar-mini{display:block;text-decoration:none;color:inherit;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow)}.radar-media{position:relative;height:248px;background:linear-gradient(160deg,#1b3446,#8c4c2b)}.radar-media img{width:100%;height:100%;object-fit:cover;display:block}.radar-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08) 0%,rgba(0,0,0,.68) 100%)}.radar-lead-copy{position:absolute;left:0;right:0;bottom:0;padding:18px;color:#fff;z-index:1}.radar-badges,.tiny-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.tag{font-size:10px;font-weight:800;letter-spacing:.4px;padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.radar-lead-title{font-size:22px;font-weight:800;line-height:1.1;letter-spacing:-.5px;margin-bottom:8px}.radar-lead-source{font-size:12px;color:rgba(255,255,255,.82)}.radar-list{display:grid;gap:10px}.radar-mini{display:grid;grid-template-columns:92px 1fr;background:var(--bg-soft)}.radar-thumb{min-height:108px;background:linear-gradient(150deg,#173040,#734225);display:flex;align-items:center;justify-content:center;overflow:hidden}.radar-thumb img{width:100%;height:100%;object-fit:cover;display:block}.radar-fallback{font-size:28px;color:#fff}.radar-copy{padding:12px}.radar-mini-title{font-size:14px;font-weight:800;line-height:1.28;letter-spacing:-.2px;margin-bottom:6px}.radar-mini-source{font-size:12px;color:var(--muted);line-height:1.45}
+.brief-panel,.lotd-panel,.progress-panel,.remind-panel,.share-panel,.studio-panel,.mission-panel{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}.brief-panel{padding:18px}.brief-list{display:grid;gap:12px}.brief-item{padding-bottom:12px;border-bottom:1px solid var(--line)}.brief-item:last-child{border-bottom:none;padding-bottom:0}.brief-h{font-size:15px;font-weight:800;line-height:1.35;margin-bottom:4px}.brief-w{font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:4px}.brief-c{font-size:12px;line-height:1.5;color:var(--muted-2);font-style:italic}
+.lotd-panel{padding:22px 20px;background:linear-gradient(180deg,rgba(15,118,110,.06),transparent 36%),var(--card)}.lotd-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}.lotd-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted-2)}.lotd-open{font-size:12px;font-weight:800;color:var(--accent);cursor:pointer}.lotd-title{font-family:"Iowan Old Style","Palatino Linotype","Times New Roman",serif;font-size:30px;line-height:1.05;letter-spacing:-.9px;margin-bottom:10px}.lotd-hook{font-size:14px;color:var(--muted);line-height:1.65}.lotd-body{display:none;margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}.lotd-panel.open .lotd-body{display:block}
+.daily-grid{display:grid;gap:12px}.daily-card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow);position:relative;overflow:hidden}.daily-card::before{content:"";position:absolute;top:-30px;right:-20px;width:84px;height:84px;border-radius:50%;background:rgba(15,118,110,.08)}.daily-card-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px;position:relative}.daily-lens{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:var(--bg-soft);border:1px solid var(--line);font-size:11px;font-weight:800}.daily-title{font-size:20px;font-weight:800;line-height:1.12;letter-spacing:-.35px;margin-bottom:8px;position:relative}.daily-copy{font-size:14px;line-height:1.65;color:var(--muted);position:relative}.daily-block{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);position:relative}.daily-label{font-size:10px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted-2);margin-bottom:6px}.daily-cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;position:relative}
+.vault-grid{display:grid;gap:10px}.vault-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow);display:grid;gap:10px}.vault-tag{font-size:11px;font-weight:800;letter-spacing:.4px;color:var(--accent)}.vault-title{font-size:18px;font-weight:800;line-height:1.15;letter-spacing:-.25px}.vault-question{font-size:14px;line-height:1.55;color:var(--muted)}.vault-foot{display:flex;justify-content:space-between;align-items:center;gap:10px}.meter{height:6px;flex:1;background:var(--bg-soft);border-radius:999px;overflow:hidden;border:1px solid var(--line)}.meter span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.progress-panel{padding:20px}.progress-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}.progress-title{font-size:20px;font-weight:800;letter-spacing:-.25px}.progress-copy{font-size:13px;line-height:1.55;color:var(--muted);max-width:420px}.progress-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}.progress-stat{padding:14px 12px;border-radius:18px;background:var(--bg-soft);border:1px solid var(--line)}.progress-n{font-size:24px;font-weight:800;line-height:1;margin-bottom:4px}.progress-l{font-size:11px;line-height:1.45;text-transform:uppercase;letter-spacing:.7px;color:var(--muted-2)}.trajectory{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.trajectory::-webkit-scrollbar{display:none}.trajectory-pill{white-space:nowrap;padding:7px 10px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--muted)}.trajectory-pill.live{border-color:var(--accent);color:var(--accent)}
+.remind-panel,.share-panel,.studio-panel,.mission-panel{padding:20px}.remind-title,.share-title,.studio-title,.mission-title{font-size:20px;font-weight:800;letter-spacing:-.25px;margin-bottom:8px}.remind-copy,.share-copy,.studio-copy,.mission-copy{font-size:14px;line-height:1.65;color:var(--muted)}.remind-row{display:flex;gap:8px;margin-top:16px}.remind-time{flex:1;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink);padding:12px 14px;border-radius:14px;outline:none}.remind-status{font-size:12px;color:var(--muted-2);margin-top:10px;display:none}.remind-status.show{display:block}
+.mission-grid{display:grid;gap:10px;margin-top:16px}.mission-card{padding:14px;border-radius:18px;background:var(--bg-soft);border:1px solid var(--line)}.mission-k{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted-2);margin-bottom:6px}.mission-v{font-size:14px;line-height:1.6;color:var(--ink)}
+.share-actions,.studio-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.studio-panel{background:linear-gradient(180deg,rgba(32,52,71,.04),transparent 50%),var(--card)}.studio-bullets{display:grid;gap:10px;margin-top:16px}.studio-bullet{padding:14px;border-radius:18px;background:var(--bg-soft);border:1px solid var(--line);font-size:14px;line-height:1.6}
+.footer{padding:28px 16px 42px;text-align:center;font-size:12px;line-height:1.8;color:var(--muted-2)}.footer a{color:inherit}
+.chat-fab{position:fixed;right:max(18px,calc(50% - 302px));bottom:22px;z-index:130;width:58px;height:58px;border-radius:50%;background:var(--ink);color:var(--bg-soft);border:none;font-size:24px;cursor:pointer;box-shadow:0 18px 40px rgba(0,0,0,.24)}.chat-overlay,.sheet{position:fixed;inset:0;z-index:240;background:rgba(6,10,16,.44);display:none}.chat-overlay.open,.sheet.open{display:flex}.chat-shell{margin-top:auto;width:100%;max-width:640px;margin-left:auto;margin-right:auto;background:var(--bg);border-radius:26px 26px 0 0;border-top:1px solid var(--line);height:min(82dvh,760px);display:flex;flex-direction:column}.chat-bar,.sheet-bar{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.chat-title,.sheet-title{font-size:15px;font-weight:800}.chat-close,.sheet-close{background:none;border:none;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer}.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}.chat-msg{max-width:86%;padding:12px 14px;border-radius:18px;font-size:14px;line-height:1.6}.chat-msg.user{align-self:flex-end;background:var(--ink);color:var(--bg-soft);border-bottom-right-radius:6px}.chat-msg.ai{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:6px}.chat-input-row{padding:12px 16px max(16px,env(safe-area-inset-bottom));display:flex;gap:8px;border-top:1px solid var(--line);background:var(--bg)}.chat-input{flex:1;min-height:48px;max-height:132px;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink);padding:12px 14px;border-radius:16px;outline:none;resize:none}.chat-send{width:50px;border-radius:16px;font-size:20px}
+.sheet{align-items:flex-end}.sheet-shell{width:100%;max-width:640px;margin:0 auto;background:var(--bg);border-radius:26px 26px 0 0;border-top:1px solid var(--line);min-height:44dvh;max-height:82dvh;overflow:auto}.sheet-body{padding:18px 16px 28px}.sheet-kicker{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}.sheet-headline{font-family:"Iowan Old Style","Palatino Linotype","Times New Roman",serif;font-size:30px;line-height:1.04;letter-spacing:-.9px;margin-bottom:12px}.sheet-copy{font-size:15px;line-height:1.75;color:var(--muted);margin-bottom:18px}.sheet-box{padding:14px;border-radius:18px;background:var(--bg-soft);border:1px solid var(--line);margin-bottom:12px}.sheet-box-label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted-2);margin-bottom:6px}.sheet-box-text{font-size:14px;line-height:1.65}
+.hidden-canvas{position:fixed;left:-9999px;top:-9999px}
+@media(max-width:430px){.hero-title{font-size:32px}.section-title{font-size:24px}.hero-stats,.progress-grid{grid-template-columns:1fr}.radar-mini{grid-template-columns:80px 1fr}}
 </style>
 </head>
 <body>
-
-<div class="onboarding" id="onboarding" style="display:none">
-  <div class="ob-inner">
-    <div class="ob-logo">CONTEXTO</div>
-    <div class="ob-emoji">🔮</div>
-    <div class="ob-title">El mapa que nadie te dio</div>
-    <div class="ob-text">
-      Dinero. Poder. Historia.<br>Filosofía. Geopolítica. Tecnología.<br><br>
-      <b>5 minutos al día.</b> 365 días.<br>
-      Una persona completamente diferente.
+<div class="onboarding" id="onboarding">
+  <div class="ob-card">
+    <div class="ob-kicker">CONTEXTO</div>
+    <div class="ob-title">Un año para dejar de vivir a ciegas.</div>
+    <div class="ob-copy">Esta app no existe para entretenerte. Existe para formar criterio real sobre cómo funciona el mundo: dinero, poder, instituciones, tecnología, narrativa y estrategia.</div>
+    <div class="ob-points">
+      <div class="ob-point">5-7 minutos diarios de lectura clara, sin jerga ni relleno.</div>
+      <div class="ob-point">Señal en vivo + lentes de comprensión + acumulación de criterio.</div>
+      <div class="ob-point">Gratis, sin registro, hecha para que salgas más lúcido que ayer.</div>
     </div>
-    <button class="ob-btn" id="obStart">Comenzar mi año →</button>
-    <div class="ob-sub">Gratis. Sin registro. Sin trampa.<br>Hecho para cualquiera, en cualquier punto de su vida.</div>
+    <button class="ob-button" id="obStart">Empezar mi año →</button>
+    <div class="ob-meta">Creada por Stryv Studio como prueba de lo que un sistema serio de IA, producto y diseño puede hacer.</div>
   </div>
 </div>
-
-<nav class="bar">
-  <div class="bar-l">
-    <span class="bar-brand">CONTEXTO</span>
-    <span class="streak" id="streak"></span>
-    <span class="bar-day" id="dayCounter"></span>
+<nav class="topbar">
+  <div class="brand-stack">
+    <div class="brand-mark">◐</div>
+    <div class="brand-text">
+      <div class="brand-name">CONTEXTO</div>
+      <div class="brand-sub">Sistema diario para entender el mundo real</div>
+    </div>
   </div>
-  <span class="bar-date" id="date"></span>
+  <div class="top-meta">
+    <span class="pill" id="streakPill">Racha 0</span>
+    <span class="pill" id="dayPill">Día 0</span>
+  </div>
 </nav>
-
-<div class="install-banner" id="installBanner">
-  <div class="install-text">Agrega CONTEXTO a tu pantalla de inicio</div>
-  <button class="install-btn" id="installBtn">Agregar</button>
-  <button class="install-x" id="installX">&times;</button>
-</div>
-
-<div class="lotd" id="lotd">
-  <div class="lotd-label">🔮 Lección del día · <span id="lotdDate"></span></div>
-  <div class="lotd-title" id="lotdTitle">Cargando tu lección del día...</div>
-  <div class="lotd-hook" id="lotdHook">La IA está analizando qué pasa hoy en el mundo para generar una lección relevante.</div>
-  <div class="lotd-open" id="lotdOpen">Leer lección →</div>
-  <div class="lotd-body" id="lotdBody"></div>
-</div>
-
-<div class="radar" id="radar" style="display:none">
-  <div class="radar-head">
-    <div>
-      <div class="radar-kicker"><span class="brief-dot"></span> Radar global en vivo</div>
-      <div class="radar-title">Lo que está moviendo el mundo ahora</div>
+<section class="hero">
+  <div class="hero-panel">
+    <div class="hero-kicker">briefing + criterio + memoria</div>
+    <div class="hero-title">Entiende el mundo antes de que el mundo te pase por encima.</div>
+    <div class="hero-copy">CONTEXTO traduce noticias globales, fuerzas estructurales y marcos mentales en una práctica diaria de claridad. Si alguien la usa un año, debería pensar mejor, decidir mejor y ver más lejos.</div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-n">12</div><div class="hero-stat-l">lentes madre</div></div>
+      <div class="hero-stat"><div class="hero-stat-n">1</div><div class="hero-stat-l">briefing vivo cada día</div></div>
+      <div class="hero-stat"><div class="hero-stat-n">365</div><div class="hero-stat-l">oportunidades para ganar criterio</div></div>
     </div>
-    <div class="radar-meta" id="radarMeta"></div>
+  </div>
+</section>
+<div class="install-banner" id="installBanner">
+  <div class="install-copy">Instala CONTEXTO y conviértelo en tu briefing diario. Se abre como app, carga más rápido y queda a un toque.</div>
+  <div class="install-action">
+    <button class="install-btn" id="installBtn">Instalar</button>
+    <button class="ghost-btn" id="installDismiss">Cerrar</button>
+  </div>
+</div>
+<section class="section" id="radarSection" style="display:none">
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">radar global en vivo</div>
+      <div class="section-title">Lo que mueve el tablero hoy</div>
+    </div>
+    <div class="section-meta" id="radarMeta"></div>
   </div>
   <div class="radar-grid" id="radarGrid"></div>
-</div>
-
-<div class="brief" id="brief">
-  <div class="brief-loading">Leyendo lo que está pasando en el mundo...</div>
-</div>
-
-<div class="progress" id="progressSection" style="display:none">
-  <div class="progress-top">
-    <div class="progress-level" id="progressLevel"></div>
-    <div class="progress-count" id="progressCount"></div>
+</section>
+<section class="section" id="briefSection" style="display:none">
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">briefing</div>
+      <div class="section-title">Hoy en el mundo</div>
+      <div class="section-sub">No para que veas más titulares. Para que salgas con una imagen más nítida del día.</div>
+    </div>
   </div>
-  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0"></div></div>
-  <div class="progress-mods" id="progressMods"></div>
-</div>
-
-<div class="section-label">Hoy para ti</div>
-<div id="cards"></div>
-
-<div class="explore">
-  <div class="explore-toggle" id="exploreToggle">Explorar los 50 temas <span class="explore-arrow">›</span></div>
-  <div class="explore-list" id="exploreList"></div>
-</div>
-
-<div class="remind" id="remindSection">
-  <div class="remind-title">🔔 Recordatorio diario</div>
-  <div class="remind-desc">Recibe un aviso cada día para no perder tu racha.</div>
-  <div class="remind-row">
-    <input type="time" class="remind-time" id="remindTime" value="08:00">
-    <button class="remind-btn" id="remindBtn">Activar</button>
+  <div class="brief-panel" id="briefPanel">
+    <div class="brief-list" id="briefList"></div>
   </div>
-  <div class="remind-status" id="remindStatus"></div>
+</section>
+<section class="section">
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">lección del día</div>
+      <div class="section-title">La pieza que más conviene entender hoy</div>
+    </div>
+    <div class="section-meta" id="lotdDate"></div>
+  </div>
+  <div class="lotd-panel" id="lotdPanel">
+    <div class="lotd-top">
+      <div class="lotd-label">conectada con noticias reales</div>
+      <div class="lotd-open" id="lotdToggle">Abrir</div>
+    </div>
+    <div class="lotd-title" id="lotdTitle">Leyendo la señal del día...</div>
+    <div class="lotd-hook" id="lotdHook">La IA está revisando qué evento merece convertirse en una lección de criterio y no solo en otra noticia más.</div>
+    <div class="lotd-body" id="lotdBody"></div>
+  </div>
+</section>
+<section class="section">
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">lentes para hoy</div>
+      <div class="section-title">Qué lentes necesitas activar</div>
+      <div class="section-sub">Cada día no necesitas cien temas. Necesitas los lentes correctos para leer mejor el momento.</div>
+    </div>
+  </div>
+  <div class="daily-grid" id="dailyGrid"></div>
+</section>
+<section class="section">
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">núcleo de criterio</div>
+      <div class="section-title">Los 12 lentes madre</div>
+      <div class="section-sub">Esta es la columna vertebral. No un catálogo de temas, sino los marcos que te permiten entender cualquier evento importante.</div>
+    </div>
+  </div>
+  <div class="vault-grid" id="vaultGrid"></div>
+</section>
+<section class="section">
+  <div class="progress-panel">
+    <div class="progress-top">
+      <div>
+        <div class="progress-title" id="progressTitle">Fase 1 — Ver el tablero</div>
+        <div class="progress-copy">La meta no es consumir. Es ganar criterio compuesto. Mientras más lentes revisas y más días sostienes la práctica, más cambia tu manera de interpretar lo que pasa.</div>
+      </div>
+      <button class="mini-btn" id="shareProgress">Compartir</button>
+    </div>
+    <div class="progress-grid">
+      <div class="progress-stat"><div class="progress-n" id="readCount">0</div><div class="progress-l">briefings leídos</div></div>
+      <div class="progress-stat"><div class="progress-n" id="lensCount">0</div><div class="progress-l">lentes activados</div></div>
+      <div class="progress-stat"><div class="progress-n" id="daysCount">0</div><div class="progress-l">días acumulados</div></div>
+    </div>
+    <div class="trajectory" id="trajectory"></div>
+  </div>
+</section>
+<section class="section">
+  <div class="mission-panel">
+    <div class="mission-title">Cómo debería usarse CONTEXTO</div>
+    <div class="mission-copy">No como feed infinito. Como ritual de formación intelectual. Entras, lees la señal, activas los lentes correctos, hablas con el sistema y sales con una mente más afilada.</div>
+    <div class="mission-grid">
+      <div class="mission-card"><div class="mission-k">1. Señal</div><div class="mission-v">Empieza por lo que de verdad mueve el tablero, no por lo más ruidoso.</div></div>
+      <div class="mission-card"><div class="mission-k">2. Patrón</div><div class="mission-v">Cada evento se conecta con un patrón más grande: incentivos, instituciones, energía, deuda, narrativas.</div></div>
+      <div class="mission-card"><div class="mission-k">3. Criterio</div><div class="mission-v">La meta no es repetir opiniones. Es ver estructuras, detectar intereses y pensar por cuenta propia.</div></div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="remind-panel">
+    <div class="remind-title">Instala el hábito</div>
+    <div class="remind-copy">Pon una hora fija y conviértelo en tu ritual. Una app así solo vale si se vuelve parte de tu día.</div>
+    <div class="remind-row">
+      <input class="remind-time" type="time" id="remindTime" value="08:00">
+      <button class="remind-btn" id="remindBtn">Activar</button>
+    </div>
+    <div class="remind-status" id="remindStatus"></div>
+  </div>
+</section>
+<section class="section">
+  <div class="share-panel">
+    <div class="share-title">Si esto te está sirviendo, compártelo.</div>
+    <div class="share-copy">CONTEXTO no crece por ads. Crece porque alguien lo prueba, siente el valor y se lo manda a otra persona que también quiere dejar de vivir a ciegas.</div>
+    <div class="share-actions">
+      <button class="primary-btn" id="shareApp">Compartir CONTEXTO</button>
+      <button class="ghost-btn" id="copyAppLink">Copiar link</button>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="studio-panel">
+    <div class="section-kicker">stryv studio</div>
+    <div class="studio-title">Esta app también es una demostración.</div>
+    <div class="studio-copy">Si CONTEXTO te transmite claridad, ambición y sistema, eso es exactamente lo que Stryv Studio construye para marcas y negocios: productos con tesis, diseño con intención y automatización real con IA.</div>
+    <div class="studio-bullets">
+      <div class="studio-bullet">Diseño y UX que no solo se ven bien: empujan comportamiento, comprensión y conversión.</div>
+      <div class="studio-bullet">Sistemas de IA integrados al producto, no como gimmick suelto.</div>
+      <div class="studio-bullet">Arquitectura editorial, funnels y software hechos para crecimiento serio.</div>
+    </div>
+    <div class="studio-actions">
+      <a class="studio-btn" href="https://stryvstudio.com" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">Ver Stryv Studio</a>
+      <a class="ghost-btn" href="https://wa.me/17373683464" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">Hablar por WhatsApp</a>
+    </div>
+  </div>
+</section>
+<div class="footer">
+  CONTEXTO está diseñada para que una persona normal se vuelva más lúcida, no más ansiosa.<br>
+  Una práctica diaria de comprensión del mundo real, hecha por <a href="https://stryvstudio.com" target="_blank" rel="noopener">Stryv Studio</a>.
 </div>
-
-<div class="share-cta">
-  <div class="share-cta-title">Si esto te abrió los ojos,<br>compártelo con alguien que lo necesite.</div>
-  <div class="share-cta-desc">Gratis. Para siempre. Sin registro.</div>
-  <button class="share-cta-btn" id="shareAppBtn">Compartir CONTEXTO →</button>
-</div>
-
-<div class="foot">
-  Mañana tendrás 5 insights nuevos.<br>
-  Guarda esta página. Vuelve cada día.<br>
-  50 temas. 11 módulos. 1 año para entender el mundo.<br><br>
-  Hecho con IA por <a href="https://stryvstudio.com" target="_blank" rel="noopener">Stryv Studio</a>
-</div>
-
-<button class="chat-fab" id="chatFab">💬</button>
-
+<button class="chat-fab" id="chatFab">✦</button>
 <div class="chat-overlay" id="chatOverlay">
-  <div class="chat-bar">
-    <span class="chat-bar-title">CONTEXTO · Chat</span>
-    <button class="chat-bar-close" id="chatClose">Cerrar</button>
-  </div>
-  <div class="chat-msgs" id="chatMsgs">
-    <div class="chat-msg ai">Soy tu tutor de contexto. Pregúntame lo que quieras sobre dinero, poder, tecnología, historia, filosofía, geopolítica — o sobre lo que está pasando hoy en el mundo. Sin jerga, sin rollo. Pura verdad.</div>
-  </div>
-  <div class="chat-input-row">
-    <textarea class="chat-input" id="chatInput" rows="1" placeholder="Escribe tu pregunta..."></textarea>
-    <button class="chat-send" id="chatSend">→</button>
+  <div class="chat-shell">
+    <div class="chat-bar">
+      <div class="chat-title">CONTEXTO · Conversación</div>
+      <button class="chat-close" id="chatClose">Cerrar</button>
+    </div>
+    <div class="chat-msgs" id="chatMsgs">
+      <div class="chat-msg ai">Soy tu copiloto de criterio. Pregúntame por lo que pasó hoy, por cualquiera de los lentes madre, o por cómo conectar una noticia con patrones más profundos.</div>
+    </div>
+    <div class="chat-input-row">
+      <textarea class="chat-input" id="chatInput" rows="1" placeholder="Escribe tu pregunta..."></textarea>
+      <button class="chat-send" id="chatSend">→</button>
+    </div>
   </div>
 </div>
-
-<canvas class="share-canvas" id="shareCanvas" width="1080" height="1350"></canvas>
-
+<div class="sheet" id="lensSheet">
+  <div class="sheet-shell">
+    <div class="sheet-bar">
+      <div class="sheet-title">Lente madre</div>
+      <button class="sheet-close" id="lensSheetClose">Cerrar</button>
+    </div>
+    <div class="sheet-body" id="lensSheetBody"></div>
+  </div>
+</div>
+<canvas class="hidden-canvas" id="shareCanvas" width="1080" height="1350"></canvas>
 <script>
 (function(){
 'use strict';
-
-/* ═══════════════════════════════════════════════════════════
-   TOPICS DATA — 50 topics across 11 modules
-   ═══════════════════════════════════════════════════════════ */
-var TOPICS = [
-  // DINERO (5)
-  {id:'d1',mod:'dinero',icon:'💰',label:'Dinero',title:'El dinero no es neutral. Nunca lo fue.',hook:'Desde Bretton Woods hasta el petrodólar, el dinero siempre fue herramienta de control geopolítico.'},
-  {id:'d2',mod:'dinero',icon:'💰',label:'Dinero',title:'Por qué el dólar está cayendo y qué significa para ti',hook:'No es accidente. Es síntoma de que el sistema monetario global está cambiando de manos.'},
-  {id:'d3',mod:'dinero',icon:'💰',label:'Dinero',title:'Bitcoin: lo que es, lo que no es, y por qué importa',hook:'No es inversión especulativa. Es el primer activo en la historia que ningún gobierno puede confiscar.'},
-  {id:'d4',mod:'dinero',icon:'💰',label:'Dinero',title:'Cómo diversificar sin ser millonario',hook:'Oro, Bitcoin, cuentas en otras monedas. Lo que hacen los ricos desde siempre, accesible para ti.'},
-  {id:'d5',mod:'dinero',icon:'💰',label:'Dinero',title:'Por qué ahorrar en pesos es un error silencioso',hook:'El sistema está diseñado para que pierdas poder adquisitivo. Hay alternativas.'},
-  // MOVILIDAD (4)
-  {id:'m1',mod:'movilidad',icon:'🌍',label:'Movilidad',title:'Visas de inversión: cómo comprar tu movilidad',hook:'Con menos de $100K puedes obtener residencia en España, Portugal, Paraguay.'},
-  {id:'m2',mod:'movilidad',icon:'🌍',label:'Movilidad',title:'Cómo abrir cuentas bancarias en otros países',hook:'Wise, Revolut, Mercury. Acceso a múltiples monedas desde tu teléfono. Hoy.'},
-  {id:'m3',mod:'movilidad',icon:'🌍',label:'Movilidad',title:'Cómo cobrar en dólares desde cualquier país',hook:'Stripe, Wise, cripto. La infraestructura que usan los nómadas digitales.'},
-  {id:'m4',mod:'movilidad',icon:'🌍',label:'Movilidad',title:'Por qué un segundo pasaporte cambia todo',hook:'La nacionalidad es un accidente geográfico, no un destino.'},
-  // PODER (4)
-  {id:'p1',mod:'poder',icon:'⚡',label:'Poder',title:'Por qué hay guerras: el manual real',hook:'No son por ideología. Son por recursos, rutas comerciales y control monetario. Siempre.'},
-  {id:'p2',mod:'poder',icon:'⚡',label:'Poder',title:'El ciclo de los imperios: todos caen igual',hook:'Roma, España, Gran Bretaña, EE.UU. Mismo patrón. EE.UU. lleva 80 años. Promedio: 94.'},
-  {id:'p3',mod:'poder',icon:'⚡',label:'Poder',title:'China: ya es la nueva potencia y la mayoría no lo ve',hook:'Primera economía por poder de compra, IA propia, sistema de pagos propio.'},
-  {id:'p4',mod:'poder',icon:'⚡',label:'Poder',title:'Los mecanismos invisibles que mantienen el status quo',hook:'Media, deuda, educación, entretenimiento. Solo necesitan que no preguntes.'},
-  // TECNOLOGÍA (4)
-  {id:'t1',mod:'tecnologia',icon:'🤖',label:'Tecnología',title:'Qué es realmente la IA y por qué cambia todo',hook:'No es un chatbot. Es la automatización del trabajo intelectual. Primera vez en la historia.'},
-  {id:'t2',mod:'tecnologia',icon:'🤖',label:'Tecnología',title:'Cómo usar IA para ganar ventaja real hoy',hook:'Claude, ChatGPT, Midjourney. Herramientas concretas para trabajar diferente.'},
-  {id:'t3',mod:'tecnologia',icon:'🤖',label:'Tecnología',title:'La guerra de chips: te afecta directamente',hook:'El control de los semiconductores avanzados es el control del futuro.'},
-  {id:'t4',mod:'tecnologia',icon:'🤖',label:'Tecnología',title:'Qué trabajos va a reemplazar la IA primero',hook:'No son manuales. Son oficina: contadores, abogados, diseñadores, programadores.'},
-  // MENTALIDAD (4)
-  {id:'men1',mod:'mentalidad',icon:'🧠',label:'Mentalidad',title:'La Alegoría de la Caverna: tu realidad no es real',hook:'Platón lo describió hace 2,400 años. Sigue siendo la descripción más precisa.'},
-  {id:'men2',mod:'mentalidad',icon:'🧠',label:'Mentalidad',title:'Cómo identificar tus prisiones de contexto',hook:'Las limitaciones más peligrosas son las que no sabes que tienes.'},
-  {id:'men3',mod:'mentalidad',icon:'🧠',label:'Mentalidad',title:'La mentalidad mutante: adaptarse o quedarse atrás',hook:'No es motivación. Es supervivencia. La rigidez es el riesgo más grande.'},
-  {id:'men4',mod:'mentalidad',icon:'🧠',label:'Mentalidad',title:'La ignorancia no duele hasta que es tarde',hook:'El costo de no saber se paga cuando el mundo cambia y ya no puedes moverte.'},
-  // NEGOCIO (4)
-  {id:'n1',mod:'negocio',icon:'🚀',label:'Negocio',title:'Tu negocio local tiene un techo. Así se rompe.',hook:'Un negocio atado a una sola ciudad está atado a una sola economía.'},
-  {id:'n2',mod:'negocio',icon:'🚀',label:'Negocio',title:'Qué es un sistema operativo digital',hook:'El conjunto de herramientas que hace que tu negocio funcione sin ti.'},
-  {id:'n3',mod:'negocio',icon:'🚀',label:'Negocio',title:'Ingresos que no dependan de tu tiempo',hook:'La diferencia entre tener un negocio y ser el negocio.'},
-  {id:'n4',mod:'negocio',icon:'🚀',label:'Negocio',title:'Cómo escalar a mercados fuera de tu país',hook:'CDMX, Monterrey, Bogotá, Miami. La estrategia que funciona hoy.'},
-  // HISTORIA (5)
-  {id:'h1',mod:'historia',icon:'📜',label:'Historia',title:'La Revolución Industrial: el momento que cambió todo',hook:'No solo fueron máquinas. Fue el inicio del mundo que conoces: desigualdad, capitalismo, ciudades.'},
-  {id:'h2',mod:'historia',icon:'📜',label:'Historia',title:'Las Guerras Mundiales: qué las causó realmente',hook:'Batallas por recursos, territorios y control del sistema financiero global.'},
-  {id:'h3',mod:'historia',icon:'📜',label:'Historia',title:'La Guerra Fría: cómo dividió el planeta en dos',hook:'Capitalismo vs comunismo. Detrás: una pelea por influencia que sigue definiendo el mapa.'},
-  {id:'h4',mod:'historia',icon:'📜',label:'Historia',title:'El colapso de la URSS: el nacimiento del mundo actual',hook:'En 1991 cayó un imperio. Lo que vino después creó el mundo de hoy.'},
-  {id:'h5',mod:'historia',icon:'📜',label:'Historia',title:'El 11-S: el día que cambió las reglas del juego',hook:'Cómo un evento redefinió la vigilancia, las libertades y la política exterior global.'},
-  // ECONOMÍA REAL (5)
-  {id:'e1',mod:'economia',icon:'📊',label:'Economía Real',title:'Inflación: cómo te están robando sin que lo notes',hook:'Cada año tu dinero compra menos. No es accidente. Es una herramienta del sistema.'},
-  {id:'e2',mod:'economia',icon:'📊',label:'Economía Real',title:'Interés compuesto: la fuerza que separa ricos de pobres',hook:'Einstein lo llamó la octava maravilla. Los ricos lo usan. Tú lo pagas.'},
-  {id:'e3',mod:'economia',icon:'📊',label:'Economía Real',title:'Bancos centrales: quién realmente controla tu dinero',hook:'No son los gobiernos. Son instituciones que la mayoría no sabe que existen.'},
-  {id:'e4',mod:'economia',icon:'📊',label:'Economía Real',title:'Deuda soberana: cuando tu país se endeuda, tú pagas',hook:'Se paga con tus impuestos, tu inflación y tus oportunidades futuras.'},
-  {id:'e5',mod:'economia',icon:'📊',label:'Economía Real',title:'Los ciclos económicos: por qué las crisis se repiten',hook:'Las crisis siguen un patrón predecible. Aprende a ver la próxima antes de que llegue.'},
-  // FILOSOFÍA PRÁCTICA (5)
-  {id:'f1',mod:'filosofia',icon:'📖',label:'Filosofía',title:'Estoicismo: la filosofía más útil para vivir hoy',hook:'Marco Aurelio, Séneca, Epicteto. Un manual de operación para la vida real.'},
-  {id:'f2',mod:'filosofia',icon:'📖',label:'Filosofía',title:'Maquiavelo: cómo funciona el poder de verdad',hook:'No es "ser malo". Es entender cómo se mueve el poder real.'},
-  {id:'f3',mod:'filosofia',icon:'📖',label:'Filosofía',title:'Nietzsche: por qué la comodidad es una trampa',hook:'El superhombre no es fuerza física. Es crear tus propios valores.'},
-  {id:'f4',mod:'filosofia',icon:'📖',label:'Filosofía',title:'Sun Tzu: estrategia para ganar sin pelear',hook:'2,500 años y sigue siendo el manual más usado en negocios, política y vida.'},
-  {id:'f5',mod:'filosofia',icon:'📖',label:'Filosofía',title:'Sócrates: el arte de hacer las preguntas correctas',hook:'No te dio respuestas. Te enseñó a preguntar hasta encontrar la verdad.'},
-  // GEOPOLÍTICA (5)
-  {id:'g1',mod:'geopolitica',icon:'🗺️',label:'Geopolítica',title:'Recursos naturales: las armas invisibles del poder',hook:'Petróleo, litio, agua, tierras raras. Quien controla los recursos controla el tablero.'},
-  {id:'g2',mod:'geopolitica',icon:'🗺️',label:'Geopolítica',title:'OTAN, BRICS y las alianzas que definen el futuro',hook:'El mundo se reorganiza en bloques. Saber quién está con quién es saber a dónde va todo.'},
-  {id:'g3',mod:'geopolitica',icon:'🗺️',label:'Geopolítica',title:'Israel-Palestina: la raíz real del conflicto',hook:'Tiene 75+ años de historia que los medios no te explican. Aquí está la línea de tiempo.'},
-  {id:'g4',mod:'geopolitica',icon:'🗺️',label:'Geopolítica',title:'Rusia-Ucrania: lo que no te cuentan',hook:'Expansión de OTAN, gas natural, influencia entre potencias. Los intereses reales.'},
-  {id:'g5',mod:'geopolitica',icon:'🗺️',label:'Geopolítica',title:'Taiwán: el punto más peligroso del mundo',hook:'Una isla que fabrica el 90% de los chips avanzados del mundo.'},
-  // CULTURA Y SOCIEDAD (5)
-  {id:'c1',mod:'cultura',icon:'🎭',label:'Cultura',title:'Por qué las culturas piensan tan diferente',hook:'Lo "normal" en tu país es absurdo en otro. Entender esto cambia cómo ves todo.'},
-  {id:'c2',mod:'cultura',icon:'🎭',label:'Cultura',title:'Sesgos cognitivos: los errores de tu cerebro',hook:'Te engañan todos los días. Confirmación, anclaje, aversión a la pérdida. Conócelos.'},
-  {id:'c3',mod:'cultura',icon:'🎭',label:'Cultura',title:'Manipulación mediática: cómo te moldean sin saberlo',hook:'No es conspiración. Es negocio. Los medios capturan atención, no informan.'},
-  {id:'c4',mod:'cultura',icon:'🎭',label:'Cultura',title:'Narrativas colectivas: las historias que controlan todo',hook:'Naciones, religiones, dinero. Todo funciona porque creemos las mismas historias.'},
-  {id:'c5',mod:'cultura',icon:'🎭',label:'Cultura',title:'El mito de la meritocracia',hook:'"Si trabajas duro, llegarás." La historia más conveniente para quienes ya llegaron.'}
+var LENSES=[
+  {id:'poder',icon:'⚡',name:'Poder',question:'Quien decide y que necesita conservar control.',thesis:'Detras de casi toda narrativa visible hay intereses de control, legitimidad, seguridad y recursos.',signals:['sanciones','alianzas','militar','diplomacia'],moves:['Pregúntate quien gana margen de maniobra.','Distingue narrativa moral de interés estratégico.']},
+  {id:'dinero',icon:'💰',name:'Dinero',question:'Como fluye, se emite, se devalúa y se concentra el capital.',thesis:'Entender dinero es entender deuda, inflación, tasas, moneda y la arquitectura invisible de las decisiones públicas.',signals:['tasas','inflación','mercados','deuda'],moves:['Busca quien financia el evento.','Observa si el costo se traslada al ciudadano común.']},
+  {id:'instituciones',icon:'🏛️',name:'Instituciones',question:'Que reglas, organismos y marcos hacen que algo sea posible.',thesis:'Los sistemas no cambian solo por voluntad. Cambian cuando cambian las instituciones que reparten incentivos y castigos.',signals:['tribunales','bancos centrales','gobiernos','regulación'],moves:['Identifica la institución clave.','Pregunta si la regla nueva cambia incentivos o solo discurso.']},
+  {id:'incentivos',icon:'🎯',name:'Incentivos',question:'Que está premiando o castigando de verdad este sistema.',thesis:'La mayoría de la conducta humana se explica mejor por incentivos que por declaraciones públicas.',signals:['subsidios','tarifas','bonos','elecciones'],moves:['No preguntes que dicen. Pregunta que se les paga por hacer.','Sigue el dinero, el estatus o la supervivencia.']},
+  {id:'energia',icon:'⛽',name:'Energía',question:'Que recurso mueve la capacidad material de una economía.',thesis:'Sin energía barata, estable y suficiente, todo lo demás se vuelve más frágil: producción, transporte, alimentos, política.',signals:['petróleo','gas','electricidad','logística'],moves:['Mira si hay shock de oferta.','Conecta energía con inflación y geopolítica.']},
+  {id:'tecnologia',icon:'🧠',name:'Tecnología',question:'Que herramienta está cambiando quién puede hacer qué.',thesis:'La tecnología redistribuye poder. Cambia productividad, vigilancia, guerra, trabajo y desigualdad.',signals:['IA','chips','ciberseguridad','plataformas'],moves:['Pregunta qué trabajo o ventaja se acelera.','Identifica el cuello de botella técnico real.']},
+  {id:'historia',icon:'📜',name:'Historia',question:'Qué patrón viejo está reapareciendo con ropa nueva.',thesis:'Casi nada de lo que parece nuevo lo es del todo. La historia sirve para detectar patrones antes de que sea tarde.',signals:['imperios','crisis','colapsos','ciclos'],moves:['Busca el precedente útil.','Pregunta en qué fase del ciclo estamos.']},
+  {id:'narrativa',icon:'🎙️',name:'Narrativa',question:'Qué historia necesita creer la gente para que esto funcione.',thesis:'El mundo social se sostiene con relatos compartidos: seguridad, progreso, amenaza, mérito, libertad, estabilidad.',signals:['medios','marcos','propaganda','percepción'],moves:['Separa hecho de encuadre.','Identifica qué emoción está activando la narrativa.']},
+  {id:'geografia',icon:'🗺️',name:'Geografía',question:'Qué territorio, ruta o posición hace esto importante.',thesis:'Los mapas siguen mandando: pasos marítimos, fronteras, recursos, cercanía a aliados y vulnerabilidades físicas.',signals:['rutas','fronteras','puertos','regiones'],moves:['Ubica el cuello geográfico.','Conecta mapa con comercio y seguridad.']},
+  {id:'cultura',icon:'🎭',name:'Cultura',question:'Qué valores, hábitos o sesgos colectivos condicionan la reacción.',thesis:'La misma noticia produce lecturas distintas según cultura, memoria, identidad y sesgos de grupo.',signals:['identidad','moral','tribus','sesgos'],moves:['Distingue reacción cultural de dato duro.','Observa qué se considera incuestionable.']},
+  {id:'estrategia',icon:'♟️',name:'Estrategia',question:'Qué jugada crea ventaja acumulativa a mediano plazo.',thesis:'No todo se decide en el momento. Muchas jugadas importan por posición, opcionalidad y timing.',signals:['alianzas','timing','presión','posicionamiento'],moves:['Pregunta cuál es la jugada de segundo orden.','Busca opcionalidad, no solo victoria inmediata.']},
+  {id:'movilidad',icon:'🌍',name:'Movilidad',question:'Cómo se protege una persona común en un mundo más volátil.',thesis:'Entender el mundo no es solo teoría. También sirve para tomar decisiones sobre residencia, moneda, carrera, ingresos y exposición.',signals:['visas','remoto','riesgo país','diversificación'],moves:['Convierte comprensión en decisión práctica.','Reduce dependencia de un solo sistema.']}
 ];
-
-var LOTD_FALLBACKS = [
-  {
-    titulo:'Por qué el 1% sabe cosas que el 99% nunca aprendió',
-    gancho:'No es inteligencia. Es acceso a información que nadie te enseñó.',
-    resumen:'Existe una brecha enorme entre lo que se enseña en las escuelas y lo que realmente mueve el mundo. Las personas con poder saben cómo funciona el dinero, los ciclos económicos, la geopolítica y la psicología de masas. No porque sean más inteligentes, sino porque tuvieron acceso a esa información desde temprano.\n\nLa buena noticia: ese conocimiento no es secreto. Está en libros, en la historia, en patrones que se repiten. El problema es que nadie te enseña a buscarlo ni a conectarlo.\n\nCada día que usas esta app estás cerrando esa brecha. No para volerte rico en 30 días, sino para entender el tablero donde se juega tu vida — y tomar mejores decisiones en consecuencia.',
-    acciones:[
-      {num:'1',texto:'Hoy, lee una de las tarjetas de abajo completa. No la cierres hasta entenderla de verdad.'},
-      {num:'2',texto:'Pregúntate: ¿qué decisión tomaría diferente si supiera más sobre este tema?'},
-      {num:'3',texto:'Comparte esta app con alguien que creas que necesita este mapa.'}
-    ]
-  },
-  {
-    titulo:'El interés compuesto del conocimiento',
-    gancho:'Lo que aprendes hoy vale más mañana porque te permite entender más.',
-    resumen:'Einstein describió el interés compuesto como la octava maravilla del mundo. Pero este principio no aplica solo al dinero. El conocimiento funciona igual: lo que aprendes hoy te permite entender conceptos más complejos mañana.\n\nAlguien que entiende inflación puede entender política monetaria. Quien entiende política monetaria puede entender geopolítica. Quien entiende geopolítica puede anticipar tendencias antes que la mayoría.\n\nEso es exactamente lo que estás construyendo aquí. No información suelta — un sistema de comprensión que se refuerza solo. En 365 días, no solo sabrás más. Pensarás diferente.',
-    acciones:[
-      {num:'1',texto:'Elige un módulo que no conozcas nada. Léelo hoy aunque se sienta extraño.'},
-      {num:'2',texto:'Conecta lo que aprendas con algo que ya sabías antes. Escríbelo en papel.'},
-      {num:'3',texto:'Vuelve mañana. La constancia es más poderosa que la intensidad.'}
-    ]
-  },
-  {
-    titulo:'Cómo el sistema te convierte en consumidor en lugar de ciudadano',
-    gancho:'La diferencia entre los dos es el nivel de preguntas que te atreves a hacer.',
-    resumen:'El sistema educativo y mediático no está diseñado para hacerte pensar. Está diseñado para hacerte funcionar: trabajar, consumir, pagar impuestos y no hacer demasiadas preguntas incómodas.\n\nEso no es conspiración. Es economía. Un ciudadano informado es más difícil de manipular, más caro de convencer y menos predecible como consumidor.\n\nLa resistencia más poderosa no es política — es intelectual. Entender cómo funciona el dinero, el poder, los medios y la historia te da herramientas que ninguna campaña publicitaria ni narrativa oficial puede fácilmente deshacer.',
-    acciones:[
-      {num:'1',texto:'La próxima vez que veas una noticia, pregúntate: ¿quién se beneficia de que yo piense esto?'},
-      {num:'2',texto:'Lee el módulo de Cultura y Sociedad — empieza por sesgos cognitivos.'},
-      {num:'3',texto:'Desactiva notificaciones de noticias por 3 días. Observa cómo cambia tu ansiedad.'}
-    ]
-  },
-  {
-    titulo:'La diferencia entre saber y entender',
-    gancho:'Se puede saber mucho y entender poco. La profundidad es lo que cambia vidas.',
-    resumen:'La mayoría sabe que existe la inflación, que hay tensiones entre China y EE.UU., que la tecnología cambia el trabajo. Pero saber no es lo mismo que entender.\n\nEntender significa poder explicarle algo a alguien sin usar términos técnicos. Significa predecir consecuencias antes de que ocurran. Significa conectar eventos aparentemente sin relación porque ves el patrón debajo.\n\nEso es lo que construye esta app: no una biblioteca de datos, sino una capacidad de leer el mundo. Y esa capacidad no se pierde. Se refuerza con cada cosa nueva que aprendes.',
-    acciones:[
-      {num:'1',texto:'Elige un tema de hoy y explícaselo en voz alta a alguien — o a ti mismo frente al espejo.'},
-      {num:'2',texto:'Si no puedes explicarlo simple, vuelve a leerlo hasta que puedas.'},
-      {num:'3',texto:'Usa el chat de abajo para hacer preguntas profundas sobre lo que leíste.'}
-    ]
-  },
-  {
-    titulo:'Lo que nadie te dijo sobre la riqueza y la pobreza',
-    gancho:'No es cuestión de trabajo duro. Es cuestión de sistemas y de información.',
-    resumen:'La narrativa oficial dice que si trabajas duro, tendrás éxito. Pero los estudios sobre movilidad social muestran algo diferente: el factor más determinante para tu situación económica en la adultez es el contexto en el que naciste, no el esfuerzo que pusiste.\n\nEso no significa que el esfuerzo no importa. Significa que el esfuerzo sin información y sin sistema es trabajo desperdiciado. Los ricos no trabajan más horas — trabajan dentro de sistemas mejores.\n\nEntender cómo funciona el dinero, la inversión, el crédito y las estructuras económicas no garantiza la riqueza. Pero no entenderlos casi garantiza quedarse atrapado en ciclos que se repiten generación tras generación.',
-    acciones:[
-      {num:'1',texto:'Lee el módulo de Dinero completo. Empieza por el primero y sigue en orden.'},
-      {num:'2',texto:'Pregúntate: ¿en qué decisiones económicas estoy operando sin información suficiente?'},
-      {num:'3',texto:'Identifica una creencia sobre el dinero que aprendiste de tu familia. Cuestiónala.'}
-    ]
-  },
-  {
-    titulo:'Por qué el mundo que conoces tiene menos de 80 años',
-    gancho:'La mayoría del mapa actual se dibujó después de 1945. Antes era diferente.',
-    resumen:'El sistema internacional actual — sus instituciones, fronteras, monedas de reserva y alianzas — se construyó en su mayoría después de la Segunda Guerra Mundial. El dólar como moneda global, la ONU, el FMI, el Banco Mundial, la OTAN: todo eso tiene menos de ocho décadas.\n\nEso significa dos cosas importantes. Primero, que el orden actual no es eterno — tiene una fecha de creación y tendrá una fecha de transformación. Segundo, que entender el período 1939-1945 y su aftermath es entender por qué el mundo funciona como funciona hoy.\n\nLos patrones geopolíticos actuales — China vs EE.UU., Rusia y Ucrania, el papel del dólar — son directamente herederos de esos 80 años de historia.',
-    acciones:[
-      {num:'1',texto:'Lee los módulos de Historia y Geopolítica esta semana. Son la base de todo.'},
-      {num:'2',texto:'Busca un mapa del mundo de 1900 y compáralo con el actual. Nota las diferencias.'},
-      {num:'3',texto:'Pregúntate: ¿qué partes del mundo de hoy crees que van a cambiar en los próximos 20 años?'}
-    ]
-  }
-];
-
-var PROMPTS = {
-  d1:'Explica cómo el dinero ha sido herramienta de control geopolítico desde Bretton Woods hasta el petrodólar. Qué puede hacer una persona común.',
-  d2:'Explica por qué el dólar cae (deuda EE.UU., desdolarización, tensiones). Qué hacer concretamente en Latinoamérica.',
-  d3:'Explica qué es Bitcoin — no como inversión sino tecnología monetaria. Cómo empezar con poco dinero.',
-  d4:'Cómo diversificar patrimonio sin ser millonario: oro, Bitcoin, cuentas en dólares. Pasos concretos.',
-  d5:'Por qué ahorrar en pesos es error silencioso. Inflación, devaluación. Qué hacer.',
-  m1:'Visas de inversión accesibles para latinoamericanos: España, Portugal, Paraguay. Costos y pasos concretos.',
-  m2:'Cómo abrir cuentas bancarias en otros países: Wise, Revolut, Mercury. Pasos concretos.',
-  m3:'Cómo cobrar en dólares desde Latinoamérica: Stripe, Wise, cripto. Plataformas y procesos.',
-  m4:'Por qué un segundo pasaporte cambia todo. Cómo conseguirlo: ascendencia, inversión, residencia.',
-  p1:'Por qué hay guerras: recursos, rutas comerciales, control monetario. Conflictos actuales como ejemplo.',
-  p2:'Ciclo de imperios (Ray Dalio): Roma, España, Gran Bretaña, EE.UU. En qué punto estamos.',
-  p3:'Por qué China ya es potencia dominante: PPP, tecnología propia, CIPS, DeepSeek.',
-  p4:'Mecanismos que mantienen el status quo: medios, educación, deuda, entretenimiento. Solo mecánica.',
-  t1:'Qué es realmente la IA: automatización del trabajo intelectual. Qué significa para el trabajo.',
-  t2:'Cómo usar IA para ventaja hoy: Claude, ChatGPT, Midjourney. Casos concretos.',
-  t3:'Guerra de chips EE.UU.-China: TSMC, Nvidia, ASML. Por qué importa.',
-  t4:'Qué trabajos reemplaza la IA primero. Contadores, abogados, diseñadores — qué pasa con cada uno.',
-  men1:'Alegoría de la Caverna: cómo describe cómo vivimos hoy.',
-  men2:'Cómo identificar prisiones de contexto: creencias heredadas, límites invisibles. Con ejercicios.',
-  men3:'La mentalidad mutante: supervivencia ante un mundo que cambia rápido. Cómo desarrollarla.',
-  men4:'El costo real de la ignorancia: se paga cuando el mundo cambia y no puedes moverte.',
-  n1:'Por qué un negocio local tiene techo y cómo romperlo: digitalización, mercados remotos.',
-  n2:'Sistema operativo digital: ventas, atención IA, operación. Diferencia entre escalar y estancarse.',
-  n3:'Diferencia entre ser el negocio y tener un negocio. Cómo construir sistemas autónomos.',
-  n4:'Cómo escalar a CDMX, Monterrey, Bogotá, Miami. Contenido, LinkedIn, Meta Ads.',
-  h1:'Explica la Revolución Industrial: cómo creó el capitalismo, las ciudades, la desigualdad, el trabajo asalariado. Por qué entenderla es entender el mundo de hoy.',
-  h2:'Causas reales de las Guerras Mundiales: no la versión de la escuela. Recursos, territorios, sistema financiero. Con datos concretos.',
-  h3:'La Guerra Fría: cómo dividió el mundo, qué herencias dejó que siguen activas. Conecta con tensiones actuales.',
-  h4:'Colapso de la URSS (1991): globalización, supremacía de EE.UU., expansión OTAN. Por qué ese momento explica hoy.',
-  h5:'El 11-S: vigilancia masiva, guerras en Medio Oriente, pérdida de libertades. Lo que significó para el mundo.',
-  e1:'Inflación: qué es, por qué existe, cómo los gobiernos la usan. Por qué tu dinero pierde valor. Qué puedes hacer.',
-  e2:'Interés compuesto: cómo funciona a tu favor y en tu contra. Por qué las deudas crecen. Con números reales.',
-  e3:'Bancos centrales: quién los controla, qué deciden, cómo afectan tu vida. Fed, BCE, Banxico.',
-  e4:'Deuda soberana: qué pasa cuando un país se endeuda. Cómo lo paga. Por qué te afecta. Ejemplos de Latam.',
-  e5:'Ciclos económicos de Ray Dalio explicados simple: expansión, burbuja, crisis, recuperación. Dónde estamos hoy.',
-  f1:'Estoicismo como herramienta práctica: Marco Aurelio, Séneca, Epicteto. Principios concretos aplicables esta semana.',
-  f2:'Maquiavelo sin la caricatura. Cómo funciona el poder real. Cómo aplicar ese entendimiento.',
-  f3:'Nietzsche para gente normal: el superhombre, voluntad de poder, muerte de Dios. Por qué la comodidad mata.',
-  f4:'El Arte de la Guerra de Sun Tzu: principios que usan CEOs, generales y políticos. Ejemplos modernos.',
-  f5:'Método socrático: preguntar hasta llegar a la verdad. Por qué es la habilidad intelectual más poderosa.',
-  g1:'Recursos naturales como armas: petróleo, litio, agua, tierras raras, alimentos. Quién controla qué.',
-  g2:'Alianzas actuales: OTAN, BRICS, G7. Cómo se reorganizan los bloques. Qué significa para Latinoamérica.',
-  g3:'Israel-Palestina línea de tiempo real: desde 1948 hasta hoy. Sin tomar partido. Solo hechos.',
-  g4:'Rusia-Ucrania: expansión OTAN, gas natural, influencia geopolítica. Los intereses de cada lado.',
-  g5:'Taiwán: TSMC, semiconductores, China vs EE.UU. Por qué una isla puede desatar un conflicto global.',
-  c1:'Por qué las culturas piensan diferente: individualismo vs colectivismo, distancia al poder. Cómo afecta todo.',
-  c2:'Sesgos cognitivos: confirmación, anclaje, aversión a la pérdida, Dunning-Kruger. Con ejemplos cotidianos.',
-  c3:'Manipulación mediática: modelo de negocio de medios, algoritmos, fabricación de consenso, framing.',
-  c4:'Narrativas colectivas (Harari): naciones, religiones, dinero, derechos humanos. Por qué funcionan.',
-  c5:'La meritocracia como mito parcial: acceso desigual a educación, redes, capital, contexto.'
-};
-
-var KNOWLEDGE = {
-  dinero:'Dinero = herramienta de control geopolítico. Bretton Woods, petrodólar, desdolarización BRICS. Bitcoin: primer activo inconfiscable. Diversificar: oro, Bitcoin, Wise/Revolut.',
-  movilidad:'Nacionalidad = accidente geográfico. Visas accesibles (España, Portugal, Paraguay) <$100K. Cuentas globales: Wise, Revolut, Mercury.',
-  poder:'Guerras = recursos + rutas + control monetario. Imperios siguen ciclos (Ray Dalio). China ya #1 por PPP. Status quo = medios + deuda + educación.',
-  tecnologia:'IA = automatización del trabajo intelectual. Desaparecen: oficina (contadores, abogados, diseñadores). Guerra chips EE.UU.-China.',
-  mentalidad:'Alegoría de la Caverna = cómo vivimos. Limitaciones invisibles. Rigidez = mayor riesgo.',
-  negocio:'Negocio local = techo. Tener negocio vs ser el negocio. Sistema operativo digital escala.',
-  historia:'Rev. Industrial creó el mundo moderno. Guerras Mundiales: recursos y finanzas. Guerra Fría moldeó el mapa. URSS (1991) = globalización. 11-S = vigilancia + guerras.',
-  economia:'Inflación = herramienta gobierno. Interés compuesto: para ricos, contra endeudados. Bancos centrales controlan el precio del dinero. Ciclos económicos son predecibles (Dalio).',
-  filosofia:'Estoicismo: controla lo que puedes. Maquiavelo: poder = interés. Nietzsche: comodidad mata potencial. Sun Tzu: estrategia > fuerza. Sócrates: preguntar > responder.',
-  geopolitica:'Recursos naturales = poder real. OTAN vs BRICS. Israel-Palestina: 75+ años. Rusia-Ucrania: OTAN + gas. Taiwán: 90% chips avanzados.',
-  cultura:'Culturas piensan diferente (Hofstede). Sesgos cognitivos engañan sistemáticamente. Medios capturan atención. Narrativas colectivas (Harari). Meritocracia = mito parcial.'
-};
-
-var MODULES = [
-  {mod:'dinero',icon:'💰',label:'Dinero'},
-  {mod:'movilidad',icon:'🌍',label:'Movilidad'},
-  {mod:'poder',icon:'⚡',label:'Poder'},
-  {mod:'tecnologia',icon:'🤖',label:'Tecnología'},
-  {mod:'mentalidad',icon:'🧠',label:'Mentalidad'},
-  {mod:'negocio',icon:'🚀',label:'Negocio'},
-  {mod:'historia',icon:'📜',label:'Historia'},
-  {mod:'economia',icon:'📊',label:'Economía Real'},
-  {mod:'filosofia',icon:'📖',label:'Filosofía'},
-  {mod:'geopolitica',icon:'🗺️',label:'Geopolítica'},
-  {mod:'cultura',icon:'🎭',label:'Cultura y Sociedad'}
-];
-
-var LEVELS = [
-  {min:0,name:'Nivel 1 — Despertando'},
-  {min:6,name:'Nivel 2 — Cuestionando'},
-  {min:16,name:'Nivel 3 — Conectando'},
-  {min:26,name:'Nivel 4 — Comprendiendo'},
-  {min:40,name:'Nivel 5 — Contexto completo'}
-];
-
-/* ═══ UTILS ═══ */
-var store={
-  get:function(k,fb){try{var v=localStorage.getItem('ctx_'+k);return v!==null?JSON.parse(v):fb}catch(x){return fb}},
-  set:function(k,v){try{localStorage.setItem('ctx_'+k,JSON.stringify(v))}catch(x){}}
-};
-function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+var STAGES=[{min:0,title:'Fase 1 — Ver el tablero'},{min:8,title:'Fase 2 — Detectar intereses'},{min:20,title:'Fase 3 — Conectar sistemas'},{min:40,title:'Fase 4 — Leer patrones'},{min:70,title:'Fase 5 — Pensar con criterio propio'}];
+var store={get:function(key,fallback){try{var value=localStorage.getItem('ctx_'+key);return value!==null?JSON.parse(value):fallback}catch(error){return fallback}},set:function(key,value){try{localStorage.setItem('ctx_'+key,JSON.stringify(value))}catch(error){}}};
+function esc(text){var div=document.createElement('div');div.textContent=text==null?'':String(text);return div.innerHTML}
 function todayKey(){return new Date().toISOString().slice(0,10)}
-function todayStr(){
-  var d=new Date(),days=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],
-  months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  return days[d.getDay()]+' '+d.getDate()+' de '+months[d.getMonth()]+', '+d.getFullYear();
-}
-function shortDate(){
-  var d=new Date(),m=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  return d.getDate()+' '+m[d.getMonth()]+' '+d.getFullYear();
-}
+function todayStr(){var date=new Date();var days=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];var months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];return days[date.getDay()]+' '+date.getDate()+' de '+months[date.getMonth()]+' de '+date.getFullYear()}
+function shortDate(){var date=new Date();var months=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];return date.getDate()+' '+months[date.getMonth()]+' '+date.getFullYear()}
 function safeUrl(url){return /^https?:\/\//i.test(url||'')?url:''}
-function timeAgo(dateStr){
-  var ts=new Date(dateStr||'').getTime();
-  if(!ts) return 'Ahora';
-  var diff=Math.max(1,Math.floor((Date.now()-ts)/60000));
-  if(diff<60) return 'Hace '+diff+' min';
-  if(diff<1440) return 'Hace '+Math.floor(diff/60)+' h';
-  return 'Hace '+Math.floor(diff/1440)+' d';
-}
-
-function seededRandom(seed){
-  var h=0;for(var i=0;i<seed.length;i++) h=((h<<5)-h+seed.charCodeAt(i))|0;
-  return function(){h=(Math.imul(h,16807))%2147483647;return(h<0?h+2147483647:h)/2147483647};
-}
-
-function getDailyTopics(){
-  var rng=seededRandom(todayKey());
-  var mods=MODULES.map(function(m){return m.mod});
-  var picked=[];
-  // Pick 5 modules (skip 6), rotate which are skipped
-  var skipStart=new Date().getDate()%11;
-  var activeMods=[];
-  for(var i=0;i<11;i++){
-    var idx=(skipStart+i)%11;
-    if(activeMods.length<5) activeMods.push(mods[idx]);
-  }
-  activeMods.forEach(function(mod){
-    var modTopics=TOPICS.filter(function(t){return t.mod===mod});
-    var idx=Math.floor(rng()*modTopics.length);
-    picked.push(modTopics[idx]);
-  });
-  for(var j=picked.length-1;j>0;j--){
-    var k=Math.floor(rng()*(j+1));
-    var tmp=picked[j];picked[j]=picked[k];picked[k]=tmp;
-  }
-  return picked;
-}
-
-/* ═══ STATE ═══ */
-var articles=[];
-var liveContext='';
-var newsFetchedAt='';
-var contentCache=store.get('contentCache',{});
-var briefCache=store.get('briefCache',{});
-var lotdCache=store.get('lotdCache',{});
-var readTopics=store.get('readTopics',[]);
-var streakData=store.get('streakData',{lastOpen:'',count:0});
-var chatHistory=store.get('chatHistory',[]);
-
-/* ═══ API ═══ */
-function callClaude(prompt,maxTokens){
-  return fetch('/.netlify/functions/claude',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({prompt:prompt,maxTokens:maxTokens||1000})
-  }).then(function(res){
-    if(!res.ok) throw new Error('API '+res.status);
-    return res.json();
-  }).then(function(json){
-    if(json.error) throw new Error(typeof json.error==='string'?json.error:'API error');
-    return json.content[0].text;
-  });
-}
-
-function fetchNews(){
-  return fetch('/.netlify/functions/news',{cache:'no-store'}).then(function(res){
-    if(!res.ok) return;return res.json();
-  }).then(function(data){
-    if(!data) return;
-    articles=data.articles||[];
-    newsFetchedAt=data.fetchedAt||'';
-    if(articles.length) liveContext='NOTICIAS REALES DE HOY ('+todayStr()+'):\n'+selectTopArticles(12).map(function(a){return '['+a.section+'] '+a.title}).join('\n');
-    renderRadar();
-  }).catch(function(){liveContext='Fecha: '+todayStr()});
-}
-
-function selectTopArticles(limit){
-  var sorted=articles.slice().sort(function(a,b){return (b.score||0)-(a.score||0)});
-  var selected=[];
-  var sourceCounts={};
-  var sectionCounts={};
-  var sectionCaps={Global:2,Poder:2,Dinero:2,Tecnología:2,Mercados:1,Latam:1,Movilidad:1};
-
-  sorted.forEach(function(article){
-    if(selected.length>=limit) return;
-    var sourceKey=(article.source||'unknown').toLowerCase();
-    var sectionKey=article.section||'Global';
-    if((sourceCounts[sourceKey]||0)>=1) return;
-    if((sectionCounts[sectionKey]||0)>=(sectionCaps[sectionKey]||1)) return;
-    selected.push(article);
-    sourceCounts[sourceKey]=(sourceCounts[sourceKey]||0)+1;
-    sectionCounts[sectionKey]=(sectionCounts[sectionKey]||0)+1;
-  });
-
-  if(selected.length<limit){
-    sorted.forEach(function(article){
-      if(selected.length>=limit) return;
-      if(selected.indexOf(article)!==-1) return;
-      var sourceKey=(article.source||'unknown').toLowerCase();
-      if((sourceCounts[sourceKey]||0)>=2) return;
-      selected.push(article);
-      sourceCounts[sourceKey]=(sourceCounts[sourceKey]||0)+1;
-    });
-  }
-
-  return selected;
-}
-
-function renderRadar(){
-  var wrap=document.getElementById('radar');
-  var grid=document.getElementById('radarGrid');
-  var meta=document.getElementById('radarMeta');
-  if(!wrap||!grid) return;
-  if(!articles.length){wrap.style.display='none';return}
-
-  var top=selectTopArticles(4);
-  if(!top.length){wrap.style.display='none';return}
-
-  var lead=top[0];
-  var leadLink=safeUrl(lead.link)||'#';
-  var leadImage=safeUrl(lead.image);
-  var html='';
-
-  html+='<a class="radar-main" href="'+esc(leadLink)+'"'+(leadLink==='#'?'':' target="_blank" rel="noopener"')+'>';
-  html+='<div class="radar-main-media">';
-  if(leadImage) html+='<img class="radar-main-img" src="'+esc(leadImage)+'" alt="'+esc(lead.title)+'">';
-  html+='<div class="radar-main-overlay"></div>';
-  html+='<div class="radar-main-body">';
-  html+='<div class="radar-badges"><span class="radar-badge">'+esc(lead.icon||'🌐')+' '+esc(lead.section||'Global')+'</span><span class="radar-badge">'+esc(timeAgo(lead.date))+'</span></div>';
-  html+='<div class="radar-main-title">'+esc(lead.title)+'</div>';
-  html+='<div class="radar-main-source">'+esc(lead.source||'Fuente global')+'</div>';
-  html+='</div></div></a>';
-
-  if(top.length>1){
-    html+='<div class="radar-list">';
-    top.slice(1).forEach(function(item){
-      var link=safeUrl(item.link)||'#';
-      var image=safeUrl(item.image);
-      html+='<a class="radar-mini" href="'+esc(link)+'"'+(link==='#'?'':' target="_blank" rel="noopener"')+'>';
-      html+='<div class="radar-thumb">';
-      if(image) html+='<img src="'+esc(image)+'" alt="'+esc(item.title)+'">';
-      else html+='<div class="radar-thumb-fallback">'+esc(item.icon||'🌐')+'</div>';
-      html+='</div>';
-      html+='<div class="radar-copy">';
-      html+='<div class="radar-mini-top"><span class="radar-pill">'+esc(item.section||'Global')+'</span><span class="radar-pill">'+esc(timeAgo(item.date))+'</span></div>';
-      html+='<div class="radar-mini-title">'+esc(item.title)+'</div>';
-      html+='<div class="radar-mini-source">'+esc(item.source||'Fuente')+'</div>';
-      html+='</div></a>';
-    });
-    html+='</div>';
-  }
-
-  grid.innerHTML=html;
-  meta.textContent=(articles.length||0)+' titulares analizados';
-  wrap.style.display='block';
-}
-
-/* ═══ STREAK ═══ */
-function updateStreak(){
-  var today=todayKey();
-  var yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
-  if(streakData.lastOpen===today) return;
-  if(streakData.lastOpen===yesterday){
-    streakData.count++;
-  } else if(streakData.lastOpen!==today){
-    streakData.count=1;
-  }
-  streakData.lastOpen=today;
-  store.set('streakData',streakData);
-}
-
-function renderStreak(){
-  var el=document.getElementById('streak');
-  if(streakData.count>0){
-    el.textContent='🔥 '+streakData.count;
-    el.classList.add('show');
-  }
-}
-
-/* ═══ PROGRESS ═══ */
-function markRead(id){
-  if(readTopics.indexOf(id)===-1){
-    readTopics.push(id);
-    store.set('readTopics',readTopics);
-    renderProgress();
-  }
-}
-
-function renderProgress(){
-  var section=document.getElementById('progressSection');
-  var count=readTopics.length;
-  var total=TOPICS.length;
-  if(count===0){section.style.display='none';return}
-  section.style.display='block';
-  var level=LEVELS[0];
-  for(var i=LEVELS.length-1;i>=0;i--){if(count>=LEVELS[i].min){level=LEVELS[i];break}}
-  document.getElementById('progressLevel').textContent=level.name;
-  document.getElementById('progressCount').textContent=count+' de '+total+' temas explorados';
-  document.getElementById('progressFill').style.width=Math.round((count/total)*100)+'%';
-  var modsHtml='';
-  MODULES.forEach(function(m){
-    var modTopics=TOPICS.filter(function(t){return t.mod===m.mod});
-    var modRead=modTopics.filter(function(t){return readTopics.indexOf(t.id)!==-1}).length;
-    var done=modRead===modTopics.length;
-    modsHtml+='<div class="progress-mod'+(done?' done':'')+'">'+m.icon+' '+modRead+'/'+modTopics.length+'</div>';
-  });
-  document.getElementById('progressMods').innerHTML=modsHtml;
-}
-
-/* ═══ LESSON OF THE DAY ═══ */
-function generateLOTD(){
-  var key=todayKey();
-  if(lotdCache[key]){renderLOTD(lotdCache[key]);return}
-  if(!articles.length){
-    var fb=Object.assign({_static:true},LOTD_FALLBACKS[new Date().getDate()%LOTD_FALLBACKS.length]);
-    lotdCache[key]=fb;store.set('lotdCache',lotdCache);renderLOTD(fb);
-    return;
-  }
-  var newsBlock=selectTopArticles(8).map(function(a){return '['+a.section+'] '+a.title}).join('. ');
-  callClaude(
-    'Fecha: '+todayStr()+'. NOTICIAS DE HOY: '+newsBlock+'\n\n'+
-    'Elige la noticia más importante/impactante de hoy y conviértela en una LECCIÓN educativa que le enseñe algo profundo sobre cómo funciona el mundo.\n\n'+
-    'Responde SOLO con JSON válido sin backticks:\n'+
-    '{"titulo":"Título provocador de la lección (máx 12 palabras)","gancho":"1 frase corta que enganche (máx 25 palabras)","resumen":"3-4 párrafos educativos conectando la noticia con patrones históricos, económicos o geopolíticos profundos. Máx 250 palabras. Directo, como un amigo inteligente. Español latino.","acciones":[{"num":"1","texto":"Algo concreto que puedes hacer hoy con esta info"},{"num":"2","texto":"Algo que investigar"},{"num":"3","texto":"Cambio de perspectiva a largo plazo"}]}',1200
-  ).then(function(text){
-    var data=JSON.parse(text.replace(/```json|```/g,'').trim());
-    lotdCache[key]=data;
-    store.set('lotdCache',lotdCache);
-    renderLOTD(data);
-  }).catch(function(){
-    var fb=Object.assign({_static:true},LOTD_FALLBACKS[new Date().getDate()%LOTD_FALLBACKS.length]);
-    lotdCache[key]=fb;store.set('lotdCache',lotdCache);renderLOTD(fb);
-  });
-}
-
-function renderLOTD(data){
-  document.getElementById('lotdTitle').textContent=data.titulo||'Tu lección del día';
-  document.getElementById('lotdHook').textContent=data.gancho||'';
-  document.getElementById('lotdOpen').style.display='';
-  var bodyEl=document.getElementById('lotdBody');
-  var aiTag=data._static?'':'<div class="ai-tag"><span class="ai-dot"></span> Generado hoy con IA</div>';
-  bodyEl.innerHTML=
-    aiTag+
-    '<div class="exp-text">'+esc(data.resumen||'').replace(/\n/g,'<br><br>')+'</div>'+
-    '<div class="exp-label">Qué puedes hacer</div>'+
-    '<div class="actions">'+(data.acciones||[]).map(function(a){
-      return '<div class="action"><div class="action-n">'+esc(a.num)+'</div><div class="action-t">'+esc(a.texto)+'</div></div>';
-    }).join('')+'</div>'+
-    '<div class="card-actions-row"><button class="share-btn" data-share="lotd">📤 Compartir</button></div>'+
-    '<div class="card-close" data-close-lotd="1">Cerrar ↑</div>';
-}
-
-/* ═══ BRIEF ═══ */
-function generateBrief(){
-  var briefEl=document.getElementById('brief');
-  var key=todayKey();
-  if(briefCache[key]){
-    if(typeof briefCache[key]==='string'){delete briefCache[key];store.set('briefCache',briefCache)}
-    else{renderBrief(briefCache[key]);return}
-  }
-  if(!articles.length){briefEl.style.display='none';return}
-  var newsList=selectTopArticles(10).map(function(a,i){return (i+1)+'. ['+a.section+'] '+a.title+' ('+(a.source||'Fuente')+')'}).join('\n');
-  callClaude(
-    'Fecha: '+todayStr()+'.\n\nNOTICIAS REALES DE HOY:\n'+newsList+'\n\n'+
-    'Eres un periodista inteligente que resume el mundo para gente ocupada. Escribe un RESUMEN NOTICIOSO del día con las 4-6 noticias MÁS IMPORTANTES a nivel global.\n\n'+
-    'Para CADA noticia incluye:\n- headline: título corto y directo (máx 10 palabras)\n- why: por qué importa en 1-2 frases simples\n- context: 1 frase de contexto profundo que conecte con el panorama más grande\n\n'+
-    'Responde SOLO con JSON sin backticks:\n{"stories":[{"headline":"...","why":"...","context":"..."}]}\n\nEspañol latino, directo, sin jerga. Como un amigo que lee TODO y te cuenta lo importante.',1200
-  ).then(function(text){
-    var data=JSON.parse(text.replace(/```json|```/g,'').trim());
-    briefCache[key]=data;store.set('briefCache',briefCache);renderBrief(data);
-  }).catch(function(){briefEl.style.display='none'});
-}
-
-function renderBrief(data){
-  if(!data||!data.stories||!data.stories.length){document.getElementById('brief').style.display='none';return}
-  var html='<div class="brief-label"><span class="brief-dot"></span> Hoy en el mundo</div>';
-  data.stories.forEach(function(s){
-    html+='<div class="brief-item">';
-    html+='<div class="brief-hl">'+esc(s.headline)+'</div>';
-    html+='<div class="brief-why">'+esc(s.why)+'</div>';
-    if(s.context) html+='<div class="brief-ctx">'+esc(s.context)+'</div>';
-    html+='</div>';
-  });
-  document.getElementById('brief').innerHTML=html;
-}
-
-/* ═══ DAILY CARDS ═══ */
-function renderCards(){
-  var daily=getDailyTopics();
-  document.getElementById('cards').innerHTML=daily.map(function(t){
-    var isRead=readTopics.indexOf(t.id)!==-1;
-    return '<div class="card" data-id="'+t.id+'">'+
-      '<div class="card-mod">'+t.icon+' '+t.label+'</div>'+
-      '<div class="card-title">'+esc(t.title)+'</div>'+
-      '<div class="card-hook">'+esc(t.hook)+'</div>'+
-      '<div class="card-foot"><span class="card-more">Saber más →</span><span class="card-read'+(isRead?' show':'')+'">✓ Leído</span></div>'+
-      '<div class="card-body" id="body-'+t.id+'"></div></div>';
-  }).join('');
-}
-
-function toggleCard(id){
-  var card=document.querySelector('[data-id="'+id+'"]');
-  if(!card) return;
-  if(card.classList.contains('open')){card.classList.remove('open');return}
-  card.classList.add('open');
-  var bodyEl=document.getElementById('body-'+id);
-  var cacheKey=todayKey()+'_'+id;
-  if(contentCache[cacheKey]){
-    renderContent(id,contentCache[cacheKey]);
-    markRead(id);
-  } else if(!bodyEl.dataset.loading){
-    bodyEl.dataset.loading='1';
-    generateContent(id);
-  }
-  setTimeout(function(){card.scrollIntoView({behavior:'smooth',block:'nearest'})},100);
-}
-
-function generateContent(id){
-  var bodyEl=document.getElementById('body-'+id);
-  var prompt=PROMPTS[id];if(!prompt||!bodyEl) return;
-  bodyEl.innerHTML='<div style="display:flex;flex-direction:column;gap:8px"><div class="sk" style="width:100%"></div><div class="sk" style="width:85%"></div><div class="sk" style="width:70%"></div></div><div style="margin-top:8px;font-size:12px;color:var(--text3)">Generando con IA...</div>';
-  var topic=TOPICS.find(function(t){return t.id===id});
-  var ctx=topic?KNOWLEDGE[topic.mod]||'':'';
-  callClaude(
-    'CONTEXTO: '+ctx+'\n\n'+(liveContext?liveContext+'\n\n':'Fecha: '+todayStr()+'.\n\n')+
-    prompt+'\n\nConecta con HOY. Amigo inteligente, directo, sin jerga. Español latino.\n\n'+
-    'Responde SOLO con JSON sin backticks:\n{"resumen":"2-3 párrafos, verdad cruda, datos reales, máx 180 palabras","acciones":[{"num":"1","texto":"Acción concreta HOY"},{"num":"2","texto":"Segunda acción"},{"num":"3","texto":"Acción mediano plazo"}]}',1000
-  ).then(function(text){
-    var data=JSON.parse(text.replace(/```json|```/g,'').trim());
-    contentCache[todayKey()+'_'+id]=data;store.set('contentCache',contentCache);
-    renderContent(id,data);markRead(id);
-  }).catch(function(){
-    bodyEl.innerHTML='<div style="color:var(--text3);font-size:14px">Error. Cierra e intenta de nuevo.</div>';
-    delete bodyEl.dataset.loading;
-  });
-}
-
-function renderContent(id,data){
-  var bodyEl=document.getElementById('body-'+id);if(!bodyEl||!data) return;
-  var readMark=document.querySelector('[data-id="'+id+'"] .card-read');
-  if(readMark) readMark.classList.add('show');
-  bodyEl.innerHTML=
-    '<div class="ai-tag"><span class="ai-dot"></span> Actualizado hoy con IA</div>'+
-    '<div class="exp-text">'+data.resumen.replace(/\n/g,'<br><br>')+'</div>'+
-    '<div class="exp-label">Qué puedes hacer</div>'+
-    '<div class="actions">'+(data.acciones||[]).map(function(a){
-      return '<div class="action"><div class="action-n">'+esc(a.num)+'</div><div class="action-t">'+a.texto+'</div></div>';
-    }).join('')+'</div>'+
-    '<div class="card-actions-row"><button class="share-btn" data-share="'+id+'">📤 Compartir</button></div>'+
-    '<div class="card-q"><div class="card-q-row"><input class="card-q-in" data-qid="'+id+'" placeholder="Pregunta sobre esto..." /><button class="card-q-btn" data-qsend="'+id+'">→</button></div><div class="card-q-reply" id="reply-'+id+'"></div></div>'+
-    '<div class="card-close" data-close="'+id+'">Cerrar ↑</div>';
-}
-
-/* ═══ CARD Q&A ═══ */
-function askCardQ(id){
-  var input=document.querySelector('[data-qid="'+id+'"]');
-  var reply=document.getElementById('reply-'+id);
-  if(!input||!reply) return;
-  var q=input.value.trim();if(!q) return;
-  var btn=document.querySelector('[data-qsend="'+id+'"]');
-  if(btn) btn.disabled=true;input.disabled=true;
-  reply.textContent='Pensando...';reply.classList.add('show');
-  var topic=TOPICS.find(function(t){return t.id===id});
-  var ctx=topic?KNOWLEDGE[topic.mod]||'':'';
-  var cached=contentCache[todayKey()+'_'+id];
-  callClaude(
-    'CONTEXTO: '+ctx+'\n\n'+(cached&&cached.resumen?'Ya explicaste:\n'+cached.resumen+'\n\n':'')+
-    'Pregunta: "'+q+'"\n\nResponde en 2-4 frases, simple, como un amigo.',400
-  ).then(function(text){reply.textContent=text}).catch(function(){reply.textContent='Error. Intenta de nuevo.'}).finally(function(){
-    if(btn) btn.disabled=false;input.disabled=false;input.value='';
-  });
-}
-
-/* ═══ SHARE AS IMAGE ═══ */
-function shareLesson(id){
-  var data,title;
-  if(id==='lotd'){
-    var key=todayKey();data=lotdCache[key];title=data?data.titulo:'Lección del día';
-  } else {
-    data=contentCache[todayKey()+'_'+id];
-    var topic=TOPICS.find(function(t){return t.id===id});
-    title=topic?topic.title:'';
-  }
-  if(!data||!data.resumen) return;
-
-  var canvas=document.getElementById('shareCanvas');
-  var ctx2d=canvas.getContext('2d');
-  var w=1080,h=1350;
-  canvas.width=w;canvas.height=h;
-
-  // Background
-  ctx2d.fillStyle='#0D1117';ctx2d.fillRect(0,0,w,h);
-
-  // Accent bar
-  ctx2d.fillStyle='#4ECDC4';ctx2d.fillRect(0,0,w,6);
-
-  // Brand
-  ctx2d.fillStyle='#4ECDC4';ctx2d.font='700 28px -apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif';
-  ctx2d.letterSpacing='4px';ctx2d.fillText('CONTEXTO',60,80);ctx2d.letterSpacing='0px';
-
-  // Date
-  ctx2d.fillStyle='#6e7681';ctx2d.font='400 22px -apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif';
-  ctx2d.fillText(todayStr(),60,120);
-
-  // Title
-  ctx2d.fillStyle='#EAF0EE';ctx2d.font='800 44px -apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif';
-  wrapText(ctx2d,title,60,200,w-120,52);
-
-  // Body
-  var bodyY=getWrappedY(ctx2d,title,60,200,w-120,52)+40;
-  ctx2d.fillStyle='#8b949e';ctx2d.font='400 30px -apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif';
-  var cleanText=data.resumen.replace(/\n+/g,' ').slice(0,500);
-  wrapText(ctx2d,cleanText,60,bodyY,w-120,42);
-
-  // Actions
-  var actY=getWrappedY(ctx2d,cleanText,60,bodyY,w-120,42)+40;
-  if(data.acciones&&actY<h-200){
-    ctx2d.fillStyle='#4ECDC4';ctx2d.font='700 24px -apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif';
-    ctx2d.fillText('QUÉ PUEDES HACER',60,actY);
-    actY+=40;
-    ctx2d.fillStyle='#EAF0EE';ctx2d.font='400 28px -apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif';
-    data.acciones.forEach(function(a){
-      if(actY>h-120) return;
-      var txt=a.num+'. '+a.texto;
-      wrapText(ctx2d,txt,60,actY,w-120,38);
-      actY=getWrappedY(ctx2d,txt,60,actY,w-120,38)+16;
-    });
-  }
-
-  // Footer
-  ctx2d.fillStyle='#30363d';ctx2d.fillRect(0,h-80,w,80);
-  ctx2d.fillStyle='#6e7681';ctx2d.font='400 22px -apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif';
-  ctx2d.fillText('contextostryv.netlify.app · Stryv Studio',60,h-30);
-
-  canvas.toBlob(function(blob){
-    if(!blob) return;
-    var file=new File([blob],'contexto-leccion.png',{type:'image/png'});
-    if(navigator.canShare&&navigator.canShare({files:[file]})){
-      navigator.share({files:[file],title:'CONTEXTO — '+title}).catch(function(){});
-    } else {
-      var a=document.createElement('a');
-      a.href=URL.createObjectURL(blob);a.download='contexto-leccion.png';a.click();
-    }
-  },'image/png');
-}
-
-function wrapText(ctx2d,text,x,y,maxW,lineH){
-  var words=text.split(' '),line='',cy=y;
-  words.forEach(function(word){
-    var test=line+word+' ';
-    if(ctx2d.measureText(test).width>maxW&&line!==''){
-      ctx2d.fillText(line.trim(),x,cy);cy+=lineH;line=word+' ';
-    } else {line=test}
-  });
-  if(line.trim()) ctx2d.fillText(line.trim(),x,cy);
-}
-
-function getWrappedY(ctx2d,text,x,y,maxW,lineH){
-  var words=text.split(' '),line='',cy=y;
-  words.forEach(function(word){
-    var test=line+word+' ';
-    if(ctx2d.measureText(test).width>maxW&&line!==''){cy+=lineH;line=word+' '} else {line=test}
-  });
-  return cy+lineH;
-}
-
-/* ═══ CHAT ═══ */
-function openChat(){document.getElementById('chatOverlay').classList.add('open');renderChatHistory()}
-function closeChat(){document.getElementById('chatOverlay').classList.remove('open')}
-
-function renderChatHistory(){
-  var msgs=document.getElementById('chatMsgs');
-  if(chatHistory.length===0) return;
-  msgs.innerHTML='<div class="chat-msg ai">Soy tu tutor de contexto. Pregúntame lo que quieras sobre dinero, poder, tecnología, historia, filosofía, geopolítica — o sobre lo que pasa hoy. Sin jerga. Pura verdad.</div>';
-  chatHistory.forEach(function(m){
-    msgs.innerHTML+='<div class="chat-msg '+m.role+'">'+esc(m.text)+'</div>';
-  });
-  msgs.scrollTop=msgs.scrollHeight;
-}
-
-function sendChat(){
-  var input=document.getElementById('chatInput');
-  var msgs=document.getElementById('chatMsgs');
-  var btn=document.getElementById('chatSend');
-  var q=input.value.trim();if(!q) return;
-
-  chatHistory.push({role:'user',text:q});
-  if(chatHistory.length>30) chatHistory=chatHistory.slice(-30);
-  store.set('chatHistory',chatHistory);
-
-  msgs.innerHTML+='<div class="chat-msg user">'+esc(q)+'</div>';
-  msgs.innerHTML+='<div class="chat-msg ai loading" id="chatLoading">Pensando...</div>';
-  msgs.scrollTop=msgs.scrollHeight;
-  input.value='';input.style.height='auto';btn.disabled=true;
-
-  var recentContext=chatHistory.slice(-10).map(function(m){return m.role==='user'?'Usuario: '+m.text:'Tutor: '+m.text}).join('\n');
-
-  callClaude(
-    (liveContext?liveContext+'\n\n':'Fecha: '+todayStr()+'.\n\n')+
-    'CONOCIMIENTO PROFUNDO: '+Object.values(KNOWLEDGE).join(' ')+'\n\n'+
-    'LECCIONES QUE EL USUARIO YA LEYÓ: '+readTopics.join(', ')+'\n\n'+
-    'CONVERSACIÓN RECIENTE:\n'+recentContext+'\n\n'+
-    'Responde la última pregunta del usuario. Sé un tutor inteligente, directo, útil. Español latino. Sin jerga. Máx 4-6 frases. Si es una pregunta compleja, da una respuesta completa.',500
-  ).then(function(text){
-    chatHistory.push({role:'ai',text:text});
-    if(chatHistory.length>30) chatHistory=chatHistory.slice(-30);
-    store.set('chatHistory',chatHistory);
-    var loading=document.getElementById('chatLoading');
-    if(loading) loading.remove();
-    msgs.innerHTML+='<div class="chat-msg ai">'+esc(text)+'</div>';
-    msgs.scrollTop=msgs.scrollHeight;
-  }).catch(function(){
-    var loading=document.getElementById('chatLoading');
-    if(loading){loading.textContent='Error. Intenta de nuevo.';loading.id=''}
-  }).finally(function(){btn.disabled=false});
-}
-
-/* ═══ EXPLORE ═══ */
-function renderExplore(){
-  var list=document.getElementById('exploreList');
-  var html='';
-  MODULES.forEach(function(cat){
-    html+='<div class="explore-cat">'+cat.icon+' '+cat.label+'</div>';
-    TOPICS.filter(function(t){return t.mod===cat.mod}).forEach(function(t){
-      var isRead=readTopics.indexOf(t.id)!==-1;
-      html+='<div class="explore-item" data-eid="'+t.id+'"><span>'+esc(t.title)+'</span><span class="explore-item-check">'+(isRead?'✓':'')+'</span></div>';
-    });
-  });
-  list.innerHTML=html;
-}
-
-function openExploreTopic(id){
-  var existing=document.querySelector('[data-id="'+id+'"]');
-  if(existing){
-    if(!existing.classList.contains('open')) toggleCard(id);
-    existing.scrollIntoView({behavior:'smooth',block:'center'});
-    return;
-  }
-  var topic=TOPICS.find(function(t){return t.id===id});if(!topic) return;
-  var container=document.getElementById('cards');
-  var div=document.createElement('div');
-  div.className='card';div.setAttribute('data-id',topic.id);
-  div.innerHTML='<div class="card-mod">'+topic.icon+' '+topic.label+'</div><div class="card-title">'+esc(topic.title)+'</div><div class="card-hook">'+esc(topic.hook)+'</div><div class="card-foot"><span class="card-more">Saber más →</span><span class="card-read">✓ Leído</span></div><div class="card-body" id="body-'+topic.id+'"></div>';
-  container.appendChild(div);
-  toggleCard(topic.id);
-}
-
-/* ═══ PWA INSTALL ═══ */
-var deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',function(e){
-  e.preventDefault();deferredPrompt=e;
-  var dismissed=store.get('installDismissed',false);
-  if(!dismissed) document.getElementById('installBanner').classList.add('show');
-});
-
-function installApp(){
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(function(){deferredPrompt=null;document.getElementById('installBanner').classList.remove('show')});
-}
-
-function dismissInstall(){
-  document.getElementById('installBanner').classList.remove('show');
-  store.set('installDismissed',true);
-}
-
-/* ═══ NOTIFICATIONS ═══ */
-function setupReminder(){
-  var time=document.getElementById('remindTime').value;
-  var status=document.getElementById('remindStatus');
-  var btn=document.getElementById('remindBtn');
-
-  if(!('Notification' in window)){
-    status.textContent='Tu navegador no soporta notificaciones.';status.classList.add('show');return;
-  }
-
-  btn.disabled=true;btn.textContent='...';
-
-  Notification.requestPermission().then(function(perm){
-    if(perm==='granted'){
-      store.set('reminderTime',time);
-      status.textContent='✓ Recordatorio activado para las '+time+' cada día.';
-      status.classList.add('show');
-      btn.textContent='✓ Activo';
-
-      if('serviceWorker' in navigator&&navigator.serviceWorker.controller){
-        navigator.serviceWorker.controller.postMessage({type:'SET_REMINDER',time:time});
-      }
-    } else {
-      status.textContent='Necesitas permitir notificaciones para activar el recordatorio.';
-      status.classList.add('show');
-      btn.disabled=false;btn.textContent='Activar';
-    }
-  });
-}
-
-function checkReminder(){
-  var savedTime=store.get('reminderTime',null);
-  if(!savedTime) return;
-  var status=document.getElementById('remindStatus');
-  var btn=document.getElementById('remindBtn');
-  document.getElementById('remindTime').value=savedTime;
-  status.textContent='✓ Recordatorio activo: '+savedTime;
-  status.classList.add('show');
-  btn.textContent='✓ Activo';
-}
-
-/* ═══ CACHE CLEANUP ═══ */
-function cleanCache(){
-  var cutoff=new Date(Date.now()-3*86400000).toISOString().slice(0,10);
-  [contentCache,briefCache,lotdCache].forEach(function(cache){
-    Object.keys(cache).forEach(function(k){
-      var dateKey=k.split('_')[0];
-      if(dateKey<cutoff) delete cache[k];
-    });
-  });
-  store.set('contentCache',contentCache);
-  store.set('briefCache',briefCache);
-  store.set('lotdCache',lotdCache);
-}
-
-/* ═══ ONBOARDING ═══ */
-function checkOnboarding(){
-  var done=store.get('onboardingDone',false);
-  if(!done) document.getElementById('onboarding').style.display='flex';
-}
-
-function dismissOnboarding(){
-  document.getElementById('onboarding').style.display='none';
-  store.set('onboardingDone',true);
-  if(!store.get('firstOpen',null)) store.set('firstOpen',todayKey());
-}
-
-/* ═══ SHARE APP ═══ */
-function shareApp(){
-  var url=window.location.origin+window.location.pathname;
-  var shareData={
-    title:'CONTEXTO — El mapa que nadie te dio',
-    text:'Dinero, poder, historia, filosofía, geopolítica. Gratis. En español. 5 minutos al día, 365 días.',
-    url:url
-  };
-  if(navigator.share&&navigator.canShare&&navigator.canShare(shareData)){
-    navigator.share(shareData).catch(function(){});
-  } else {
-    navigator.clipboard.writeText(url).then(function(){
-      var btn=document.getElementById('shareAppBtn');
-      if(btn){var orig=btn.textContent;btn.textContent='¡Link copiado!';setTimeout(function(){btn.textContent=orig},2500)}
-    }).catch(function(){});
-  }
-}
-
-/* ═══ DAY COUNTER ═══ */
-function renderDayCounter(){
-  var first=store.get('firstOpen',null);
-  if(!first) return;
-  var dayNum=Math.floor((Date.now()-new Date(first).getTime())/86400000)+1;
-  if(dayNum<=1) return;
-  var el=document.getElementById('dayCounter');
-  if(el){el.textContent='Día '+dayNum;el.classList.add('show')}
-}
-
-/* ═══ EVENTS ═══ */
-document.addEventListener('click',function(e){
-  // Card click (not on interactive children)
-  var card=e.target.closest('.card[data-id]');
-  if(card&&!e.target.closest('.card-q-in')&&!e.target.closest('.card-q-btn')&&!e.target.closest('.card-close')&&!e.target.closest('.share-btn')){
-    toggleCard(card.dataset.id);return;
-  }
-  // LOTD
-  var lotd=e.target.closest('#lotdOpen')||e.target.closest('#lotd');
-  if(lotd&&e.target.closest('#lotdOpen')){document.getElementById('lotd').classList.add('open');return}
-  if(e.target.closest('[data-close-lotd]')){document.getElementById('lotd').classList.remove('open');return}
-  // Card close
-  var closeBtn=e.target.closest('[data-close]');
-  if(closeBtn){toggleCard(closeBtn.dataset.close);return}
-  // Card Q send
-  var qsend=e.target.closest('[data-qsend]');
-  if(qsend){askCardQ(qsend.dataset.qsend);return}
-  // Share
-  var shareBtn=e.target.closest('[data-share]');
-  if(shareBtn){shareLesson(shareBtn.dataset.share);return}
-  // Explore toggle
-  if(e.target.closest('#exploreToggle')){e.target.closest('#exploreToggle').classList.toggle('open');return}
-  // Explore item
-  var eitem=e.target.closest('[data-eid]');
-  if(eitem){openExploreTopic(eitem.dataset.eid);return}
-  // Install
-  if(e.target.closest('#installBtn')){installApp();return}
-  if(e.target.closest('#installX')){dismissInstall();return}
-  // Chat
-  if(e.target.closest('#chatFab')){openChat();return}
-  if(e.target.closest('#chatClose')){closeChat();return}
-  if(e.target.closest('#chatSend')){sendChat();return}
-  // Remind
-  if(e.target.closest('#remindBtn')){setupReminder();return}
-  // Onboarding
-  if(e.target.closest('#obStart')){dismissOnboarding();return}
-  // Share app
-  if(e.target.closest('#shareAppBtn')){shareApp();return}
-});
-
-document.addEventListener('keydown',function(e){
-  if(e.key!=='Enter') return;
-  if(e.target.classList.contains('card-q-in')){askCardQ(e.target.dataset.qid);return}
-  if(e.target.id==='chatInput'&&!e.shiftKey){e.preventDefault();sendChat();return}
-});
-
-// Auto-resize chat input
-var chatInput=document.getElementById('chatInput');
-if(chatInput) chatInput.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'});
-
-/* ═══ INIT ═══ */
-function init(){
-  document.getElementById('date').textContent=shortDate();
-  document.getElementById('lotdDate').textContent=shortDate();
-  // Track first open date
-  if(!store.get('firstOpen',null)&&store.get('onboardingDone',false)) store.set('firstOpen',todayKey());
-  updateStreak();
-  renderStreak();
-  renderDayCounter();
-  renderCards();
-  renderExplore();
-  renderProgress();
-  checkReminder();
-  checkOnboarding();
-  cleanCache();
-  fetchNews().then(function(){generateBrief();generateLOTD()});
-}
-
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
-else init();
-
+function timeAgo(dateString){var timestamp=new Date(dateString||'').getTime();if(!timestamp) return 'Ahora';var minutes=Math.max(1,Math.floor((Date.now()-timestamp)/60000));if(minutes<60) return 'Hace '+minutes+' min';if(minutes<1440) return 'Hace '+Math.floor(minutes/60)+' h';return 'Hace '+Math.floor(minutes/1440)+' d'}
+function seededRandom(seed){var hash=0;for(var index=0;index<seed.length;index++) hash=((hash<<5)-hash+seed.charCodeAt(index))|0;return function(){hash=(Math.imul(hash,16807))%2147483647;return (hash<0?hash+2147483647:hash)/2147483647}}
+var articles=[];var liveContext='';var deferredPrompt=null;var briefCache=store.get('briefCache',{});var lotdCache=store.get('lotdCache',{});var lensBriefCache=store.get('lensBriefCache',{});var streakData=store.get('streakData',{lastOpen:'',count:0});var startedAt=store.get('startedAt',null);var onboardingDone=store.get('onboardingDone',false);var lensInteractions=store.get('lensInteractions',{});var dailyReads=store.get('dailyReads',{});var chatHistory=store.get('chatHistory',[]);
+function countReads(){return Object.keys(dailyReads).reduce(function(total,key){return total+(dailyReads[key]||0)},0)}
+function uniqueLensesSeen(){return Object.keys(lensInteractions).filter(function(key){return (lensInteractions[key]||0)>0}).length}
+function currentStage(){var reads=countReads();var stage=STAGES[0];for(var index=STAGES.length-1;index>=0;index--){if(reads>=STAGES[index].min){stage=STAGES[index];break}}return stage}
+function dayCount(){if(!startedAt) return 0;var start=new Date(startedAt).getTime();if(!start) return 0;return Math.max(1,Math.floor((Date.now()-start)/86400000)+1)}
+function registerServiceWorker(){if('serviceWorker' in navigator){navigator.serviceWorker.register('/service-worker.js').catch(function(){})}}
+function callClaude(prompt,maxTokens){return fetch('/.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:prompt,maxTokens:maxTokens||900})}).then(function(response){if(!response.ok) throw new Error('API '+response.status);return response.json()}).then(function(json){if(json.error) throw new Error(typeof json.error==='string'?json.error:'API error');return json.content[0].text})}
+function markRead(key){dailyReads[key]=(dailyReads[key]||0)+1;store.set('dailyReads',dailyReads);renderProgress()}
+function bumpLens(lensId){lensInteractions[lensId]=(lensInteractions[lensId]||0)+1;store.set('lensInteractions',lensInteractions);renderVault();renderProgress()}
+function updateStreak(){var today=todayKey();var yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);if(streakData.lastOpen===today) return;if(streakData.lastOpen===yesterday) streakData.count++;else streakData.count=1;streakData.lastOpen=today;store.set('streakData',streakData)}
+function renderHeader(){document.getElementById('streakPill').textContent='Racha '+(streakData.count||0);document.getElementById('dayPill').textContent='Día '+dayCount();document.getElementById('lotdDate').textContent=shortDate()}
+function inferLensId(article){var text=((article.title||'')+' '+(article.section||'')+' '+(article.source||'')).toLowerCase();if(/inflaci|fed|bce|banco|deuda|tasas|mercad|dólar|dolar|precio|bono/.test(text)) return 'dinero';if(/sancion|otan|guerra|misil|militar|diplomac|trump|israel|rusia|china|taiwan|seguridad/.test(text)) return 'poder';if(/ia|ai|chip|semiconductor|openai|nvidia|google|apple|microsoft|ciber|robot/.test(text)) return 'tecnologia';if(/energ|petr|gas|electric|clima|climate/.test(text)) return 'energia';if(/elecci|tribunal|congreso|regulaci|gobierno|court|policy/.test(text)) return 'instituciones';if(/frontera|puerto|mar|canal|asia|europa|latam|territorio|ruta/.test(text)) return 'geografia';if(/narrativa|media|protesta|identidad|sociedad|cultura|polariz/.test(text)) return 'narrativa';if(/visa|migraci|remote|residencia|expatri/.test(text)) return 'movilidad';return article.section==='Global'?'estrategia':article.section==='Latam'?'cultura':'historia'}
+function findLens(lensId){return LENSES.find(function(lens){return lens.id===lensId})||LENSES[0]}
+function selectTopArticles(limit){var sorted=articles.slice().sort(function(left,right){return (right.score||0)-(left.score||0)});var selected=[];var sourceCounts={};var sectionCounts={};var sectionCaps={Global:2,Poder:2,Dinero:2,Tecnología:2,Mercados:1,Latam:1,Movilidad:1};sorted.forEach(function(article){if(selected.length>=limit) return;var sourceKey=(article.source||'unknown').toLowerCase();var sectionKey=article.section||'Global';if((sourceCounts[sourceKey]||0)>=1) return;if((sectionCounts[sectionKey]||0)>=(sectionCaps[sectionKey]||1)) return;selected.push(article);sourceCounts[sourceKey]=(sourceCounts[sourceKey]||0)+1;sectionCounts[sectionKey]=(sectionCounts[sectionKey]||0)+1});if(selected.length<limit){sorted.forEach(function(article){if(selected.length>=limit) return;if(selected.indexOf(article)!==-1) return;selected.push(article)})}return selected}
+function dailyLensIds(){var chosen=[];var fromNews=selectTopArticles(6).map(inferLensId);fromNews.forEach(function(lensId){if(chosen.indexOf(lensId)===-1&&chosen.length<3) chosen.push(lensId)});if(chosen.length<3){var random=seededRandom(todayKey());while(chosen.length<3){var candidate=LENSES[Math.floor(random()*LENSES.length)].id;if(chosen.indexOf(candidate)===-1) chosen.push(candidate)}}return chosen}
+function fetchNews(){return fetch('/.netlify/functions/news',{cache:'no-store'}).then(function(response){if(!response.ok) return null;return response.json()}).then(function(data){if(!data) return;articles=data.articles||[];if(articles.length) liveContext='NOTICIAS REALES DE HOY ('+todayStr()+'):\n'+selectTopArticles(12).map(function(article){return '['+article.section+'] '+article.title}).join('\n');renderRadar()}).catch(function(){liveContext='Fecha: '+todayStr()})}
+function renderRadar(){var section=document.getElementById('radarSection');var grid=document.getElementById('radarGrid');if(!articles.length){section.style.display='none';return}var chosen=selectTopArticles(4);if(!chosen.length){section.style.display='none';return}var lead=chosen[0];var leadLink=safeUrl(lead.link)||'#';var html='';html+='<a class="radar-lead" href="'+esc(leadLink)+'"'+(leadLink==='#'?'':' target="_blank" rel="noopener"')+'>';html+='<div class="radar-media">';if(safeUrl(lead.image)) html+='<img src="'+esc(lead.image)+'" alt="'+esc(lead.title)+'">';html+='<div class="radar-lead-copy">';html+='<div class="radar-badges"><span class="tag">'+esc(lead.icon||'🌐')+' '+esc(lead.section||'Global')+'</span><span class="tag">'+esc(timeAgo(lead.date))+'</span></div>';html+='<div class="radar-lead-title">'+esc(lead.title)+'</div>';html+='<div class="radar-lead-source">'+esc(lead.source||'Fuente global')+'</div>';html+='</div></div></a>';if(chosen.length>1){html+='<div class="radar-list">';chosen.slice(1).forEach(function(article){var link=safeUrl(article.link)||'#';html+='<a class="radar-mini" href="'+esc(link)+'"'+(link==='#'?'':' target="_blank" rel="noopener"')+'>';html+='<div class="radar-thumb">';if(safeUrl(article.image)) html+='<img src="'+esc(article.image)+'" alt="'+esc(article.title)+'">';else html+='<div class="radar-fallback">'+esc(article.icon||'🌐')+'</div>';html+='</div><div class="radar-copy">';html+='<div class="tiny-badges"><span class="tag" style="background:var(--bg-soft);color:var(--ink)">'+esc(article.section||'Global')+'</span><span class="tag" style="background:var(--bg-soft);color:var(--ink)">'+esc(timeAgo(article.date))+'</span></div>';html+='<div class="radar-mini-title">'+esc(article.title)+'</div>';html+='<div class="radar-mini-source">'+esc(article.source||'Fuente')+'</div>';html+='</div></a>'});html+='</div>'}grid.innerHTML=html;document.getElementById('radarMeta').textContent=(articles.length||0)+' titulares evaluados';section.style.display='block'}
+function generateBrief(){var key=todayKey();if(briefCache[key]&&briefCache[key].stories){renderBrief(briefCache[key]);return Promise.resolve()}if(!articles.length){document.getElementById('briefSection').style.display='none';return Promise.resolve()}var newsList=selectTopArticles(10).map(function(article,index){return (index+1)+'. ['+article.section+'] '+article.title+' ('+(article.source||'Fuente')+')'}).join('\n');return callClaude('Fecha: '+todayStr()+'.\n\nNOTICIAS REALES DE HOY:\n'+newsList+'\n\nEres editor de un briefing global serio. Elige 4 o 5 historias de máximo impacto sistémico. Para cada una responde con:\nheadline: título corto\nwhy: por qué importa en lenguaje simple\ncontext: qué estructura del mundo revela\n\nResponde SOLO con JSON válido sin backticks:\n{"stories":[{"headline":"...","why":"...","context":"..."}]}',1200).then(function(text){var data=JSON.parse(text.replace(/```json|```/g,'').trim());briefCache[key]=data;store.set('briefCache',briefCache);renderBrief(data)}).catch(function(){document.getElementById('briefSection').style.display='none'})}
+function renderBrief(data){if(!data||!data.stories||!data.stories.length){document.getElementById('briefSection').style.display='none';return}document.getElementById('briefList').innerHTML=data.stories.map(function(story){return '<div class="brief-item"><div class="brief-h">'+esc(story.headline)+'</div><div class="brief-w">'+esc(story.why)+'</div><div class="brief-c">'+esc(story.context)+'</div></div>'}).join('');document.getElementById('briefSection').style.display='block'}
+function generateLOTD(){var key=todayKey();if(lotdCache[key]){renderLOTD(lotdCache[key]);return Promise.resolve()}if(!articles.length){return Promise.resolve()}var newsBlock=selectTopArticles(8).map(function(article){return '['+article.section+'] '+article.title}).join('. ');return callClaude('Fecha: '+todayStr()+'. NOTICIAS DE HOY: '+newsBlock+'\n\nElige el evento que más conviene convertir en lección del día. Debe enseñar una estructura profunda del mundo, no solo resumir noticias.\n\nResponde SOLO con JSON válido:\n{"titulo":"...","gancho":"...","resumen":"3 párrafos claros y densos, sin jerga","acciones":[{"num":"1","texto":"..."},{"num":"2","texto":"..."},{"num":"3","texto":"..."}]}',1200).then(function(text){var data=JSON.parse(text.replace(/```json|```/g,'').trim());lotdCache[key]=data;store.set('lotdCache',lotdCache);renderLOTD(data)}).catch(function(){document.getElementById('lotdTitle').textContent='No se pudo generar la lección del día';document.getElementById('lotdHook').textContent='Recarga la app en un momento.'})}
+function renderLOTD(data){document.getElementById('lotdTitle').textContent=data.titulo||'Tu lección del día';document.getElementById('lotdHook').textContent=data.gancho||'';document.getElementById('lotdBody').innerHTML='<div class="sheet-copy" style="margin-bottom:16px">'+esc(data.resumen||'').replace(/\n/g,'<br><br>')+'</div><div class="daily-label">Qué hacer con esto</div><div>'+((data.acciones||[]).map(function(action){return '<div class="sheet-box"><div class="sheet-box-text">'+esc(action.num)+'. '+esc(action.texto)+'</div></div>'}).join(''))+'</div><div class="daily-cta"><button class="share-btn" data-share="lotd">Compartir</button></div>'}
+function fallbackLensCards(){return dailyLensIds().map(function(lensId,index){var lens=findLens(lensId);var article=selectTopArticles(5)[index]||{};return {lensId:lensId,title:lens.name+': cómo leer lo de hoy',signal:article.title||'Revisa la señal más importante del día usando este lente.',pattern:lens.thesis,move:lens.moves[0]}})}
+function generateDailyLenses(){var key=todayKey();if(lensBriefCache[key]){renderDailyLenses(lensBriefCache[key]);return Promise.resolve()}if(!articles.length){renderDailyLenses(fallbackLensCards());return Promise.resolve()}var lensSet=dailyLensIds().map(function(id){var lens=findLens(id);return '- '+lens.id+': '+lens.name+' | '+lens.question+' | '+lens.thesis}).join('\n');var newsSet=selectTopArticles(8).map(function(article,index){return (index+1)+'. ['+article.section+'] '+article.title}).join('\n');return callClaude('Fecha: '+todayStr()+'.\n\nNoticias:\n'+newsSet+'\n\nLentes disponibles hoy:\n'+lensSet+'\n\nGenera 3 tarjetas, una por lente. Cada tarjeta debe traducir la señal del día en criterio.\nResponde SOLO con JSON:\n{"cards":[{"lensId":"...","title":"...","signal":"Que está pasando","pattern":"Qué patrón revela","move":"Qué mirar o preguntar hoy"}]}',1400).then(function(text){var parsed=JSON.parse(text.replace(/```json|```/g,'').trim());var cards=(parsed.cards||[]).filter(function(card){return card&&card.lensId&&findLens(card.lensId)});if(!cards.length) cards=fallbackLensCards();lensBriefCache[key]=cards;store.set('lensBriefCache',lensBriefCache);renderDailyLenses(cards)}).catch(function(){renderDailyLenses(fallbackLensCards())})}
+function renderDailyLenses(cards){var grid=document.getElementById('dailyGrid');if(!cards||!cards.length){grid.innerHTML='';return}grid.innerHTML=cards.map(function(card){var lens=findLens(card.lensId);return '<article class="daily-card" data-daily="'+esc(card.lensId)+'"><div class="daily-card-head"><span class="daily-lens">'+esc(lens.icon)+' '+esc(lens.name)+'</span><button class="lens-btn" data-open-lens="'+esc(lens.id)+'">Abrir lente</button></div><div class="daily-title">'+esc(card.title)+'</div><div class="daily-copy">'+esc(card.signal)+'</div><div class="daily-block"><div class="daily-label">Patrón que revela</div><div class="daily-copy">'+esc(card.pattern)+'</div></div><div class="daily-block"><div class="daily-label">Qué mirar hoy</div><div class="daily-copy">'+esc(card.move)+'</div></div><div class="daily-cta"><button class="share-btn" data-share="daily:'+esc(lens.id)+'">Compartir</button><button class="ghost-btn" data-mark-daily="'+esc(lens.id)+'">Lo vi</button></div></article>'}).join('')}
+function renderVault(){var grid=document.getElementById('vaultGrid');grid.innerHTML=LENSES.map(function(lens){var count=lensInteractions[lens.id]||0;var percent=Math.min(100,count*20);return '<article class="vault-card"><div class="vault-tag">'+esc(lens.icon)+' '+esc(lens.name)+'</div><div class="vault-title">'+esc(lens.question)+'</div><div class="vault-question">'+esc(lens.thesis)+'</div><div class="vault-foot"><div class="meter"><span style="width:'+percent+'%"></span></div><button class="lens-btn" data-open-lens="'+esc(lens.id)+'">Revisar</button></div></article>'}).join('')}
+function renderProgress(){var reads=countReads();var lenses=uniqueLensesSeen();var days=dayCount();var stage=currentStage();document.getElementById('readCount').textContent=reads;document.getElementById('lensCount').textContent=lenses+'/12';document.getElementById('daysCount').textContent=days;document.getElementById('progressTitle').textContent=stage.title;document.getElementById('trajectory').innerHTML=STAGES.map(function(item){return '<div class="trajectory-pill'+(item.title===stage.title?' live':'')+'">'+esc(item.title)+'</div>'}).join('')}
+function openLensSheet(lensId){var lens=findLens(lensId);bumpLens(lens.id);markRead('lens:'+lens.id);document.getElementById('lensSheetBody').innerHTML='<div class="sheet-kicker">'+esc(lens.icon)+' '+esc(lens.name)+'</div><div class="sheet-headline">'+esc(lens.question)+'</div><div class="sheet-copy">'+esc(lens.thesis)+'</div><div class="sheet-box"><div class="sheet-box-label">Señales</div><div class="sheet-box-text">'+esc(lens.signals.join(' · '))+'</div></div><div class="sheet-box"><div class="sheet-box-label">Cómo usarlo</div><div class="sheet-box-text">'+esc(lens.moves.join(' '))+'</div></div><div class="sheet-box"><div class="sheet-box-label">Pregunta guía</div><div class="sheet-box-text">'+esc(lens.question)+'</div></div>';document.getElementById('lensSheet').classList.add('open')}
+function closeLensSheet(){document.getElementById('lensSheet').classList.remove('open')}
+function openChat(){document.getElementById('chatOverlay').classList.add('open');renderChat()}function closeChat(){document.getElementById('chatOverlay').classList.remove('open')}
+function renderChat(){var container=document.getElementById('chatMsgs');container.innerHTML='<div class="chat-msg ai">Soy tu copiloto de criterio. Puedo ayudarte a leer una noticia, conectar patrones o usar cualquiera de los 12 lentes para pensar mejor.</div>';chatHistory.forEach(function(message){container.innerHTML+='<div class="chat-msg '+message.role+'">'+esc(message.text)+'</div>'});container.scrollTop=container.scrollHeight}
+function sendChat(){var input=document.getElementById('chatInput');var question=input.value.trim();if(!question) return;var container=document.getElementById('chatMsgs');var button=document.getElementById('chatSend');chatHistory.push({role:'user',text:question});chatHistory=chatHistory.slice(-24);store.set('chatHistory',chatHistory);renderChat();container.innerHTML+='<div class="chat-msg ai" id="chatLoading">Pensando...</div>';container.scrollTop=container.scrollHeight;input.value='';input.style.height='48px';button.disabled=true;var lensContext=LENSES.map(function(lens){return lens.name+': '+lens.thesis}).join(' ');var conversation=chatHistory.slice(-10).map(function(message){return (message.role==='user'?'Usuario: ':'Tutor: ')+message.text}).join('\n');callClaude((liveContext?liveContext+'\n\n':'Fecha: '+todayStr()+'.\n\n')+'LENTES MADRE: '+lensContext+'\n\nCONVERSACIÓN:\n'+conversation+'\n\nResponde como tutor serio, claro y muy humano. No uses jerga. Ayuda a pensar mejor. Máximo 6 frases.',700).then(function(text){chatHistory.push({role:'ai',text:text});chatHistory=chatHistory.slice(-24);store.set('chatHistory',chatHistory);renderChat()}).catch(function(){var loading=document.getElementById('chatLoading');if(loading) loading.textContent='Error. Intenta otra vez.'}).finally(function(){button.disabled=false})}
+function shareCard(payload){var canvas=document.getElementById('shareCanvas');var context=canvas.getContext('2d');var width=1080;var height=1350;canvas.width=width;canvas.height=height;context.fillStyle='#0b1118';context.fillRect(0,0,width,height);var gradient=context.createLinearGradient(0,0,width,height);gradient.addColorStop(0,'#133041');gradient.addColorStop(.6,'#173040');gradient.addColorStop(1,'#8c4c2b');context.fillStyle=gradient;context.fillRect(56,56,width-112,height-112);context.fillStyle='rgba(255,255,255,.08)';context.beginPath();context.arc(940,220,120,0,Math.PI*2);context.fill();context.fillStyle='#f1f2ee';context.font='800 26px Helvetica';context.fillText('CONTEXTO',96,120);context.font='400 22px Helvetica';context.fillStyle='rgba(241,242,238,.72)';context.fillText(todayStr(),96,156);context.fillStyle='#ffffff';context.font='800 56px Helvetica';drawWrapped(context,payload.title,96,250,880,66);var bodyTop=getWrappedBottom(context,payload.title,96,250,880,66)+32;context.font='400 34px Helvetica';context.fillStyle='rgba(241,242,238,.86)';drawWrapped(context,payload.body,96,bodyTop,880,50);var footerTop=Math.min(height-220,getWrappedBottom(context,payload.body,96,bodyTop,880,50)+42);context.fillStyle='rgba(255,255,255,.12)';context.fillRect(96,footerTop,888,2);context.fillStyle='#f0a36f';context.font='700 22px Helvetica';context.fillText(payload.tag||'criterio diario',96,footerTop+42);context.fillStyle='rgba(241,242,238,.68)';context.font='400 22px Helvetica';context.fillText('contextostryv.netlify.app · stryvstudio.com',96,height-110);canvas.toBlob(function(blob){if(!blob) return;var file=new File([blob],'contexto-share.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:payload.title}).catch(function(){})}else{var link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='contexto-share.png';link.click()}},'image/png')}
+function drawWrapped(context,text,x,y,maxWidth,lineHeight){var words=String(text||'').split(' ');var line='';var currentY=y;words.forEach(function(word){var test=line+word+' ';if(context.measureText(test).width>maxWidth&&line){context.fillText(line.trim(),x,currentY);line=word+' ';currentY+=lineHeight}else line=test});if(line.trim()) context.fillText(line.trim(),x,currentY)}
+function getWrappedBottom(context,text,x,y,maxWidth,lineHeight){var words=String(text||'').split(' ');var line='';var currentY=y;words.forEach(function(word){var test=line+word+' ';if(context.measureText(test).width>maxWidth&&line){line=word+' ';currentY+=lineHeight}else line=test});return currentY+lineHeight}
+function shareByKey(key){if(key==='lotd'){var lesson=lotdCache[todayKey()];if(!lesson) return;shareCard({title:lesson.titulo,body:lesson.resumen,tag:'lección del día'});return}if(key.indexOf('daily:')===0){var lensId=key.split(':')[1];var cards=lensBriefCache[todayKey()]||fallbackLensCards();var card=cards.find(function(item){return item.lensId===lensId});if(!card) return;var lens=findLens(lensId);shareCard({title:lens.name+': '+card.title,body:card.pattern+' '+card.move,tag:'lente de hoy'})}}
+function setupReminder(){var status=document.getElementById('remindStatus');var button=document.getElementById('remindBtn');var time=document.getElementById('remindTime').value;if(!('Notification' in window)){status.textContent='Este navegador no soporta notificaciones.';status.classList.add('show');return}button.disabled=true;Notification.requestPermission().then(function(permission){if(permission!=='granted'){status.textContent='Necesitas permitir notificaciones.';status.classList.add('show');button.disabled=false;return}store.set('reminderTime',time);status.textContent='Recordatorio activo para las '+time+'.';status.classList.add('show');button.textContent='Activo';if('serviceWorker' in navigator&&navigator.serviceWorker.controller){navigator.serviceWorker.controller.postMessage({type:'SET_REMINDER',time:time})}})}
+function restoreReminder(){var saved=store.get('reminderTime',null);if(!saved) return;document.getElementById('remindTime').value=saved;var status=document.getElementById('remindStatus');status.textContent='Recordatorio activo para las '+saved+'.';status.classList.add('show');document.getElementById('remindBtn').textContent='Activo'}
+function shareApp(){var data={title:'CONTEXTO',text:'Una app diaria para entender el mundo real con más criterio.',url:window.location.origin+'/'};if(navigator.share){navigator.share(data).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(data.url).catch(function(){})}}
+function copyAppLink(){if(navigator.clipboard){navigator.clipboard.writeText(window.location.origin+'/').catch(function(){})}}
+function maybeShowOnboarding(){if(!onboardingDone) document.getElementById('onboarding').classList.add('show')}
+function finishOnboarding(){onboardingDone=true;if(!startedAt){startedAt=new Date().toISOString();store.set('startedAt',startedAt)}store.set('onboardingDone',true);document.getElementById('onboarding').classList.remove('show');renderHeader();renderProgress()}
+window.addEventListener('beforeinstallprompt',function(event){event.preventDefault();deferredPrompt=event;if(!store.get('installDismissed',false)) document.getElementById('installBanner').classList.add('show')})
+function promptInstall(){if(!deferredPrompt) return;deferredPrompt.prompt();deferredPrompt.userChoice.finally(function(){document.getElementById('installBanner').classList.remove('show');deferredPrompt=null})}
+function dismissInstall(){store.set('installDismissed',true);document.getElementById('installBanner').classList.remove('show')}
+document.addEventListener('click',function(event){if(event.target.closest('#obStart')){finishOnboarding();return}if(event.target.closest('#installBtn')){promptInstall();return}if(event.target.closest('#installDismiss')){dismissInstall();return}if(event.target.closest('#lotdToggle')){document.getElementById('lotdPanel').classList.toggle('open');markRead('lotd:'+todayKey());return}if(event.target.closest('[data-open-lens]')){openLensSheet(event.target.closest('[data-open-lens]').getAttribute('data-open-lens'));return}if(event.target.closest('#lensSheetClose')||event.target.id==='lensSheet'){closeLensSheet();return}if(event.target.closest('[data-mark-daily]')){var lensId=event.target.closest('[data-mark-daily]').getAttribute('data-mark-daily');markRead('daily:'+todayKey()+':'+lensId);bumpLens(lensId);return}if(event.target.closest('[data-share]')){shareByKey(event.target.closest('[data-share]').getAttribute('data-share'));return}if(event.target.closest('#shareProgress')){shareCard({title:'Mi progreso en CONTEXTO',body:'He leído '+countReads()+' briefings y activado '+uniqueLensesSeen()+' lentes madre. Día '+dayCount()+'.',tag:'progreso'});return}if(event.target.closest('#shareApp')){shareApp();return}if(event.target.closest('#copyAppLink')){copyAppLink();return}if(event.target.closest('#remindBtn')){setupReminder();return}if(event.target.closest('#chatFab')){openChat();return}if(event.target.closest('#chatClose')||event.target.id==='chatOverlay'){closeChat();return}if(event.target.closest('#chatSend')){sendChat();return}})
+document.addEventListener('keydown',function(event){if(event.key==='Escape'){closeLensSheet();closeChat()}if(event.key==='Enter'&&event.target.id==='chatInput'&&!event.shiftKey){event.preventDefault();sendChat()}})
+document.getElementById('chatInput').addEventListener('input',function(){this.style.height='48px';this.style.height=Math.min(this.scrollHeight,132)+'px'})
+function init(){registerServiceWorker();if(!startedAt&&onboardingDone){startedAt=new Date().toISOString();store.set('startedAt',startedAt)}updateStreak();renderHeader();renderVault();renderProgress();restoreReminder();maybeShowOnboarding();fetchNews().then(function(){generateBrief();generateLOTD();generateDailyLenses()})}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
 </body>

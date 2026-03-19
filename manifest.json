@@ -1,7 +1,7 @@
 {
   "name": "Contexto — Stryv",
   "short_name": "Contexto",
-  "description": "Conocimiento que el sistema no te da. Dinero, poder, movilidad, tecnología e IA.",
+  "description": "Briefing diario para entender dinero, poder, tecnología, historia, cultura y estrategia con criterio real.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0D1117",
