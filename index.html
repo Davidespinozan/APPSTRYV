@@ -200,14 +200,52 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ma
 
 /* Share canvas (hidden) */
 .share-canvas{position:fixed;left:-9999px;top:-9999px}
+
+/* Onboarding */
+.onboarding{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:32px 24px;animation:fadeIn .3s}
+.ob-inner{max-width:340px;width:100%;text-align:center}
+.ob-logo{font-size:12px;font-weight:800;letter-spacing:3px;color:var(--text3);text-transform:uppercase;margin-bottom:36px}
+.ob-emoji{font-size:52px;margin-bottom:18px;line-height:1}
+.ob-title{font-size:24px;font-weight:800;letter-spacing:-.5px;line-height:1.2;margin-bottom:14px}
+.ob-text{font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:36px}
+.ob-text b{color:var(--text);font-weight:700}
+.ob-btn{font-family:inherit;font-size:15px;font-weight:800;background:var(--text);color:var(--bg);border:none;padding:16px 28px;border-radius:14px;cursor:pointer;width:100%;margin-bottom:12px;letter-spacing:-.2px}
+.ob-sub{font-size:11px;color:var(--text3);line-height:1.7}
+
+/* Day counter in bar */
+.bar-day{font-size:11px;font-weight:700;color:var(--text3);background:var(--surface);padding:2px 8px;border-radius:20px;display:none}
+.bar-day.show{display:inline-block}
+
+/* Share app CTA */
+.share-cta{margin:24px 16px 0;padding:22px 20px;background:var(--surface);border-radius:16px;text-align:center;border:1px solid var(--border)}
+.share-cta-title{font-size:15px;font-weight:800;line-height:1.4;margin-bottom:6px}
+.share-cta-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:16px}
+.share-cta-btn{font-family:inherit;font-size:13px;font-weight:700;background:var(--text);color:var(--bg);border:none;padding:12px 20px;border-radius:10px;cursor:pointer;width:100%}
+.share-cta-btn:active{opacity:.8}
 </style>
 </head>
 <body>
+
+<div class="onboarding" id="onboarding" style="display:none">
+  <div class="ob-inner">
+    <div class="ob-logo">CONTEXTO</div>
+    <div class="ob-emoji">🔮</div>
+    <div class="ob-title">El mapa que nadie te dio</div>
+    <div class="ob-text">
+      Dinero. Poder. Historia.<br>Filosofía. Geopolítica. Tecnología.<br><br>
+      <b>5 minutos al día.</b> 365 días.<br>
+      Una persona completamente diferente.
+    </div>
+    <button class="ob-btn" id="obStart">Comenzar mi año →</button>
+    <div class="ob-sub">Gratis. Sin registro. Sin trampa.<br>Hecho para cualquiera, en cualquier punto de su vida.</div>
+  </div>
+</div>
 
 <nav class="bar">
   <div class="bar-l">
     <span class="bar-brand">CONTEXTO</span>
     <span class="streak" id="streak"></span>
+    <span class="bar-day" id="dayCounter"></span>
   </div>
   <span class="bar-date" id="date"></span>
 </nav>
@@ -268,11 +306,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ma
   <div class="remind-status" id="remindStatus"></div>
 </div>
 
-<div class="cta">
-  <div class="cta-title">¿Tu negocio ya tiene sistema?</div>
-  <div class="cta-desc">Construimos infraestructura digital para negocios que quieren crecer sin depender de su dueño.</div>
-  <a href="https://wa.me/17373683464" target="_blank" rel="noopener" class="cta-btn">Hablar con Stryv</a>
-  <a href="https://stryvstudio.com" target="_blank" rel="noopener" class="cta-link">stryvstudio.com</a>
+<div class="share-cta">
+  <div class="share-cta-title">Si esto te abrió los ojos,<br>compártelo con alguien que lo necesite.</div>
+  <div class="share-cta-desc">Gratis. Para siempre. Sin registro.</div>
+  <button class="share-cta-btn" id="shareAppBtn">Compartir CONTEXTO →</button>
 </div>
 
 <div class="foot">
@@ -369,6 +406,69 @@ var TOPICS = [
   {id:'c3',mod:'cultura',icon:'🎭',label:'Cultura',title:'Manipulación mediática: cómo te moldean sin saberlo',hook:'No es conspiración. Es negocio. Los medios capturan atención, no informan.'},
   {id:'c4',mod:'cultura',icon:'🎭',label:'Cultura',title:'Narrativas colectivas: las historias que controlan todo',hook:'Naciones, religiones, dinero. Todo funciona porque creemos las mismas historias.'},
   {id:'c5',mod:'cultura',icon:'🎭',label:'Cultura',title:'El mito de la meritocracia',hook:'"Si trabajas duro, llegarás." La historia más conveniente para quienes ya llegaron.'}
+];
+
+var LOTD_FALLBACKS = [
+  {
+    titulo:'Por qué el 1% sabe cosas que el 99% nunca aprendió',
+    gancho:'No es inteligencia. Es acceso a información que nadie te enseñó.',
+    resumen:'Existe una brecha enorme entre lo que se enseña en las escuelas y lo que realmente mueve el mundo. Las personas con poder saben cómo funciona el dinero, los ciclos económicos, la geopolítica y la psicología de masas. No porque sean más inteligentes, sino porque tuvieron acceso a esa información desde temprano.\n\nLa buena noticia: ese conocimiento no es secreto. Está en libros, en la historia, en patrones que se repiten. El problema es que nadie te enseña a buscarlo ni a conectarlo.\n\nCada día que usas esta app estás cerrando esa brecha. No para volerte rico en 30 días, sino para entender el tablero donde se juega tu vida — y tomar mejores decisiones en consecuencia.',
+    acciones:[
+      {num:'1',texto:'Hoy, lee una de las tarjetas de abajo completa. No la cierres hasta entenderla de verdad.'},
+      {num:'2',texto:'Pregúntate: ¿qué decisión tomaría diferente si supiera más sobre este tema?'},
+      {num:'3',texto:'Comparte esta app con alguien que creas que necesita este mapa.'}
+    ]
+  },
+  {
+    titulo:'El interés compuesto del conocimiento',
+    gancho:'Lo que aprendes hoy vale más mañana porque te permite entender más.',
+    resumen:'Einstein describió el interés compuesto como la octava maravilla del mundo. Pero este principio no aplica solo al dinero. El conocimiento funciona igual: lo que aprendes hoy te permite entender conceptos más complejos mañana.\n\nAlguien que entiende inflación puede entender política monetaria. Quien entiende política monetaria puede entender geopolítica. Quien entiende geopolítica puede anticipar tendencias antes que la mayoría.\n\nEso es exactamente lo que estás construyendo aquí. No información suelta — un sistema de comprensión que se refuerza solo. En 365 días, no solo sabrás más. Pensarás diferente.',
+    acciones:[
+      {num:'1',texto:'Elige un módulo que no conozcas nada. Léelo hoy aunque se sienta extraño.'},
+      {num:'2',texto:'Conecta lo que aprendas con algo que ya sabías antes. Escríbelo en papel.'},
+      {num:'3',texto:'Vuelve mañana. La constancia es más poderosa que la intensidad.'}
+    ]
+  },
+  {
+    titulo:'Cómo el sistema te convierte en consumidor en lugar de ciudadano',
+    gancho:'La diferencia entre los dos es el nivel de preguntas que te atreves a hacer.',
+    resumen:'El sistema educativo y mediático no está diseñado para hacerte pensar. Está diseñado para hacerte funcionar: trabajar, consumir, pagar impuestos y no hacer demasiadas preguntas incómodas.\n\nEso no es conspiración. Es economía. Un ciudadano informado es más difícil de manipular, más caro de convencer y menos predecible como consumidor.\n\nLa resistencia más poderosa no es política — es intelectual. Entender cómo funciona el dinero, el poder, los medios y la historia te da herramientas que ninguna campaña publicitaria ni narrativa oficial puede fácilmente deshacer.',
+    acciones:[
+      {num:'1',texto:'La próxima vez que veas una noticia, pregúntate: ¿quién se beneficia de que yo piense esto?'},
+      {num:'2',texto:'Lee el módulo de Cultura y Sociedad — empieza por sesgos cognitivos.'},
+      {num:'3',texto:'Desactiva notificaciones de noticias por 3 días. Observa cómo cambia tu ansiedad.'}
+    ]
+  },
+  {
+    titulo:'La diferencia entre saber y entender',
+    gancho:'Se puede saber mucho y entender poco. La profundidad es lo que cambia vidas.',
+    resumen:'La mayoría sabe que existe la inflación, que hay tensiones entre China y EE.UU., que la tecnología cambia el trabajo. Pero saber no es lo mismo que entender.\n\nEntender significa poder explicarle algo a alguien sin usar términos técnicos. Significa predecir consecuencias antes de que ocurran. Significa conectar eventos aparentemente sin relación porque ves el patrón debajo.\n\nEso es lo que construye esta app: no una biblioteca de datos, sino una capacidad de leer el mundo. Y esa capacidad no se pierde. Se refuerza con cada cosa nueva que aprendes.',
+    acciones:[
+      {num:'1',texto:'Elige un tema de hoy y explícaselo en voz alta a alguien — o a ti mismo frente al espejo.'},
+      {num:'2',texto:'Si no puedes explicarlo simple, vuelve a leerlo hasta que puedas.'},
+      {num:'3',texto:'Usa el chat de abajo para hacer preguntas profundas sobre lo que leíste.'}
+    ]
+  },
+  {
+    titulo:'Lo que nadie te dijo sobre la riqueza y la pobreza',
+    gancho:'No es cuestión de trabajo duro. Es cuestión de sistemas y de información.',
+    resumen:'La narrativa oficial dice que si trabajas duro, tendrás éxito. Pero los estudios sobre movilidad social muestran algo diferente: el factor más determinante para tu situación económica en la adultez es el contexto en el que naciste, no el esfuerzo que pusiste.\n\nEso no significa que el esfuerzo no importa. Significa que el esfuerzo sin información y sin sistema es trabajo desperdiciado. Los ricos no trabajan más horas — trabajan dentro de sistemas mejores.\n\nEntender cómo funciona el dinero, la inversión, el crédito y las estructuras económicas no garantiza la riqueza. Pero no entenderlos casi garantiza quedarse atrapado en ciclos que se repiten generación tras generación.',
+    acciones:[
+      {num:'1',texto:'Lee el módulo de Dinero completo. Empieza por el primero y sigue en orden.'},
+      {num:'2',texto:'Pregúntate: ¿en qué decisiones económicas estoy operando sin información suficiente?'},
+      {num:'3',texto:'Identifica una creencia sobre el dinero que aprendiste de tu familia. Cuestiónala.'}
+    ]
+  },
+  {
+    titulo:'Por qué el mundo que conoces tiene menos de 80 años',
+    gancho:'La mayoría del mapa actual se dibujó después de 1945. Antes era diferente.',
+    resumen:'El sistema internacional actual — sus instituciones, fronteras, monedas de reserva y alianzas — se construyó en su mayoría después de la Segunda Guerra Mundial. El dólar como moneda global, la ONU, el FMI, el Banco Mundial, la OTAN: todo eso tiene menos de ocho décadas.\n\nEso significa dos cosas importantes. Primero, que el orden actual no es eterno — tiene una fecha de creación y tendrá una fecha de transformación. Segundo, que entender el período 1939-1945 y su aftermath es entender por qué el mundo funciona como funciona hoy.\n\nLos patrones geopolíticos actuales — China vs EE.UU., Rusia y Ucrania, el papel del dólar — son directamente herederos de esos 80 años de historia.',
+    acciones:[
+      {num:'1',texto:'Lee los módulos de Historia y Geopolítica esta semana. Son la base de todo.'},
+      {num:'2',texto:'Busca un mapa del mundo de 1900 y compáralo con el actual. Nota las diferencias.'},
+      {num:'3',texto:'Pregúntate: ¿qué partes del mundo de hoy crees que van a cambiar en los próximos 20 años?'}
+    ]
+  }
 ];
 
 var PROMPTS = {
@@ -689,9 +789,8 @@ function generateLOTD(){
   var key=todayKey();
   if(lotdCache[key]){renderLOTD(lotdCache[key]);return}
   if(!articles.length){
-    document.getElementById('lotdTitle').textContent='Abre mañana para tu primera lección del día';
-    document.getElementById('lotdHook').textContent='Cuando haya noticias disponibles, la IA generará una lección conectada con el mundo real.';
-    document.getElementById('lotdOpen').style.display='none';
+    var fb=Object.assign({_static:true},LOTD_FALLBACKS[new Date().getDate()%LOTD_FALLBACKS.length]);
+    lotdCache[key]=fb;store.set('lotdCache',lotdCache);renderLOTD(fb);
     return;
   }
   var newsBlock=selectTopArticles(8).map(function(a){return '['+a.section+'] '+a.title}).join('. ');
@@ -706,9 +805,8 @@ function generateLOTD(){
     store.set('lotdCache',lotdCache);
     renderLOTD(data);
   }).catch(function(){
-    document.getElementById('lotdTitle').textContent='No se pudo generar la lección';
-    document.getElementById('lotdHook').textContent='Intenta recargando la página.';
-    document.getElementById('lotdOpen').style.display='none';
+    var fb=Object.assign({_static:true},LOTD_FALLBACKS[new Date().getDate()%LOTD_FALLBACKS.length]);
+    lotdCache[key]=fb;store.set('lotdCache',lotdCache);renderLOTD(fb);
   });
 }
 
@@ -717,8 +815,9 @@ function renderLOTD(data){
   document.getElementById('lotdHook').textContent=data.gancho||'';
   document.getElementById('lotdOpen').style.display='';
   var bodyEl=document.getElementById('lotdBody');
+  var aiTag=data._static?'':'<div class="ai-tag"><span class="ai-dot"></span> Generado hoy con IA</div>';
   bodyEl.innerHTML=
-    '<div class="ai-tag"><span class="ai-dot"></span> Generado hoy con IA</div>'+
+    aiTag+
     '<div class="exp-text">'+esc(data.resumen||'').replace(/\n/g,'<br><br>')+'</div>'+
     '<div class="exp-label">Qué puedes hacer</div>'+
     '<div class="actions">'+(data.acciones||[]).map(function(a){
@@ -1089,12 +1188,52 @@ function cleanCache(){
   [contentCache,briefCache,lotdCache].forEach(function(cache){
     Object.keys(cache).forEach(function(k){
       var dateKey=k.split('_')[0];
-      if(dateKey<cutoff) delete cache[dateKey===k?k:k];
+      if(dateKey<cutoff) delete cache[k];
     });
   });
   store.set('contentCache',contentCache);
   store.set('briefCache',briefCache);
   store.set('lotdCache',lotdCache);
+}
+
+/* ═══ ONBOARDING ═══ */
+function checkOnboarding(){
+  var done=store.get('onboardingDone',false);
+  if(!done) document.getElementById('onboarding').style.display='flex';
+}
+
+function dismissOnboarding(){
+  document.getElementById('onboarding').style.display='none';
+  store.set('onboardingDone',true);
+  if(!store.get('firstOpen',null)) store.set('firstOpen',todayKey());
+}
+
+/* ═══ SHARE APP ═══ */
+function shareApp(){
+  var url=window.location.origin+window.location.pathname;
+  var shareData={
+    title:'CONTEXTO — El mapa que nadie te dio',
+    text:'Dinero, poder, historia, filosofía, geopolítica. Gratis. En español. 5 minutos al día, 365 días.',
+    url:url
+  };
+  if(navigator.share&&navigator.canShare&&navigator.canShare(shareData)){
+    navigator.share(shareData).catch(function(){});
+  } else {
+    navigator.clipboard.writeText(url).then(function(){
+      var btn=document.getElementById('shareAppBtn');
+      if(btn){var orig=btn.textContent;btn.textContent='¡Link copiado!';setTimeout(function(){btn.textContent=orig},2500)}
+    }).catch(function(){});
+  }
+}
+
+/* ═══ DAY COUNTER ═══ */
+function renderDayCounter(){
+  var first=store.get('firstOpen',null);
+  if(!first) return;
+  var dayNum=Math.floor((Date.now()-new Date(first).getTime())/86400000)+1;
+  if(dayNum<=1) return;
+  var el=document.getElementById('dayCounter');
+  if(el){el.textContent='Día '+dayNum;el.classList.add('show')}
 }
 
 /* ═══ EVENTS ═══ */
@@ -1131,6 +1270,10 @@ document.addEventListener('click',function(e){
   if(e.target.closest('#chatSend')){sendChat();return}
   // Remind
   if(e.target.closest('#remindBtn')){setupReminder();return}
+  // Onboarding
+  if(e.target.closest('#obStart')){dismissOnboarding();return}
+  // Share app
+  if(e.target.closest('#shareAppBtn')){shareApp();return}
 });
 
 document.addEventListener('keydown',function(e){
@@ -1147,12 +1290,16 @@ if(chatInput) chatInput.addEventListener('input',function(){this.style.height='a
 function init(){
   document.getElementById('date').textContent=shortDate();
   document.getElementById('lotdDate').textContent=shortDate();
+  // Track first open date
+  if(!store.get('firstOpen',null)&&store.get('onboardingDone',false)) store.set('firstOpen',todayKey());
   updateStreak();
   renderStreak();
+  renderDayCounter();
   renderCards();
   renderExplore();
   renderProgress();
   checkReminder();
+  checkOnboarding();
   cleanCache();
   fetchNews().then(function(){generateBrief();generateLOTD()});
 }
