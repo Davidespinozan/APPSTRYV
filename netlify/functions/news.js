@@ -3,52 +3,46 @@ exports.handler = async function(event) {
   const sections = [
     {
       queries: [
-        'economía dólar inflación tasas interés',
-        'deuda crisis financiera recesión banco central',
-        'Fed reserva federal tipos interés economía global',
-        'banco central europeo BCE política monetaria',
-        'devaluación moneda emergentes economía',
-        'dollar inflation economy interest rates'
+        'últimas noticias mundo política internacional economía global',
+        'world news international politics global economy',
+        'cumbre diplomacia elecciones comercio internacional sanciones',
+        'climate energy health science breakthrough world news'
+      ],
+      label: 'Global', icon: '🌐'
+    },
+    {
+      queries: [
+        'economía global inflación tasas interés banco central',
+        'deuda crisis financiera recesión crecimiento empleo',
+        'Fed BCE bancos centrales política monetaria economía',
+        'global economy inflation central bank recession'
       ],
       label: 'Dinero', icon: '💰'
     },
     {
       queries: [
-        'Irán Israel Estados Unidos guerra ataque',
-        'geopolítica OTAN China Rusia Irán nuclear',
-        'Trump sanciones guerra comercial aranceles',
-        'bombardeo misiles conflicto Medio Oriente Ucrania',
-        'Corea del Norte Kim Jong Un nuclear',
-        'espionaje ciberataque hackeo gobierno',
-        'Iran Israel war attack Middle East',
-        'Russia Ukraine war NATO',
-        'China Taiwan military tension'
+        'geopolítica diplomacia conflicto seguridad internacional cumbre',
+        'OTAN China Rusia Estados Unidos relaciones internacionales',
+        'international security diplomacy sanctions summit conflict',
+        'cyberattack espionage government security global politics'
       ],
       label: 'Poder', icon: '⚡'
     },
     {
       queries: [
-        'inteligencia artificial OpenAI GPT Gemini Claude',
-        'Nvidia chips semiconductores regulación IA',
-        'AGI artificial intelligence robot automatización',
-        'Apple Google Meta Microsoft AI',
-        'startup unicornio tecnología Silicon Valley',
-        'artificial intelligence regulation OpenAI Anthropic',
-        'robotics automation AI jobs',
-        'SpaceX Elon Musk Neuralink Tesla'
+        'inteligencia artificial semiconductores regulación tecnología',
+        'Apple Google Meta Microsoft Nvidia chips tecnología',
+        'artificial intelligence chips regulation robotics technology',
+        'space telecom cybersecurity technology global industry'
       ],
       label: 'Tecnología', icon: '🤖'
     },
     {
       queries: [
-        'bitcoin BTC criptomonedas ethereum crypto',
-        'bitcoin precio halving ETF cripto',
-        'Wall Street Nasdaq S&P bolsa acciones',
-        'oro petróleo commodities mercados financieros',
-        'bitcoin price crypto market',
-        'ethereum solana DeFi Web3 NFT',
-        'stock market rally crash correction',
-        'oil gold commodity prices'
+        'Wall Street Nasdaq S&P mercados financieros commodities',
+        'oro petróleo gas bonos divisas mercados',
+        'stock market bonds commodities oil gold prices',
+        'bitcoin crypto regulation ETF market macro'
       ],
       label: 'Mercados', icon: '📊'
     },
@@ -63,13 +57,10 @@ exports.handler = async function(event) {
     },
     {
       queries: [
-        'Latinoamérica México Colombia Argentina Brasil política',
-        'Milei AMLO Petro Lula economía Latam',
-        'Venezuela Cuba Nicaragua dictadura Latinoamérica',
-        'elecciones Latinoamérica democracia protesta',
-        'narcotráfico cartel crimen organizado México Colombia',
-        'Chile Perú Ecuador Bolivia crisis política',
-        'Brasil Lula economía BRICS Mercosur'
+        'Latinoamérica política economía elecciones crisis regional',
+        'México Colombia Argentina Brasil Chile Perú noticias',
+        'Latin America politics economy elections diplomacy',
+        'Mercosur BRICS Latinoamérica comercio relaciones internacionales'
       ],
       label: 'Latam', icon: '🌎'
     }
@@ -77,11 +68,8 @@ exports.handler = async function(event) {
 
   // ─── DIRECT RSS FEEDS (no API key needed) ───
   const directFeeds = [
-    // Crypto & Markets
+    // Markets / Macro
     { url: 'https://www.coindesk.com/arc/outboundfeeds/rss/', section: 'Mercados', icon: '📊', name: 'CoinDesk' },
-    { url: 'https://cointelegraph.com/rss', section: 'Mercados', icon: '📊', name: 'CoinTelegraph' },
-    { url: 'https://decrypt.co/feed', section: 'Mercados', icon: '📊', name: 'Decrypt' },
-    { url: 'https://bitcoinmagazine.com/.rss/full/', section: 'Mercados', icon: '📊', name: 'Bitcoin Magazine' },
     { url: 'https://feeds.finance.yahoo.com/rss/2.0/headline?s=^GSPC,^DJI,BTC-USD,GC=F,CL=F&region=US&lang=en-US', section: 'Mercados', icon: '📊', name: 'Yahoo Finance' },
     // Tech / AI
     { url: 'https://feeds.arstechnica.com/arstechnica/technology-lab', section: 'Tecnología', icon: '🤖', name: 'Ars Technica' },
@@ -110,14 +98,32 @@ exports.handler = async function(event) {
     { url: 'https://www.france24.com/es/am%C3%A9rica-latina/rss', section: 'Latam', icon: '🌎', name: 'France 24' },
   ];
 
-  const urgentPatterns = [
-    /bitcoin|btc|crypto|cripto|halving|etf.*bitcoin|bitcoin.*etf/i,
-    /iran|irán|israel|estados unidos|ee\.? ?uu\.?|trump|guerra|ataque|bombardeo|misil|hezbol[aá]|hamas|otan/i,
-    /openai|gpt|gemini|claude|nvidia|artificial.?intelligence|inteligencia.?artificial|agi/i,
-    /china|rusia|taiw[aá]n|ucrania|medio oriente|nuclear|xi.?jinping/i,
-    /crisis|última hora|en directo|urgente|sanciones|petróleo|gas|recesi[oó]n/i,
-    /milei|amlo|petro|lula|maduro|bukele/i
+  const sourceAuthority = [
+    [/reuters/i, 18],
+    [/associated press|\bap\b/i, 17],
+    [/bbc/i, 16],
+    [/bloomberg/i, 16],
+    [/financial times|\bft\b/i, 15],
+    [/new york times|nyt/i, 14],
+    [/washington post/i, 14],
+    [/the guardian|guardian/i, 13],
+    [/al jazeera/i, 13],
+    [/nhk/i, 12],
+    [/dw|deutsche welle/i, 12],
+    [/elpais|el país/i, 11],
+    [/ars technica|wired|techcrunch|the verge/i, 10],
+    [/yahoo finance|investing\.com/i, 9],
+    [/coindesk/i, 7]
   ];
+
+  const significancePatterns = [
+    /election|elecci[oó]n|summit|cumbre|sanction|sanci[oó]n|tariff|arancel|ceasefire|alto el fuego|court|tribunal|fallo|impeachment/i,
+    /central bank|banco central|fed|bce|rates|tasas|inflation|inflaci[oó]n|recession|recesi[oó]n|debt|deuda|jobs|employment/i,
+    /earthquake|terremoto|storm|hurac[aá]n|flood|inundaci[oó]n|wildfire|incendio|outbreak|brote|vaccine|pandemic|health/i,
+    /oil|petr[oó]leo|gas|energy|energ[ií]a|chip|semiconductor|ai|ia|cyberattack|ciberataque|trade|comercio/i
+  ];
+
+  const nichePatterns = /bitcoin|btc|crypto|cripto|ethereum|solana|nft|defi|web3/i;
 
   // Max age: 48 hours. Anything older gets discarded.
   const MAX_AGE_HOURS = 48;
@@ -133,22 +139,33 @@ exports.handler = async function(event) {
     let score = 0;
     const text = `${title} ${source} ${sectionLabel}`;
 
-    urgentPatterns.forEach((pattern, index) => {
-      if (pattern.test(text)) {
-        score += 15 - (index * 1.5);
-      }
-    });
-
-    // Bonus for multiple pattern matches (cross-topic = more important)
-    const matchCount = urgentPatterns.filter(p => p.test(text)).length;
-    if (matchCount >= 2) score += 8;
-
-    // Recency is the DOMINANT factor (up to 30 points)
+    // Recency is the dominant factor (up to 42 points)
     const publishedAt = date ? new Date(date).getTime() : 0;
     if (publishedAt) {
       const ageHours = Math.max(0, (Date.now() - publishedAt) / 3600000);
-      // Freshest = 30 pts, 6h = 22, 12h = 15, 24h = 7, 48h = 0
-      score += Math.max(0, 30 - (ageHours * 0.625));
+      score += Math.max(0, 42 - (ageHours * 0.875));
+    }
+
+    // Source authority matters more than topic obsession.
+    for (const [pattern, weight] of sourceAuthority) {
+      if (pattern.test(source || '')) {
+        score += weight;
+        break;
+      }
+    }
+
+    // Broad significance signals, not specific countries or assets.
+    significancePatterns.forEach((pattern) => {
+      if (pattern.test(text)) score += 4;
+    });
+
+    if (sectionLabel === 'Global') score += 5;
+    if (sectionLabel === 'Poder' || sectionLabel === 'Dinero') score += 3;
+    if (sectionLabel === 'Tecnología' || sectionLabel === 'Latam') score += 2;
+
+    // Prevent niche crypto headlines from dominating unless they are clearly macro-relevant.
+    if (nichePatterns.test(title) && !/etf|regulation|regulaci[oó]n|government|gobierno|bank|banco|market|mercado|crash|ca[ií]da/i.test(title)) {
+      score -= 8;
     }
 
     return score;
@@ -330,11 +347,16 @@ exports.handler = async function(event) {
       deduped.push(article);
     }
 
-    // ─── 4. Cap per section (max 20 each) ───
+    // ─── 4. Cap by section and source to avoid one theme taking over ───
     const sectionCounts = {};
+    const sourceCounts = {};
+    const sectionLimits = { Global: 12, Poder: 10, Dinero: 10, Tecnología: 8, Mercados: 6, Latam: 6, Movilidad: 4 };
     for (const article of deduped) {
+      const sourceKey = (article.source || 'unknown').toLowerCase();
       sectionCounts[article.section] = (sectionCounts[article.section] || 0) + 1;
-      if (sectionCounts[article.section] <= 20) {
+      sourceCounts[sourceKey] = (sourceCounts[sourceKey] || 0) + 1;
+      const sectionLimit = sectionLimits[article.section] || 6;
+      if (sectionCounts[article.section] <= sectionLimit && sourceCounts[sourceKey] <= 3) {
         allArticles.push(article);
       }
     }

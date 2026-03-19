@@ -546,9 +546,41 @@ function fetchNews(){
     if(!data) return;
     articles=data.articles||[];
     newsFetchedAt=data.fetchedAt||'';
-    if(articles.length) liveContext='NOTICIAS REALES DE HOY ('+todayStr()+'):\n'+articles.slice(0,12).map(function(a){return '['+a.section+'] '+a.title}).join('\n');
+    if(articles.length) liveContext='NOTICIAS REALES DE HOY ('+todayStr()+'):\n'+selectTopArticles(12).map(function(a){return '['+a.section+'] '+a.title}).join('\n');
     renderRadar();
   }).catch(function(){liveContext='Fecha: '+todayStr()});
+}
+
+function selectTopArticles(limit){
+  var sorted=articles.slice().sort(function(a,b){return (b.score||0)-(a.score||0)});
+  var selected=[];
+  var sourceCounts={};
+  var sectionCounts={};
+  var sectionCaps={Global:2,Poder:2,Dinero:2,Tecnología:2,Mercados:1,Latam:1,Movilidad:1};
+
+  sorted.forEach(function(article){
+    if(selected.length>=limit) return;
+    var sourceKey=(article.source||'unknown').toLowerCase();
+    var sectionKey=article.section||'Global';
+    if((sourceCounts[sourceKey]||0)>=1) return;
+    if((sectionCounts[sectionKey]||0)>=(sectionCaps[sectionKey]||1)) return;
+    selected.push(article);
+    sourceCounts[sourceKey]=(sourceCounts[sourceKey]||0)+1;
+    sectionCounts[sectionKey]=(sectionCounts[sectionKey]||0)+1;
+  });
+
+  if(selected.length<limit){
+    sorted.forEach(function(article){
+      if(selected.length>=limit) return;
+      if(selected.indexOf(article)!==-1) return;
+      var sourceKey=(article.source||'unknown').toLowerCase();
+      if((sourceCounts[sourceKey]||0)>=2) return;
+      selected.push(article);
+      sourceCounts[sourceKey]=(sourceCounts[sourceKey]||0)+1;
+    });
+  }
+
+  return selected;
 }
 
 function renderRadar(){
@@ -558,7 +590,7 @@ function renderRadar(){
   if(!wrap||!grid) return;
   if(!articles.length){wrap.style.display='none';return}
 
-  var top=articles.slice().sort(function(a,b){return (b.score||0)-(a.score||0)}).slice(0,4);
+  var top=selectTopArticles(4);
   if(!top.length){wrap.style.display='none';return}
 
   var lead=top[0];
@@ -662,7 +694,7 @@ function generateLOTD(){
     document.getElementById('lotdOpen').style.display='none';
     return;
   }
-  var newsBlock=articles.slice(0,8).map(function(a){return a.title}).join('. ');
+  var newsBlock=selectTopArticles(8).map(function(a){return '['+a.section+'] '+a.title}).join('. ');
   callClaude(
     'Fecha: '+todayStr()+'. NOTICIAS DE HOY: '+newsBlock+'\n\n'+
     'Elige la noticia más importante/impactante de hoy y conviértela en una LECCIÓN educativa que le enseñe algo profundo sobre cómo funciona el mundo.\n\n'+
@@ -705,7 +737,7 @@ function generateBrief(){
     else{renderBrief(briefCache[key]);return}
   }
   if(!articles.length){briefEl.style.display='none';return}
-  var newsList=articles.slice(0,15).map(function(a,i){return (i+1)+'. ['+a.section+'] '+a.title}).join('\n');
+  var newsList=selectTopArticles(10).map(function(a,i){return (i+1)+'. ['+a.section+'] '+a.title+' ('+(a.source||'Fuente')+')'}).join('\n');
   callClaude(
     'Fecha: '+todayStr()+'.\n\nNOTICIAS REALES DE HOY:\n'+newsList+'\n\n'+
     'Eres un periodista inteligente que resume el mundo para gente ocupada. Escribe un RESUMEN NOTICIOSO del día con las 4-6 noticias MÁS IMPORTANTES a nivel global.\n\n'+
