@@ -4,10 +4,10 @@
   "description": "Briefing diario para entender dinero, poder, tecnología, historia, cultura y estrategia con criterio real.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0D1117",
-  "theme_color": "#0D1117",
+  "background_color": "#f4efe6",
+  "theme_color": "#f4efe6",
   "orientation": "portrait",
-  "categories": ["education", "finance", "news"],
+  "categories": ["education", "news", "productivity"],
   "lang": "es",
   "icons": [
     {
