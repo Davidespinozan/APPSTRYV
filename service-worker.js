@@ -1,4 +1,4 @@
-const CACHE_NAME = 'contexto-shell-v4';
+const CACHE_NAME = 'contexto-shell-v5';
 const APP_SHELL = [
   '/',
   '/index.html',
@@ -66,4 +66,40 @@ self.addEventListener('fetch', event => {
       });
     })
   );
+});
+
+// Push notifications
+self.addEventListener('push', event => {
+  const data = event.data ? event.data.json() : {};
+  const title = data.title || 'CONTEXTO';
+  const options = {
+    body: data.body || 'Tu lección del día te espera. No pierdas tu racha 🔥',
+    icon: '/icon-192.png',
+    badge: '/icon-192.png',
+    tag: 'contexto-daily',
+    renotify: true,
+    data: { url: '/' }
+  };
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+// Notification click → open app
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clientList => {
+      for (const client of clientList) {
+        if (client.url.includes(self.location.origin) && 'focus' in client) return client.focus();
+      }
+      return clients.openWindow(event.notification.data?.url || '/');
+    })
+  );
+});
+
+// Message from main thread (reminder setup)
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SET_REMINDER') {
+    // Store reminder time; actual scheduling relies on the app being opened
+    // since true server push requires VAPID + backend
+  }
 });

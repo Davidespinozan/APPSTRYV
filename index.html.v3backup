@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CONTEXTO — Lo que nadie te enseñó</title>
+<meta name="description" content="Conocimiento accionable sobre dinero, poder, movilidad, tecnología. Gratis. Sin vender nada.">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Contexto">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+:root{
+  --bg:#fff;--text:#111;--text2:#555;--text3:#999;
+  --surface:#f7f7f7;--border:#eee;--card:#fff;
+  --blur:rgba(255,255,255,.92)
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0a0a0a;--text:#e8e8e8;--text2:#999;--text3:#666;
+  --surface:#141414;--border:#1e1e1e;--card:#111;
+  --blur:rgba(10,10,10,.92)
+}}
+body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;max-width:600px;margin:0 auto;background:var(--bg);color:var(--text);min-height:100dvh;line-height:1.5}
+@media(min-width:600px){body{border-left:1px solid var(--border);border-right:1px solid var(--border)}}
+
+.bar{position:sticky;top:0;z-index:100;background:var(--blur);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.bar-brand{font-size:14px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.bar-date{font-size:12px;color:var(--text3);font-weight:400}
+
+.hero{padding:28px 20px 8px}
+.hero h1{font-size:26px;font-weight:800;line-height:1.12;letter-spacing:-.5px}
+.hero p{margin-top:10px;font-size:15px;color:var(--text2);line-height:1.55}
+
+.brief{margin:16px 20px 4px;padding:16px;background:var(--surface);border-radius:14px;font-size:14px;color:var(--text2);line-height:1.6;min-height:52px;transition:opacity .3s}
+.brief-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.brief-dot{width:5px;height:5px;border-radius:50%;background:#4ECDC4;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.brief-text{color:var(--text);font-weight:500}
+.brief-loading{color:var(--text3);font-size:13px}
+
+.section-label{padding:20px 20px 10px;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+
+.card{margin:0 16px 12px;padding:20px;border:1px solid var(--border);border-radius:16px;background:var(--card);cursor:pointer;transition:border-color .15s;-webkit-tap-highlight-color:transparent}
+.card:active{background:var(--surface)}
+.card-mod{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:8px}
+.card-title{font-size:17px;font-weight:800;line-height:1.22;letter-spacing:-.2px;margin-bottom:6px}
+.card-hook{font-size:14px;color:var(--text2);line-height:1.5;margin-bottom:10px}
+.card-more{font-size:13px;font-weight:700;color:var(--text)}
+.card.open{border-color:var(--text3)}
+.card.open .card-more{display:none}
+
+.card-body{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.card.open .card-body{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.ai-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#4ECDC4;background:rgba(78,205,196,.08);padding:3px 9px;border-radius:20px;margin-bottom:12px}
+.ai-dot{width:4px;height:4px;border-radius:50%;background:#4ECDC4;animation:blink 1.5s infinite}
+.exp-text{font-size:15px;line-height:1.65;color:var(--text);margin-bottom:16px}
+.exp-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.actions{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.action{display:flex;gap:10px;padding:12px;background:var(--surface);border-radius:10px}
+.action-n{font-size:12px;font-weight:800;color:var(--text);min-width:16px;margin-top:1px}
+.action-t{font-size:14px;color:var(--text);line-height:1.45}
+.card-q{padding-top:14px;border-top:1px solid var(--border)}
+.card-q-row{display:flex;gap:8px}
+.card-q-in{flex:1;font-family:inherit;font-size:13px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);outline:none}
+.card-q-in:focus{border-color:var(--text3)}
+.card-q-btn{font-family:inherit;font-size:20px;font-weight:400;background:var(--text);color:var(--bg);border:none;width:42px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.card-q-btn:disabled{opacity:.4}
+.card-q-reply{margin-top:10px;font-size:14px;line-height:1.6;color:var(--text2);padding:12px;background:var(--surface);border-radius:10px;display:none}
+.card-q-reply.show{display:block}
+.card-close{margin-top:14px;text-align:center;font-size:12px;color:var(--text3);cursor:pointer;padding:6px}
+
+.sk{height:14px;background:linear-gradient(90deg,var(--surface) 25%,var(--border) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:4px;margin-bottom:8px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sk-text{display:flex;flex-direction:column;gap:8px}
+
+.ask{margin:8px 16px 0;padding:20px;border:1px solid var(--border);border-radius:16px;background:var(--card)}
+.ask-title{font-size:15px;font-weight:700;margin-bottom:10px}
+.ask-row{display:flex;gap:8px}
+.ask-input{flex:1;font-family:inherit;font-size:14px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);outline:none}
+.ask-input:focus{border-color:var(--text3)}
+.ask-btn{font-family:inherit;font-size:22px;background:var(--text);color:var(--bg);border:none;width:48px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ask-btn:disabled{opacity:.4}
+.ask-reply{margin-top:12px;font-size:15px;line-height:1.6;color:var(--text);padding:14px;background:var(--surface);border-radius:12px;display:none}
+.ask-reply.show{display:block}
+
+.explore{margin:24px 16px 0}
+.explore-toggle{font-size:14px;font-weight:700;color:var(--text);cursor:pointer;padding:14px 0;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);-webkit-tap-highlight-color:transparent}
+.explore-arrow{font-size:16px;color:var(--text3);transition:transform .2s}
+.explore-toggle.open .explore-arrow{transform:rotate(90deg)}
+.explore-list{display:none;padding-bottom:8px}
+.explore-toggle.open+.explore-list{display:block}
+.explore-cat{font-size:12px;font-weight:700;color:var(--text3);padding:12px 0 6px;text-transform:uppercase;letter-spacing:.3px}
+.explore-item{padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;cursor:pointer;color:var(--text);-webkit-tap-highlight-color:transparent;transition:color .1s}
+.explore-item:active{color:var(--text2)}
+
+.cta{margin:24px 16px 0;padding:20px;background:var(--text);color:var(--bg);border-radius:16px}
+.cta-title{font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:6px}
+.cta-desc{font-size:13px;opacity:.55;line-height:1.5;margin-bottom:14px}
+.cta-btn{display:block;background:var(--bg);color:var(--text);font-size:14px;font-weight:700;padding:12px;border-radius:10px;text-align:center;text-decoration:none}
+.cta-link{display:block;text-align:center;font-size:11px;opacity:.3;text-decoration:none;color:inherit;margin-top:8px}
+
+.foot{padding:24px 20px 40px;text-align:center;font-size:12px;color:var(--text3);line-height:1.7}
+.foot a{color:var(--text3);text-decoration:underline}
+</style>
+</head>
+<body>
+
+<nav class="bar">
+  <span class="bar-brand">CONTEXTO</span>
+  <span class="bar-date" id="date"></span>
+</nav>
+
+<div class="hero">
+  <h1>Lo que nadie te enseñó porque no les convenía.</h1>
+  <p>5 cosas que deberías saber hoy. Sin vender nada. Sin motivación barata. Solo verdad y pasos concretos.</p>
+</div>
+
+<div class="brief" id="brief">
+  <div class="brief-loading">Leyendo lo que está pasando en el mundo...</div>
+</div>
+
+<div class="section-label">Hoy para ti</div>
+<div id="cards"></div>
+
+<div class="ask">
+  <div class="ask-title">Pregúntale lo que quieras a la IA</div>
+  <div class="ask-row">
+    <input class="ask-input" id="askInput" placeholder="¿Qué quieres saber?" />
+    <button class="ask-btn" id="askBtn">→</button>
+  </div>
+  <div class="ask-reply" id="askReply"></div>
+</div>
+
+<div class="explore">
+  <div class="explore-toggle" id="exploreToggle">Explorar los 25 temas <span class="explore-arrow">›</span></div>
+  <div class="explore-list" id="exploreList"></div>
+</div>
+
+<div class="cta">
+  <div class="cta-title">¿Tu negocio ya tiene sistema?</div>
+  <div class="cta-desc">Construimos infraestructura digital para negocios que quieren crecer sin depender de su dueño.</div>
+  <a href="https://wa.me/17373683464" target="_blank" rel="noopener" class="cta-btn">Hablar con Stryv</a>
+  <a href="https://stryvstudio.com" target="_blank" rel="noopener" class="cta-link">stryvstudio.com</a>
+</div>
+
+<div class="foot">
+  Mañana tendrás 5 insights nuevos.<br>
+  Guarda esta página en tu pantalla de inicio.<br><br>
+  Hecho con IA por <a href="https://stryvstudio.com" target="_blank" rel="noopener">Stryv Studio</a>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ═══ DATA ═══ */
+const TOPICS = [
+  {id:'d1',mod:'dinero',icon:'💰',label:'Dinero',title:'El dinero no es neutral. Nunca lo fue.',hook:'Desde Bretton Woods hasta el petrodólar, el dinero siempre fue una herramienta de control geopolítico.'},
+  {id:'d2',mod:'dinero',icon:'💰',label:'Dinero',title:'Por qué el dólar está cayendo y qué significa para ti',hook:'No es un accidente. Es un síntoma de que el sistema monetario global está cambiando de manos.'},
+  {id:'d3',mod:'dinero',icon:'💰',label:'Dinero',title:'Bitcoin: lo que es, lo que no es, y por qué importa',hook:'No es una inversión especulativa. Es el primer activo en la historia que ningún gobierno puede confiscar.'},
+  {id:'d4',mod:'dinero',icon:'💰',label:'Dinero',title:'Cómo diversificar sin ser millonario',hook:'Oro, Bitcoin, cuentas en otras monedas. Lo que hacen los ricos desde siempre, accesible para ti.'},
+  {id:'d5',mod:'dinero',icon:'💰',label:'Dinero',title:'Por qué ahorrar en pesos es un error silencioso',hook:'El sistema está diseñado para que pierdas poder adquisitivo. Hay alternativas que nadie te enseñó.'},
+  {id:'m1',mod:'movilidad',icon:'🌍',label:'Movilidad',title:'Visas de inversión: cómo comprar tu movilidad',hook:'Con menos de $100K puedes obtener residencia en España, Portugal, Paraguay. Pasos concretos.'},
+  {id:'m2',mod:'movilidad',icon:'🌍',label:'Movilidad',title:'Cómo abrir cuentas bancarias en otros países',hook:'Wise, Revolut, Mercury. Acceso a múltiples monedas desde tu teléfono. Hoy. Sin viajar.'},
+  {id:'m3',mod:'movilidad',icon:'🌍',label:'Movilidad',title:'Cómo cobrar en dólares desde cualquier país',hook:'Stripe, Wise, cripto. La infraestructura financiera que usan los nómadas digitales.'},
+  {id:'m4',mod:'movilidad',icon:'🌍',label:'Movilidad',title:'Por qué un segundo pasaporte cambia todo',hook:'La nacionalidad es un accidente geográfico, no un destino. Esto cambia tus opciones de vida.'},
+  {id:'p1',mod:'poder',icon:'⚡',label:'Poder',title:'Por qué hay guerras: el manual real',hook:'No son por ideología. Son por recursos, rutas comerciales y control monetario. Siempre.'},
+  {id:'p2',mod:'poder',icon:'⚡',label:'Poder',title:'El ciclo de los imperios: todos caen igual',hook:'Roma, España, Gran Bretaña, EE.UU. Todos siguieron el mismo patrón. EE.UU. lleva 80 años. El promedio es 94.'},
+  {id:'p3',mod:'poder',icon:'⚡',label:'Poder',title:'China: ya es la nueva potencia y la mayoría no lo ve',hook:'Primera economía por poder de compra, IA propia, sistema de pagos propio. No es futuro. Ya pasó.'},
+  {id:'p4',mod:'poder',icon:'⚡',label:'Poder',title:'Los mecanismos invisibles que mantienen el status quo',hook:'Media, deuda, educación, entretenimiento. No necesitan conspiraciones. Solo necesitan que no preguntes.'},
+  {id:'t1',mod:'tecnologia',icon:'🤖',label:'Tecnología',title:'Qué es realmente la IA y por qué cambia todo',hook:'No es un chatbot. Es la automatización del trabajo intelectual. Por primera vez en la historia.'},
+  {id:'t2',mod:'tecnologia',icon:'🤖',label:'Tecnología',title:'Cómo usar IA para ganar ventaja real hoy',hook:'Claude, ChatGPT, Midjourney. Herramientas concretas para trabajar diferente, no más.'},
+  {id:'t3',mod:'tecnologia',icon:'🤖',label:'Tecnología',title:'La guerra de chips: por qué te afecta directamente',hook:'El control de los semiconductores avanzados es el control del futuro. Y está en juego ahora mismo.'},
+  {id:'t4',mod:'tecnologia',icon:'🤖',label:'Tecnología',title:'Qué trabajos va a reemplazar la IA primero',hook:'No son los manuales. Son los de oficina: contadores, abogados, diseñadores, programadores.'},
+  {id:'men1',mod:'mentalidad',icon:'🧠',label:'Mentalidad',title:'La Alegoría de la Caverna: tu realidad no es real',hook:'Platón lo describió hace 2,400 años. Sigue siendo la descripción más precisa de cómo vivimos hoy.'},
+  {id:'men2',mod:'mentalidad',icon:'🧠',label:'Mentalidad',title:'Cómo identificar tus prisiones de contexto',hook:'Las limitaciones más peligrosas son las que no sabes que tienes. Aquí aprendes a verlas.'},
+  {id:'men3',mod:'mentalidad',icon:'🧠',label:'Mentalidad',title:'La mentalidad mutante: adaptarse o quedarse atrás',hook:'No es motivación. Es supervivencia. La rigidez mental es el riesgo más grande hoy.'},
+  {id:'men4',mod:'mentalidad',icon:'🧠',label:'Mentalidad',title:'La ignorancia no duele hasta que es tarde',hook:'El costo de no saber no se paga hoy. Se paga cuando el mundo cambia y ya no puedes moverte.'},
+  {id:'n1',mod:'negocio',icon:'🚀',label:'Negocio',title:'Tu negocio local tiene un techo. Así se rompe.',hook:'Un negocio atado a una sola ciudad está atado a una sola economía. Eso tiene solución.'},
+  {id:'n2',mod:'negocio',icon:'🚀',label:'Negocio',title:'Qué es un sistema operativo digital y por qué lo necesitas',hook:'Ventas, atención, operación interna. El conjunto de herramientas que hace que tu negocio funcione solo.'},
+  {id:'n3',mod:'negocio',icon:'🚀',label:'Negocio',title:'Cómo construir ingresos que no dependan de tu tiempo',hook:'La diferencia entre tener un negocio y ser el negocio. La trampa del autoempleo.'},
+  {id:'n4',mod:'negocio',icon:'🚀',label:'Negocio',title:'Cómo escalar a mercados fuera de tu país',hook:'CDMX, Monterrey, Bogotá, Miami. Contenido + ads. La estrategia que funciona hoy.'}
+];
+
+const PROMPTS = {
+  d1:'Explica cómo el dinero ha sido siempre una herramienta de control geopolítico, desde Bretton Woods hasta el petrodólar. Incluye qué puede hacer una persona común con esta información.',
+  d2:'Explica por qué el dólar está cayendo (deuda de EE.UU., desdolarización, tensiones geopolíticas), y qué debe hacer concretamente alguien en Latinoamérica para protegerse.',
+  d3:'Explica qué es Bitcoin realmente — no como inversión sino como tecnología monetaria. Por qué es diferente. Cómo empezar a tenerlo de forma segura con poco dinero.',
+  d4:'Explica cómo diversificar patrimonio sin ser millonario: oro, Bitcoin, cuentas en dólares, activos fuera del país. Pasos concretos para alguien en Latinoamérica.',
+  d5:'Explica por qué ahorrar en pesos es un error silencioso. Inflación, devaluación histórica, pérdida de poder adquisitivo. Qué hacer en cambio.',
+  m1:'Explica las principales visas de inversión accesibles para latinoamericanos: España, Portugal, Paraguay, Uruguay. Costos reales, requisitos, pasos concretos.',
+  m2:'Explica cómo abrir cuentas bancarias en otros países siendo latinoamericano: Wise, Revolut, Mercury. Pasos concretos, documentos, limitaciones.',
+  m3:'Explica cómo cobrar en dólares desde cualquier país latinoamericano: Stripe, Wise, cripto. Plataformas, costos, procesos.',
+  m4:'Explica por qué un segundo pasaporte cambia las opciones de vida. Cómo conseguirlo: ascendencia, inversión, residencia prolongada.',
+  p1:'Explica por qué hay guerras realmente: recursos naturales, rutas comerciales, control monetario. Usa conflictos actuales como ejemplos.',
+  p2:'Explica el ciclo de los imperios (Ray Dalio): Roma, España, Gran Bretaña, EE.UU. El patrón que se repite y en qué punto está EE.UU.',
+  p3:'Explica por qué China ya es la potencia dominante: economía por PPP, tecnología propia, sistema CIPS, DeepSeek. Por qué la mayoría no lo ve.',
+  p4:'Explica los mecanismos que mantienen el status quo: medios, educación, deuda, entretenimiento. Sin conspiración — solo mecánica.',
+  t1:'Explica qué es realmente la IA: la automatización del trabajo intelectual. Por qué es el cambio más disruptivo y qué significa para el trabajo.',
+  t2:'Explica cómo usar IA para ganar ventaja hoy: Claude, ChatGPT, Midjourney, Kling. Casos de uso concretos para trabajo y negocio.',
+  t3:'Explica la guerra de chips EE.UU.-China: TSMC, Nvidia, DeepSeek, ASML. Por qué el control de semiconductores es el control del futuro.',
+  t4:'Explica qué trabajos reemplaza la IA primero. No son manuales. Contadores, abogados, diseñadores, programadores — qué pasa con cada uno.',
+  men1:'Explica la Alegoría de la Caverna y cómo describe exactamente cómo vivimos hoy: personas que solo ven sombras de su contexto.',
+  men2:'Explica cómo identificar prisiones de contexto: creencias heredadas, límites invisibles, narrativas limitantes. Con ejercicios concretos.',
+  men3:'Explica la mentalidad mutante: no motivación sino supervivencia ante un mundo que cambia más rápido que nunca. Cómo desarrollarla.',
+  men4:'Explica el costo real de la ignorancia: no se paga hoy sino cuando el mundo cambia y ya no puedes moverte. Ejemplos concretos.',
+  n1:'Explica por qué un negocio local tiene un techo y cómo romperlo: digitalización, mercados remotos, servicios sin ubicación física.',
+  n2:'Explica qué es un sistema operativo digital: ventas, atención IA, operación interna. Por qué es la diferencia entre escalar y estancarse.',
+  n3:'Explica la diferencia entre ser el negocio y tener un negocio. Cómo construir sistemas que funcionen sin tu presencia constante.',
+  n4:'Explica cómo escalar a CDMX, Monterrey, Bogotá, Miami. Estrategia de contenido, LinkedIn, Meta Ads. Pasos concretos.'
+};
+
+const KNOWLEDGE = {
+  dinero:'El dinero nunca fue neutral — Bretton Woods, petrodólar, desdolarización BRICS. La moneda local latinoamericana se erosiona. Bitcoin: primer activo inconfiscable. Diversificar: oro, Bitcoin, Wise/Revolut.',
+  movilidad:'La nacionalidad es accidente geográfico. Visas accesibles (España, Portugal, Paraguay) <$100K. Cuentas globales: Wise, Revolut, Mercury. Cobrar en dólares con Stripe y cripto.',
+  poder:'Guerras = recursos + rutas + control monetario. Imperios siguen ciclos (Ray Dalio): EE.UU. ~80 años, promedio 94. China ya es #1 por PPP. Status quo = medios + deuda + educación + entretenimiento.',
+  tecnologia:'IA = automatización del trabajo intelectual. Desaparecen primero: oficina (contadores, abogados, diseñadores). Guerra de chips EE.UU.-China = control del futuro.',
+  mentalidad:'Alegoría de la Caverna = cómo vivimos. Las limitaciones más peligrosas son invisibles. La rigidez es el mayor riesgo en un mundo que cambia a esta velocidad.',
+  negocio:'Negocio local = techo. Diferencia: tener negocio vs ser el negocio. Sistema operativo digital permite escalar. Mercados Latam remotos accesibles con contenido + ads.'
+};
+
+/* ═══ UTILS ═══ */
+var store = {
+  get:function(k,fb){try{var v=localStorage.getItem('ctx_'+k);return v!==null?JSON.parse(v):fb}catch(e){return fb}},
+  set:function(k,v){try{localStorage.setItem('ctx_'+k,JSON.stringify(v))}catch(e){}}
+};
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function todayKey(){return new Date().toISOString().slice(0,10)}
+function todayStr(){
+  var d=new Date(),days=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],
+  months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  return days[d.getDay()]+' '+d.getDate()+' de '+months[d.getMonth()]+', '+d.getFullYear();
+}
+function shortDate(){
+  var d=new Date(),m=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return d.getDate()+' '+m[d.getMonth()]+' '+d.getFullYear();
+}
+
+/* ═══ SEEDED DAILY ROTATION ═══ */
+function seededRandom(seed){
+  var h=0;
+  for(var i=0;i<seed.length;i++) h=((h<<5)-h+seed.charCodeAt(i))|0;
+  return function(){h=(Math.imul(h,16807))%2147483647;return(h<0?h+2147483647:h)/2147483647};
+}
+
+function getDailyTopics(){
+  var rng=seededRandom(todayKey());
+  var mods=['dinero','movilidad','poder','tecnologia','mentalidad','negocio'];
+  var picked=[];
+  // Pick 1 from each of 5 modules (skip 1 module, rotate daily)
+  var skip=new Date().getDate()%6;
+  for(var i=0;i<6;i++){
+    if(i===skip) continue;
+    var modTopics=TOPICS.filter(function(t){return t.mod===mods[i]});
+    var idx=Math.floor(rng()*modTopics.length);
+    picked.push(modTopics[idx]);
+  }
+  // Shuffle the picked 5
+  for(var j=picked.length-1;j>0;j--){
+    var k=Math.floor(rng()*(j+1));
+    var tmp=picked[j];picked[j]=picked[k];picked[k]=tmp;
+  }
+  return picked;
+}
+
+/* ═══ STATE ═══ */
+var articles=[];
+var liveContext='';
+var contentCache=store.get('contentCache',{});
+var briefCache=store.get('briefCache',{});
+
+/* ═══ API ═══ */
+function callClaude(prompt,maxTokens){
+  return fetch('/.netlify/functions/claude',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({prompt:prompt,maxTokens:maxTokens||1000})
+  }).then(function(res){
+    if(!res.ok) throw new Error('API '+res.status);
+    return res.json();
+  }).then(function(json){
+    if(json.error) throw new Error(typeof json.error==='string'?json.error:'API error');
+    return json.content[0].text;
+  });
+}
+
+function fetchNews(){
+  return fetch('/.netlify/functions/news',{cache:'no-store'}).then(function(res){
+    if(!res.ok) return;
+    return res.json();
+  }).then(function(data){
+    if(!data) return;
+    articles=data.articles||[];
+    if(articles.length){
+      liveContext='NOTICIAS REALES DE HOY ('+todayStr()+'):\n'+
+        articles.slice(0,12).map(function(a){return '['+a.section+'] '+a.title}).join('\n');
+    }
+  }).catch(function(){
+    liveContext='Fecha: '+todayStr();
+  });
+}
+
+/* ═══ RENDER DAILY CARDS ═══ */
+function renderCards(){
+  var daily=getDailyTopics();
+  var container=document.getElementById('cards');
+  container.innerHTML=daily.map(function(t){
+    return '<div class="card" data-id="'+t.id+'">'+
+      '<div class="card-mod">'+t.icon+' '+t.label+'</div>'+
+      '<div class="card-title">'+esc(t.title)+'</div>'+
+      '<div class="card-hook">'+esc(t.hook)+'</div>'+
+      '<div class="card-more">Saber más →</div>'+
+      '<div class="card-body" id="body-'+t.id+'"></div>'+
+    '</div>';
+  }).join('');
+}
+
+/* ═══ EXPAND/COLLAPSE CARD ═══ */
+function toggleCard(id){
+  var card=document.querySelector('[data-id="'+id+'"]');
+  if(!card) return;
+  var isOpen=card.classList.contains('open');
+  if(isOpen){
+    card.classList.remove('open');
+    return;
+  }
+  card.classList.add('open');
+  var bodyEl=document.getElementById('body-'+id);
+  var cacheKey=todayKey()+'_'+id;
+  if(contentCache[cacheKey]){
+    renderContent(id,contentCache[cacheKey]);
+  } else if(!bodyEl.dataset.loading){
+    bodyEl.dataset.loading='1';
+    generateContent(id);
+  }
+  setTimeout(function(){card.scrollIntoView({behavior:'smooth',block:'nearest'})},100);
+}
+
+function generateContent(id){
+  var bodyEl=document.getElementById('body-'+id);
+  var prompt=PROMPTS[id];
+  if(!prompt||!bodyEl) return;
+  bodyEl.innerHTML='<div class="sk-text"><div class="sk" style="width:100%"></div><div class="sk" style="width:85%"></div><div class="sk" style="width:70%"></div></div><div style="margin-top:8px;font-size:12px;color:var(--text3)">Generando con IA...</div>';
+  var topic=TOPICS.find(function(t){return t.id===id});
+  var ctx=topic?KNOWLEDGE[topic.mod]:'';
+  callClaude(
+    'CONTEXTO: '+ctx+'\n\n'+
+    (liveContext?liveContext+'\n\n':'Fecha: '+todayStr()+'.\n\n')+
+    prompt+'\n\n'+
+    'IMPORTANTE: Conecta con lo que pasa HOY. Escribe como un amigo inteligente — directo, sin jerga. Español latino.\n\n'+
+    'Responde SOLO con JSON válido sin backticks:\n'+
+    '{"resumen":"2-3 párrafos cortos, verdad cruda, datos reales, máx 180 palabras","acciones":[{"num":"1","texto":"Acción concreta para HOY"},{"num":"2","texto":"Segunda acción"},{"num":"3","texto":"Tercera acción a mediano plazo"}]}',1000
+  ).then(function(text){
+    var data=JSON.parse(text.replace(/```json|```/g,'').trim());
+    var cacheKey=todayKey()+'_'+id;
+    contentCache[cacheKey]=data;
+    store.set('contentCache',contentCache);
+    renderContent(id,data);
+  }).catch(function(){
+    bodyEl.innerHTML='<div style="color:var(--text3);font-size:14px">Error. Toca para cerrar e intentar de nuevo.</div>';
+    delete bodyEl.dataset.loading;
+  });
+}
+
+function renderContent(id,data){
+  var bodyEl=document.getElementById('body-'+id);
+  if(!bodyEl||!data) return;
+  bodyEl.innerHTML=
+    '<div class="ai-tag"><span class="ai-dot"></span> Actualizado hoy con IA</div>'+
+    '<div class="exp-text">'+data.resumen.replace(/\n/g,'<br><br>')+'</div>'+
+    '<div class="exp-label">Qué puedes hacer</div>'+
+    '<div class="actions">'+
+      (data.acciones||[]).map(function(a){
+        return '<div class="action"><div class="action-n">'+esc(a.num)+'</div><div class="action-t">'+a.texto+'</div></div>';
+      }).join('')+
+    '</div>'+
+    '<div class="card-q">'+
+      '<div class="card-q-row">'+
+        '<input class="card-q-in" data-qid="'+id+'" placeholder="Pregunta sobre esto..." />'+
+        '<button class="card-q-btn" data-qsend="'+id+'">→</button>'+
+      '</div>'+
+      '<div class="card-q-reply" id="reply-'+id+'"></div>'+
+    '</div>'+
+    '<div class="card-close" data-close="'+id+'">Cerrar ↑</div>';
+}
+
+/* ═══ CARD QUESTION ═══ */
+function askCardQ(id){
+  var input=document.querySelector('[data-qid="'+id+'"]');
+  var reply=document.getElementById('reply-'+id);
+  if(!input||!reply) return;
+  var q=input.value.trim();
+  if(!q) return;
+  var btn=document.querySelector('[data-qsend="'+id+'"]');
+  if(btn) btn.disabled=true;
+  input.disabled=true;
+  reply.textContent='Pensando...';
+  reply.classList.add('show');
+  var topic=TOPICS.find(function(t){return t.id===id});
+  var ctx=topic?KNOWLEDGE[topic.mod]:'';
+  var cached=contentCache[todayKey()+'_'+id];
+  callClaude(
+    'CONTEXTO: '+ctx+'\n\n'+
+    (cached&&cached.resumen?'Ya explicaste:\n'+cached.resumen+'\n\n':'')+
+    'Pregunta: "'+q+'"\n\nResponde en 2-4 frases, simple y directo, como un amigo. Sin jerga.',400
+  ).then(function(text){
+    reply.textContent=text;
+  }).catch(function(){
+    reply.textContent='No se pudo responder. Intenta de nuevo.';
+  }).finally(function(){
+    if(btn) btn.disabled=false;
+    input.disabled=false;
+    input.value='';
+  });
+}
+
+/* ═══ GENERAL ASK ═══ */
+function askGeneral(){
+  var input=document.getElementById('askInput');
+  var reply=document.getElementById('askReply');
+  var btn=document.getElementById('askBtn');
+  if(!input||!reply) return;
+  var q=input.value.trim();
+  if(!q) return;
+  btn.disabled=true;
+  input.disabled=true;
+  reply.textContent='Pensando...';
+  reply.classList.add('show');
+  callClaude(
+    (liveContext?liveContext+'\n\n':'Fecha: '+todayStr()+'.\n\n')+
+    'CONOCIMIENTO: '+Object.values(KNOWLEDGE).join(' ')+'\n\n'+
+    'Pregunta del usuario: "'+q+'"\n\n'+
+    'Responde de forma clara, directa, útil. Como un amigo que sabe mucho. 3-6 frases. Español latino. Sin jerga.',500
+  ).then(function(text){
+    reply.textContent=text;
+  }).catch(function(){
+    reply.textContent='Error. Intenta de nuevo.';
+  }).finally(function(){
+    btn.disabled=false;
+    input.disabled=false;
+    input.value='';
+  });
+}
+
+/* ═══ DAILY BRIEF ═══ */
+function generateBrief(){
+  var briefEl=document.getElementById('brief');
+  var key=todayKey();
+  if(briefCache[key]){
+    renderBrief(briefCache[key]);
+    return;
+  }
+  if(!articles.length){
+    briefEl.innerHTML='';
+    briefEl.style.display='none';
+    return;
+  }
+  var newsBlock=articles.slice(0,10).map(function(a){return a.title}).join('. ');
+  callClaude(
+    'Fecha: '+todayStr()+'. Noticias de hoy: '+newsBlock+'\n\n'+
+    'Escribe UNA sola frase (máximo 30 palabras) que resuma lo más importante que está pasando hoy en el mundo. Como si se lo dijeras a un amigo por WhatsApp. Directo, sin drama, sin jerga. Solo la frase, nada más.',200
+  ).then(function(text){
+    var clean=text.replace(/^["']|["']$/g,'').trim();
+    briefCache[key]=clean;
+    store.set('briefCache',briefCache);
+    renderBrief(clean);
+  }).catch(function(){
+    briefEl.innerHTML='';
+    briefEl.style.display='none';
+  });
+}
+
+function renderBrief(text){
+  var briefEl=document.getElementById('brief');
+  briefEl.innerHTML=
+    '<div class="brief-label"><span class="brief-dot"></span> Hoy en el mundo</div>'+
+    '<div class="brief-text">'+esc(text)+'</div>';
+}
+
+/* ═══ EXPLORE ALL TOPICS ═══ */
+function renderExplore(){
+  var list=document.getElementById('exploreList');
+  var cats=[
+    {mod:'dinero',icon:'💰',label:'Dinero'},
+    {mod:'movilidad',icon:'🌍',label:'Movilidad'},
+    {mod:'poder',icon:'⚡',label:'Poder'},
+    {mod:'tecnologia',icon:'🤖',label:'Tecnología'},
+    {mod:'mentalidad',icon:'🧠',label:'Mentalidad'},
+    {mod:'negocio',icon:'🚀',label:'Negocio'}
+  ];
+  var html='';
+  cats.forEach(function(cat){
+    html+='<div class="explore-cat">'+cat.icon+' '+cat.label+'</div>';
+    TOPICS.filter(function(t){return t.mod===cat.mod}).forEach(function(t){
+      html+='<div class="explore-item" data-eid="'+t.id+'">'+esc(t.title)+'</div>';
+    });
+  });
+  list.innerHTML=html;
+}
+
+/* ═══ EXPLORE TOPIC EXPANSION ═══ */
+function openExploreTopic(id){
+  // Check if there's already a card for this topic on the page
+  var existing=document.querySelector('[data-id="'+id+'"]');
+  if(existing){
+    if(!existing.classList.contains('open')) toggleCard(id);
+    existing.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  // Create a card for this topic in the cards container
+  var topic=TOPICS.find(function(t){return t.id===id});
+  if(!topic) return;
+  var container=document.getElementById('cards');
+  var div=document.createElement('div');
+  div.className='card';
+  div.setAttribute('data-id',topic.id);
+  div.innerHTML=
+    '<div class="card-mod">'+topic.icon+' '+topic.label+'</div>'+
+    '<div class="card-title">'+esc(topic.title)+'</div>'+
+    '<div class="card-hook">'+esc(topic.hook)+'</div>'+
+    '<div class="card-more">Saber más →</div>'+
+    '<div class="card-body" id="body-'+topic.id+'"></div>';
+  container.appendChild(div);
+  toggleCard(topic.id);
+}
+
+/* ═══ EVENTS ═══ */
+document.addEventListener('click',function(e){
+  var card=e.target.closest('.card[data-id]');
+  if(card&&!e.target.closest('.card-q-in')&&!e.target.closest('.card-q-btn')&&!e.target.closest('.card-close')){
+    toggleCard(card.dataset.id);
+    return;
+  }
+  var closeBtn=e.target.closest('[data-close]');
+  if(closeBtn){toggleCard(closeBtn.dataset.close);return}
+  var qsend=e.target.closest('[data-qsend]');
+  if(qsend){askCardQ(qsend.dataset.qsend);return}
+  if(e.target.closest('#askBtn')){askGeneral();return}
+  var toggle=e.target.closest('#exploreToggle');
+  if(toggle){toggle.classList.toggle('open');return}
+  var eitem=e.target.closest('[data-eid]');
+  if(eitem){openExploreTopic(eitem.dataset.eid);return}
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter') return;
+  if(e.target.classList.contains('card-q-in')){
+    var id=e.target.dataset.qid;
+    if(id) askCardQ(id);
+  }
+  if(e.target.id==='askInput') askGeneral();
+});
+
+/* ═══ CACHE CLEANUP ═══ */
+function cleanCache(){
+  var cutoff=new Date(Date.now()-2*86400000).toISOString().slice(0,10);
+  Object.keys(contentCache).forEach(function(k){
+    if(k.split('_')[0]<cutoff) delete contentCache[k];
+  });
+  store.set('contentCache',contentCache);
+  Object.keys(briefCache).forEach(function(k){
+    if(k<cutoff) delete briefCache[k];
+  });
+  store.set('briefCache',briefCache);
+}
+
+/* ═══ INIT ═══ */
+function init(){
+  document.getElementById('date').textContent=shortDate();
+  renderCards();
+  renderExplore();
+  cleanCache();
+  fetchNews().then(function(){generateBrief()});
+}
+
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+else init();
+
+})();
+</script>
+</body>
+</html>
