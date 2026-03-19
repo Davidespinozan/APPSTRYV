@@ -299,6 +299,47 @@ body.view-insights .refresh-bar{display:none}
 .img-fb-movilidad{background:linear-gradient(135deg,#3a2a1a 0%,#5a4a2d 100%)}
 .img-fb-latam{background:linear-gradient(135deg,#2a1a3a 0%,#4a2d5a 100%)}
 
+/* ═══ CONNECTIONS BLOCK ═══ */
+.connections-card{margin:16px;padding:20px 18px;background:var(--surface);border:1px solid var(--border);border-radius:20px;position:relative;overflow:hidden}
+.connections-card::before{content:'';position:absolute;top:-60%;right:-20%;width:200px;height:200px;border-radius:50%;background:var(--accent-soft);pointer-events:none}
+.connections-header{display:flex;align-items:center;gap:8px;margin-bottom:14px;position:relative}
+.connections-icon{font-size:20px}
+.connections-title{font-size:14px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.5px}
+.connections-body{font-size:15px;line-height:1.7;color:var(--text);position:relative}
+.connections-body strong{font-weight:700;color:var(--accent)}
+.connections-threads{margin-top:14px;display:flex;flex-direction:column;gap:8px;position:relative}
+.connections-thread{display:flex;gap:10px;padding:10px 12px;background:var(--surface-2);border-radius:10px;border-left:3px solid var(--accent)}
+.connections-thread-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.connections-thread-text{font-size:13px;line-height:1.5;color:var(--text)}
+.connections-loading{color:var(--text-3);font-style:italic;font-size:13px;position:relative}
+.connections-loading::after{content:'...';animation:dots 1.5s infinite}
+@keyframes dots{0%{content:'...'}33%{content:'.'}66%{content:'..'}100%{content:'...'}}
+
+/* ═══ ASK AI CHAT ═══ */
+.ask-ai{margin-top:16px;padding-top:14px;border-top:1px solid var(--border-light)}
+.ask-ai-row{display:flex;gap:8px}
+.ask-ai-input{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border-color .15s}
+.ask-ai-input:focus{border-color:var(--accent)}
+.ask-ai-input::placeholder{color:var(--text-3)}
+.ask-ai-btn{padding:10px 14px;border-radius:12px;background:var(--accent);color:var(--cta-text);border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;transition:opacity .15s}
+.ask-ai-btn:disabled{opacity:.4;cursor:default}
+.ask-ai-btn:active{opacity:.8}
+.ask-ai-reply{margin-top:12px;padding:12px 14px;background:var(--accent-soft);border-radius:10px;border-left:3px solid var(--accent);font-size:14px;line-height:1.65;color:var(--text)}
+.ask-ai-reply.loading{color:var(--text-3);font-style:italic}
+
+/* ═══ PROGRESS TRACKER ═══ */
+.progress-card{margin:0 16px 16px;padding:18px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
+.progress-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.progress-title{font-size:12px;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.8px}
+.progress-level{font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:3px 10px;border-radius:12px}
+.progress-stats{display:flex;gap:1px;background:var(--border-light);border-radius:10px;overflow:hidden;margin-bottom:12px}
+.progress-stat{flex:1;padding:10px 8px;background:var(--surface);text-align:center}
+.progress-stat-num{font-size:18px;font-weight:900;color:var(--text);line-height:1}
+.progress-stat-label{font-size:9px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
+.progress-bar-wrap{height:6px;background:var(--surface-2);border-radius:6px;overflow:hidden}
+.progress-bar-fill{height:100%;background:var(--accent);border-radius:6px;transition:width .4s ease}
+.progress-next{margin-top:8px;font-size:11px;color:var(--text-3);text-align:center}
+
 /* ═══ INSTALL BANNER ═══ */
 .install-banner{display:none;padding:12px 16px;border-bottom:1px solid var(--border-light);background:var(--surface)}
 .install-banner.show{display:block}
@@ -408,7 +449,9 @@ body.view-insights .refresh-bar{display:none}
       <span>Washington Post</span><span>El País</span><span>France 24</span><span>Yahoo Finance</span>
     </div>
   </div>
+  <div id="progressTracker"></div>
   <div class="top-signals" id="topSignals"></div>
+  <div id="connectionsBlock"></div>
   <div class="briefing-card" id="briefingCard">
     <div class="briefing-top">
       <div class="briefing-label">Tu contexto del día</div>
@@ -552,6 +595,17 @@ const I18N = {
     analysisApiError: '⚠️ Falta configurar la API.',
     analysisError: '⚠️ No se pudo generar la explicación.',
     analysisRetry: 'Reintentar',
+    askAiPlaceholder: 'Pregúntale algo a la IA sobre esto...',
+    askAiSend: 'Preguntar',
+    askAiThinking: 'Pensando...',
+    connectionsTitle: 'Cómo se conecta todo',
+    connectionsLoading: 'IA está encontrando los hilos entre las noticias',
+    progressTitle: 'Tu nivel de contexto',
+    progressTopics: 'Temas',
+    progressStreak: 'Racha',
+    progressLevel: (l) => 'Nivel '+l,
+    progressNext: (n) => n+' temas más para el siguiente nivel',
+    progressDays: 'días',
     ctaTalk: 'Hablar con Stryv',
     onboardingSkip: 'Saltar',
     onboardingNext: 'Siguiente',
@@ -649,6 +703,17 @@ const I18N = {
     analysisApiError: '⚠️ API not configured.',
     analysisError: '⚠️ Could not generate the explanation.',
     analysisRetry: 'Retry',
+    askAiPlaceholder: 'Ask the AI something about this...',
+    askAiSend: 'Ask',
+    askAiThinking: 'Thinking...',
+    connectionsTitle: 'How it all connects',
+    connectionsLoading: 'AI is finding the threads between stories',
+    progressTitle: 'Your context level',
+    progressTopics: 'Topics',
+    progressStreak: 'Streak',
+    progressLevel: (l) => 'Level '+l,
+    progressNext: (n) => n+' more topics to next level',
+    progressDays: 'days',
     ctaTalk: 'Talk to Stryv',
     onboardingSkip: 'Skip',
     onboardingNext: 'Next',
@@ -699,6 +764,8 @@ let lastNewsError = '';
 let onboardingSeen = store.get('onboardingSeen', false);
 let onboardingStep = 0;
 let imageCache = store.get('imageCache', {});  // { keyword: { sm:'url', th:'url' } }
+let connectionsCache = store.get('connectionsCache', {});  // { todayKey: { narrative, threads[] } }
+let topicsUnderstood = store.get('topicsUnderstood', []);  // ['bitcoin','bretton woods','desdolarizacion',...]
 
 /* ═══════════════════════════════════════ */
 /*  HELPERS                               */
@@ -1059,6 +1126,8 @@ async function autoAnalyzeTopSignals(){
   }
   // After all signals are analyzed, fetch their specific images
   fetchUnsplashImages();
+  // Generate connections between stories
+  generateConnections();
 }
 
 function getBriefing(){
@@ -1571,7 +1640,178 @@ function renderAnalysis(id, data, article){
 
   html+='<div class="analysis-share"><button class="analysis-share-btn" data-share="'+id+'">'+t('analysisShare')+'</button></div>';
 
+  // Ask AI chat input
+  html+='<div class="ask-ai"><div class="ask-ai-row"><input class="ask-ai-input" data-ask-id="'+id+'" placeholder="'+t('askAiPlaceholder')+'" /><button class="ask-ai-btn" data-ask-send="'+id+'">'+t('askAiSend')+'</button></div><div class="ask-ai-reply" id="ask-reply-'+id+'"></div></div>';
+
   body.innerHTML=html;
+
+  // Update progress when analysis renders
+  updateProgress(data);
+}
+
+/* ═══════════════════════════════════════ */
+/*  CONNECTIONS BLOCK                     */
+/* ═══════════════════════════════════════ */
+async function generateConnections(){
+  const key = todayKey();
+  if(connectionsCache[key]){
+    renderConnections(connectionsCache[key]);
+    return;
+  }
+
+  const topArts = getTopSignals();
+  const analyzed = topArts.filter(a => topSignalCache[hashId(a.title)]);
+  if(analyzed.length < 3) return;
+
+  const container = $('#connectionsBlock');
+  container.innerHTML = '<div class="connections-card"><div class="connections-header">🔗 '+t('connectionsTitle')+'</div><div class="connections-body"><div class="connections-loading">'+t('connectionsLoading')+'...</div></div></div>';
+
+  const summaries = analyzed.map(a => {
+    const c = topSignalCache[hashId(a.title)];
+    return '- '+( c.headline || getDisplayTitle(a) )+': '+(c.context||'');
+  }).join('\n');
+
+  try{
+    const prompt = lang==='en'
+      ? 'Here are today\'s top stories:\n'+summaries+'\n\nFind the HIDDEN CONNECTIONS between these stories. How do they relate to each other? What bigger picture emerges?\n\nRespond ONLY with valid JSON:\n{"narrative":"2-3 sentences connecting the dots between these stories in plain language, max 80 words","threads":[{"icon":"emoji","text":"One connecting thread, max 20 words"},{"icon":"emoji","text":"Another connection, max 20 words"},{"icon":"emoji","text":"A third connection or pattern, max 20 words"}]}'
+      : 'Estas son las noticias principales de hoy:\n'+summaries+'\n\nEncuentra las CONEXIONES OCULTAS entre estas noticias. ¿Cómo se relacionan? ¿Qué panorama más grande emerge?\n\nResponde SOLO con JSON válido:\n{"narrative":"2-3 frases conectando los puntos entre estas noticias en lenguaje simple, máximo 80 palabras","threads":[{"icon":"emoji","text":"Un hilo conector, máximo 20 palabras"},{"icon":"emoji","text":"Otra conexión, máximo 20 palabras"},{"icon":"emoji","text":"Una tercera conexión o patrón, máximo 20 palabras"}]}';
+
+    const text = await callClaude(prompt, 500, 'fast');
+    const data = JSON.parse(text.replace(/```json|```/g,'').trim());
+    connectionsCache[key] = data;
+    store.set('connectionsCache', connectionsCache);
+    renderConnections(data);
+  }catch(e){
+    console.error('generateConnections error:', e);
+    container.innerHTML = '';
+  }
+}
+
+function renderConnections(data){
+  const container = $('#connectionsBlock');
+  if(!data || !data.threads) { container.innerHTML=''; return; }
+
+  let html = '<div class="connections-card"><div class="connections-header">🔗 '+t('connectionsTitle')+'</div><div class="connections-body">';
+  if(data.narrative) html += '<p style="margin:0 0 12px;line-height:1.5;opacity:.9">'+esc(data.narrative)+'</p>';
+  html += '<div class="connections-threads">';
+  data.threads.forEach(th => {
+    html += '<div class="connections-thread"><span>'+esc(th.icon||'→')+'</span> '+esc(th.text)+'</div>';
+  });
+  html += '</div></div></div>';
+  container.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════ */
+/*  ASK AI                                */
+/* ═══════════════════════════════════════ */
+async function askAiQuestion(id){
+  const input = document.querySelector('.ask-ai-input[data-ask-id="'+id+'"]');
+  const replyEl = $('#ask-reply-'+id);
+  if(!input || !replyEl) return;
+
+  const question = input.value.trim();
+  if(!question) return;
+
+  const btn = document.querySelector('.ask-ai-btn[data-ask-send="'+id+'"]');
+  if(btn) btn.disabled = true;
+  input.disabled = true;
+  replyEl.textContent = t('askAiThinking')+'...';
+  replyEl.style.display = 'block';
+
+  // Build context from analysis
+  const cached = analysisCache[id];
+  const contextParts = [];
+  if(cached){
+    if(cached.titular_contexto) contextParts.push(cached.titular_contexto);
+    if(cached.que_esta_pasando) contextParts.push(cached.que_esta_pasando);
+    if(cached.por_que_te_afecta) contextParts.push(cached.por_que_te_afecta);
+    if(cached.cambio_de_paradigma) contextParts.push(cached.cambio_de_paradigma);
+  }
+
+  try{
+    const prompt = lang==='en'
+      ? 'You already explained this news:\n'+contextParts.join('\n')+'\n\nThe user asks: "'+question+'"\n\nAnswer in 2-3 sentences, simple language, like a smart friend. Be direct and helpful.'
+      : 'Ya explicaste esta noticia:\n'+contextParts.join('\n')+'\n\nEl usuario pregunta: "'+question+'"\n\nResponde en 2-3 frases, lenguaje simple, como un amigo inteligente. Sé directo y útil.';
+
+    const text = await callClaude(prompt, 300, 'fast');
+    replyEl.textContent = text;
+  }catch(e){
+    console.error('askAi error:', e);
+    replyEl.textContent = lang==='en' ? 'Could not get an answer. Try again.' : 'No se pudo obtener respuesta. Intenta de nuevo.';
+  }finally{
+    if(btn) btn.disabled = false;
+    input.disabled = false;
+    input.value = '';
+  }
+}
+
+/* ═══════════════════════════════════════ */
+/*  PROGRESS TRACKER                      */
+/* ═══════════════════════════════════════ */
+function updateProgress(analysisData){
+  if(!analysisData) return;
+
+  // Extract key topics from analysis text
+  const text = [
+    analysisData.titular_contexto||'',
+    analysisData.que_esta_pasando||'',
+    analysisData.cambio_de_paradigma||''
+  ].join(' ').toLowerCase();
+
+  // Key topic keywords to track
+  const topicKeywords = [
+    'bitcoin','criptomoneda','crypto','blockchain',
+    'dólar','dollar','inflación','inflation','fed','tasas de interés','interest rates',
+    'china','eeuu','estados unidos','rusia','russia','europa','europe','latinoamérica',
+    'petróleo','oil','oro','gold','commodities',
+    'inteligencia artificial','artificial intelligence','ai','ia','automatización','automation',
+    'aranceles','tariffs','comercio','trade','sanctions','sanciones',
+    'deuda','debt','bonos','bonds','mercados','markets',
+    'geopolítica','geopolitics','guerra','war','conflicto',
+    'tecnología','technology','semiconductores','chips',
+    'empleo','employment','recesión','recession','pib','gdp',
+    'energía','energy','renovable','renewable','nuclear',
+    'migración','migration','frontera','border',
+    'brics','desdolarización','de-dollarization',
+    'bancos','banks','regulación','regulation'
+  ];
+
+  const newTopics = topicKeywords.filter(kw => text.includes(kw) && !topicsUnderstood.includes(kw));
+  if(newTopics.length){
+    topicsUnderstood = topicsUnderstood.concat(newTopics);
+    store.set('topicsUnderstood', topicsUnderstood);
+  }
+  renderProgressTracker();
+}
+
+function getStreak(){
+  const visits = store.get('ctx_usage', { days:0, streak:0 });
+  return visits.streak || 0;
+}
+
+function renderProgressTracker(){
+  const container = $('#progressTracker');
+  if(!container) return;
+
+  const count = topicsUnderstood.length;
+  if(count === 0){ container.innerHTML=''; return; }
+
+  const level = Math.floor(count / 10) + 1;
+  const progress = (count % 10) * 10;
+  const streak = getStreak();
+  const remaining = 10 - (count % 10);
+
+  let html = '<div class="progress-card">';
+  html += '<div class="progress-header"><div class="progress-title">📊 '+t('progressTitle')+'</div><div class="progress-level">'+t('progressLevel')(level)+'</div></div>';
+  html += '<div class="progress-stats">';
+  html += '<div class="progress-stat"><strong>'+count+'</strong><span>'+t('progressTopics')+'</span></div>';
+  html += '<div class="progress-stat"><strong>'+streak+'</strong><span>'+t('progressStreak')+'</span></div>';
+  html += '<div class="progress-stat"><strong>'+level+'</strong><span>'+t('progressLevel')(level).split(' ')[0]+'</span></div>';
+  html += '</div>';
+  html += '<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:'+progress+'%"></div></div>';
+  html += '<div class="progress-next">'+t('progressNext')(remaining)+'</div>';
+  html += '</div>';
+  container.innerHTML = html;
 }
 
 /* ═══════════════════════════════════════ */
@@ -1676,6 +1916,9 @@ document.addEventListener('click',e=>{
   const shareBtn=e.target.closest('[data-share]');
   if(shareBtn){shareAnalysis(shareBtn.dataset.share);return}
 
+  const askBtn=e.target.closest('[data-ask-send]');
+  if(askBtn){askAiQuestion(askBtn.dataset.askSend);return}
+
   if(e.target.closest('#searchBtn')){openSearch();return}
   if(e.target.closest('#searchClose')){closeSearch();return}
   if(e.target.closest('#themeBtn')){toggleTheme();return}
@@ -1712,7 +1955,13 @@ document.addEventListener('click',e=>{
 });
 
 document.addEventListener('input',e=>{if(e.target.id==='searchInput')renderSearchResults(e.target.value)});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSearch()});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeSearch();
+  if(e.key==='Enter' && e.target.classList.contains('ask-ai-input')){
+    const id=e.target.dataset.askId;
+    if(id) askAiQuestion(id);
+  }
+});
 
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault();
@@ -1805,6 +2054,8 @@ async function init(){
   renderHeroMetrics();
   renderTopSignals();
   renderBriefing();
+  renderProgressTracker();
+  if(connectionsCache[todayKey()]) renderConnections(connectionsCache[todayKey()]);
   updateRefreshTime();
   showInstallBanner();
   $('#refreshBtn').disabled=false;
