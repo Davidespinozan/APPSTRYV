@@ -47,12 +47,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ma
 .lotd.open .lotd-open{display:none}
 
 /* Brief */
-.brief{margin:12px 16px 0;padding:14px 16px;background:var(--surface);border-radius:14px;font-size:14px;min-height:48px}
-.brief-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.brief{margin:12px 16px 0;padding:18px 16px;background:var(--surface);border-radius:14px;font-size:14px}
+.brief-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .brief-dot{width:5px;height:5px;border-radius:50%;background:#4ECDC4;animation:blink 1.5s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.brief-text{color:var(--text);font-weight:500;font-size:14px;line-height:1.55}
 .brief-loading{color:var(--text3);font-size:13px}
+.brief-item{padding:10px 0;border-bottom:1px solid var(--border)}
+.brief-item:last-child{border-bottom:none;padding-bottom:0}
+.brief-item:first-child{padding-top:0}
+.brief-hl{font-size:14px;font-weight:700;line-height:1.35;margin-bottom:4px}
+.brief-why{font-size:13px;color:var(--text2);line-height:1.5}
+.brief-ctx{font-size:12px;color:var(--text3);margin-top:3px;font-style:italic}
 
 /* Progress */
 .progress{margin:16px 16px 0;padding:16px;background:var(--surface);border-radius:14px}
@@ -598,21 +603,34 @@ function renderLOTD(data){
 function generateBrief(){
   var briefEl=document.getElementById('brief');
   var key=todayKey();
-  if(briefCache[key]){renderBrief(briefCache[key]);return}
+  if(briefCache[key]){
+    if(typeof briefCache[key]==='string'){delete briefCache[key];store.set('briefCache',briefCache)}
+    else{renderBrief(briefCache[key]);return}
+  }
   if(!articles.length){briefEl.style.display='none';return}
+  var newsList=articles.slice(0,15).map(function(a,i){return (i+1)+'. ['+a.section+'] '+a.title}).join('\n');
   callClaude(
-    'Fecha: '+todayStr()+'. Noticias: '+articles.slice(0,10).map(function(a){return a.title}).join('. ')+'\n\n'+
-    'UNA frase (máx 30 palabras) que resuma lo más importante hoy. Como WhatsApp a un amigo. Solo la frase.',200
+    'Fecha: '+todayStr()+'.\n\nNOTICIAS REALES DE HOY:\n'+newsList+'\n\n'+
+    'Eres un periodista inteligente que resume el mundo para gente ocupada. Escribe un RESUMEN NOTICIOSO del día con las 4-6 noticias MÁS IMPORTANTES a nivel global.\n\n'+
+    'Para CADA noticia incluye:\n- headline: título corto y directo (máx 10 palabras)\n- why: por qué importa en 1-2 frases simples\n- context: 1 frase de contexto profundo que conecte con el panorama más grande\n\n'+
+    'Responde SOLO con JSON sin backticks:\n{"stories":[{"headline":"...","why":"...","context":"..."}]}\n\nEspañol latino, directo, sin jerga. Como un amigo que lee TODO y te cuenta lo importante.',1200
   ).then(function(text){
-    var clean=text.replace(/^["']|["']$/g,'').trim();
-    briefCache[key]=clean;store.set('briefCache',briefCache);renderBrief(clean);
+    var data=JSON.parse(text.replace(/```json|```/g,'').trim());
+    briefCache[key]=data;store.set('briefCache',briefCache);renderBrief(data);
   }).catch(function(){briefEl.style.display='none'});
 }
 
-function renderBrief(text){
-  document.getElementById('brief').innerHTML=
-    '<div class="brief-label"><span class="brief-dot"></span> Hoy en el mundo</div>'+
-    '<div class="brief-text">'+esc(text)+'</div>';
+function renderBrief(data){
+  if(!data||!data.stories||!data.stories.length){document.getElementById('brief').style.display='none';return}
+  var html='<div class="brief-label"><span class="brief-dot"></span> Hoy en el mundo</div>';
+  data.stories.forEach(function(s){
+    html+='<div class="brief-item">';
+    html+='<div class="brief-hl">'+esc(s.headline)+'</div>';
+    html+='<div class="brief-why">'+esc(s.why)+'</div>';
+    if(s.context) html+='<div class="brief-ctx">'+esc(s.context)+'</div>';
+    html+='</div>';
+  });
+  document.getElementById('brief').innerHTML=html;
 }
 
 /* ═══ DAILY CARDS ═══ */
