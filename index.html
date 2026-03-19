@@ -234,7 +234,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 .empty-action{display:inline-block;margin-top:14px;padding:10px 16px;border-radius:12px;background:var(--accent);color:#0D1117;text-decoration:none;font-size:13px;font-weight:800}
 
 /* ═══ STRYV CTA ═══ */
-.stryv-cta{display:none}
+.stryv-cta{margin:12px 16px;padding:20px 18px;background:var(--cta-bg);color:var(--cta-text);border-radius:16px;position:relative;overflow:hidden}
 .stryv-cta::before{content:'';position:absolute;top:-40%;right:-15%;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08)}
 .stryv-cta-eyebrow{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.5;margin-bottom:6px;position:relative}
 .stryv-cta-title{font-size:17px;font-weight:800;margin-bottom:6px;letter-spacing:-.3px;line-height:1.25;position:relative}
@@ -242,6 +242,13 @@ body{background:var(--bg);color:var(--text);padding-bottom:76px;border-left:1px 
 .stryv-cta-btn{display:block;background:var(--bg);color:var(--text);font-size:14px;font-weight:700;padding:12px;border-radius:10px;text-align:center;text-decoration:none;transition:opacity .15s;position:relative}
 .stryv-cta-btn:active{opacity:.85}
 .stryv-cta-link{display:block;text-align:center;font-size:11px;opacity:.35;text-decoration:none;margin-top:8px;position:relative;color:inherit}
+
+/* ═══ URGENCY TAGS ═══ */
+.signal-tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.signal-tag-urgente{color:var(--danger);background:var(--danger-soft)}
+.signal-tag-accionable{color:#00ba7c;background:rgba(0,186,124,.1)}
+.signal-tag-fundamental{color:var(--warning);background:var(--warning-soft)}
+.signal-tag-estrategico{color:var(--blue);background:var(--blue-soft)}
 
 /* ═══ REFRESH BAR ═══ */
 .refresh-bar{padding:10px 16px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between}
@@ -539,7 +546,7 @@ const I18N = {
     analysisWhat: 'Qué pasó',
     analysisWhy: 'Por qué importa',
     analysisShift: 'Qué puede cambiar',
-    analysisAction: 'Qué conviene seguir',
+    analysisAction: 'Qué puedes hacer',
     analysisShare: 'Compartir explicación ↗',
     analysisCopied: '✓ Copiado',
     analysisApiError: '⚠️ Falta configurar la API.',
@@ -636,7 +643,7 @@ const I18N = {
     analysisWhat: 'What happened',
     analysisWhy: 'Why it matters',
     analysisShift: 'What could change',
-    analysisAction: 'What to watch',
+    analysisAction: 'What you can do',
     analysisShare: 'Share explanation ↗',
     analysisCopied: '✓ Copied',
     analysisApiError: '⚠️ API not configured.',
@@ -991,8 +998,12 @@ function renderTopSignals(){
     const rank = topArts.indexOf(a) + 1;
     // Use AI-generated headline if available, otherwise fall back to translated title
     const displayTitle = (cached && cached.headline) ? cached.headline : getDisplayTitle(a);
+    const tagMap = {urgente:'signal-tag-urgente',urgent:'signal-tag-urgente',accionable:'signal-tag-accionable',actionable:'signal-tag-accionable',fundamental:'signal-tag-fundamental',estrategico:'signal-tag-estrategico','estratégico':'signal-tag-estrategico',strategic:'signal-tag-estrategico'};
+    const tagLabels = {urgente:'Urgente',urgent:'Urgent',accionable:'Accionable',actionable:'Actionable',fundamental:'Fundamental',estrategico:'Estratégico','estratégico':'Estratégico',strategic:'Strategic'};
+    const rawTag = cached && cached.tag ? cached.tag.toLowerCase().trim() : '';
+    const tagHtml = tagMap[rawTag] ? '<span class="signal-tag '+tagMap[rawTag]+'">'+tagLabels[rawTag]+'</span>' : '';
     const contextHtml = cached
-      ? '<div class="signal-card-context">'+esc(cached.context)+'</div>'
+      ? tagHtml+'<div class="signal-card-context">'+esc(cached.context)+'</div>'
         + (cached.meaning ? '<div class="signal-card-meaning">'+esc(cached.meaning)+'</div>' : '')
       : '<div class="signal-card-context loading">'+t('signalLoading')+'</div>';
     return '<div class="signal-card" data-signal-id="'+id+'">'+
@@ -1034,11 +1045,11 @@ async function autoAnalyzeTopSignals(){
     const id = hashId(article.title);
     try{
       const promptLang = lang==='en'
-        ? 'Date: '+todayFormatted()+'. You explain news for people who do NOT follow the news. Write like a smart friend explaining what happened. No jargon, no dramatic tone, no technical terms.\n\nTODAY\'S CONTEXT:\n'+buildRelevantContext(article)+'\n\nORIGINAL HEADLINE: "'+getDisplayTitle(article)+'"\n\nRespond ONLY with valid JSON: {"headline":"Rewrite the headline in 8-12 simple words that anyone would understand","context":"2-3 sentences explaining what happened and why it matters, in plain everyday language, max 60 words","meaning":"1 sentence starting with \'This means...\' explaining what this means for a regular person, max 20 words","imageSearch":"2-3 English words describing the main visual subject of this news, for searching a stock photo (e.g. \'bitcoin chart\', \'white house\', \'AI robot\', \'oil pipeline\')"}'
-        : 'Fecha: '+todayFormatted()+'. Explicas noticias para personas que NO siguen las noticias. Escribe como un amigo inteligente explicando qué pasó. Sin jerga, sin tono dramático, sin tecnicismos.\n\nCONTEXTO DEL DÍA:\n'+buildRelevantContext(article)+'\n\nTITULAR ORIGINAL: "'+getDisplayTitle(article)+'"\n\nResponde SOLO con JSON válido: {"headline":"Reescribe el titular en 8-12 palabras simples que cualquiera entienda","context":"2-3 frases explicando qué pasó y por qué importa, en lenguaje cotidiano, máximo 60 palabras","meaning":"1 frase que empiece con \'Esto significa que...\' explicando qué significa para una persona normal, máximo 20 palabras","imageSearch":"2-3 palabras EN INGLÉS describiendo el sujeto visual principal de esta noticia, para buscar una foto (ej: \'bitcoin chart\', \'white house\', \'AI robot\', \'oil pipeline\')"}';
+        ? 'Date: '+todayFormatted()+'. You explain news for people who do NOT follow the news. Write like a smart friend explaining what happened. No jargon, no dramatic tone, no technical terms.\n\nTODAY\'S CONTEXT:\n'+buildRelevantContext(article)+'\n\nORIGINAL HEADLINE: "'+getDisplayTitle(article)+'"\n\nRespond ONLY with valid JSON: {"headline":"Rewrite the headline in 8-12 simple words that anyone would understand","context":"2-3 sentences explaining what happened and why it matters, in plain everyday language, max 60 words","meaning":"1 sentence starting with \'This means...\' explaining what this means for a regular person, max 20 words","tag":"ONE word classifying this: urgent (breaking/time-sensitive), actionable (person can do something), fundamental (key concept), or strategic (long-term shift)","imageSearch":"2-3 English words describing the main visual subject of this news, for searching a stock photo (e.g. \'bitcoin chart\', \'white house\', \'AI robot\', \'oil pipeline\')"}'
+        : 'Fecha: '+todayFormatted()+'. Explicas noticias para personas que NO siguen las noticias. Escribe como un amigo inteligente explicando qué pasó. Sin jerga, sin tono dramático, sin tecnicismos.\n\nCONTEXTO DEL DÍA:\n'+buildRelevantContext(article)+'\n\nTITULAR ORIGINAL: "'+getDisplayTitle(article)+'"\n\nResponde SOLO con JSON válido: {"headline":"Reescribe el titular en 8-12 palabras simples que cualquiera entienda","context":"2-3 frases explicando qué pasó y por qué importa, en lenguaje cotidiano, máximo 60 palabras","meaning":"1 frase que empiece con \'Esto significa que...\' explicando qué significa para una persona normal, máximo 20 palabras","tag":"UNA palabra clasificando esto: urgente (última hora/tiempo limitado), accionable (la persona puede hacer algo), fundamental (concepto clave), o estrategico (cambio a largo plazo)","imageSearch":"2-3 palabras EN INGLÉS describiendo el sujeto visual principal de esta noticia, para buscar una foto (ej: \'bitcoin chart\', \'white house\', \'AI robot\', \'oil pipeline\')"}';
       const text = await callClaude(promptLang, 400, 'fast');
       const data = JSON.parse(text.replace(/```json|```/g,'').trim());
-      topSignalCache[id] = { headline: data.headline||'', context: data.context||'', meaning: data.meaning||'', imageSearch: data.imageSearch||'' };
+      topSignalCache[id] = { headline: data.headline||'', context: data.context||'', meaning: data.meaning||'', tag: data.tag||'', imageSearch: data.imageSearch||'' };
       store.set('topSignalCache', topSignalCache);
       renderTopSignals();
     }catch(e){
@@ -1264,12 +1275,16 @@ function renderFeeds(){
       grouped[a.section].push(a);
     });
 
-    for(const sec of Object.keys(grouped)){
+    const secKeys = Object.keys(grouped);
+    for(let si=0; si<secKeys.length; si++){
+      const sec = secKeys[si];
       const arts = grouped[sec];
       html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[sec]||'')+' '+esc(getSectionLabel(sec))+'</div><div class="feed-count">'+arts.length+' '+t('signals')+'</div></div>';
       html+=renderCards(arts);
-      const secKeys = Object.keys(grouped);
-      const secIdx = secKeys.indexOf(sec);
+      if((si+1)%2===0){
+        var ctaData = t('ctas')[sec] || t('ctas')['Dinero'];
+        if(ctaData) html+=renderCTA(ctaData);
+      }
     }
   } else {
     html+='<div class="feed-header"><div class="feed-section-title">'+(SECTION_ICONS[activeSection]||'')+' '+esc(activeSection==='saved'?t('navSaved'):getSectionLabel(activeSection))+'</div><div class="feed-count">'+filtered.length+' '+t('signals')+'</div></div>';
@@ -1484,8 +1499,8 @@ async function generateAnalysis(id, article){
 
   try{
     const analysisPrompt = lang==='en'
-      ? 'Date: '+dateStr+'. You explain news to people who do NOT follow the news. Write like a smart friend. No jargon, no technical terms, no newscast tone. Make it feel like a conversation.\n\nRELEVANT CONTEXT TODAY:\n'+buildRelevantContext(article)+'\n\nNEWS TO EXPLAIN: "'+displayTitle+'" — Source: '+article.source+' — Section: '+getSectionLabel(article.section)+'\n\nRespond ONLY with valid JSON without markdown. Keep each field short and in everyday language.\n{"titular_contexto":"1 line rewriting the headline in simple words, max 18 words","que_esta_pasando":"1 paragraph, max 90 words, explaining what happened like you would tell a friend","por_que_te_afecta":"1 paragraph, max 55 words, why a regular person should care","cambio_de_paradigma":"1 paragraph, max 45 words, what could change going forward","que_hacer":[{"num":"1","texto":"What to keep an eye on, max 12 words"},{"num":"2","texto":"What to keep an eye on, max 12 words"}]}'
-      : 'Fecha: '+dateStr+'. Explicas noticias a personas que NO siguen las noticias. Escribe como un amigo inteligente. Sin jerga, sin tecnicismos, sin tono de noticiero. Que se sienta como una conversación.\n\nCONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\nNOTICIA A EXPLICAR: "'+displayTitle+'" — Fuente: '+article.source+' — Sección: '+getSectionLabel(article.section)+'\n\nResponde SOLO con JSON válido sin markdown. Mantén cada campo corto y en lenguaje cotidiano.\n{"titular_contexto":"1 línea reescribiendo el titular en palabras simples, máximo 18 palabras","que_esta_pasando":"1 párrafo, máximo 90 palabras, explicando qué pasó como se lo dirías a un amigo","por_que_te_afecta":"1 párrafo, máximo 55 palabras, por qué le debería importar a una persona normal","cambio_de_paradigma":"1 párrafo, máximo 45 palabras, qué podría cambiar de aquí en adelante","que_hacer":[{"num":"1","texto":"Qué conviene seguir, máximo 12 palabras"},{"num":"2","texto":"Qué conviene seguir, máximo 12 palabras"}]}';
+      ? 'Date: '+dateStr+'. You explain news to people who do NOT follow the news. Write like a smart friend. No jargon, no technical terms, no newscast tone. Make it feel like a conversation.\n\nRELEVANT CONTEXT TODAY:\n'+buildRelevantContext(article)+'\n\nNEWS TO EXPLAIN: "'+displayTitle+'" — Source: '+article.source+' — Section: '+getSectionLabel(article.section)+'\n\nRespond ONLY with valid JSON without markdown. Keep each field short and in everyday language.\n{"titular_contexto":"1 line rewriting the headline in simple words, max 18 words","que_esta_pasando":"1 paragraph, max 90 words, explaining what happened like you would tell a friend","por_que_te_afecta":"1 paragraph, max 55 words, why a regular person should care","cambio_de_paradigma":"1 paragraph, max 45 words, what could change going forward","que_hacer":[{"num":"1","texto":"Concrete action a person can take TODAY with a specific tool or step, max 18 words"},{"num":"2","texto":"Second concrete action or thing to research/read, max 18 words"},{"num":"3","texto":"What to keep watching long-term, max 15 words"}]}'
+      : 'Fecha: '+dateStr+'. Explicas noticias a personas que NO siguen las noticias. Escribe como un amigo inteligente. Sin jerga, sin tecnicismos, sin tono de noticiero. Que se sienta como una conversación.\n\nCONTEXTO RELEVANTE DE HOY:\n'+buildRelevantContext(article)+'\n\nNOTICIA A EXPLICAR: "'+displayTitle+'" — Fuente: '+article.source+' — Sección: '+getSectionLabel(article.section)+'\n\nResponde SOLO con JSON válido sin markdown. Mantén cada campo corto y en lenguaje cotidiano.\n{"titular_contexto":"1 línea reescribiendo el titular en palabras simples, máximo 18 palabras","que_esta_pasando":"1 párrafo, máximo 90 palabras, explicando qué pasó como se lo dirías a un amigo","por_que_te_afecta":"1 párrafo, máximo 55 palabras, por qué le debería importar a una persona normal","cambio_de_paradigma":"1 párrafo, máximo 45 palabras, qué podría cambiar de aquí en adelante","que_hacer":[{"num":"1","texto":"Acción concreta que puedes hacer HOY con herramienta o paso específico, máximo 18 palabras"},{"num":"2","texto":"Segunda acción concreta o cosa que investigar/leer, máximo 18 palabras"},{"num":"3","texto":"Qué conviene seguir a largo plazo, máximo 15 palabras"}]}';
     const text = await callClaude(analysisPrompt, 700, 'fast');
 
     const data = JSON.parse(text.replace(/```json|```/g,'').trim());
