@@ -247,7 +247,7 @@ function generateTakes(articles) {
     : 'Generate 6 daily takes for CONTEXTO. For each take:\n\n1. ONE direct sentence with what happened. No "according to", no "sources say", no passive voice. Just the fact.\n2. The real layer: why it\'s happening, who benefits, the structural reason behind it. 3 direct sentences. Be specific.\n3. The concrete implication for someone in Latin America. 1-2 sentences. Real impact on their money, work, or life options. No moralizing.\n\nCOVERAGE: include global economy, geopolitics, tech/AI, and at least ONE topic about real opportunities (countries with better conditions, investment, mobility, future skills).\n\nTONE: very well-read friend who speaks plainly. Never use "experts say", "analysts believe" or news-anchor language. Direct, honest, sometimes provocative.\n\nRespond ONLY with JSON:\n[{"tag":"ECONOMY","headline":"direct headline max 12 words","body":"what happened + the real layer","implication":"why it matters to you"}]'
   );
 
-  return callClaude(prompt, 2000, 'quality').then(function(text) {
+  return callClaude(prompt, 1400, 'fast').then(function(text) {
     var m = text.match(/\[[\s\S]*\]/);
     if (!m) throw new Error('No JSON in response');
     return JSON.parse(m[0]);
