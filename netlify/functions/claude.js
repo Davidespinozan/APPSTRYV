@@ -12,20 +12,6 @@ exports.handler = async function(event, context) {
     };
   }
 
-  function normalizeModel(modelName, fallback) {
-    const legacyMap = {
-      'claude-3-5-haiku-latest': 'claude-haiku-4-5',
-      'claude-3-5-haiku-20241022': 'claude-haiku-4-5',
-      'claude-haiku-4-5-20251001': 'claude-haiku-4-5',
-      'claude-3-7-sonnet-latest': 'claude-sonnet-4-6',
-      'claude-sonnet-4-20250514': 'claude-sonnet-4-6',
-      'claude-sonnet-4-6': 'claude-sonnet-4-6',
-      'claude-haiku-4-5': 'claude-haiku-4-5'
-    };
-
-    return legacyMap[modelName] || modelName || fallback;
-  }
-
   try {
     const body = JSON.parse(event.body);
     const { prompt, maxTokens, mode, lang } = body;
@@ -34,10 +20,9 @@ exports.handler = async function(event, context) {
       return { statusCode: 400, body: JSON.stringify({ error: 'Prompt requerido' }) };
     }
 
-    const fastModel = normalizeModel(process.env.CLAUDE_FAST_MODEL, 'claude-haiku-4-5');
-    const qualityModel = normalizeModel(process.env.CLAUDE_QUALITY_MODEL, 'claude-sonnet-4-6');
+    const fastModel = process.env.CLAUDE_FAST_MODEL || 'claude-haiku-4-5-20251001';
+    const qualityModel = process.env.CLAUDE_QUALITY_MODEL || 'claude-sonnet-4-6';
     const model = mode === 'fast' ? fastModel : qualityModel;
-
     const dateStr = lang === 'en'
       ? new Date().toLocaleDateString('en-US', { weekday:'long', day:'numeric', month:'long', year:'numeric' })
       : new Date().toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
