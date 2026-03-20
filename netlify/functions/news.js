@@ -121,6 +121,10 @@ exports.handler = async function(event) {
     { url: 'https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada', section: 'Latam', icon: '🌎', name: 'El País', lang: 'es' },
     { url: 'https://rss.dw.com/xml/rss-sp-latinoamerica', section: 'Latam', icon: '🌎', name: 'DW Latam', lang: 'es' },
     { url: 'https://www.france24.com/es/am%C3%A9rica-latina/rss', section: 'Latam', icon: '🌎', name: 'France 24 ES', lang: 'es' },
+    { url: 'https://cnnespanol.cnn.com/feed/', section: 'Global', icon: '🌐', name: 'CNN Español', lang: 'es' },
+    { url: 'https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/economia/portada', section: 'Dinero', icon: '💰', name: 'El País Economía', lang: 'es' },
+    { url: 'https://rss.nytimes.com/services/xml/rss/nyt/en-espa%C3%B1ol.xml', section: 'Global', icon: '🌐', name: 'NYT Español', lang: 'es' },
+    { url: 'https://www.swissinfo.ch/spa/rss/topic?id=34831694', section: 'Latam', icon: '🌎', name: 'SWI Español', lang: 'es' },
   ].filter(f => isES ? true : f.lang === 'en');
 
   const sourceAuthority = [
