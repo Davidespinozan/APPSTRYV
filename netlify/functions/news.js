@@ -1,102 +1,127 @@
 exports.handler = async function(event) {
-  // ─── SECTIONS: Google News queries (Spanish + English mix) ───
-  const sections = [
+  const lang = ((event.queryStringParameters || {}).lang || 'es').toLowerCase();
+  const isES = lang === 'es';
+
+  // ─── SECTIONS: queries filtered by language ───
+  const sectionsRaw = [
     {
-      queries: [
+      queriesES: [
         'últimas noticias mundo política internacional economía global',
+        'cumbre diplomacia elecciones comercio internacional sanciones'
+      ],
+      queriesEN: [
         'world news international politics global economy',
-        'cumbre diplomacia elecciones comercio internacional sanciones',
         'climate energy health science breakthrough world news'
       ],
-      label: 'Global', icon: '🌐'
+      label: isES ? 'Global' : 'Global', icon: '🌐'
     },
     {
-      queries: [
+      queriesES: [
         'economía global inflación tasas interés banco central',
         'deuda crisis financiera recesión crecimiento empleo',
-        'Fed BCE bancos centrales política monetaria economía',
-        'global economy inflation central bank recession'
+        'Fed BCE bancos centrales política monetaria economía'
       ],
-      label: 'Dinero', icon: '💰'
+      queriesEN: [
+        'global economy inflation central bank recession',
+        'Fed ECB monetary policy debt employment economy'
+      ],
+      label: isES ? 'Dinero' : 'Dinero', icon: '💰'
     },
     {
-      queries: [
+      queriesES: [
         'geopolítica diplomacia conflicto seguridad internacional cumbre',
-        'OTAN China Rusia Estados Unidos relaciones internacionales',
+        'OTAN China Rusia Estados Unidos relaciones internacionales'
+      ],
+      queriesEN: [
         'international security diplomacy sanctions summit conflict',
         'cyberattack espionage government security global politics'
       ],
-      label: 'Poder', icon: '⚡'
+      label: isES ? 'Poder' : 'Poder', icon: '⚡'
     },
     {
-      queries: [
+      queriesES: [
         'inteligencia artificial semiconductores regulación tecnología',
-        'Apple Google Meta Microsoft Nvidia chips tecnología',
+        'Apple Google Meta Microsoft Nvidia chips tecnología'
+      ],
+      queriesEN: [
         'artificial intelligence chips regulation robotics technology',
         'space telecom cybersecurity technology global industry'
       ],
-      label: 'Tecnología', icon: '🤖'
+      label: isES ? 'Tecnología' : 'Tecnología', icon: '🤖'
     },
     {
-      queries: [
+      queriesES: [
         'Wall Street Nasdaq S&P mercados financieros commodities',
-        'oro petróleo gas bonos divisas mercados',
+        'oro petróleo gas bonos divisas mercados'
+      ],
+      queriesEN: [
         'stock market bonds commodities oil gold prices',
         'bitcoin crypto regulation ETF market macro'
       ],
-      label: 'Mercados', icon: '📊'
+      label: isES ? 'Mercados' : 'Mercados', icon: '📊'
     },
     {
-      queries: [
+      queriesES: [
         'migración visa nómada digital residencia',
-        'pasaporte ciudadanía movilidad global expatriado',
+        'pasaporte ciudadanía movilidad global expatriado'
+      ],
+      queriesEN: [
         'digital nomad visa remote work abroad',
         'immigration policy border visa reform'
       ],
-      label: 'Movilidad', icon: '🌍'
+      label: isES ? 'Movilidad' : 'Movilidad', icon: '🌍'
     },
     {
-      queries: [
+      queriesES: [
         'Latinoamérica política economía elecciones crisis regional',
         'México Colombia Argentina Brasil Chile Perú noticias',
-        'Latin America politics economy elections diplomacy',
         'Mercosur BRICS Latinoamérica comercio relaciones internacionales'
       ],
-      label: 'Latam', icon: '🌎'
+      queriesEN: [
+        'Latin America politics economy elections diplomacy'
+      ],
+      label: isES ? 'Latam' : 'Latam', icon: '🌎'
     }
   ];
 
-  // ─── DIRECT RSS FEEDS (no API key needed) ───
+  const sections = sectionsRaw.map(s => ({
+    queries: isES ? s.queriesES : s.queriesEN,
+    label: s.label,
+    icon: s.icon
+  }));
+
+  // ─── DIRECT RSS FEEDS filtered by language ───
   const directFeeds = [
-    // Markets / Macro
-    { url: 'https://www.coindesk.com/arc/outboundfeeds/rss/', section: 'Mercados', icon: '📊', name: 'CoinDesk' },
-    { url: 'https://feeds.finance.yahoo.com/rss/2.0/headline?s=^GSPC,^DJI,BTC-USD,GC=F,CL=F&region=US&lang=en-US', section: 'Mercados', icon: '📊', name: 'Yahoo Finance' },
-    // Tech / AI
-    { url: 'https://feeds.arstechnica.com/arstechnica/technology-lab', section: 'Tecnología', icon: '🤖', name: 'Ars Technica' },
-    { url: 'https://www.theverge.com/rss/ai-artificial-intelligence/index.xml', section: 'Tecnología', icon: '🤖', name: 'The Verge' },
-    { url: 'https://techcrunch.com/feed/', section: 'Tecnología', icon: '🤖', name: 'TechCrunch' },
-    { url: 'https://www.wired.com/feed/rss', section: 'Tecnología', icon: '🤖', name: 'Wired' },
-    { url: 'https://feeds.feedburner.com/venturebeat/SZYF', section: 'Tecnología', icon: '🤖', name: 'VentureBeat' },
-    // Geopolitics / World — expanded global coverage
-    { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', section: 'Poder', icon: '⚡', name: 'BBC World' },
-    { url: 'https://feeds.bbci.co.uk/mundo/rss.xml', section: 'Poder', icon: '⚡', name: 'BBC Mundo' },
-    { url: 'https://www.aljazeera.com/xml/rss/all.xml', section: 'Poder', icon: '⚡', name: 'Al Jazeera' },
-    { url: 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml', section: 'Poder', icon: '⚡', name: 'NYT World' },
-    { url: 'https://feeds.washingtonpost.com/rss/world', section: 'Poder', icon: '⚡', name: 'Washington Post' },
-    { url: 'https://www.theguardian.com/world/rss', section: 'Poder', icon: '⚡', name: 'The Guardian' },
-    { url: 'https://feeds.reuters.com/reuters/worldNews', section: 'Poder', icon: '⚡', name: 'Reuters' },
-    { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Asia.xml', section: 'Poder', icon: '⚡', name: 'NYT Asia' },
-    { url: 'https://www3.nhk.or.jp/nhkworld/en/news/rss.xml', section: 'Poder', icon: '⚡', name: 'NHK World' },
-    // Economy / Finance
-    { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Business.xml', section: 'Dinero', icon: '💰', name: 'NYT Business' },
-    { url: 'https://feeds.bloomberg.com/markets/news.rss', section: 'Dinero', icon: '💰', name: 'Bloomberg' },
-    { url: 'https://www.investing.com/rss/news.rss', section: 'Dinero', icon: '💰', name: 'Investing.com' },
-    { url: 'https://www.theguardian.com/business/rss', section: 'Dinero', icon: '💰', name: 'Guardian Business' },
-    // Latam
-    { url: 'https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada', section: 'Latam', icon: '🌎', name: 'El País' },
-    { url: 'https://rss.dw.com/xml/rss-sp-latinoamerica', section: 'Latam', icon: '🌎', name: 'DW Latam' },
-    { url: 'https://www.france24.com/es/am%C3%A9rica-latina/rss', section: 'Latam', icon: '🌎', name: 'France 24' },
-  ];
+    // Markets / Macro (both)
+    { url: 'https://www.coindesk.com/arc/outboundfeeds/rss/', section: 'Mercados', icon: '📊', name: 'CoinDesk', lang: 'en' },
+    { url: 'https://feeds.finance.yahoo.com/rss/2.0/headline?s=^GSPC,^DJI,BTC-USD,GC=F,CL=F&region=US&lang=en-US', section: 'Mercados', icon: '📊', name: 'Yahoo Finance', lang: 'en' },
+    // Tech / AI (both)
+    { url: 'https://feeds.arstechnica.com/arstechnica/technology-lab', section: 'Tecnología', icon: '🤖', name: 'Ars Technica', lang: 'en' },
+    { url: 'https://www.theverge.com/rss/ai-artificial-intelligence/index.xml', section: 'Tecnología', icon: '🤖', name: 'The Verge', lang: 'en' },
+    { url: 'https://techcrunch.com/feed/', section: 'Tecnología', icon: '🤖', name: 'TechCrunch', lang: 'en' },
+    { url: 'https://www.wired.com/feed/rss', section: 'Tecnología', icon: '🤖', name: 'Wired', lang: 'en' },
+    { url: 'https://feeds.feedburner.com/venturebeat/SZYF', section: 'Tecnología', icon: '🤖', name: 'VentureBeat', lang: 'en' },
+    // Geopolitics — English sources
+    { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', section: 'Poder', icon: '⚡', name: 'BBC World', lang: 'en' },
+    { url: 'https://www.aljazeera.com/xml/rss/all.xml', section: 'Poder', icon: '⚡', name: 'Al Jazeera', lang: 'en' },
+    { url: 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml', section: 'Poder', icon: '⚡', name: 'NYT World', lang: 'en' },
+    { url: 'https://feeds.washingtonpost.com/rss/world', section: 'Poder', icon: '⚡', name: 'Washington Post', lang: 'en' },
+    { url: 'https://www.theguardian.com/world/rss', section: 'Poder', icon: '⚡', name: 'The Guardian', lang: 'en' },
+    { url: 'https://feeds.reuters.com/reuters/worldNews', section: 'Poder', icon: '⚡', name: 'Reuters', lang: 'en' },
+    { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Asia.xml', section: 'Poder', icon: '⚡', name: 'NYT Asia', lang: 'en' },
+    { url: 'https://www3.nhk.or.jp/nhkworld/en/news/rss.xml', section: 'Poder', icon: '⚡', name: 'NHK World', lang: 'en' },
+    // Geopolitics — Spanish sources
+    { url: 'https://feeds.bbci.co.uk/mundo/rss.xml', section: 'Poder', icon: '⚡', name: 'BBC Mundo', lang: 'es' },
+    // Economy — English
+    { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Business.xml', section: 'Dinero', icon: '💰', name: 'NYT Business', lang: 'en' },
+    { url: 'https://feeds.bloomberg.com/markets/news.rss', section: 'Dinero', icon: '💰', name: 'Bloomberg', lang: 'en' },
+    { url: 'https://www.investing.com/rss/news.rss', section: 'Dinero', icon: '💰', name: 'Investing.com', lang: 'en' },
+    { url: 'https://www.theguardian.com/business/rss', section: 'Dinero', icon: '💰', name: 'Guardian Business', lang: 'en' },
+    // Latam — Spanish
+    { url: 'https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada', section: 'Latam', icon: '🌎', name: 'El País', lang: 'es' },
+    { url: 'https://rss.dw.com/xml/rss-sp-latinoamerica', section: 'Latam', icon: '🌎', name: 'DW Latam', lang: 'es' },
+    { url: 'https://www.france24.com/es/am%C3%A9rica-latina/rss', section: 'Latam', icon: '🌎', name: 'France 24 ES', lang: 'es' },
+  ].filter(f => isES ? true : f.lang === 'en');
 
   const sourceAuthority = [
     [/reuters/i, 18],
