@@ -217,11 +217,18 @@ function callClaude(prompt, maxTokens, mode) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt: prompt, maxTokens: maxTokens || 1400, mode: mode || 'quality', lang: appLang })
   }).then(function(r) {
-    return r.json().then(function(json) {
-      if (!r.ok) throw new Error('Claude ' + r.status + ': ' + (json.error || JSON.stringify(json)).slice(0, 120));
-      if (json.error) throw new Error('Claude error: ' + JSON.stringify(json.error).slice(0, 120));
+    return r.text().then(function(raw) {
+      var status = r.status;
+      var json;
+      try { json = JSON.parse(raw); } catch(e) { throw new Error('HTTP ' + status + ' — respuesta no-JSON: ' + raw.slice(0, 80)); }
+      if (!r.ok) throw new Error('HTTP ' + status + ': ' + (typeof json.error === 'string' ? json.error : JSON.stringify(json)).slice(0, 120));
+      if (json.error) throw new Error('API error: ' + JSON.stringify(json.error).slice(0, 120));
+      if (!json.content || !json.content[0]) throw new Error('Respuesta vacía del modelo');
       return json.content[0].text;
     });
+  }).catch(function(err) {
+    if (err.message && err.message.indexOf('fetch') !== -1) throw new Error('Sin conexión a internet');
+    throw err;
   });
 }
 
@@ -275,7 +282,7 @@ function tagClass(tag) {
 // ── Render ───────────────────────────────────────────────────────────────────
 function renderTakes(takes) {
   var feed = document.getElementById('feed');
-  if (!takes || !takes.length) { renderError(); return; }
+  if (!takes || !takes.length) { renderError('El modelo no devolvió contenido válido.'); return; }
   currentTakes = takes;
   var isEN = appLang === 'en';
   feed.innerHTML = takes.map(function(take, i) {
@@ -309,13 +316,13 @@ function renderLoading() {
   document.getElementById('feed').innerHTML = html;
 }
 
-function renderError() {
-  var isEN = appLang === 'en';
+function renderError(detail) {
   document.getElementById('feed').innerHTML = '<div class="feed-error">' +
     '<div class="feed-error-icon">📡</div>' +
-    '<div class="feed-error-title">' + (isEN ? 'Connection error' : 'Error de conexión') + '</div>' +
-    '<div class="feed-error-sub">' + (isEN ? "Couldn't load today's brief. Check your connection and try again." : 'No se pudo cargar el brief de hoy. Verifica tu conexión e intenta de nuevo.') + '</div>' +
-    '<button class="retry-btn" onclick="loadFeed(true)">' + (isEN ? 'Try again' : 'Intentar de nuevo') + '</button>' +
+    '<div class="feed-error-title">Error de conexión</div>' +
+    (detail ? '<div class="feed-error-sub" style="font-size:12px;word-break:break-all;margin-bottom:6px">' + esc(detail) + '</div>' : '') +
+    '<div class="feed-error-sub">Verifica tu conexión e intenta de nuevo.</div>' +
+    '<button class="retry-btn" onclick="loadFeed(true)" style="margin-top:20px">Intentar de nuevo</button>' +
   '</div>';
 }
 
@@ -345,19 +352,9 @@ function loadFeed(force) {
         renderTakes(takesCache[last]);
         showToast('Sin conexión — mostrando contenido reciente.');
       } else {
-        renderErrorMsg(err.message || 'Error desconocido');
+        renderError(err.message || 'Error desconocido');
       }
     });
-}
-
-function renderErrorMsg(detail) {
-  document.getElementById('feed').innerHTML = '<div class="feed-error">' +
-    '<div class="feed-error-icon">📡</div>' +
-    '<div class="feed-error-title">Error de conexión</div>' +
-    '<div class="feed-error-sub" style="font-size:12px;color:var(--muted);margin-bottom:8px">' + esc(detail) + '</div>' +
-    '<div class="feed-error-sub">Verifica tu conexión e intenta de nuevo.</div>' +
-    '<button class="retry-btn" onclick="loadFeed(true)" style="margin-top:20px">Intentar de nuevo</button>' +
-  '</div>';
 }
 
 // ── Share ────────────────────────────────────────────────────────────────────
