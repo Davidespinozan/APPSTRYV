@@ -222,10 +222,12 @@ function callClaude(prompt, maxTokens, mode) {
 
 // ── News ─────────────────────────────────────────────────────────────────────
 function fetchNews() {
-  return fetch('/.netlify/functions/news?lang=' + appLang)
+  var timeout = new Promise(function(resolve) { setTimeout(function() { resolve([]); }, 5000); });
+  var req = fetch('/.netlify/functions/news?lang=' + appLang)
     .then(function(r) { return r.json(); })
     .then(function(data) { return data.articles || []; })
     .catch(function() { return []; });
+  return Promise.race([req, timeout]);
 }
 
 // ── Takes generation ─────────────────────────────────────────────────────────

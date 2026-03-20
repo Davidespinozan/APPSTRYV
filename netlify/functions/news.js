@@ -318,7 +318,7 @@ exports.handler = async function(event) {
     return items.slice(0, 15); // Max 15 per direct feed
   };
 
-  const fetchWithTimeout = (url, ms = 5000) => {
+  const fetchWithTimeout = (url, ms = 3000) => {
     return Promise.race([
       fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ContextoBot/1.0)' } }),
       new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))
@@ -348,7 +348,7 @@ exports.handler = async function(event) {
     // ─── 2. Fetch direct RSS feeds (in parallel) ───
     const directPromises = directFeeds.map(async (feed) => {
       try {
-        const res = await fetchWithTimeout(feed.url, 6000);
+        const res = await fetchWithTimeout(feed.url, 3000);
         const xml = await res.text();
         return parseGenericFeed(xml, feed.section, feed.icon, feed.name);
       } catch (e) { return []; }
