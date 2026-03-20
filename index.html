@@ -256,12 +256,13 @@ function generateTakes(articles) {
   }
 
   var isES = appLang !== 'en';
-  var prompt = ctxNote + 'NOTICIAS (' + todayFull() + '):\n' + newsText + '\n\n' + (isES
-    ? 'Genera 6 temas del día para CONTEXTO. Para cada tema:\n\n1. UNA oración directa con lo que pasó. Sin "según", sin "se informó", sin "dijeron". Solo el hecho.\n2. La capa real: por qué está pasando, quién se beneficia, cuál es la razón estructural detrás. 3 oraciones directas. Sé específico.\n3. La implicación concreta para alguien en América Latina. 1-2 oraciones. Impacto real en su dinero, trabajo u opciones de vida. Sin moralizar.\n\nCOBERTURA: incluye economía global, geopolítica, tecnología/IA, y al menos UN tema sobre oportunidades reales (países con mejores condiciones, inversión, movilidad, habilidades del futuro).\n\nTONO: amigo muy informado que habla sin rodeos. Nunca usa "expertos señalan", "analistas creen" ni lenguaje de noticiero. Directo, honesto, a veces provocador.\n\nRespuesta SOLO en JSON:\n[{"tag":"ECONOMÍA","headline":"titular directo de máx 12 palabras","body":"lo que pasó + la capa real","implication":"por qué te importa a ti"}]'
-    : 'Generate 6 daily takes for CONTEXTO. For each take:\n\n1. ONE direct sentence with what happened. No "according to", no "sources say", no passive voice. Just the fact.\n2. The real layer: why it\'s happening, who benefits, the structural reason behind it. 3 direct sentences. Be specific.\n3. The concrete implication for someone in Latin America. 1-2 sentences. Real impact on their money, work, or life options. No moralizing.\n\nCOVERAGE: include global economy, geopolitics, tech/AI, and at least ONE topic about real opportunities (countries with better conditions, investment, mobility, future skills).\n\nTONE: very well-read friend who speaks plainly. Never use "experts say", "analysts believe" or news-anchor language. Direct, honest, sometimes provocative.\n\nRespond ONLY with JSON:\n[{"tag":"ECONOMY","headline":"direct headline max 12 words","body":"what happened + the real layer","implication":"why it matters to you"}]'
+  var newsContext = newsText ? 'NOTICIAS:\n' + newsText + '\n\n' : '';
+  var prompt = ctxNote + newsContext + (isES
+    ? 'Fecha: ' + todayFull() + '.\n\nGenera 4 temas del día. JSON únicamente:\n[{"tag":"ECONOMÍA","headline":"titular directo máx 10 palabras","body":"qué pasó + por qué de verdad, 2-3 oraciones directas sin jerga","implication":"cómo te afecta a ti en 1-2 oraciones"}]\n\nTags: ECONOMÍA, GEOPOLÍTICA, TECNOLOGÍA, OPORTUNIDAD. Un tema por tag. Tono: amigo informado, sin rodeos, sin "expertos señalan".'
+    : 'Date: ' + todayFull() + '.\n\nGenerate 4 daily takes. JSON only:\n[{"tag":"ECONOMY","headline":"direct headline max 10 words","body":"what happened + why really, 2-3 direct sentences no jargon","implication":"how it affects you in 1-2 sentences"}]\n\nTags: ECONOMY, GEOPOLITICS, TECHNOLOGY, OPPORTUNITY. One take per tag. Tone: well-read friend, straight talk, no "experts say".'
   );
 
-  return callClaude(prompt, 1400, 'quality').then(function(text) {
+  return callClaude(prompt, 900, 'fast').then(function(text) {
     var m = text.match(/\[[\s\S]*\]/);
     if (!m) throw new Error('No JSON in response');
     return JSON.parse(m[0]);
