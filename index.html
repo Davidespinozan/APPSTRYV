@@ -258,8 +258,8 @@ function generateTakes(articles) {
   var isES = appLang !== 'en';
   var newsContext = newsText ? 'NOTICIAS:\n' + newsText + '\n\n' : '';
   var prompt = ctxNote + newsContext + (isES
-    ? 'Fecha: ' + todayFull() + '.\n\nGenera 6 temas del día. JSON únicamente:\n[{"tag":"ECONOMÍA","headline":"titular directo máx 10 palabras","body":"qué pasó + por qué de verdad, 2-3 oraciones directas sin jerga","implication":"cómo te afecta a ti en 1-2 oraciones"}]\n\nTags obligatorios: ECONOMÍA, GEOPOLÍTICA, TECNOLOGÍA, OPORTUNIDAD — más 2 adicionales relevantes. Tono: amigo muy informado, sin rodeos, sin "expertos señalan".'
-    : 'Date: ' + todayFull() + '.\n\nGenerate 6 daily takes. JSON only:\n[{"tag":"ECONOMY","headline":"direct headline max 10 words","body":"what happened + why really, 2-3 direct sentences no jargon","implication":"how it affects you in 1-2 sentences"}]\n\nRequired tags: ECONOMY, GEOPOLITICS, TECHNOLOGY, OPPORTUNITY — plus 2 more relevant ones. Tone: well-read friend, straight talk, no "experts say".'
+    ? 'Fecha: ' + todayFull() + '.\n\nGenera 6 temas del día para CONTEXTO.\n\nFORMATO DE CADA TEMA — en este orden exacto:\n1. GANCHO: empieza con una realidad o pregunta que la persona ya siente en su vida. Algo sobre el precio de las cosas, el trabajo, los ahorros, el futuro. No menciones el evento todavía. 1-2 oraciones que golpeen directo.\n2. POR QUÉ: explica qué está pasando y por qué, sin jerga, como si le hablaras a alguien que nunca ha leído noticias. 2-3 oraciones concretas.\n3. TU MOVIMIENTO: algo concreto que pueden considerar hacer, investigar o cambiar. No "reflexiona". Una acción real.\n\nJSON únicamente:\n[{"tag":"ECONOMÍA","headline":"el gancho — realidad que ya sienten","body":"por qué está pasando, sin jerga","implication":"qué puedes hacer o considerar hoy"}]\n\nTags: ECONOMÍA, GEOPOLÍTICA, TECNOLOGÍA, OPORTUNIDAD + 2 más relevantes. Sin "expertos señalan". Sin lenguaje de noticiero.'
+    : 'Date: ' + todayFull() + '.\n\nGenerate 6 daily takes for CONTEXTO.\n\nFORMAT FOR EACH TAKE — in this exact order:\n1. HOOK: start with a reality or question the person already feels in their life. Something about prices, jobs, savings, the future. Don\'t mention the event yet. 1-2 sentences that hit directly.\n2. WHY: explain what\'s happening and why, no jargon, like talking to someone who has never read the news. 2-3 concrete sentences.\n3. YOUR MOVE: something concrete they can consider doing, researching, or changing. Not "reflect on this". A real action.\n\nJSON only:\n[{"tag":"ECONOMY","headline":"the hook — reality they already feel","body":"why it\'s happening, no jargon","implication":"what you can do or consider today"}]\n\nTags: ECONOMY, GEOPOLITICS, TECHNOLOGY, OPPORTUNITY + 2 more relevant ones. No "experts say". No newscast language.'
   );
 
   return callClaude(prompt, 1200, 'fast').then(function(text) {
@@ -293,7 +293,7 @@ function renderTakes(takes) {
       '<div class="take-headline">' + esc(take.headline) + '</div>' +
       '<div class="take-body">' + esc(take.body) + '</div>' +
       '<div class="take-why">' +
-        '<div class="take-why-label">' + (isEN ? 'Why it matters to you' : 'Por qué te importa') + '</div>' +
+        '<div class="take-why-label">' + (isEN ? 'Your move' : 'Tu movimiento') + '</div>' +
         '<div class="take-why-text">' + esc(take.implication) + '</div>' +
       '</div>' +
       '<div class="take-footer">' +
