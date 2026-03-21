@@ -359,9 +359,11 @@ function loadFeed(force) {
   var collected = [];
   var failed = 0;
 
-  fetchNews().catch(function() { return []; }).then(function(articles) {
-    tags.forEach(function(tag, i) {
-      generateOneTake(tag, articles || [], i)
+  // Fire news fetch in background — don't wait for it
+  var newsPromise = fetchNews().catch(function() { return []; });
+
+  tags.forEach(function(tag, i) {
+      generateOneTake(tag, [], i)
         .then(function(take) {
           collected.push(take);
           // Replace its skeleton with the real card
@@ -406,7 +408,6 @@ function loadFeed(force) {
             }
           }
         });
-    });
   });
 }
 
