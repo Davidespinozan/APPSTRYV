@@ -185,6 +185,7 @@ var chatHistory   = store.get('chatHistory', []);
 var onboardingDone = store.get('onboardingDone', false);
 var currentTakes  = [];
 var toastTimer    = null;
+var loadGen       = 0; // incremented on each loadFeed call to cancel stale callbacks
 
 // ── Utils ────────────────────────────────────────────────────────────────────
 function esc(t) { var d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
@@ -337,6 +338,21 @@ function renderError(detail) {
 }
 
 // ── Progressive feed ─────────────────────────────────────────────────────────
+function makeTakeCard(take, i, isEN) {
+  var cls = tagClass(take.tag);
+  return '<div class="take">' +
+    '<div class="take-tag ' + cls + '">' + esc(take.tag) + '</div>' +
+    '<div class="take-headline">' + esc(take.headline) + '</div>' +
+    '<div class="take-body">' + esc(take.body) + '</div>' +
+    '<div class="take-why">' +
+      '<div class="take-why-label">' + (isEN ? 'Your move' : 'Tu movimiento') + '</div>' +
+      '<div class="take-why-text">' + esc(take.implication) + '</div>' +
+    '</div>' +
+    '<div class="take-footer">' +
+      '<button class="share-btn" onclick="shareTake(' + i + ')">↑ ' + (isEN ? 'Share' : 'Compartir') + '</button>' +
+    '</div></div>';
+}
+
 function loadFeed(force) {
   var today = todayKey();
   if (!force && takesCache[today] && takesCache[today].length) {
@@ -344,10 +360,15 @@ function loadFeed(force) {
     return;
   }
 
-  // Show 5 skeleton placeholders
+  var gen = ++loadGen; // this load's generation — stale callbacks check against this
   var feed = document.getElementById('feed');
+  var tags = appLang === 'en' ? TAGS_EN : TAGS_ES;
+  var isEN = appLang === 'en';
+  currentTakes = []; // reset so stale share references are cleared
+
+  // Show 5 skeleton placeholders
   var skelHtml = '';
-  for (var s = 0; s < 5; s++) {
+  for (var s = 0; s < tags.length; s++) {
     skelHtml += '<div class="skeleton" id="skel-' + s + '">' +
       '<div class="skel sm"></div><div class="skel h"></div>' +
       '<div class="skel lg"></div><div class="skel md"></div>' +
@@ -355,59 +376,49 @@ function loadFeed(force) {
   }
   feed.innerHTML = skelHtml;
 
-  var tags = appLang === 'en' ? TAGS_EN : TAGS_ES;
-  var collected = [];
-  var failed = 0;
-
-  // Fire news fetch in background — don't wait for it
-  var newsPromise = fetchNews().catch(function() { return []; });
+  // ordered sparse array — index matches display position
+  var collected = new Array(tags.length);
+  var settled = 0;
 
   tags.forEach(function(tag, i) {
-      generateOneTake(tag, [], i)
-        .then(function(take) {
-          collected.push(take);
-          // Replace its skeleton with the real card
-          var skel = document.getElementById('skel-' + i);
-          if (skel) {
-            var isEN = appLang === 'en';
-            var cls = tagClass(take.tag);
-            skel.outerHTML = '<div class="take">' +
-              '<div class="take-tag ' + cls + '">' + esc(take.tag) + '</div>' +
-              '<div class="take-headline">' + esc(take.headline) + '</div>' +
-              '<div class="take-body">' + esc(take.body) + '</div>' +
-              '<div class="take-why">' +
-                '<div class="take-why-label">' + (isEN ? 'Your move' : 'Tu movimiento') + '</div>' +
-                '<div class="take-why-text">' + esc(take.implication) + '</div>' +
-              '</div>' +
-              '<div class="take-footer">' +
-                '<button class="share-btn" onclick="shareTake(' + i + ')">↑ ' + (isEN ? 'Share' : 'Compartir') + '</button>' +
-              '</div></div>';
-          }
-          // Cache when all done
-          if (collected.length + failed === tags.length && collected.length > 0) {
+    generateOneTake(tag, [], i)
+      .then(function(take) {
+        if (gen !== loadGen) return; // language switched mid-load, discard
+        collected[i] = take;
+        currentTakes[i] = take; // update immediately so shareTake works now
+        settled++;
+
+        var skel = document.getElementById('skel-' + i);
+        if (skel) skel.outerHTML = makeTakeCard(take, i, isEN);
+
+        if (settled === tags.length) {
+          var valid = collected.filter(Boolean);
+          if (valid.length) {
             takesCache = {};
-            takesCache[today] = collected;
+            takesCache[today] = valid;
             store.set('takesCache', takesCache);
-            currentTakes = collected;
           }
-        })
-        .catch(function(err) {
-          failed++;
-          console.error('Take error:', tag, err.message);
-          var skel = document.getElementById('skel-' + i);
-          if (skel) skel.remove();
-          // If all failed, show full error
-          if (failed === tags.length) {
-            var keys = Object.keys(takesCache);
-            if (keys.length) {
-              var last = keys.sort().pop();
-              renderTakes(takesCache[last]);
-              showToast('Sin conexión — mostrando contenido reciente.');
-            } else {
-              renderError(err.message || 'Error desconocido');
-            }
+        }
+      })
+      .catch(function(err) {
+        if (gen !== loadGen) return;
+        settled++;
+        console.error('Take error:', tag, err.message);
+        var skel = document.getElementById('skel-' + i);
+        if (skel) skel.remove();
+
+        // All settled and nothing loaded — show error or cached
+        if (settled === tags.length && !currentTakes.filter(Boolean).length) {
+          var keys = Object.keys(takesCache);
+          if (keys.length) {
+            var last = keys.sort().pop();
+            renderTakes(takesCache[last]);
+            showToast(isEN ? 'Offline — showing recent content.' : 'Sin conexión — mostrando contenido reciente.');
+          } else {
+            renderError(err.message || 'Error desconocido');
           }
-        });
+        }
+      });
   });
 }
 
@@ -465,8 +476,9 @@ function shareTake(i) {
   canvas.toBlob(function(blob) {
     if (!blob) { showToast(appLang === 'en' ? 'Could not create image.' : 'No se pudo crear la imagen.'); return; }
     var file = new File([blob], 'contexto.png', { type: 'image/png' });
+    var shareText = take.headline + '\n\nContexto por Stryv — ' + window.location.origin;
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({ files: [file], title: take.headline }).catch(function() {});
+      navigator.share({ files: [file], title: take.headline, text: shareText }).catch(function() {});
     } else {
       var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'contexto.png'; a.click();
     }
@@ -515,7 +527,7 @@ function sendChat() {
     ? 'CONVERSATION:\n' + conversation + '\n\nRespond as a direct, honest tutor. No hedging, no "experts say". Give real structural context. Max 5 sentences.'
     : 'CONVERSACIÓN:\n' + conversation + '\n\nResponde como tutor directo y honesto. Sin "expertos señalan", sin rodeos. Da contexto estructural real. Máximo 5 oraciones.');
 
-  callClaude(prompt, 700, 'quality')
+  callClaude(prompt, 700, 'fast')
     .then(function(text) {
       chatHistory.push({ role: 'ai', text: text });
       chatHistory = chatHistory.slice(-24);
