@@ -212,13 +212,13 @@ function showToast(msg) {
 }
 
 // ── Claude API ───────────────────────────────────────────────────────────────
-function callClaude(prompt, maxTokens, mode) {
+function callClaude(prompt, maxTokens, mode, usecase) {
   var controller = new AbortController();
-  var timer = setTimeout(function() { controller.abort(); }, 8000);
+  var timer = setTimeout(function() { controller.abort(); }, 9500);
   return fetch('/.netlify/functions/claude', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: prompt, maxTokens: maxTokens || 900, mode: mode || 'fast', lang: appLang }),
+    body: JSON.stringify({ prompt: prompt, maxTokens: maxTokens || 700, mode: mode || 'fast', lang: appLang, usecase: usecase || 'chat' }),
     signal: controller.signal
   }).then(function(r) {
     clearTimeout(timer);
@@ -256,7 +256,7 @@ function generateTakes() {
     ? 'Fecha: ' + todayFull() + '. Genera exactamente 5 takes del día. JSON únicamente:\n[{"tag":"ECONOMÍA","headline":"...","body":"...","implication":"..."},{"tag":"GEOPOLÍTICA",...},{"tag":"TECNOLOGÍA",...},{"tag":"OPORTUNIDAD",...},{"tag":"SOCIEDAD",...}]\nReglas: headline=1 frase que golpea directo (realidad que ya sienten: precios, trabajo, ahorros). body=2 frases sin jerga. implication=1 acción concreta, no "reflexiona". Sin markdown.'
     : 'Date: ' + todayFull() + '. Generate exactly 5 takes. JSON only:\n[{"tag":"ECONOMY","headline":"...","body":"...","implication":"..."},{"tag":"GEOPOLITICS",...},{"tag":"TECHNOLOGY",...},{"tag":"OPPORTUNITY",...},{"tag":"SOCIETY",...}]\nRules: headline=1 direct hook sentence (reality they already feel: prices, jobs, savings). body=2 sentences no jargon. implication=1 concrete action, not "reflect". No markdown.';
 
-  return callClaude(prompt, 420, 'fast').then(function(text) {
+  return callClaude(prompt, 320, 'fast', 'takes').then(function(text) {
     var m = text.match(/\[[\s\S]*\]/);
     if (!m) throw new Error('Respuesta inválida del modelo');
     return JSON.parse(m[0]);
