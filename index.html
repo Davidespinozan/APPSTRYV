@@ -215,7 +215,7 @@ function showToast(msg) {
 function callClaude(prompt, maxTokens, mode, usecase) {
   var controller = new AbortController();
   var timer = setTimeout(function() { controller.abort(); }, 9500);
-  return fetch('/.netlify/functions/claude', {
+  return fetch('/api/claude', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt: prompt, maxTokens: maxTokens || 700, mode: mode || 'fast', lang: appLang, usecase: usecase || 'chat' }),
@@ -242,7 +242,7 @@ function callClaude(prompt, maxTokens, mode, usecase) {
 // ── News ─────────────────────────────────────────────────────────────────────
 function fetchNews() {
   var timeout = new Promise(function(resolve) { setTimeout(function() { resolve([]); }, 5000); });
-  var req = fetch('/.netlify/functions/news?lang=' + appLang)
+  var req = fetch('/api/news?lang=' + appLang)
     .then(function(r) { return r.json(); })
     .then(function(data) { return data.articles || []; })
     .catch(function() { return []; });
