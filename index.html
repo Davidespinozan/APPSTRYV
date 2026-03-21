@@ -212,11 +212,15 @@ function showToast(msg) {
 
 // ── Claude API ───────────────────────────────────────────────────────────────
 function callClaude(prompt, maxTokens, mode) {
+  var controller = new AbortController();
+  var timer = setTimeout(function() { controller.abort(); }, 8000);
   return fetch('/.netlify/functions/claude', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: prompt, maxTokens: maxTokens || 1400, mode: mode || 'quality', lang: appLang })
+    body: JSON.stringify({ prompt: prompt, maxTokens: maxTokens || 900, mode: mode || 'fast', lang: appLang }),
+    signal: controller.signal
   }).then(function(r) {
+    clearTimeout(timer);
     return r.text().then(function(raw) {
       var status = r.status;
       var json;
@@ -227,6 +231,8 @@ function callClaude(prompt, maxTokens, mode) {
       return json.content[0].text;
     });
   }).catch(function(err) {
+    clearTimeout(timer);
+    if (err.name === 'AbortError') throw new Error('Tiempo de espera agotado — intenta de nuevo');
     if (err.message && err.message.indexOf('fetch') !== -1) throw new Error('Sin conexión a internet');
     throw err;
   });
@@ -243,30 +249,33 @@ function fetchNews() {
 }
 
 // ── Takes generation ─────────────────────────────────────────────────────────
-function generateTakes(articles) {
-  var newsText = articles.slice(0, 32).map(function(a) {
+var TAGS_ES = ['ECONOMÍA', 'GEOPOLÍTICA', 'TECNOLOGÍA', 'OPORTUNIDAD', 'SOCIEDAD'];
+var TAGS_EN = ['ECONOMY', 'GEOPOLITICS', 'TECHNOLOGY', 'OPPORTUNITY', 'SOCIETY'];
+
+function generateOneTake(tag, articles, index) {
+  var newsText = articles.slice(0, 20).map(function(a) {
     return '- ' + a.title + (a.source ? ' [' + a.source + ']' : '');
   }).join('\n');
 
-  var ctxNote = '';
-  if (userCtx) {
-    if (userCtx.city) ctxNote += 'El lector es de ' + userCtx.city + '. ';
-    if (userCtx.age)  ctxNote += 'Tiene ' + userCtx.age + ' años. ';
-    if (ctxNote) ctxNote = 'PERFIL: ' + ctxNote + '\n\n';
-  }
-
   var isES = appLang !== 'en';
-  var newsContext = newsText ? 'NOTICIAS:\n' + newsText + '\n\n' : '';
-  var prompt = ctxNote + newsContext + (isES
-    ? 'Fecha: ' + todayFull() + '.\n\nGenera 6 temas del día para CONTEXTO.\n\nFORMATO DE CADA TEMA — en este orden exacto:\n1. GANCHO: empieza con una realidad o pregunta que la persona ya siente en su vida. Algo sobre el precio de las cosas, el trabajo, los ahorros, el futuro. No menciones el evento todavía. 1-2 oraciones que golpeen directo.\n2. POR QUÉ: explica qué está pasando y por qué, sin jerga, como si le hablaras a alguien que nunca ha leído noticias. 2-3 oraciones concretas.\n3. TU MOVIMIENTO: algo concreto que pueden considerar hacer, investigar o cambiar. No "reflexiona". Una acción real.\n\nJSON únicamente:\n[{"tag":"ECONOMÍA","headline":"el gancho — realidad que ya sienten","body":"por qué está pasando, sin jerga","implication":"qué puedes hacer o considerar hoy"}]\n\nTags: ECONOMÍA, GEOPOLÍTICA, TECNOLOGÍA, OPORTUNIDAD + 2 más relevantes. Sin "expertos señalan". Sin lenguaje de noticiero.'
-    : 'Date: ' + todayFull() + '.\n\nGenerate 6 daily takes for CONTEXTO.\n\nFORMAT FOR EACH TAKE — in this exact order:\n1. HOOK: start with a reality or question the person already feels in their life. Something about prices, jobs, savings, the future. Don\'t mention the event yet. 1-2 sentences that hit directly.\n2. WHY: explain what\'s happening and why, no jargon, like talking to someone who has never read the news. 2-3 concrete sentences.\n3. YOUR MOVE: something concrete they can consider doing, researching, or changing. Not "reflect on this". A real action.\n\nJSON only:\n[{"tag":"ECONOMY","headline":"the hook — reality they already feel","body":"why it\'s happening, no jargon","implication":"what you can do or consider today"}]\n\nTags: ECONOMY, GEOPOLITICS, TECHNOLOGY, OPPORTUNITY + 2 more relevant ones. No "experts say". No newscast language.'
+  var newsContext = newsText ? (isES ? 'NOTICIAS:\n' : 'NEWS:\n') + newsText + '\n\n' : '';
+  var prompt = newsContext + (isES
+    ? 'Fecha: ' + todayFull() + '.\n\nGenera 1 tema sobre ' + tag + ' para CONTEXTO. 3 partes:\n1. GANCHO (headline): realidad que ya sienten — precios, trabajo, ahorros. 1 oración directa.\n2. POR QUÉ (body): qué está pasando y por qué, sin jerga. 2 oraciones.\n3. MOVIMIENTO (implication): acción concreta hoy. 1 oración. No "reflexiona".\n\nJSON únicamente, sin markdown:\n{"tag":"' + tag + '","headline":"...","body":"...","implication":"..."}'
+    : 'Date: ' + todayFull() + '.\n\nGenerate 1 take about ' + tag + ' for CONTEXTO. 3 parts:\n1. HOOK (headline): reality they already feel — prices, jobs, savings. 1 direct sentence.\n2. WHY (body): what\'s happening and why, no jargon. 2 sentences.\n3. MOVE (implication): one concrete action today. Not "reflect on this".\n\nJSON only, no markdown:\n{"tag":"' + tag + '","headline":"...","body":"...","implication":"..."}'
   );
 
-  return callClaude(prompt, 1200, 'fast').then(function(text) {
-    var m = text.match(/\[[\s\S]*\]/);
-    if (!m) throw new Error('No JSON in response');
+  return callClaude(prompt, 250, 'fast').then(function(text) {
+    var m = text.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error('No JSON');
     return JSON.parse(m[0]);
   });
+}
+
+function generateTakes(articles) {
+  var tags = appLang === 'en' ? TAGS_EN : TAGS_ES;
+  return Promise.all(tags.map(function(tag, i) {
+    return generateOneTake(tag, articles, i);
+  }));
 }
 
 // ── Tag class ────────────────────────────────────────────────────────────────
@@ -327,42 +336,78 @@ function renderError(detail) {
   '</div>';
 }
 
-// ── Load feed ────────────────────────────────────────────────────────────────
+// ── Progressive feed ─────────────────────────────────────────────────────────
 function loadFeed(force) {
   var today = todayKey();
   if (!force && takesCache[today] && takesCache[today].length) {
     renderTakes(takesCache[today]);
     return;
   }
-  renderLoading();
-  generateTakes([])
-    .then(function(takes) {
-      takesCache = {};
-      takesCache[today] = takes;
-      store.set('takesCache', takesCache);
-      renderTakes(takes);
-      // Refresh with real news in background
-      fetchNews().then(function(articles) {
-        if (articles.length > 0) {
-          generateTakes(articles).then(function(freshTakes) {
-            takesCache[today] = freshTakes;
+
+  // Show 5 skeleton placeholders
+  var feed = document.getElementById('feed');
+  var skelHtml = '';
+  for (var s = 0; s < 5; s++) {
+    skelHtml += '<div class="skeleton" id="skel-' + s + '">' +
+      '<div class="skel sm"></div><div class="skel h"></div>' +
+      '<div class="skel lg"></div><div class="skel md"></div>' +
+      '<div class="skel lg"></div></div>';
+  }
+  feed.innerHTML = skelHtml;
+
+  var tags = appLang === 'en' ? TAGS_EN : TAGS_ES;
+  var collected = [];
+  var failed = 0;
+
+  fetchNews().catch(function() { return []; }).then(function(articles) {
+    tags.forEach(function(tag, i) {
+      generateOneTake(tag, articles || [], i)
+        .then(function(take) {
+          collected.push(take);
+          // Replace its skeleton with the real card
+          var skel = document.getElementById('skel-' + i);
+          if (skel) {
+            var isEN = appLang === 'en';
+            var cls = tagClass(take.tag);
+            skel.outerHTML = '<div class="take">' +
+              '<div class="take-tag ' + cls + '">' + esc(take.tag) + '</div>' +
+              '<div class="take-headline">' + esc(take.headline) + '</div>' +
+              '<div class="take-body">' + esc(take.body) + '</div>' +
+              '<div class="take-why">' +
+                '<div class="take-why-label">' + (isEN ? 'Your move' : 'Tu movimiento') + '</div>' +
+                '<div class="take-why-text">' + esc(take.implication) + '</div>' +
+              '</div>' +
+              '<div class="take-footer">' +
+                '<button class="share-btn" onclick="shareTake(' + i + ')">↑ ' + (isEN ? 'Share' : 'Compartir') + '</button>' +
+              '</div></div>';
+          }
+          // Cache when all done
+          if (collected.length + failed === tags.length && collected.length > 0) {
+            takesCache = {};
+            takesCache[today] = collected;
             store.set('takesCache', takesCache);
-            renderTakes(freshTakes);
-          }).catch(function() {});
-        }
-      }).catch(function() {});
-    })
-    .catch(function(err) {
-      console.error('Feed error:', err.message || err);
-      var keys = Object.keys(takesCache);
-      if (keys.length) {
-        var last = keys.sort().pop();
-        renderTakes(takesCache[last]);
-        showToast('Sin conexión — mostrando contenido reciente.');
-      } else {
-        renderError(err.message || 'Error desconocido');
-      }
+            currentTakes = collected;
+          }
+        })
+        .catch(function(err) {
+          failed++;
+          console.error('Take error:', tag, err.message);
+          var skel = document.getElementById('skel-' + i);
+          if (skel) skel.remove();
+          // If all failed, show full error
+          if (failed === tags.length) {
+            var keys = Object.keys(takesCache);
+            if (keys.length) {
+              var last = keys.sort().pop();
+              renderTakes(takesCache[last]);
+              showToast('Sin conexión — mostrando contenido reciente.');
+            } else {
+              renderError(err.message || 'Error desconocido');
+            }
+          }
+        });
     });
+  });
 }
 
 // ── Share ────────────────────────────────────────────────────────────────────
